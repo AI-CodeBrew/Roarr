@@ -1,7 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
+  "framework": "react-router",
   "installCommand": "npm install",
-  "framework": null,
-  "rewrites": [{ "source": "/(.*)", "destination": "/$1" }]
+  "buildCommand": "prisma generate && npm run build"
 }

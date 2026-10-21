@@ -21,4 +21,4 @@ if __name__ == '__main__':
     debug = os.environ.get('FLASK_DEBUG', '0') == '1'
     
     logger.info(f"Starting Zambeel Backend API on {host}:{port}")
-    app.run(host=host, port=port, debug=True) 
+    app.run(host=host, port=port, debug=debug)

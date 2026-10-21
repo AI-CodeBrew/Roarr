@@ -1,8 +1,8 @@
 # Fly.io — Roarr API
-# Create: fly apps create roarr-api
+# Create: fly apps create roarr
 # Secrets: fly secrets set DATABASE_URL=... SUPABASE_URL=... SUPABASE_JWT_SECRET=... BUNNY_*=... SHOPIFY_*=...
 
-app = "roarr-api"
+app = "roarr"
 primary_region = "iad"
 
 [build]

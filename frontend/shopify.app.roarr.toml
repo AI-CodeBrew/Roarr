@@ -1,0 +1,46 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "15199d9d08e0fa6f318c11ae36042de3"
+name = "Roarr"
+application_url = "https://fynktech-roarr.vercel.app"
+embedded = true
+
+[webhooks]
+api_version = "2026-01"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app_subscriptions/update" ]
+  uri = "/webhook/subscription-update"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/compliance"
+  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_analytics,read_discounts,read_locales,read_markets,read_products,read_publications,read_reports,read_themes,write_discounts,write_products,write_publications,write_themes"
+
+[auth]
+redirect_urls = [
+  "https://fynktech-roarr.vercel.app/auth/callback",
+  "https://fynktech-roarr.vercel.app/auth/shopify/callback",
+  "https://fynktech-roarr.vercel.app/api/auth/callback"
+]
+
+[build]
+automatically_update_urls_on_dev = true
+
+[shop.metafields.app.block_control]
+name = "Internal Block Render"
+type = "boolean"
+
+  [shop.metafields.app.block_control.access]
+  storefront = "public_read"
