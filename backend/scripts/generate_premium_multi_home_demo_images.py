@@ -6,7 +6,7 @@ Product 1 is the product already on that theme's product page. Two more
 products in the same category fill the rest of the homepage. Homepage files
 are new photographs — product-page gallery files are references only.
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python -u scripts/generate_premium_multi_home_demo_images.py
     ./venv/bin/python -u scripts/generate_premium_multi_home_demo_images.py --theme collective
 """

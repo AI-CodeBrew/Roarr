@@ -258,7 +258,7 @@ class ImageUploadHandler:
                 "body_html": product_subtitle,
                 "price": "0.00",
                 "status": "draft",  # Create as draft, will be published later
-                "vendor": "Kluck AI",
+                "vendor": "Roarr",
                 "product_type": "Generated Product",
                 "images": product_image_urls
             }

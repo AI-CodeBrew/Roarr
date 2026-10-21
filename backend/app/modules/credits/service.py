@@ -2,9 +2,9 @@
 WalletService: business logic for the credit wallet.
 
 Three DynamoDB tables back this:
-  - kluck_user_credit_wallet      (PK = user_id == shop_url)         live balance per user
-  - kluck_credit_ledger           (PK = entry_id; GSI user_id-...)   append-only audit log
-  - kluck_credit_purchases        (PK = charge_id; GSI user_id-...)  Shopify pack-purchase records
+  - roarr_user_credit_wallet      (PK = user_id == shop_url)         live balance per user
+  - roarr_credit_ledger           (PK = entry_id; GSI user_id-...)   append-only audit log
+  - roarr_credit_purchases        (PK = charge_id; GSI user_id-...)  Shopify pack-purchase records
 
 All tables share the same hash-key attribute name `PK`. For the wallet, the
 value of `PK` is the `user_id` (which equals the shop's myshopify URL); for
@@ -93,13 +93,13 @@ class WalletService:
         self.region = os.getenv("AWS_DEFAULT_REGION", "eu-west-3")
 
         self.wallet_table_name = os.getenv(
-            "DYNAMO_TABLE_CREDIT_WALLET", "kluck_user_credit_wallet"
+            "DYNAMO_TABLE_CREDIT_WALLET", "roarr_user_credit_wallet"
         )
         self.ledger_table_name = os.getenv(
-            "DYNAMO_TABLE_CREDIT_LEDGER", "kluck_credit_ledger"
+            "DYNAMO_TABLE_CREDIT_LEDGER", "roarr_credit_ledger"
         )
         self.purchases_table_name = os.getenv(
-            "DYNAMO_TABLE_CREDIT_PURCHASES", "kluck_credit_purchases"
+            "DYNAMO_TABLE_CREDIT_PURCHASES", "roarr_credit_purchases"
         )
 
         try:
@@ -249,9 +249,9 @@ class WalletService:
                 "lifetime_granted": _to_int(item.get("lifetime_granted")),
                 "lifetime_spent": _to_int(item.get("lifetime_spent")),
                 "updated_at": item.get("updated_at"),
-                "promo_kluck2x_redeemed_at": item.get("promo_kluck2x_redeemed_at"),
-                "promo_kluck2x_pending": bool(item.get("promo_kluck2x_pending")),
-                "promo_kluck2x_consumed_at": item.get("promo_kluck2x_consumed_at"),
+                "promo_roarr2x_redeemed_at": item.get("promo_roarr2x_redeemed_at"),
+                "promo_roarr2x_pending": bool(item.get("promo_roarr2x_pending")),
+                "promo_roarr2x_consumed_at": item.get("promo_roarr2x_consumed_at"),
             }
         except ClientError as e:
             logger.error(f"Failed to read wallet for {user_id}: {e}")
@@ -688,7 +688,7 @@ class WalletService:
         pricing_row: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
-        Persist a `pending` row in kluck_credit_purchases when we initiate a
+        Persist a `pending` row in roarr_credit_purchases when we initiate a
         Shopify applicationCharge. Status is flipped to 'active' on the
         confirmation webhook (which also calls grant()).
         """
@@ -766,7 +766,7 @@ class WalletService:
         """
         Redeem a lifetime promo once per shop.
 
-        KLUCK2X arms a pending 2x multiplier for the next paid pack grant.
+        ROARR2X arms a pending 2x multiplier for the next paid pack grant.
         Credits are not granted on redeem.
         """
         if not user_id:
@@ -776,7 +776,7 @@ class WalletService:
             raise ValueError("Invalid promo code")
 
         normalized = normalize_promo_code(code)
-        if normalized != "KLUCK2X":
+        if normalized != "ROARR2X":
             raise ValueError("Invalid promo code")
 
         self.ensure_wallet(user_id)
@@ -785,10 +785,10 @@ class WalletService:
             self.wallet_table.update_item(
                 Key={"PK": user_id},
                 UpdateExpression=(
-                    "SET promo_kluck2x_redeemed_at = :now, "
-                    "promo_kluck2x_pending = :true, updated_at = :now"
+                    "SET promo_roarr2x_redeemed_at = :now, "
+                    "promo_roarr2x_pending = :true, updated_at = :now"
                 ),
-                ConditionExpression="attribute_not_exists(promo_kluck2x_redeemed_at)",
+                ConditionExpression="attribute_not_exists(promo_roarr2x_redeemed_at)",
                 ExpressionAttributeValues={
                     ":now": now,
                     ":true": True,
@@ -809,9 +809,9 @@ class WalletService:
             or "Promo applied. Your next credit pack purchase will be doubled.",
         }
 
-    def _consume_kluck2x_pending(self, user_id: str) -> Optional[int]:
+    def _consume_roarr2x_pending(self, user_id: str) -> Optional[int]:
         """
-        Atomically clear a pending KLUCK2X arm and return its multiplier.
+        Atomically clear a pending ROARR2X arm and return its multiplier.
 
         Returns None when nothing was pending.
         """
@@ -820,10 +820,10 @@ class WalletService:
             self.wallet_table.update_item(
                 Key={"PK": user_id},
                 UpdateExpression=(
-                    "SET promo_kluck2x_pending = :false, "
-                    "promo_kluck2x_consumed_at = :now, updated_at = :now"
+                    "SET promo_roarr2x_pending = :false, "
+                    "promo_roarr2x_consumed_at = :now, updated_at = :now"
                 ),
-                ConditionExpression="promo_kluck2x_pending = :true",
+                ConditionExpression="promo_roarr2x_pending = :true",
                 ExpressionAttributeValues={
                     ":false": False,
                     ":true": True,
@@ -834,7 +834,7 @@ class WalletService:
         except ClientError as e:
             if "ConditionalCheckFailed" in str(e):
                 return None
-            logger.error(f"Failed to consume KLUCK2X for {user_id}: {e}")
+            logger.error(f"Failed to consume ROARR2X for {user_id}: {e}")
             raise
 
     def confirm_pack_purchase(
@@ -848,7 +848,7 @@ class WalletService:
         Safe to call multiple times: the wallet grant only runs if the purchase
         row was not already in `active` status.
 
-        If KLUCK2X is pending on the wallet, the catalog credit amount is
+        If ROARR2X is pending on the wallet, the catalog credit amount is
         doubled once and the pending flag is cleared.
         """
         purchase = self.get_purchase(charge_id)
@@ -892,7 +892,7 @@ class WalletService:
             logger.error(f"Failed to flip purchase {charge_id} to active: {e}")
             raise
 
-        promo_multiplier = self._consume_kluck2x_pending(user_id)
+        promo_multiplier = self._consume_roarr2x_pending(user_id)
         metadata: Dict[str, Any] = {
             "pack": pack_name,
             "price": purchase.get("price"),
@@ -900,10 +900,10 @@ class WalletService:
         }
         if promo_multiplier and promo_multiplier > 1:
             credits = base_credits * promo_multiplier
-            metadata["promo"] = "KLUCK2X"
+            metadata["promo"] = "ROARR2X"
             metadata["multiplier"] = promo_multiplier
             logger.info(
-                f"Applied KLUCK2X to pack {charge_id}: {base_credits} -> {credits}"
+                f"Applied ROARR2X to pack {charge_id}: {base_credits} -> {credits}"
             )
 
         grant_result = self.grant(
@@ -919,7 +919,7 @@ class WalletService:
             "balance": grant_result["balance"],
             "credits_granted": credits,
             "base_credits": base_credits,
-            "promo": "KLUCK2X" if promo_multiplier else None,
+            "promo": "ROARR2X" if promo_multiplier else None,
             "purchase": self.get_purchase(charge_id),
         }
 

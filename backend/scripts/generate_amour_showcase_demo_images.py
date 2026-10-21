@@ -6,7 +6,7 @@ Uses the same prompts as real Amour stores (packs/amour/image_prompts.py) and ea
 category's existing Amour demo product (product_base_image in home-data.js) as the
 reference, so the demo matches what merchants get.
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python -u scripts/generate_amour_showcase_demo_images.py
     ./venv/bin/python -u scripts/generate_amour_showcase_demo_images.py --category fashion
 """

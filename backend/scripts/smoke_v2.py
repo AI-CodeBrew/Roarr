@@ -24,7 +24,7 @@ def check(name: str, ok: bool, detail: str = "") -> bool:
 
 
 def main() -> int:
-    print("=== Kluck v2 smoke ===\n")
+    print("=== Roarr smoke ===\n")
     failures = 0
     try:
         importlib.import_module("app.modules.auth.utils")

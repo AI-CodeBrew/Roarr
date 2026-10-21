@@ -6,7 +6,7 @@ Each category gets three NEW products (not the old Luminous catalog). Every
 homepage slot is sized for that section. The product page uses product 1,
 with its own gallery — homepage files are not reused there.
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python -u scripts/generate_luminous_demo_images.py
 """
 

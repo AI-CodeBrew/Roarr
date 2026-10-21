@@ -178,57 +178,57 @@ function stickyBarApplyHomeData(homeData, sectionSettingsOnly, blocksData) {
 export const CINEMATIC_SINGLE_PRODUCT_HOME_SECTIONS = [
     {
         key: "pf-cinematic-announcement",
-        name: "Kluck AI - Cinematic Announcement",
+        name: "Roarr - Cinematic Announcement",
         applyHomeData: announcementApplyHomeData,
     },
     {
         key: "pf-cinematic-hero",
-        name: "Kluck AI - Cinematic Hero",
+        name: "Roarr - Cinematic Hero",
         applyHomeData: heroApplyHomeData,
     },
     {
         key: "pf-cinematic-trust",
-        name: "Kluck AI - Cinematic Trust",
+        name: "Roarr - Cinematic Trust",
         applyHomeData: trustApplyHomeData,
     },
     {
         key: "pf-cinematic-product-story",
-        name: "Kluck AI - Cinematic Product Story",
+        name: "Roarr - Cinematic Product Story",
         applyHomeData: productStoryApplyHomeData,
     },
     {
         key: "pf-cinematic-inspiration",
-        name: "Kluck AI - Cinematic Inspiration",
+        name: "Roarr - Cinematic Inspiration",
         applyHomeData: inspirationApplyHomeData,
     },
     {
         key: "pf-cinematic-feature-ticker",
-        name: "Kluck AI - Cinematic Feature Ticker",
+        name: "Roarr - Cinematic Feature Ticker",
         applyHomeData: featureTickerApplyHomeData,
     },
     {
         key: "pf-cinematic-why-shop",
-        name: "Kluck AI - Cinematic Why Shop",
+        name: "Roarr - Cinematic Why Shop",
         applyHomeData: whyShopApplyHomeData,
     },
     {
         key: "pf-cinematic-feature-orbit",
-        name: "Kluck AI - Cinematic Feature Orbit",
+        name: "Roarr - Cinematic Feature Orbit",
         applyHomeData: featureOrbitApplyHomeData,
     },
     {
         key: "pf-cinematic-reviews",
-        name: "Kluck AI - Cinematic Reviews",
+        name: "Roarr - Cinematic Reviews",
         applyHomeData: reviewsApplyHomeData,
     },
     {
         key: "pf-cinematic-faq",
-        name: "Kluck AI - Cinematic FAQ",
+        name: "Roarr - Cinematic FAQ",
         applyHomeData: faqApplyHomeData,
     },
     {
         key: "pf-cinematic-sticky-bar",
-        name: "Kluck AI - Cinematic Sticky Bar",
+        name: "Roarr - Cinematic Sticky Bar",
         applyHomeData: stickyBarApplyHomeData,
     },
 ];

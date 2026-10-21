@@ -1,10 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-# v2: create a NEW Shopify Partner app and paste its client_id here.
-# Do not reuse prod kluckyv5 credentials until you intentionally cut over.
-client_id = "REPLACE_WITH_V2_SHOPIFY_CLIENT_ID"
-name = "Kluck AI v2"
-application_url = "https://YOUR_V2_FRONTEND.vercel.app"
+# Create a Shopify Partner app for Roarr and paste its client_id here.
+client_id = "REPLACE_WITH_ROARR_SHOPIFY_CLIENT_ID"
+name = "Roarr"
+application_url = "https://YOUR_ROARR_FRONTEND.vercel.app"
 embedded = true
 
 [build]

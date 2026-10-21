@@ -1,6 +1,6 @@
 /**
  * Utility functions to manage the shop-level app.block_control metafield.
- * When true, Kluck theme/app extension blocks render on the storefront (credit-based billing).
+ * When true, Roarr theme/app extension blocks render on the storefront (credit-based billing).
  */
 
 /**

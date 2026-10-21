@@ -6,8 +6,8 @@
 
 {% if shop.metafields.app.block_control.value %}
 
-  {%- capture ph_reviewer_name -%}{% render 'kluck-ui-string', key: 'reviewer_name' %}{%- endcapture -%}
-  {%- capture ph_review_body -%}{% render 'kluck-ui-string', key: 'review_body' %}{%- endcapture -%}
+  {%- capture ph_reviewer_name -%}{% render 'roarr-ui-string', key: 'reviewer_name' %}{%- endcapture -%}
+  {%- capture ph_review_body -%}{% render 'roarr-ui-string', key: 'review_body' %}{%- endcapture -%}
   {%- assign customer_name_1 = store_gen.home_page.text.customer_name_1 -%}
   {%- assign customer_review_1 = store_gen.home_page.text.customer_review_1 -%}
   {%- assign customer_name_2 = store_gen.home_page.text.customer_name_2 -%}
@@ -55,7 +55,7 @@
       font-size: 42px;
       line-height: 1.1;
       margin: 0;
-      font-family: var(--kluck-font-heading-family);
+      font-family: var(--roarr-font-heading-family);
     }
     .ts-heading p em {
       font-weight: 900;
@@ -269,7 +269,7 @@
     {
       "type": "checkbox",
       "id": "use_kluck_ai_metafields",
-      "label": "Use Kluck AI metafields",
+      "label": "Use Roarr metafields",
       "default": true
     },
     { "type": "header", "content": "Layout" },

@@ -1,7 +1,7 @@
 {%- comment -%}
-  Locale-aware UI chrome for Kluck sections.
+  Locale-aware UI chrome for Roarr sections.
   Uses the storefront language (Shopify localization / request.locale).
-  Usage: {% render 'snippets/kluck-ui-string', key: 'add_to_cart' %}
+  Usage: {% render 'snippets/roarr-ui-string', key: 'add_to_cart' %}
 {%- endcomment -%}
 {%- liquid
   assign _lang = localization.language.iso_code | default: request.locale.iso_code | default: 'en' | downcase

@@ -63,7 +63,7 @@ def store_theme_name(
 ) -> str:
     """
     Store theme display name for analytics.
-    Keep in sync with getStoreThemeName in kluck-embeded/app/lib/themeNames.js.
+    Keep in sync with getStoreThemeName in frontend/app/lib/themeNames.js.
     """
     pack = normalize_store_template_pack(store_template_pack)
     try:

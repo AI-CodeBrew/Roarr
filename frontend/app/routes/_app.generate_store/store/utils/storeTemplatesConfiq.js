@@ -39,8 +39,8 @@ import { DEFAULT_SHOP } from "../../../_app.generate_pdp/product-page/utils/liqu
 import { getBodyImages, getProductImages } from "../../../_app.generate_pdp/product-page/utils/default-magic-responses/index.js";
 import { getLiquidTemplateDisplayName } from "../../../../lib/liquidTemplateDisplayNames.js";
 import themeSettings from "../utils/liquid-css-settings/theme-settings.json";
-import fashionKluckFashion2Theme from "./liquid-schema-settings/default-product/fashion-kluck-fashion-2.json";
-import fashionKluckFashion1Theme from "./liquid-schema-settings/default-product/fashion-kluck-fashion-1.json";
+import fashionTemplate2Theme from "./liquid-schema-settings/default-product/fashion-roarr-fashion-2.json";
+import fashionTemplate1Theme from "./liquid-schema-settings/default-product/fashion-roarr-fashion-1.json";
 
 const PREVIEW_PRODUCT_ROUTES = { all_products_collection_url: "/collections/all" };
 /**
@@ -284,7 +284,7 @@ function toLiquidProductFromMappedInner(mappedInner) {
 }
 
 /**
- * Product + Kluck metafield mock for fashion `product.kluck-fashion-2` liquid sections.
+ * Product + product metafield mock for fashion `product.roarr-fashion-2` liquid sections.
  */
 function buildFashion2PreviewProduct(productData, homeData, stylePreferences, categoryDefaults) {
     const baseHome = homeData && typeof homeData === "object" ? homeData : {};
@@ -318,24 +318,24 @@ function buildFashion2PreviewProduct(productData, homeData, stylePreferences, ca
         liquidBase.featured_media?.preview_image ||
         liquidBase.media?.[0]?.preview_image ||
         "";
-    const existingKluck = mappedInner?.metafields?.kluck_ai || liquidBase.metafields?.kluck_ai || {};
+    const existingMeta = mappedInner?.metafields?.kluck_ai || liquidBase.metafields?.kluck_ai || {};
     const asValue = (v, fallback = "") => {
         if (v == null || v === "") return { value: fallback };
         if (typeof v === "object" && v.value != null) return v;
         return { value: String(v) };
     };
     const kluckAi = {
-        ...existingKluck,
-        color_schema: asValue(existingKluck.color_schema, accent),
+        ...existingMeta,
+        color_schema: asValue(existingMeta.color_schema, accent),
         highlight_banner_section_heading: asValue(
-            existingKluck.highlight_banner_section_heading,
+            existingMeta.highlight_banner_section_heading,
             text.highlight_banner_section_heading || text.highlight_heading || liquidBase.title || ""
         ),
         highlight_banner_section_description: asValue(
-            existingKluck.highlight_banner_section_description,
+            existingMeta.highlight_banner_section_description,
             text.highlight_banner_section_description || text.highlight_description || ""
         ),
-        product_impact_image: asValue(existingKluck.product_impact_image, impactUrl)
+        product_impact_image: asValue(existingMeta.product_impact_image, impactUrl)
     };
     for (let i = 1; i <= 3; i++) {
         const qk = `faq_question_${i}`;
@@ -350,7 +350,7 @@ function buildFashion2PreviewProduct(productData, homeData, stylePreferences, ca
 }
 
 /**
- * Extends fashion-2 preview product with metafields used by `product.kluck-fashion-1` sections (marquee text, feature grid).
+ * Extends fashion-2 preview product with metafields used by `product.roarr-fashion-1` sections (marquee text, feature grid).
  */
 function extractHttpImageUrl(v) {
     if (v == null || v === "") return "";
@@ -387,7 +387,7 @@ function buildFashion1PreviewProduct(productData, homeData, stylePreferences, ca
     const km = { ...existing };
     for (let i = 1; i <= 3; i++) {
         const mt = `marquee_text_${i}`;
-        if (km[mt] == null || km[mt] === "") km[mt] = text[mt] || "Kluck AI Quality";
+        if (km[mt] == null || km[mt] === "") km[mt] = text[mt] || "Roarr Quality";
 
         const dk = `impactfull_poetic_product_detail_${i}`;
         const poetic = text[dk];
@@ -417,7 +417,7 @@ function buildFashion1PreviewProduct(productData, homeData, stylePreferences, ca
 
 /**
  * Apply `homeData.text` / form edits to Fashion 1/2 theme-JSON sections in liquid preview
- * (blocks that do not read Kluck metafields on the storefront).
+ * (blocks that do not read product metafields on the storefront).
  */
 function applyFashion2EditorPreviewOverrides(sectionType, blocks, processedSettings, homeData) {
     if (!homeData || typeof homeData !== "object") return;
@@ -514,9 +514,9 @@ function fashionJsonSectionToPreviewRow(sectionInstanceId, spec, liquidProduct, 
 }
 
 /**
- * Template rows for fashion product.kluck-fashion-2 (store + product preview editors).
+ * Template rows for fashion product.roarr-fashion-2 (store + product preview editors).
  */
-export function buildFashionKluckFashion2TemplateRows({
+export function buildFashionTemplate2Rows({
     productData = null,
     homeData = {},
     stylePreferences = null,
@@ -530,8 +530,8 @@ export function buildFashionKluckFashion2TemplateRows({
     );
     const baseSettings = themeSettings?.current ?? {};
     const settings = normalizePreviewThemeSettings({ ...baseSettings, homeData }, stylePreferences);
-    const order = fashionKluckFashion2Theme.order || [];
-    const sections = fashionKluckFashion2Theme.sections || {};
+    const order = fashionTemplate2Theme.order || [];
+    const sections = fashionTemplate2Theme.sections || {};
     const rows = [];
     for (const instanceId of order) {
         const spec = sections[instanceId];
@@ -542,9 +542,9 @@ export function buildFashionKluckFashion2TemplateRows({
 }
 
 /**
- * Template rows for fashion product.kluck-fashion-1 (store + product preview editors).
+ * Template rows for fashion product.roarr-fashion-1 (store + product preview editors).
  */
-export function buildFashionKluckFashion1TemplateRows({
+export function buildFashionTemplate1Rows({
     productData = null,
     homeData = {},
     stylePreferences = null,
@@ -558,8 +558,8 @@ export function buildFashionKluckFashion1TemplateRows({
     );
     const baseSettings = themeSettings?.current ?? {};
     const settings = normalizePreviewThemeSettings({ ...baseSettings, homeData }, stylePreferences);
-    const order = fashionKluckFashion1Theme.order || [];
-    const sections = fashionKluckFashion1Theme.sections || {};
+    const order = fashionTemplate1Theme.order || [];
+    const sections = fashionTemplate1Theme.sections || {};
     const rows = [];
     for (const instanceId of order) {
         const spec = sections[instanceId];
@@ -834,7 +834,7 @@ export function buildLiquidPageTemplatesConfig({
     omitCheckoutBlocks = null,
 }) {
     // Product page: must take precedence when Product tab is selected.
-    // Do not use kluck-fashion-1/2 JSON here — those stacks overlap in the iframe
+    // Do not use roarr-fashion-1/2 JSON here — those stacks overlap in the iframe
     // and steal homepage copy. Premium PDPs use generateTemplateConfig instead.
     if (pageType === "product-page") {
         let liquidProduct = toLiquidProduct(productData) || toLiquidProduct({

@@ -1,10 +1,10 @@
 {%- comment -%}
-  Kluck AI — About Us rich text (self-contained CSS + JS).
+  Roarr — About Us rich text (self-contained CSS + JS).
 {%- endcomment -%}
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
 
 {%- style -%}
-  #KluckAboutH1-{{ section.id }} {
+  #RoarrAboutH1-{{ section.id }} {
     --mrt-pt-mobile: {{ section.settings.padding_top_mobile }}px;
     --mrt-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
     --mrt-pt-desk: {{ section.settings.padding_top_desktop }}px;
@@ -21,7 +21,7 @@
     --mrt-text-mobile: {{ section.settings.text_size_mobile }}px;
     --mrt-text-desk: {{ section.settings.text_size_desktop }}px;
   }
-  #KluckAboutH1-{{ section.id }}.about-rich-text {
+  #RoarrAboutH1-{{ section.id }}.about-rich-text {
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
@@ -31,12 +31,12 @@
     overflow-x: hidden;
   }
   @media screen and (min-width: 769px) {
-    #KluckAboutH1-{{ section.id }}.about-rich-text {
+    #RoarrAboutH1-{{ section.id }}.about-rich-text {
       padding-top: var(--mrt-pt-desk);
       padding-bottom: var(--mrt-pb-desk);
     }
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text-root {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text-root {
     position: relative;
     box-sizing: border-box;
     width: 100%;
@@ -50,7 +50,7 @@
     padding-left: 20px;
     padding-right: 20px;
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text__watermark {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text__watermark {
     position: absolute;
     top: var(--mrt-watermark-offset-y);
     left: 50%;
@@ -72,11 +72,11 @@
     overflow: hidden;
   }
   @media screen and (min-width: 769px) {
-    #KluckAboutH1-{{ section.id }} .modern-rich-text__watermark {
+    #RoarrAboutH1-{{ section.id }} .modern-rich-text__watermark {
       font-size: var(--mrt-wm-size-desk);
     }
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text__content {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text__content {
     position: relative;
     z-index: 1;
     box-sizing: border-box;
@@ -88,7 +88,7 @@
     align-items: stretch;
     gap: var(--mrt-content-gap);
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text__heading {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text__heading {
     margin: 0;
     width: 100%;
     font-size: var(--mrt-heading-mobile);
@@ -99,7 +99,7 @@
     overflow-wrap: break-word;
     word-break: break-word;
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text__text {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text__text {
     margin: 0;
     width: 100%;
     font-size: var(--mrt-text-mobile);
@@ -109,41 +109,41 @@
     overflow-wrap: break-word;
     word-break: break-word;
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text__text p {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text__text p {
     margin: 0 0 0.75em;
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text__text p:last-child {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text__text p:last-child {
     margin-bottom: 0;
   }
   @media screen and (min-width: 769px) {
-    #KluckAboutH1-{{ section.id }} .modern-rich-text__heading {
+    #RoarrAboutH1-{{ section.id }} .modern-rich-text__heading {
       font-size: var(--mrt-heading-desk);
     }
-    #KluckAboutH1-{{ section.id }} .modern-rich-text__text {
+    #RoarrAboutH1-{{ section.id }} .modern-rich-text__text {
       font-size: var(--mrt-text-desk);
     }
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text--animated .animate-el {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text--animated .animate-el {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text--animated.is-visible .animate-el {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text--animated.is-visible .animate-el {
     opacity: 1;
     transform: translateY(0);
   }
-  #KluckAboutH1-{{ section.id }} .delay-1 { transition-delay: 0.1s; }
-  #KluckAboutH1-{{ section.id }} .delay-2 { transition-delay: 0.3s; }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text--animated .modern-rich-text__watermark {
+  #RoarrAboutH1-{{ section.id }} .delay-1 { transition-delay: 0.1s; }
+  #RoarrAboutH1-{{ section.id }} .delay-2 { transition-delay: 0.3s; }
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text--animated .modern-rich-text__watermark {
     opacity: 0;
     transition: opacity 1.5s ease 0.2s;
   }
-  #KluckAboutH1-{{ section.id }} .modern-rich-text--animated.is-visible .modern-rich-text__watermark {
+  #RoarrAboutH1-{{ section.id }} .modern-rich-text--animated.is-visible .modern-rich-text__watermark {
     opacity: var(--mrt-watermark-opacity);
   }
 {%- endstyle -%}
 
-<div id="KluckAboutH1-{{ section.id }}" class="about-rich-text color-{{ section_scheme }} gradient">
+<div id="RoarrAboutH1-{{ section.id }}" class="about-rich-text color-{{ section_scheme }} gradient">
   <div class="modern-rich-text-root{% if section.settings.enable_animation %} modern-rich-text--animated{% endif %}">
     {%- if section.settings.watermark_text != blank -%}
       <div class="modern-rich-text__watermark">{{ section.settings.watermark_text }}</div>
@@ -161,7 +161,7 @@
 
 <script>
   (function () {
-    var root = document.querySelector('#KluckAboutH1-{{ section.id }} .modern-rich-text--animated');
+    var root = document.querySelector('#RoarrAboutH1-{{ section.id }} .modern-rich-text--animated');
     if (!root) return;
     var obs = new IntersectionObserver(function (entries, o) {
       entries.forEach(function (entry) {
@@ -177,7 +177,7 @@
 
 {% schema %}
 {
-  "name": "Kluck AI - About",
+  "name": "Roarr - About",
   "tag": "section",
   "class": "section-kluck-ai-about-h1",
   "settings": [
@@ -202,6 +202,6 @@
     { "type": "range", "id": "padding_top_mobile", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top mobile", "default": 60 },
     { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom mobile", "default": 60 }
   ],
-  "presets": [{ "name": "Kluck AI - About" }]
+  "presets": [{ "name": "Roarr - About" }]
 }
 {% endschema %}

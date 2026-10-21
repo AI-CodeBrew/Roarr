@@ -1,11 +1,11 @@
 {%- comment -%}
-  Kluck AI — 404 / not-found page section (self-contained CSS + JS).
+  Roarr — 404 / not-found page section (self-contained CSS + JS).
 {%- endcomment -%}
 
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
 
 {%- style -%}
-  #Kluck404-{{ section.id }} {
+  #Roarr404-{{ section.id }} {
     --font-h: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
     --font-b: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
     --font-sub: {{ settings.type_subheading_font.family | default: settings.type_heading_font.family }}, sans-serif;
@@ -31,7 +31,7 @@
     --m404-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
   }
 
-  #Kluck404-{{ section.id }}.m404-outer {
+  #Roarr404-{{ section.id }}.m404-outer {
     padding-top: var(--m404-pt-mobile);
     padding-bottom: var(--m404-pb-mobile);
     min-height: 80vh;
@@ -41,40 +41,40 @@
     box-sizing: border-box;
   }
   @media screen and (min-width: 769px) {
-    #Kluck404-{{ section.id }}.m404-outer {
+    #Roarr404-{{ section.id }}.m404-outer {
       padding-top: var(--m404-pt-desktop);
       padding-bottom: var(--m404-pb-desktop);
       min-height: 90vh;
     }
   }
-  #Kluck404-{{ section.id }} .modern-404-inner-wrap {
+  #Roarr404-{{ section.id }} .modern-404-inner-wrap {
     width: 100%;
     max-width: var(--container-width);
     margin: 0 auto;
     padding: 0 20px;
   }
-  #Kluck404-{{ section.id }} .modern-404__inner {
+  #Roarr404-{{ section.id }} .modern-404__inner {
     display: grid;
     grid-template-columns: 1fr;
     gap: 50px;
     align-items: center;
   }
   @media screen and (min-width: 900px) {
-    #Kluck404-{{ section.id }} .modern-404__inner {
+    #Roarr404-{{ section.id }} .modern-404__inner {
       grid-template-columns: 1fr 1fr;
       gap: 80px;
     }
-    #Kluck404-{{ section.id }} .modern-404-root--image-left .modern-404__content-wrapper { order: 2; }
-    #Kluck404-{{ section.id }} .modern-404-root--image-left .modern-404__image-wrapper { order: 1; }
+    #Roarr404-{{ section.id }} .modern-404-root--image-left .modern-404__content-wrapper { order: 2; }
+    #Roarr404-{{ section.id }} .modern-404-root--image-left .modern-404__image-wrapper { order: 1; }
   }
-  #Kluck404-{{ section.id }} .modern-404__content-wrapper {
+  #Roarr404-{{ section.id }} .modern-404__content-wrapper {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 40px 0;
   }
-  #Kluck404-{{ section.id }} .modern-404__watermark {
+  #Roarr404-{{ section.id }} .modern-404__watermark {
     font-family: var(--font-h);
     position: absolute;
     top: 50%;
@@ -95,19 +95,19 @@
     color: transparent;
   }
   @media screen and (min-width: 900px) {
-    #Kluck404-{{ section.id }} .modern-404__watermark {
+    #Roarr404-{{ section.id }} .modern-404__watermark {
       font-size: var(--wm-size-d);
       left: 50%;
     }
   }
-  #Kluck404-{{ section.id }} .modern-404__content {
+  #Roarr404-{{ section.id }} .modern-404__content {
     position: relative;
     z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
-  #Kluck404-{{ section.id }} .modern-404__subtitle {
+  #Roarr404-{{ section.id }} .modern-404__subtitle {
     font-family: var(--font-sub);
     font-size: 14px;
     text-transform: uppercase;
@@ -117,7 +117,7 @@
     font-weight: 600;
     margin: 0;
   }
-  #Kluck404-{{ section.id }} .modern-404__heading {
+  #Roarr404-{{ section.id }} .modern-404__heading {
     font-family: var(--font-h);
     font-size: var(--heading-m);
     color: currentColor;
@@ -126,7 +126,7 @@
     letter-spacing: -0.02em;
     font-weight: 500;
   }
-  #Kluck404-{{ section.id }} .modern-404__text {
+  #Roarr404-{{ section.id }} .modern-404__text {
     font-family: var(--font-b);
     font-size: var(--text-m);
     color: currentColor;
@@ -136,16 +136,16 @@
     max-width: 90%;
   }
   @media screen and (min-width: 900px) {
-    #Kluck404-{{ section.id }} .modern-404__heading { font-size: var(--heading-d); }
-    #Kluck404-{{ section.id }} .modern-404__text { font-size: var(--text-d); }
+    #Roarr404-{{ section.id }} .modern-404__heading { font-size: var(--heading-d); }
+    #Roarr404-{{ section.id }} .modern-404__text { font-size: var(--text-d); }
   }
-  #Kluck404-{{ section.id }} .modern-404__buttons {
+  #Roarr404-{{ section.id }} .modern-404__buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
     margin-top: 10px;
   }
-  #Kluck404-{{ section.id }} .modern-404__btn {
+  #Roarr404-{{ section.id }} .modern-404__btn {
     font-family: var(--font-btn);
     display: inline-flex;
     align-items: center;
@@ -157,17 +157,17 @@
     text-decoration: none;
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
   }
-  #Kluck404-{{ section.id }} .modern-404__btn:hover { transform: translateY(-2px); }
-  #Kluck404-{{ section.id }} .modern-404__btn--primary {
+  #Roarr404-{{ section.id }} .modern-404__btn:hover { transform: translateY(-2px); }
+  #Roarr404-{{ section.id }} .modern-404__btn--primary {
     background-color: var(--btn-1-bg);
     color: var(--btn-1-text);
   }
-  #Kluck404-{{ section.id }} .modern-404__btn--secondary {
+  #Roarr404-{{ section.id }} .modern-404__btn--secondary {
     background-color: var(--btn-2-bg);
     color: var(--btn-2-text);
     border: 1px solid var(--btn-2-border);
   }
-  #Kluck404-{{ section.id }} .modern-404__image-wrapper {
+  #Roarr404-{{ section.id }} .modern-404__image-wrapper {
     position: relative;
     width: 100%;
     aspect-ratio: 4 / 5;
@@ -176,9 +176,9 @@
     background-color: rgba(0, 0, 0, 0.04);
   }
   @media screen and (min-width: 900px) {
-    #Kluck404-{{ section.id }} .modern-404__image-wrapper { aspect-ratio: 3 / 4; }
+    #Roarr404-{{ section.id }} .modern-404__image-wrapper { aspect-ratio: 3 / 4; }
   }
-  #Kluck404-{{ section.id }} .modern-404__image {
+  #Roarr404-{{ section.id }} .modern-404__image {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -187,26 +187,26 @@
     transform: scale(1.08);
     transition: transform 2s cubic-bezier(0.25, 1, 0.5, 1);
   }
-  #Kluck404-{{ section.id }} .modern-404-root.is-loaded .modern-404__image { transform: scale(1); }
-  #Kluck404-{{ section.id }} .animate-el {
+  #Roarr404-{{ section.id }} .modern-404-root.is-loaded .modern-404__image { transform: scale(1); }
+  #Roarr404-{{ section.id }} .animate-el {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
   }
-  #Kluck404-{{ section.id }} .modern-404-root.is-loaded .animate-el {
+  #Roarr404-{{ section.id }} .modern-404-root.is-loaded .animate-el {
     opacity: 1;
     transform: translateY(0);
   }
-  #Kluck404-{{ section.id }} .delay-1 { transition-delay: 0.1s; }
-  #Kluck404-{{ section.id }} .delay-2 { transition-delay: 0.2s; }
-  #Kluck404-{{ section.id }} .delay-3 { transition-delay: 0.3s; }
-  #Kluck404-{{ section.id }} .delay-4 { transition-delay: 0.4s; }
-  #Kluck404-{{ section.id }} .modern-404-root.is-loaded .modern-404__watermark {
+  #Roarr404-{{ section.id }} .delay-1 { transition-delay: 0.1s; }
+  #Roarr404-{{ section.id }} .delay-2 { transition-delay: 0.2s; }
+  #Roarr404-{{ section.id }} .delay-3 { transition-delay: 0.3s; }
+  #Roarr404-{{ section.id }} .delay-4 { transition-delay: 0.4s; }
+  #Roarr404-{{ section.id }} .modern-404-root.is-loaded .modern-404__watermark {
     opacity: var(--wm-opacity);
   }
 {%- endstyle -%}
 
-<div id="Kluck404-{{ section.id }}" class="m404-outer color-{{ section_scheme }} gradient">
+<div id="Roarr404-{{ section.id }}" class="m404-outer color-{{ section_scheme }} gradient">
   <div class="modern-404-root{% if section.settings.image_position == 'left' %} modern-404-root--image-left{% endif %}">
     <div class="modern-404-inner-wrap">
       <div class="modern-404__inner">
@@ -256,7 +256,7 @@
 
 <script>
   (function () {
-    var root = document.querySelector('#Kluck404-{{ section.id }} .modern-404-root');
+    var root = document.querySelector('#Roarr404-{{ section.id }} .modern-404-root');
     if (!root) return;
     setTimeout(function () { root.classList.add('is-loaded'); }, 100);
   })();
@@ -264,7 +264,7 @@
 
 {% schema %}
 {
-  "name": "Kluck AI - 404",
+  "name": "Roarr - 404",
   "tag": "section",
   "class": "section-kluck-ai-404",
   "settings": [
@@ -302,6 +302,6 @@
     { "type": "range", "id": "padding_top_mobile", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top mobile", "default": 40 },
     { "type": "range", "id": "padding_bottom_mobile", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding bottom mobile", "default": 40 }
   ],
-  "presets": [{ "name": "Kluck AI - 404" }]
+  "presets": [{ "name": "Roarr - 404" }]
 }
 {% endschema %}

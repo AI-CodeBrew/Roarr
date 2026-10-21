@@ -43,7 +43,7 @@ export default function GenerateProgressCard({ currentStep, isLoading = false })
                 ? "linear-gradient(90deg, rgba(255,255,255,0.00) 0%, rgba(255,255,255,0.22) 50%, rgba(255,255,255,0.00) 100%)"
                 : "none",
               backgroundSize: "200% 100%",
-              animation: isLoading ? "kluck-progress-shimmer 1.1s linear infinite" : "none",
+              animation: isLoading ? "roarr-progress-shimmer 1.1s linear infinite" : "none",
               transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           />
@@ -54,11 +54,11 @@ export default function GenerateProgressCard({ currentStep, isLoading = false })
 }
 
 // Minimal keyframes (scoped by unique name). Uses a <style> tag for portability.
-if (typeof document !== "undefined" && !document.getElementById("kluck-generate-progressbar-keyframes")) {
+if (typeof document !== "undefined" && !document.getElementById("roarr-generate-progressbar-keyframes")) {
   const style = document.createElement("style");
-  style.id = "kluck-generate-progressbar-keyframes";
+  style.id = "roarr-generate-progressbar-keyframes";
   style.textContent = `
-@keyframes kluck-progress-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@keyframes roarr-progress-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
   `.trim();
   document.head.appendChild(style);
 }

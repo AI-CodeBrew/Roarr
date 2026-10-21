@@ -1,9 +1,9 @@
 /**
- * Kluck AI - FAQ Section
- * Accordion-style FAQ with Kluck AI design standards.
+ * Roarr - FAQ Section
+ * Accordion-style FAQ with Roarr design standards.
  */
 
-.kluck-faq-section {
+.roarr-faq-section {
   position: relative;
   width: 100%;
   font-family: var(--font-body-family, inherit);
@@ -12,7 +12,7 @@
 }
 
 /* Overlay for opacity background */
-.kluck-faq-section::before {
+.roarr-faq-section::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -22,7 +22,7 @@
   z-index: 0;
 }
 
-.kluck-faq-inner {
+.roarr-faq-inner {
   position: relative;
   z-index: 1;
   max-width: var(--container-width, 900px);
@@ -157,7 +157,7 @@
 }
 
 @media (max-width: 768px) {
-  .kluck-faq-inner {
+  .roarr-faq-inner {
     padding: 20px 10px;
   }
 

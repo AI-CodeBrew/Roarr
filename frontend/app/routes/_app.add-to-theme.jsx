@@ -75,13 +75,13 @@ export default function AddToThemePage() {
   }
 
   return (
-    <s-page heading="Add KluckAI Blocks to Your Theme" inlineSize="large">
+    <s-page heading="Add Roarr Blocks to Your Theme" inlineSize="large">
       <CreditWalletWidget floating={false} slot="secondary-actions" />
       <s-section>
         <s-box padding="base" border="base" borderRadius="base" background="base">
           <s-stack direction="block" gap="base">
             <s-text variant="bodyMd" as="p">
-              Add the KluckAI Product Details and Delivery Estimator blocks to your product pages.
+              Add the Roarr Product Details and Delivery Estimator blocks to your product pages.
             </s-text>
 
             {error && (
@@ -120,7 +120,7 @@ export default function AddToThemePage() {
                       </s-list-item>
                       <s-list-item>
                         <s-text variant="bodySm">
-                          The KluckAI app embed should already be on; if not, enable it in App embeds, then save
+                          The Roarr app embed should already be on; if not, enable it in App embeds, then save
                         </s-text>
                       </s-list-item>
                       <s-list-item>
@@ -154,7 +154,7 @@ export default function AddToThemePage() {
                         border: 0,
                       }}
                       src="https://www.youtube.com/embed/qQY0_T7kLJQ"
-                      title="KluckAI Theme Setup Tutorial"
+                      title="Roarr Theme Setup Tutorial"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     />

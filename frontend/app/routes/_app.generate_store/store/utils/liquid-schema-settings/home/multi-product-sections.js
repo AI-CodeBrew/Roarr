@@ -414,18 +414,18 @@ function faqSplitApplyHomeDataMulti(homeData, sectionSettingsOnly, blocksData) {
 
 /** Order matches {@link MULTI_PRODUCT_HOME_SETTINGS} in `./multi-product.js`. */
 export const MULTI_PRODUCT_HOME_SECTIONS = [
-    { key: "pf-k-hero-peek-slider", name: "Kluck AI - Hero Banner", applyHomeData: heroApplyHomeDataMulti },
-    { key: "pf-inline-headline", name: "Kluck AI - Headline", applyHomeData: multiInlineHeadlineApplyHomeData },
-    { key: "pf-collection-showcase", name: "Kluck AI - Collections", applyHomeData: collectionShowcaseApplyHomeData },
-    { key: "pf-feature-product-section", name: "Kluck AI - Featured Products", applyHomeData: featureProductSectionApplyHomeData },
-    { key: "pf-testimonials01", name: "Kluck AI - Testimonials", applyHomeData: testimonialsApplyHomeData },
-    { key: "infinite-marquee", name: "Kluck AI - Infinite Marquee", applyHomeData: infiniteMarqueeApplyHomeData },
-    { key: "pf-product-lookbook", name: "Kluck AI - Product Lookbook", applyHomeData: defaultApplyHomeData },
-    { key: "pf-product-grid1x1", name: "Kluck AI - Products Grid", applyHomeData: productGridApplyHomeData },
-    { key: "marquee-scrolling-banner", name: "Kluck AI - Marquee Banner", applyHomeData: marqueeScrollingBannerApplyHomeData },
-    { key: "pf-split-feature", name: "Kluck AI - Image with Text - 3", applyHomeData: splitFeatureApplyHomeDataMulti },
-    { key: "pf-trust-badges", name: "Kluck AI - Trust Badges", applyHomeData: trustBadgesApplyHomeDataMulti },
-    { key: "pf-selected-prod-3in1", name: "Kluck AI - Product Column", applyHomeData: selectedProd3in1ApplyHomeData },
-    { key: "collection-list", name: "Kluck AI - Collection List", applyHomeData: defaultApplyHomeData },
-    { key: "pf-faq-splitimage", name: "Kluck AI - FAQ", applyHomeData: faqSplitApplyHomeDataMulti }
+    { key: "pf-k-hero-peek-slider", name: "Roarr - Hero Banner", applyHomeData: heroApplyHomeDataMulti },
+    { key: "pf-inline-headline", name: "Roarr - Headline", applyHomeData: multiInlineHeadlineApplyHomeData },
+    { key: "pf-collection-showcase", name: "Roarr - Collections", applyHomeData: collectionShowcaseApplyHomeData },
+    { key: "pf-feature-product-section", name: "Roarr - Featured Products", applyHomeData: featureProductSectionApplyHomeData },
+    { key: "pf-testimonials01", name: "Roarr - Testimonials", applyHomeData: testimonialsApplyHomeData },
+    { key: "infinite-marquee", name: "Roarr - Infinite Marquee", applyHomeData: infiniteMarqueeApplyHomeData },
+    { key: "pf-product-lookbook", name: "Roarr - Product Lookbook", applyHomeData: defaultApplyHomeData },
+    { key: "pf-product-grid1x1", name: "Roarr - Products Grid", applyHomeData: productGridApplyHomeData },
+    { key: "marquee-scrolling-banner", name: "Roarr - Marquee Banner", applyHomeData: marqueeScrollingBannerApplyHomeData },
+    { key: "pf-split-feature", name: "Roarr - Image with Text - 3", applyHomeData: splitFeatureApplyHomeDataMulti },
+    { key: "pf-trust-badges", name: "Roarr - Trust Badges", applyHomeData: trustBadgesApplyHomeDataMulti },
+    { key: "pf-selected-prod-3in1", name: "Roarr - Product Column", applyHomeData: selectedProd3in1ApplyHomeData },
+    { key: "collection-list", name: "Roarr - Collection List", applyHomeData: defaultApplyHomeData },
+    { key: "pf-faq-splitimage", name: "Roarr - FAQ", applyHomeData: faqSplitApplyHomeDataMulti }
 ];

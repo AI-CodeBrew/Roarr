@@ -39,7 +39,7 @@ export const loader = async ({ request }) => {
     let message = err?.message || "Proxy error";
     if (cause?.code === "ECONNREFUSED") {
       message =
-        "Could not connect to the Kluck API (connection refused). Start the Python backend or fix PYTHON_API_URL in your env.";
+        "Could not connect to the Roarr API (connection refused). Start the Python backend or fix PYTHON_API_URL in your env.";
     }
     return Response.json({ success: false, error: message }, { status: 502 });
   }

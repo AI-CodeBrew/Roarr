@@ -6,7 +6,7 @@ Each category uses the SAME product already on the classic homepage, but every
 slot is a new shot sized for the Sleek product page (gallery, feature panel,
 impact photo, customer photos). Homepage banners are not reused.
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python scripts/generate_linen_pdp_demo_images.py
     ./venv/bin/python scripts/generate_linen_pdp_demo_images.py --category fashion
 """

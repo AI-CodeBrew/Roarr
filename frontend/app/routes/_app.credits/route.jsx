@@ -46,8 +46,8 @@ export default function CreditsPage() {
                     onClick={() => {
                       let pageId = null;
                       try {
-                        pageId = sessionStorage.getItem("klucky:onboardingStorePageId");
-                        sessionStorage.setItem("klucky:resumeOnboardingStore", "1");
+                        pageId = sessionStorage.getItem("roarr:onboardingStorePageId");
+                        sessionStorage.setItem("roarr:resumeOnboardingStore", "1");
                       } catch {
                         /* ignore */
                       }

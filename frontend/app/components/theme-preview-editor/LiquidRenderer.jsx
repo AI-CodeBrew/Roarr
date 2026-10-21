@@ -10,7 +10,7 @@ const PREVIEW_API = "/api/liquid-preview";
 function buildIframeDocument(html, { thumbnailMode = false, expandToContent = false } = {}) {
     if (!html) return "";
     // Absolute-fill patches for aspect-ratio media that leave gaps in preview iframes.
-    const previewPatches = `<style data-kluck-preview-patches>
+    const previewPatches = `<style data-roarr-preview-patches>
 /* Cinematic key-features orbit: beat global img { height:auto } letterboxing */
 [id^="cfo-"] .cfo-circle{position:relative!important;overflow:hidden!important;border-radius:50%!important}
 [id^="cfo-"] .cfo-circle img,[id^="cfo-"] .cfo-circle svg{
@@ -45,7 +45,7 @@ ${
   object-fit:cover!important;object-position:center!important;display:block!important;
 }
 </style>
-<script data-kluck-preview-scroll-fix>
+<script data-roarr-preview-scroll-fix>
 (function () {
   function pinTop() {
     try {

@@ -113,14 +113,14 @@ background: {{settings.color_scheme}}; color: white;
   #fc-{{ section.id }} h3 { font-size: var(--h-size-d); line-height: 1.1; margin: 0 0 20px 0; color: inherit; }
   #fc-{{ section.id }} p { font-size: var(--p-size-d); line-height: 1.5; margin: 0 0 30px 0; max-width: 450px; opacity: 0.9; color: inherit; }
 
-  #fc-{{ section.id }} .kluck-button {
+  #fc-{{ section.id }} .roarr-button {
     display: inline-block;
     text-decoration: none;
     border-radius: 50px;
     padding: 15px 30px;
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
-    #fc-{{ section.id }} .kluck-button:hover {
+    #fc-{{ section.id }} .roarr-button:hover {
     transform: translateY(-2px);
     opacity: 0.9;
   }
@@ -132,8 +132,8 @@ background: {{settings.color_scheme}}; color: white;
   #fc-{{ section.id }} .fc-card:hover .fc-img { transform: scale(1.05); }
 
   /* --- INTELLIGENCE OVERRIDES --- */
-.fc-smart-light, .fc-smart-light h2, .fc-smart-light h3, .fc-smart-light p, .fc-smart-light .fc-eyebrow, .fc-smart-light .kluck-button { color: #484B4F !important; }
-  .fc-smart-dark, .fc-smart-dark h2, .fc-smart-dark h3, .fc-smart-dark p, .fc-smart-dark .fc-eyebrow, .fc-smart-dark .kluck-button { color: #FFFFFF !important; }
+.fc-smart-light, .fc-smart-light h2, .fc-smart-light h3, .fc-smart-light p, .fc-smart-light .fc-eyebrow, .fc-smart-light .roarr-button { color: #484B4F !important; }
+  .fc-smart-dark, .fc-smart-dark h2, .fc-smart-dark h3, .fc-smart-dark p, .fc-smart-dark .fc-eyebrow, .fc-smart-dark .roarr-button { color: #FFFFFF !important; }
 
   /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
@@ -263,7 +263,7 @@ background: {{settings.color_scheme}}; color: white;
                 {% if block.settings.eyebrow != blank %}<span class="fc-eyebrow">{{ block.settings.eyebrow }}</span>{% endif %}
                 <h3>{{ final_title }}</h3>
                 {% if final_text != blank %}<p>{{ final_text }}</p>{% endif %}
-                {% if final_link != blank %}<a href="{{ final_link }}" class="kluck-button">{{ block.settings.btn_label }}</a>{% endif %}
+                {% if final_link != blank %}<a href="{{ final_link }}" class="roarr-button">{{ block.settings.btn_label }}</a>{% endif %}
               </div>
 
               <div class="fc-img-wrap">
@@ -441,9 +441,9 @@ background: {{settings.color_scheme}}; color: white;
 
 {% schema %}
 {
-  "name": "Kluck AI - Collections",
+  "name": "Roarr - Collections",
   "settings": [
-    { "type": "checkbox", "id": "use_kluck_ai_metafields", "label": "Use Kluck AI metafields", "default": true },
+    { "type": "checkbox", "id": "use_kluck_ai_metafields", "label": "Use Roarr metafields", "default": true },
     { "type": "header", "content": "Layout & Sizing" },
     { "type": "text", "id": "title", "label": "Section Heading", "default": "Shop by Category" },
     { "type": "range", "id": "main_h_size", "label": "Section Heading Size", "min": 20, "max": 80, "default": 42 },
@@ -488,6 +488,6 @@ background: {{settings.color_scheme}}; color: white;
       ]
     }
   ],
-  "presets": [{ "name": "Kluck AI - Collections" }]
+  "presets": [{ "name": "Roarr - Collections" }]
 }
 {% endschema %}

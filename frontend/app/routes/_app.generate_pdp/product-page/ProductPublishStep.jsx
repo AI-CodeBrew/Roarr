@@ -34,7 +34,7 @@ const categoryMap = {
 
 // Shopify App Store handle - update this if your app handle is different
 // You can find your app handle in the Shopify Partner Dashboard or in your app's URL
-const APP_STORE_HANDLE = "kluckyv5"; // Default based on "KluckAI-store" from shopify.app.toml
+const APP_STORE_HANDLE = "roarr";
 
 function PublishStep({
   productId,
@@ -709,7 +709,7 @@ function PublishStep({
       {/* <Modal
         open={showReviewModal}
         onClose={handleDismissReview}
-        title="Enjoying Kluck AI?"
+        title="Enjoying Roarr?"
         primaryAction={{
           content: "Leave a Review",
           onAction: handleReviewNow,
@@ -725,7 +725,7 @@ function PublishStep({
           <BlockStack gap="300">
             <Text as="p" variant="bodyMd">
               We're thrilled that you've successfully published your page! Your
-              feedback helps us improve and helps other merchants discover Kluck
+              feedback helps us improve and helps other merchants discover Roarr
               AI.
             </Text>
             <Text as="p" variant="bodyMd" tone="subdued">

@@ -1,9 +1,9 @@
 {% comment %}
-  Section: Kluck AI - FAQ Section
-  - Purpose: Accordion-style FAQ with Kluck AI design standards.
+  Section: Roarr - FAQ Section
+  - Purpose: Accordion-style FAQ with Roarr design standards.
   - Updates: 
     1. Reads content from product.metafields.kluck_ai (faq_question_1..3) when enabled.
-    2. Sets Item Background to 10% opacity of the Kluck Color Schema.
+    2. Sets Item Background to 10% opacity of the Roarr Color Schema.
     3. Sets Section Background to plain white.
 {% endcomment %}
 
@@ -50,7 +50,7 @@
   {% endif %}
   {% endunless %}
 
-  <div id="FAQ-{{ section.id }}" class="kluck-faq-section-{{ section.id }} faq-section-wrapper">
+  <div id="FAQ-{{ section.id }}" class="roarr-faq-section-{{ section.id }} faq-section-wrapper">
     <div class="inner-container-{{ section.id }}">
 
       {% if section.settings.title != blank or section.settings.subtitle != blank %}
@@ -129,7 +129,7 @@
 
 <!-- 3. CSS STYLES & VARIABLES -->
 <style>
-  .kluck-faq-section-{{ section.id }} {
+  .roarr-faq-section-{{ section.id }} {
     /* --- Layout & Background Variables --- */
     --bg-color: {{ main_bg_color }};
     --bg-opacity: {{ main_bg_opacity }};
@@ -165,7 +165,7 @@
   }
 
   /* Overlay for opacity background */
-  .kluck-faq-section-{{ section.id }}::before {
+  .roarr-faq-section-{{ section.id }}::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -338,7 +338,7 @@
 
 {% schema %}
 {
-  "name": "Kluck AI - FAQ Section",
+  "name": "Roarr - FAQ Section",
   "tag": "section",
   "settings": [
     {
@@ -348,9 +348,9 @@
     {
       "type": "checkbox",
       "id": "use_metafields",
-      "label": "Use Kluck AI metafields",
+      "label": "Use Roarr metafields",
       "default": true,
-      "info": "Uses 'faq_question_1-3' & 'faq_answer_1-3'. Sets BG to white and Item BG to 10% Kluck color."
+      "info": "Uses 'faq_question_1-3' & 'faq_answer_1-3'. Sets BG to white and Item BG to 10% Roarr color."
     },
     {
       "type": "checkbox",
@@ -615,7 +615,7 @@
   ],
   "presets": [
     {
-      "name": "Kluck AI - FAQ Section",
+      "name": "Roarr - FAQ Section",
       "blocks": [
         { "type": "faq" },
         { "type": "faq" },

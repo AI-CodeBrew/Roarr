@@ -1,13 +1,13 @@
-/* Kluck AI - Pillow Banner */
+/* Roarr - Pillow Banner */
 
-.kluck-pillow-banner {
+.roarr-pillow-banner {
   position: relative;
   width: 100%;
   font-family: var(--font-body-family, inherit);
   overflow: hidden;
 }
 
-.kluck-pillow-banner::before {
+.roarr-pillow-banner::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -16,7 +16,7 @@
   z-index: 0;
 }
 
-.kluck-pillow-banner .inner-container {
+.roarr-pillow-banner .inner-container {
   position: relative;
   z-index: 1;
   max-width: var(--container-width);
@@ -24,7 +24,7 @@
   padding: 20px;
 }
 
-.kluck-pillow-banner .sculpted-container {
+.roarr-pillow-banner .sculpted-container {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 7;
@@ -35,7 +35,7 @@
 }
 
 /* Cutout styling */
-.kluck-pillow-banner .sculpted-cutout {
+.roarr-pillow-banner .sculpted-cutout {
   position: absolute;
   background-color: var(--bg-color);
   z-index: 10;
@@ -44,7 +44,7 @@
   justify-content: center;
 }
 
-.kluck-pillow-banner .fillet-corner {
+.roarr-pillow-banner .fillet-corner {
   position: absolute;
   width: var(--cutout-radius);
   height: var(--cutout-radius);
@@ -53,76 +53,76 @@
 }
 
 /* Inverse curve logic - position variants */
-.kluck-pillow-banner .position-top-right {
+.roarr-pillow-banner .position-top-right {
   top: 0;
   right: 0;
   border-bottom-left-radius: var(--cutout-radius);
   padding: 0;
 }
-.kluck-pillow-banner .position-top-right .fillet-1 {
+.roarr-pillow-banner .position-top-right .fillet-1 {
   top: 0;
   left: calc(var(--cutout-radius) * -1);
   border-top-right-radius: var(--cutout-radius);
   box-shadow: 10px -10px 0 10px var(--bg-color);
 }
-.kluck-pillow-banner .position-top-right .fillet-2 {
+.roarr-pillow-banner .position-top-right .fillet-2 {
   bottom: calc(var(--cutout-radius) * -1);
   right: 0;
   border-top-right-radius: var(--cutout-radius);
   box-shadow: 10px -10px 0 10px var(--bg-color);
 }
 
-.kluck-pillow-banner .position-top-left {
+.roarr-pillow-banner .position-top-left {
   top: 0;
   left: 0;
   border-bottom-right-radius: var(--cutout-radius);
   padding: 0;
 }
-.kluck-pillow-banner .position-top-left .fillet-1 {
+.roarr-pillow-banner .position-top-left .fillet-1 {
   top: 0;
   right: calc(var(--cutout-radius) * -1);
   border-top-left-radius: var(--cutout-radius);
   box-shadow: -10px -10px 0 10px var(--bg-color);
 }
-.kluck-pillow-banner .position-top-left .fillet-2 {
+.roarr-pillow-banner .position-top-left .fillet-2 {
   bottom: calc(var(--cutout-radius) * -1);
   left: 0;
   border-top-left-radius: var(--cutout-radius);
   box-shadow: -10px -10px 0 10px var(--bg-color);
 }
 
-.kluck-pillow-banner .position-bottom-right {
+.roarr-pillow-banner .position-bottom-right {
   bottom: 0;
   right: 0;
   border-top-left-radius: var(--cutout-radius);
   padding: 0;
 }
-.kluck-pillow-banner .position-bottom-right .fillet-1 {
+.roarr-pillow-banner .position-bottom-right .fillet-1 {
   bottom: 0;
   left: calc(var(--cutout-radius) * -1);
   border-bottom-right-radius: var(--cutout-radius);
   box-shadow: 10px 10px 0 10px var(--bg-color);
 }
-.kluck-pillow-banner .position-bottom-right .fillet-2 {
+.roarr-pillow-banner .position-bottom-right .fillet-2 {
   top: calc(var(--cutout-radius) * -1);
   right: 0;
   border-bottom-right-radius: var(--cutout-radius);
   box-shadow: 10px 10px 0 10px var(--bg-color);
 }
 
-.kluck-pillow-banner .position-bottom-left {
+.roarr-pillow-banner .position-bottom-left {
   bottom: 0;
   left: 0;
   border-top-right-radius: var(--cutout-radius);
   padding: 0;
 }
-.kluck-pillow-banner .position-bottom-left .fillet-1 {
+.roarr-pillow-banner .position-bottom-left .fillet-1 {
   bottom: 0;
   right: calc(var(--cutout-radius) * -1);
   border-bottom-left-radius: var(--cutout-radius);
   box-shadow: -10px 10px 0 10px var(--bg-color);
 }
-.kluck-pillow-banner .position-bottom-left .fillet-2 {
+.roarr-pillow-banner .position-bottom-left .fillet-2 {
   top: calc(var(--cutout-radius) * -1);
   left: 0;
   border-bottom-left-radius: var(--cutout-radius);
@@ -130,7 +130,7 @@
 }
 
 /* Button styling */
-.kluck-pillow-banner .sculpted-btn {
+.roarr-pillow-banner .sculpted-btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -143,11 +143,11 @@
   transition: transform 0.3s ease;
   white-space: nowrap;
 }
-.kluck-pillow-banner .sculpted-btn:hover {
+.roarr-pillow-banner .sculpted-btn:hover {
   transform: scale(1.03);
 }
 
-.kluck-pillow-banner .btn-circle {
+.roarr-pillow-banner .btn-circle {
   width: 34px;
   height: 34px;
   background-color: var(--btn-circle);
@@ -158,10 +158,10 @@
   transform: rotate(-45deg);
   transition: transform 0.3s ease;
 }
-.kluck-pillow-banner .sculpted-btn:hover .btn-circle {
+.roarr-pillow-banner .sculpted-btn:hover .btn-circle {
   transform: rotate(0deg);
 }
-.kluck-pillow-banner .btn-circle svg {
+.roarr-pillow-banner .btn-circle svg {
   width: 14px;
   height: 14px;
   stroke: var(--btn-arrow);
@@ -169,22 +169,22 @@
 }
 
 /* Media & content */
-.kluck-pillow-banner .sculpted-image {
+.roarr-pillow-banner .sculpted-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.kluck-pillow-banner .sculpted-media {
+.roarr-pillow-banner .sculpted-media {
   position: absolute;
   inset: 0;
   z-index: 2;
 }
-.kluck-pillow-banner .sculpted-media:hover img {
+.roarr-pillow-banner .sculpted-media:hover img {
   transform: scale(1.05);
 }
 
-.kluck-pillow-banner .sculpted-content {
+.roarr-pillow-banner .sculpted-content {
   position: relative;
   z-index: 2;
   height: 100%;
@@ -194,17 +194,17 @@
   justify-content: center;
   color: #fff;
 }
-.kluck-pillow-banner .sculpted-text-box {
+.roarr-pillow-banner .sculpted-text-box {
   max-width: 600px;
 }
-.kluck-pillow-banner .pillow-heading {
+.roarr-pillow-banner .pillow-heading {
   font-family: var(--font-heading-family, inherit);
   font-size: var(--h2-size);
   font-weight: var(--h2-weight);
   line-height: 1.1;
   margin: 0 0 20px 0;
 }
-.kluck-pillow-banner .pillow-subtext {
+.roarr-pillow-banner .pillow-subtext {
   font-size: var(--body-size);
   font-weight: var(--body-weight);
   line-height: 1.6;
@@ -213,25 +213,25 @@
 }
 
 @media (max-width: 768px) {
-  .kluck-pillow-banner .inner-container {
+  .roarr-pillow-banner .inner-container {
     padding: 10px;
   }
-  .kluck-pillow-banner .sculpted-container {
+  .roarr-pillow-banner .sculpted-container {
     aspect-ratio: 4 / 5;
     min-height: 350px;
     border-radius: 24px;
   }
-  .kluck-pillow-banner .sculpted-content {
+  .roarr-pillow-banner .sculpted-content {
     padding: 30px;
   }
-  .kluck-pillow-banner .pillow-heading {
+  .roarr-pillow-banner .pillow-heading {
     font-size: calc(var(--h2-size) * 0.7);
   }
-  .kluck-pillow-banner .sculpted-btn {
+  .roarr-pillow-banner .sculpted-btn {
     font-size: 14px;
     padding: 8px 8px 8px 16px;
   }
-  .kluck-pillow-banner .btn-circle {
+  .roarr-pillow-banner .btn-circle {
     width: 28px;
     height: 28px;
   }

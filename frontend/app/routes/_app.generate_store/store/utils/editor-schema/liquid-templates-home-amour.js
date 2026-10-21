@@ -5,7 +5,7 @@
 
 export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
     "pf-amour-hero": {
-        displayName: "Kluck AI - Amour Hero",
+        displayName: "Roarr - Amour Hero",
         useForm: true,
         fields: [
             { type: "text", key: "hero_eyebrow", formKey: "text.hero_eyebrow", label: "Eyebrow", placeholder: "" },
@@ -18,7 +18,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-showcase": {
-        displayName: "Kluck AI - Amour Showcase",
+        displayName: "Roarr - Amour Showcase",
         useForm: true,
         fields: [
             { type: "text", key: "showcase_heading", formKey: "text.showcase_heading", label: "Heading", placeholder: "" },
@@ -32,7 +32,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-countdown": {
-        displayName: "Kluck AI - Amour Offer",
+        displayName: "Roarr - Amour Offer",
         useForm: true,
         fields: [
             { type: "text", key: "countdown_heading", formKey: "text.countdown_heading", label: "Heading", placeholder: "" },
@@ -41,7 +41,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-lookbook": {
-        displayName: "Kluck AI - Amour Lookbook",
+        displayName: "Roarr - Amour Lookbook",
         useForm: true,
         fields: [
             { type: "text", key: "look_1_eyebrow", formKey: "text.look_1_eyebrow", label: "Card 1 label", placeholder: "" },
@@ -59,7 +59,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-ribbons": {
-        displayName: "Kluck AI - Amour Ribbons",
+        displayName: "Roarr - Amour Ribbons",
         useForm: true,
         fields: [
             { type: "text", key: "ribbon_1", formKey: "text.ribbon_1", label: "Phrase 1", placeholder: "" },
@@ -69,7 +69,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-split": {
-        displayName: "Kluck AI - Amour Split",
+        displayName: "Roarr - Amour Split",
         useForm: true,
         fields: [
             { type: "text", key: "split_heading", formKey: "text.split_heading", label: "Heading", placeholder: "" },
@@ -81,7 +81,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-editorial": {
-        displayName: "Kluck AI - Amour Edit",
+        displayName: "Roarr - Amour Edit",
         useForm: true,
         fields: [
             { type: "text", key: "editorial_1_heading", formKey: "text.editorial_1_heading", label: "Card 1 heading", placeholder: "" },
@@ -95,7 +95,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-banner": {
-        displayName: "Kluck AI - Amour Banner",
+        displayName: "Roarr - Amour Banner",
         useForm: true,
         fields: [
             { type: "text", key: "banner_heading", formKey: "text.banner_heading", label: "Heading", placeholder: "" },
@@ -106,7 +106,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-story": {
-        displayName: "Kluck AI - Amour Story",
+        displayName: "Roarr - Amour Story",
         useForm: true,
         fields: [
             { type: "text", key: "story_accent", formKey: "text.story_accent", label: "Accent line", placeholder: "" },
@@ -120,7 +120,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-reviews": {
-        displayName: "Kluck AI - Amour Reviews",
+        displayName: "Roarr - Amour Reviews",
         useForm: true,
         fields: [
             { type: "text", key: "reviews_eyebrow", formKey: "text.reviews_eyebrow", label: "Accent line", placeholder: "" },
@@ -140,7 +140,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-tabs": {
-        displayName: "Kluck AI - Amour Tabs",
+        displayName: "Roarr - Amour Tabs",
         useForm: true,
         fields: [
             { type: "text", key: "tabs_heading", formKey: "text.tabs_heading", label: "Heading", placeholder: "" },
@@ -156,7 +156,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-promise": {
-        displayName: "Kluck AI - Amour Promise",
+        displayName: "Roarr - Amour Promise",
         useForm: true,
         fields: [
             { type: "text", key: "promise_heading", formKey: "text.promise_heading", label: "Heading", placeholder: "" },
@@ -173,7 +173,7 @@ export const HOME_AMOUR_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-amour-gallery": {
-        displayName: "Kluck AI - Amour Gallery",
+        displayName: "Roarr - Amour Gallery",
         useForm: true,
         fields: [
             { type: "text", key: "gallery_heading", formKey: "text.gallery_heading", label: "Heading", placeholder: "" },

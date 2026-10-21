@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
  * extend that bundle instead of adding a second one, so it must survive
  * merchant edits even though the form never renders it.
  */
-const KLUCK_DEFAULT_BUNDLE_FLAG = "isKluckDefault";
+const ROARR_DEFAULT_BUNDLE_FLAG = "isRoarrDefault";
 
 const DEFAULT_STYLE_SETTINGS = {
   cornerRoundness: 9,
@@ -239,7 +239,7 @@ export function parseBundlesFromMetafield(metafieldValue) {
 export {
   uuidv4,
   DEFAULT_STYLE_SETTINGS,
-  KLUCK_DEFAULT_BUNDLE_FLAG,
+  ROARR_DEFAULT_BUNDLE_FLAG,
   formatFrequentlyBoughtItem,
   formatUpsellItem,
 };

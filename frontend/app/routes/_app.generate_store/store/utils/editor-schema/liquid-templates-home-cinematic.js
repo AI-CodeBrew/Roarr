@@ -5,7 +5,7 @@
 
 export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
     "pf-cinematic-announcement": {
-        displayName: "Kluck AI - Cinematic Announcement",
+        displayName: "Roarr - Cinematic Announcement",
         useForm: true,
         fields: [
             { type: "text", key: "announcement_1", formKey: "text.announcement_1", label: "Announcement 1" },
@@ -16,7 +16,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-hero": {
-        displayName: "Kluck AI - Cinematic Hero",
+        displayName: "Roarr - Cinematic Hero",
         useForm: true,
         fields: [
             { type: "image", key: "banner_image", formKey: "images.banner_image", label: "Banner image (16:9)" },
@@ -24,7 +24,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-trust": {
-        displayName: "Kluck AI - Cinematic Trust",
+        displayName: "Roarr - Cinematic Trust",
         useForm: true,
         fields: [
             { type: "text", key: "trust_1_title", formKey: "text.trust_1_title", label: "Trust 1 title" },
@@ -38,7 +38,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-product-story": {
-        displayName: "Kluck AI - Cinematic Product Story",
+        displayName: "Roarr - Cinematic Product Story",
         useForm: true,
         fields: [
             { type: "image", key: "product_story_image", formKey: "images.product_story_image", label: "Product story image" },
@@ -49,7 +49,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-inspiration": {
-        displayName: "Kluck AI - Cinematic Inspiration",
+        displayName: "Roarr - Cinematic Inspiration",
         useForm: true,
         fields: [
             { type: "text", key: "inspiration_line_1", formKey: "text.inspiration_line_1", label: "Line 1" },
@@ -58,7 +58,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-feature-ticker": {
-        displayName: "Kluck AI - Cinematic Feature Ticker",
+        displayName: "Roarr - Cinematic Feature Ticker",
         useForm: true,
         fields: [
             { type: "text", key: "feature_ticker_1", formKey: "text.feature_ticker_1", label: "Phrase 1" },
@@ -70,7 +70,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-why-shop": {
-        displayName: "Kluck AI - Cinematic Why Shop",
+        displayName: "Roarr - Cinematic Why Shop",
         useForm: true,
         fields: [
             { type: "image", key: "why_shop_image", formKey: "images.why_shop_image", label: "Why shop image" },
@@ -88,7 +88,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-feature-orbit": {
-        displayName: "Kluck AI - Cinematic Feature Orbit",
+        displayName: "Roarr - Cinematic Feature Orbit",
         useForm: true,
         fields: [
             { type: "image", key: "circle_feature_image", formKey: "images.circle_feature_image", label: "Circle feature image" },
@@ -109,7 +109,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-reviews": {
-        displayName: "Kluck AI - Cinematic Reviews",
+        displayName: "Roarr - Cinematic Reviews",
         useForm: true,
         fields: [
             { type: "text", key: "review_eyebrow", formKey: "text.review_eyebrow", label: "Eyebrow" },
@@ -123,7 +123,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-faq": {
-        displayName: "Kluck AI - Cinematic FAQ",
+        displayName: "Roarr - Cinematic FAQ",
         useForm: true,
         fields: [
             { type: "text", key: "faq_1_q", formKey: "text.faq_1_q", label: "FAQ 1 question" },
@@ -141,7 +141,7 @@ export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
         ],
     },
     "pf-cinematic-sticky-bar": {
-        displayName: "Kluck AI - Cinematic Sticky Bar",
+        displayName: "Roarr - Cinematic Sticky Bar",
         useForm: true,
         fields: [
             { type: "text", key: "sticky_cta", formKey: "text.sticky_cta", label: "CTA label" },

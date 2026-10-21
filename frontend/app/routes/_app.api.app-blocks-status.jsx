@@ -8,7 +8,7 @@ const APP_BLOCKS = [
   { handle: "buy-now-button", name: "Buy Now Button" },
   { handle: "product-details", name: "Product Details" },
   { handle: "frequently-bought", name: "Frequently Bought Together" },
-  { handle: "bundle", name: "Kluck Bundler" },
+  { handle: "bundle", name: "Roarr Bundler" },
   { handle: "comparison-table", name: "Comparison Table" },
   { handle: "bento-grid", name: "Bento Grid (5 Panels)" },
   { handle: "accordion", name: "Accordion" },

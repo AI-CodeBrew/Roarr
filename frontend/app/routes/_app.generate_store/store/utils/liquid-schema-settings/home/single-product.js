@@ -469,7 +469,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
         ]
     },
 
-    /* pf-new-default-product-hero: Kluck AI Hero Section */
+    /* pf-new-default-product-hero: Roarr Hero Section */
     "pf-new-default-product-hero": {
         product: "",
         container_width: 1400,

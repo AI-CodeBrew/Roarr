@@ -1,6 +1,6 @@
 {% comment %}
-  Section: Kluck AI - Badges Section
-  - Purpose: Trust badges with global Kluck AI controls.
+  Section: Roarr - Badges Section
+  - Purpose: Trust badges with global Roarr controls.
   - Update: Added toggle to source text from product.metafields.kluck_ai.badge_text_1-4
   - Fix: Forced single-line alignment for icon and text.
 {% endcomment %}
@@ -33,7 +33,7 @@
   {% endif %}
   {% endunless %}
 
-  <div id="KluckBadges-{{ section.id }}" class="kluck-badges-wrapper-{{ section.id }}">
+  <div id="RoarrBadges-{{ section.id }}" class="roarr-badges-wrapper-{{ section.id }}">
     <div class="inner-container-{{ section.id }}">
       <div class="tb-track">
         
@@ -107,7 +107,7 @@
 
 <!-- 3. CSS STYLES & VARIABLES -->
 <style>
-  .kluck-badges-wrapper-{{ section.id }} {
+  .roarr-badges-wrapper-{{ section.id }} {
     /* --- Layout & Background --- */
     --bg-opacity: {{ opacity }};
     --container-width: {{ section.settings.container_max_width }}px;
@@ -133,7 +133,7 @@
     padding: {{ section.settings.padding_v_d }}px 0;
   }
 
-  .kluck-badges-wrapper-{{ section.id }}::before {
+  .roarr-badges-wrapper-{{ section.id }}::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -203,7 +203,7 @@
 
   /* --- MOBILE MARQUEE --- */
   @media (max-width: 768px) {
-    .kluck-badges-wrapper-{{ section.id }} { padding: {{ section.settings.padding_v_m }}px 0; }
+    .roarr-badges-wrapper-{{ section.id }} { padding: {{ section.settings.padding_v_m }}px 0; }
     
     {% if section.settings.mobile_auto_scroll %}
       .inner-container-{{ section.id }} {
@@ -239,12 +239,12 @@
 
 {% schema %}
 {
-  "name": "Kluck AI - Badges",
+  "name": "Roarr - Badges",
   "tag": "section",
   "settings": [
     {
       "type": "header",
-      "content": "Kluck AI Data Controls"
+      "content": "Roarr Data Controls"
     },
     { "type": "paragraph", "content": "Toggle these options to use dynamic data from product metafields." },
     { "type": "checkbox", "id": "use_metafields", "label": "Use Metafields for Color Schema", "default": true },
@@ -327,7 +327,7 @@
   ],
   "presets": [
     {
-      "name": "Kluck AI - Badges",
+      "name": "Roarr - Badges",
       "blocks": [
         { "type": "badge", "settings": { "text": "Free Shipping" } },
         { "type": "badge", "settings": { "text": "Money Guarantee" } },

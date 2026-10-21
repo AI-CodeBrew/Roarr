@@ -6,8 +6,8 @@
 {% assign homeData = section.settings.homeData %}
 {% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
 
-{%- capture ph_reviewer_name -%}{% render 'snippets/kluck-ui-string', key: 'reviewer_name' %}{%- endcapture -%}
-{%- capture ph_review_body -%}{% render 'snippets/kluck-ui-string', key: 'review_body' %}{%- endcapture -%}
+{%- capture ph_reviewer_name -%}{% render 'snippets/roarr-ui-string', key: 'reviewer_name' %}{%- endcapture -%}
+{%- capture ph_review_body -%}{% render 'snippets/roarr-ui-string', key: 'review_body' %}{%- endcapture -%}
 {% assign review_heading = section.settings.review_heading | default: 'What customers say' %}
 {% assign review_eyebrow = section.settings.review_eyebrow | default: 'Reviews' %}
 {% assign customer_name_1 = section.settings.customer_name_1 | default: ph_reviewer_name %}

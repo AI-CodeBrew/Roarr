@@ -101,7 +101,7 @@
         "text_AVRi7F": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "image_RVhXX6": {
@@ -111,7 +111,7 @@
         "text_trBtiq": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "image_NyK3gd": {
@@ -125,7 +125,7 @@
         "text_trBtiq",
         "image_NyK3gd"
       ],
-      "name": "Kluck AI - Marquee",
+      "name": "Roarr - Marquee",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",

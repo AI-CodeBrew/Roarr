@@ -1,6 +1,6 @@
 {% comment %}
-  Section: Kluck AI - Marquee Banner
-  - Purpose: Horizontal scrolling strip with "Kluck AI" global controls.
+  Section: Roarr - Marquee Banner
+  - Purpose: Horizontal scrolling strip with "Roarr" global controls.
   - Logic: Metafields for color, max-width container, and full typography suite.
   - Updates: White text, Product Image priority, Dynamic Text Metafields (marquee_text_x).
 {% endcomment %}
@@ -31,7 +31,7 @@
   {% endif %}
   {% endunless %}
 
-  <div id="KluckMarquee-{{ section.id }}" class="kluck-marquee-wrapper-{{ section.id }}">
+  <div id="RoarrMarquee-{{ section.id }}" class="roarr-marquee-wrapper-{{ section.id }}">
     <div class="inner-container-{{ section.id }}">
       <div class="mq-section">
         <div class="mq-track">
@@ -95,7 +95,7 @@
 <!-- 3. CSS STYLES & VARIABLES -->
 <!-- 3. CSS STYLES & VARIABLES -->
 <style>
-  .kluck-marquee-wrapper-{{ section.id }} {
+  .roarr-marquee-wrapper-{{ section.id }} {
     /* --- Layout & Background Variables --- */
     --bg-color: {{ bg_color }};
     --bg-opacity: {{ opacity }};
@@ -131,7 +131,7 @@
   }
 
   /* Background Layer */
-  .kluck-marquee-wrapper-{{ section.id }}::before {
+  .roarr-marquee-wrapper-{{ section.id }}::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -227,14 +227,14 @@
 </style>
 {% schema %}
 {
-  "name": "Kluck AI - Marquee",
+  "name": "Roarr - Marquee",
   "tag": "section",
   "settings": [
     {
       "type": "header",
       "content": "Background & Layout"
     },
-    { "type": "checkbox", "id": "use_metafields", "label": "Use Kluck AI metafields", "default": true },
+    { "type": "checkbox", "id": "use_metafields", "label": "Use Roarr metafields", "default": true },
     { "type": "checkbox", "id": "use_metafields_bg", "label": "Use product color for background", "default": true },
     { "type": "color", "id": "background_color", "label": "Manual background color", "default": "#ffffff" },
     { "type": "range", "id": "background_opacity", "label": "Background opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100 },
@@ -320,7 +320,7 @@
       "type": "text",
       "name": "Text",
       "settings": [
-        { "type": "text", "id": "text", "label": "Content (Fallback)", "default": "Kluck AI Quality" }
+        { "type": "text", "id": "text", "label": "Content (Fallback)", "default": "Roarr Quality" }
       ]
     },
     {
@@ -333,7 +333,7 @@
   ],
   "presets": [
     {
-      "name": "Kluck AI - Marquee",
+      "name": "Roarr - Marquee",
       "blocks": [
         { "type": "text" },
         { "type": "image" },

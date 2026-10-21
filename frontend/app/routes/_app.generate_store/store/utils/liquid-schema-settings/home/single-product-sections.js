@@ -83,7 +83,7 @@ export function productHeroApplyHomeData(homeData, sectionSettingsOnly, blocksDa
     };
 }
 
-/** Maps home `text.product_grid_*` onto Kluck AI Products Grid section settings. */
+/** Maps home `text.product_grid_*` onto Roarr Products Grid section settings. */
 export function productGridApplyHomeData(homeData, sectionSettingsOnly, blocksData) {
     const text = homeData?.text ?? {};
     return {
@@ -234,12 +234,12 @@ function heroApplyHomeData(homeData, sectionSettingsOnly, blocksData) {
 export const SINGLE_PRODUCT_HOME_SECTIONS = [
     {
         key: "pf-k-hero-peek-slider",
-        name: "Kluck AI - Hero Banner",
+        name: "Roarr - Hero Banner",
         applyHomeData: heroApplyHomeData
     },
     {
         key: "marquee-scrolling-banner",
-        name: "Kluck AI - Marquee Banner",
+        name: "Roarr - Marquee Banner",
         applyHomeData: (homeData, sectionSettingsOnly, blocksData) => {
             const text = homeData?.text ?? {};
             const images = homeData?.images ?? {};
@@ -283,7 +283,7 @@ export const SINGLE_PRODUCT_HOME_SECTIONS = [
     },
     {
         key: "pf-custom-new-image-with-text",
-        name: "Kluck AI - Image with Text - 1",
+        name: "Roarr - Image with Text - 1",
         applyHomeData: (homeData, sectionSettingsOnly, blocksData) => {
             const text = homeData?.text ?? {};
             const images = homeData?.images ?? {};
@@ -330,12 +330,12 @@ export const SINGLE_PRODUCT_HOME_SECTIONS = [
     },
     {
         key: "pf-inline-headline",
-        name: "Kluck AI - Headline",
+        name: "Roarr - Headline",
         applyHomeData: inlineHeadlineApplyHomeData
     },
     {
         key: "pf-new-ingreds-features",
-        name: "Kluck AI - Image with Text - 2",
+        name: "Roarr - Image with Text - 2",
         applyHomeData: (homeData, sectionSettingsOnly, blocksData) => {
             const text = homeData?.text ?? {};
             const images = homeData?.images ?? {};
@@ -367,7 +367,7 @@ export const SINGLE_PRODUCT_HOME_SECTIONS = [
     },
     {
         key: "pf-new-features-center-image",
-        name: "Kluck AI - Features Center",
+        name: "Roarr - Features Center",
         applyHomeData: (homeData, sectionSettingsOnly, blocksData) => {
             const text = homeData?.text ?? {};
             const images = homeData?.images ?? {};
@@ -397,7 +397,7 @@ export const SINGLE_PRODUCT_HOME_SECTIONS = [
     },
     {
         key: "pf-trust-badges",
-        name: "Kluck AI - Trust Badges",
+        name: "Roarr - Trust Badges",
         applyHomeData: (homeData, sectionSettingsOnly, blocksData) => {
             const text = homeData?.text ?? {};
             const headings = [
@@ -423,17 +423,17 @@ export const SINGLE_PRODUCT_HOME_SECTIONS = [
     },
     {
         key: "pf-new-default-product-hero",
-        name: "Kluck AI - Product Hero",
+        name: "Roarr - Product Hero",
         applyHomeData: productHeroApplyHomeData
     },
     {
         key: "pf-testimonials01",
-        name: "Kluck AI - Testimonials",
+        name: "Roarr - Testimonials",
         applyHomeData: testimonialsApplyHomeData
     },
     {
         key: "pf-split-feature",
-        name: "Kluck AI - Image with Text - 3",
+        name: "Roarr - Image with Text - 3",
         applyHomeData: (homeData, sectionSettingsOnly, blocksData) => {
             const text = homeData?.text ?? {};
             const images = homeData?.images ?? {};
@@ -458,7 +458,7 @@ export const SINGLE_PRODUCT_HOME_SECTIONS = [
     },
     {
         key: "pf-faq-splitimage",
-        name: "Kluck AI - FAQ",
+        name: "Roarr - FAQ",
         applyHomeData: (homeData, sectionSettingsOnly, blocksData) => {
             const text = homeData?.text ?? {};
             const images = homeData?.images ?? {};

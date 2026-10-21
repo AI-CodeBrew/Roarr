@@ -15,12 +15,12 @@
   {%- assign subheading = product.metafields.kluck_ai.pillow_banner_subheading -%}
 {%- endif -%}
 
-<section class="kluck-play-promo">
-  <div class="kluck-play-promo__grid">
+<section class="roarr-play-promo">
+  <div class="roarr-play-promo__grid">
     <div>
       <h2>{{ heading }}</h2>
       <p>{{ subheading }}</p>
-      <div class="kluck-play-promo__code">{{ code }}</div>
+      <div class="roarr-play-promo__code">{{ code }}</div>
     </div>
     {%- if promo_media != blank -%}
       <img src="{{ promo_media | image_url: width: 1200 }}" alt="" width="800" height="800">
@@ -44,10 +44,10 @@
   #shopify-section-{{ section.id }} h1,
   #shopify-section-{{ section.id }} h2,
   #shopify-section-{{ section.id }} h3,
-  #shopify-section-{{ section.id }} .kluck-play-hero__badge,
-  #shopify-section-{{ section.id }} .kluck-play-designed__badge,
-  #shopify-section-{{ section.id }} .kluck-play-marquee__track span,
-  #shopify-section-{{ section.id }} .kluck-play-story__mix,
+  #shopify-section-{{ section.id }} .roarr-play-hero__badge,
+  #shopify-section-{{ section.id }} .roarr-play-designed__badge,
+  #shopify-section-{{ section.id }} .roarr-play-marquee__track span,
+  #shopify-section-{{ section.id }} .roarr-play-story__mix,
   #shopify-section-{{ section.id }} summary {
     font-family: "Caveat Brush", cursive !important;
     font-weight: 400 !important;
@@ -59,10 +59,10 @@
   #shopify-section-{{ section.id }} button,
   #shopify-section-{{ section.id }} b,
   #shopify-section-{{ section.id }} strong,
-  #shopify-section-{{ section.id }} .kluck-play-hero__kicker,
-  #shopify-section-{{ section.id }} .kluck-play-hero__price,
-  #shopify-section-{{ section.id }} .kluck-play-story__pills span,
-  #shopify-section-{{ section.id }} .kluck-play-promo__code,
+  #shopify-section-{{ section.id }} .roarr-play-hero__kicker,
+  #shopify-section-{{ section.id }} .roarr-play-hero__price,
+  #shopify-section-{{ section.id }} .roarr-play-story__pills span,
+  #shopify-section-{{ section.id }} .roarr-play-promo__code,
   #shopify-section-{{ section.id }} details p {
     font-family: Poppins, sans-serif !important;
     text-transform: none;
@@ -77,8 +77,8 @@
   #shopify-section-{{ section.id }} button:before,
   #shopify-section-{{ section.id }} button:after { content: none !important; display: none !important; }
   #shopify-section-{{ section.id }} { margin: 0; padding: 0; background: #E0F4E0; }
-  #shopify-section-{{ section.id }} .kluck-play-promo { color: #6F2424; font-family: Poppins, sans-serif !important; }
-  #shopify-section-{{ section.id }} .kluck-play-promo__grid {
+  #shopify-section-{{ section.id }} .roarr-play-promo { color: #6F2424; font-family: Poppins, sans-serif !important; }
+  #shopify-section-{{ section.id }} .roarr-play-promo__grid {
     width: min(1100px, calc(100% - 48px));
     margin: 0 auto;
     display: grid;
@@ -96,7 +96,7 @@
     color: #6F2424;
   }
   #shopify-section-{{ section.id }} p { margin: 12px 0 0; }
-  #shopify-section-{{ section.id }} .kluck-play-promo__code {
+  #shopify-section-{{ section.id }} .roarr-play-promo__code {
     margin-top: 18px;
     display: inline-block;
     background: #fff;
@@ -109,7 +109,7 @@
   }
   #shopify-section-{{ section.id }} img { width: 100%; height: auto; object-fit: contain; border-radius: 24px; }
   @media (max-width: 800px) {
-    #shopify-section-{{ section.id }} .kluck-play-promo__grid { grid-template-columns: 1fr; }
+    #shopify-section-{{ section.id }} .roarr-play-promo__grid { grid-template-columns: 1fr; }
     #shopify-section-{{ section.id }} h2 { font-size: 42px !important; }
   }
 {% endstyle %}
@@ -124,7 +124,7 @@
   .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
   .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Caveat Brush", "Lalezar", "Tajawal", cursive !important; line-height: 1.4 !important; font-weight: 400 !important; }
   .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
-  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+  .kl-rtl:is(#kl-rtl, *) :is(.roarr-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.roarr-play-marquee, .pk-marquee) * { direction: ltr; }
 </style>
 {%- else -%}
 {{ kl_rtl_html }}
@@ -132,15 +132,15 @@
 
 {% schema %}
 {
-  "name": "Kluck Play Promo",
+  "name": "Roarr Play Promo",
   "tag": "section",
-  "class": "kluck-play-section",
+  "class": "roarr-play-section",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "A brighter way to play, half off this week." },
     { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Use the code at checkout. It stacks with the sale price." },
     { "type": "text", "id": "code", "label": "Code", "default": "BLACKFRIDAY" },
     { "type": "text", "id": "image", "label": "Image", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/iwt-1c.png?v=1726197375" }
   ],
-  "presets": [{ "name": "Kluck Play Promo" }]
+  "presets": [{ "name": "Roarr Play Promo" }]
 }
 {% endschema %}

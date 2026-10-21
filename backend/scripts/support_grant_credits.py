@@ -4,15 +4,15 @@ Manual credit grant for support / ops (DynamoDB wallet + ledger).
 
 Fills in ENV, SHOP_DOMAIN, amount, and ledger type, then run from `backend/`:
 
-  cd kluck-server/backend
+  cd backend
   ./VENV/bin/python scripts/support_grant_credits.py
 
 Requires AWS credentials and .env (same as the Flask app).
 Set ENV to "dev" or "prod" to pick DynamoDB tables; prod asks for confirmation.
 
-Set KLUCK_ENV to choose tables (default dev):
-  KLUCK_ENV=dev   → dev_kluck_* credit tables
-  KLUCK_ENV=prod  → production kluck_* credit tables
+Set ROARR_ENV to choose tables (default dev):
+  ROARR_ENV=dev   → dev_roarr_* credit tables
+  ROARR_ENV=prod  → production kluck_* credit tables
 
 Must be set before WalletService initializes; this script reads it after
 loading .env and applies DYNAMO_TABLE_CREDIT_* accordingly.
@@ -62,19 +62,19 @@ SHOPIFY_API_VERSION = "2024-10"
 # Env -> DynamoDB table names (same mapping as grant_credits_to_existing_free_users.py).
 TABLE_MAP: Dict[str, Dict[str, str]] = {
     "dev": {
-        "DYNAMO_TABLE_SHOPS": "dev_kluck_users_stores",
-        "DYNAMO_TABLE_SUBSCRIPTION_HISTORY": "dev_kluck_subscription_history",
-        "DYNAMO_TABLE_CREDIT_WALLET": "dev_kluck_user_credit_wallet",
-        "DYNAMO_TABLE_CREDIT_LEDGER": "dev_kluck_credit_ledger",
-        "DYNAMO_TABLE_CREDIT_PURCHASES": "dev_kluck_credit_purchases",
+        "DYNAMO_TABLE_SHOPS": "dev_roarr_users_stores",
+        "DYNAMO_TABLE_SUBSCRIPTION_HISTORY": "dev_roarr_subscription_history",
+        "DYNAMO_TABLE_CREDIT_WALLET": "dev_roarr_user_credit_wallet",
+        "DYNAMO_TABLE_CREDIT_LEDGER": "dev_roarr_credit_ledger",
+        "DYNAMO_TABLE_CREDIT_PURCHASES": "dev_roarr_credit_purchases",
         "DYNAMO_TABLE_SUBSCRIPTION_TRANSACTIONS": "user_subscription_transaction",
     },
     "prod": {
-        "DYNAMO_TABLE_SHOPS": "kluck_users_stores",
-        "DYNAMO_TABLE_SUBSCRIPTION_HISTORY": "kluck_subscription_history",
-        "DYNAMO_TABLE_CREDIT_WALLET": "kluck_user_credit_wallet",
-        "DYNAMO_TABLE_CREDIT_LEDGER": "kluck_credit_ledger",
-        "DYNAMO_TABLE_CREDIT_PURCHASES": "kluck_credit_purchases",
+        "DYNAMO_TABLE_SHOPS": "roarr_users_stores",
+        "DYNAMO_TABLE_SUBSCRIPTION_HISTORY": "roarr_subscription_history",
+        "DYNAMO_TABLE_CREDIT_WALLET": "roarr_user_credit_wallet",
+        "DYNAMO_TABLE_CREDIT_LEDGER": "roarr_credit_ledger",
+        "DYNAMO_TABLE_CREDIT_PURCHASES": "roarr_credit_purchases",
         "DYNAMO_TABLE_SUBSCRIPTION_TRANSACTIONS": "user_subscription_transaction",
     },
 }

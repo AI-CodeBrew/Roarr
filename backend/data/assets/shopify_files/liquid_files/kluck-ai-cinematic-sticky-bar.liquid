@@ -83,9 +83,9 @@
           {% endif %}
           <span class="csb-price">{{ sticky_product.price | money }}</span>
         </p>
-        <a class="csb-cta" href="{{ sticky_product.url }}">{% if sticky_cta != blank %}{{ sticky_cta }}{% else %}{% render 'kluck-ui-string', key: 'shop_now' %}{% endif %}</a>
+        <a class="csb-cta" href="{{ sticky_product.url }}">{% if sticky_cta != blank %}{{ sticky_cta }}{% else %}{% render 'roarr-ui-string', key: 'shop_now' %}{% endif %}</a>
       {% else %}
-        <a class="csb-cta" href="{{ routes.all_products_collection_url }}">{% if sticky_cta != blank %}{{ sticky_cta }}{% else %}{% render 'kluck-ui-string', key: 'shop_now' %}{% endif %}</a>
+        <a class="csb-cta" href="{{ routes.all_products_collection_url }}">{% if sticky_cta != blank %}{{ sticky_cta }}{% else %}{% render 'roarr-ui-string', key: 'shop_now' %}{% endif %}</a>
       {% endif %}
     </div>
   </div>
@@ -94,7 +94,7 @@
 
 {% schema %}
 {
-  "name": "Kluck AI - Cin Sticky",
+  "name": "Roarr - Cin Sticky",
   "settings": [
     {
       "type": "color_scheme",
@@ -105,7 +105,7 @@
     {
       "type": "checkbox",
       "id": "use_kluck_ai_metafields",
-      "label": "Use Kluck AI metafields",
+      "label": "Use Roarr metafields",
       "default": true
     },
     {
@@ -128,7 +128,7 @@
   ],
   "presets": [
     {
-      "name": "Kluck AI - Cin Sticky"
+      "name": "Roarr - Cin Sticky"
     }
   ]
 }

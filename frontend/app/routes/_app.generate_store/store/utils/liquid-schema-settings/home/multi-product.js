@@ -173,7 +173,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
         ]
     },
 
-    /* pf-collection-showcase: Collection Card Slider (Kluck AI - Collections) */
+    /* pf-collection-showcase: Collection Card Slider (Roarr - Collections) */
     "pf-collection-showcase": {
         use_kluck_ai_metafields: false,
         title: "Shop by Collection",

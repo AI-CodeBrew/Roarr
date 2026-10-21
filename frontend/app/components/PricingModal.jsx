@@ -139,7 +139,7 @@ export default function PricingModal({ open, onClose, onConfirm }) {
                 You are on the free plan!
               </Text>
               <Text as="p" variant="bodyMd" tone="subdued">
-                Looking for a high conversion Product Page that can boost you sales to x2? Try Kluck AI now!
+                Looking for a high conversion Product Page that can boost you sales to x2? Try Roarr now!
               </Text>
             </BlockStack>
 

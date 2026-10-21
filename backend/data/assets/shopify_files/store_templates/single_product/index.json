@@ -4,7 +4,7 @@
     "kluck-ai-promotion-banner-section": {
       "type": "kluck-ai-promotion-banner-section",
       "disabled": true,
-      "name": "Kluck AI - Promotion Banner",
+      "name": "Roarr - Promotion Banner",
       "settings": {
         "color_scheme": "",
         "full_width": true,
@@ -56,7 +56,7 @@
       "block_order": [
         "slide_a6PQQB"
       ],
-      "name": "Kluck AI - Hero Banner",
+      "name": "Roarr - Hero Banner",
       "settings": {
         "use_kluck_ai_metafields": true,
         "height_desktop": 550,
@@ -110,7 +110,7 @@
         "image_UNgKAj",
         "text_RV7nwQ"
       ],
-      "name": "Kluck AI - Marquee Banner",
+      "name": "Roarr - Marquee Banner",
       "settings": {
         "use_kluck_ai_metafields": true,
         "direction": "left",
@@ -133,7 +133,7 @@
     },
     "kluck-ai-image-with-text-1-section": {
       "type": "kluck-ai-image-with-text-1-section",
-      "name": "Kluck AI - Image with Text - 1",
+      "name": "Roarr - Image with Text - 1",
       "settings": {
         "use_kluck_ai_metafields": true,
         "layout": "image_right",
@@ -239,7 +239,7 @@
         "text_segment_VLFLKN",
         "image_pill_we8Mhg"
       ],
-      "name": "Kluck AI - Headline",
+      "name": "Roarr - Headline",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "",
@@ -297,7 +297,7 @@
         "accordion_item_GjRgdW",
         "accordion_item_4eLXWn"
       ],
-      "name": "Kluck AI - Image with Text - 2",
+      "name": "Roarr - Image with Text - 2",
       "settings": {
         "use_kluck_ai_metafields": true,
         "desktop_layout": "image_left",
@@ -399,7 +399,7 @@
         "feature_z6pWKp",
         "feature_RD4p8k"
       ],
-      "name": "Kluck AI - Features Center",
+      "name": "Roarr - Features Center",
       "settings": {
         "use_kluck_ai_metafields": true,
         "heading": "Reasons to be fussy",
@@ -463,7 +463,7 @@
         "badge_kU3jXK",
         "badge_i9jGhW"
       ],
-      "name": "Kluck AI - Trust Badges",
+      "name": "Roarr - Trust Badges",
       "settings": {
         "max_width": 1400,
         "alignment": "center",
@@ -586,7 +586,7 @@
         "accordion_W48LNY",
         "accordion_98fjLM"
       ],
-      "name": "Kluck AI - Product Hero",
+      "name": "Roarr - Product Hero",
       "settings": {
         "product": "2-in-1-watermelon-fork-slicer-multi-purpose-stainless-steel-watermelon-slicer-cutter-kitchen-fruit-cutting-fork-fruit-divider-kitchen-gadgets",
         "container_width": 1400,
@@ -654,7 +654,7 @@
         "testimonial_kdF4AE",
         "testimonial_xzQLEF"
       ],
-      "name": "Kluck AI - Testimonials",
+      "name": "Roarr - Testimonials",
       "settings": {
         "use_kluck_ai_metafields": true,
         "section_full_width": false,
@@ -673,7 +673,7 @@
     },
     "kluck-ai-image-with-text-3-section": {
       "type": "kluck-ai-image-with-text-3-section",
-      "name": "Kluck AI - Image with Text - 3",
+      "name": "Roarr - Image with Text - 3",
       "settings": {
         "use_kluck_ai_metafields": true,
         "section_width": 1300,
@@ -725,7 +725,7 @@
         "faq_item_eiwdQt",
         "faq_item_BNn7GA"
       ],
-      "name": "Kluck AI - FAQ",
+      "name": "Roarr - FAQ",
       "settings": {
         "use_kluck_ai_metafields": true,
         "section_full_width": false,

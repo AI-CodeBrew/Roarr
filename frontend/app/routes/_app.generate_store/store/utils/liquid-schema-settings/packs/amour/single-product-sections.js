@@ -67,67 +67,67 @@ const mapper = (textKeys, imageKeys) => (homeData, sectionSettingsOnly) => {
 export const AMOUR_SINGLE_PRODUCT_HOME_SECTIONS = [
     {
         key: "pf-amour-hero",
-        name: "Kluck AI - Amour Hero",
+        name: "Roarr - Amour Hero",
         applyHomeData: mapper(["hero_eyebrow", "hero_heading", "hero_cta", "hero_marquee_1", "hero_marquee_2", "hero_marquee_3"], ["banner_image"]),
     },
     {
         key: "pf-amour-showcase",
-        name: "Kluck AI - Amour Showcase",
+        name: "Roarr - Amour Showcase",
         applyHomeData: mapper(["showcase_heading", "showcase_link", "showcase_caption_1", "showcase_caption_2", "showcase_caption_3"], ["product_image_1", "product_image_2", "product_image_3"]),
     },
     {
         key: "pf-amour-countdown",
-        name: "Kluck AI - Amour Offer",
+        name: "Roarr - Amour Offer",
         applyHomeData: mapper(["countdown_heading", "countdown_subheading", "countdown_cta"], []),
     },
     {
         key: "pf-amour-lookbook",
-        name: "Kluck AI - Amour Lookbook",
+        name: "Roarr - Amour Lookbook",
         applyHomeData: mapper(["look_1_eyebrow", "look_1_title", "look_1_caption", "look_2_eyebrow", "look_2_title", "look_2_caption", "look_3_eyebrow", "look_3_title", "look_3_caption"], ["look_image_1", "look_image_2", "look_image_3"]),
     },
     {
         key: "pf-amour-ribbons",
-        name: "Kluck AI - Amour Ribbons",
+        name: "Roarr - Amour Ribbons",
         applyHomeData: mapper(["ribbon_1", "ribbon_2", "ribbon_3", "ribbon_4"], []),
     },
     {
         key: "pf-amour-split",
-        name: "Kluck AI - Amour Split",
+        name: "Roarr - Amour Split",
         applyHomeData: mapper(["split_heading", "split_card_1_label", "split_card_2_label"], ["split_image", "product_image_2", "product_image_3"]),
     },
     {
         key: "pf-amour-editorial",
-        name: "Kluck AI - Amour Edit",
+        name: "Roarr - Amour Edit",
         applyHomeData: mapper(["editorial_1_heading", "editorial_1_body", "editorial_1_cta", "editorial_2_heading", "editorial_2_body", "editorial_2_cta"], ["editorial_image_1", "editorial_image_2"]),
     },
     {
         key: "pf-amour-banner",
-        name: "Kluck AI - Amour Banner",
+        name: "Roarr - Amour Banner",
         applyHomeData: mapper(["banner_heading", "banner_cta", "banner_marquee_1", "banner_marquee_2"], ["banner_image_2"]),
     },
     {
         key: "pf-amour-story",
-        name: "Kluck AI - Amour Story",
+        name: "Roarr - Amour Story",
         applyHomeData: mapper(["story_accent", "story_heading", "story_body", "story_cta", "story_caption_title", "story_caption_line"], ["story_image", "product_image_1"]),
     },
     {
         key: "pf-amour-reviews",
-        name: "Kluck AI - Amour Reviews",
+        name: "Roarr - Amour Reviews",
         applyHomeData: mapper(["reviews_eyebrow", "reviews_heading", "customer_name_1", "customer_review_1", "customer_name_2", "customer_review_2", "customer_name_3", "customer_review_3", "customer_name_4", "customer_review_4"], ["product_image_2", "split_image", "editorial_image_1", "look_image_2"]),
     },
     {
         key: "pf-amour-tabs",
-        name: "Kluck AI - Amour Tabs",
+        name: "Roarr - Amour Tabs",
         applyHomeData: mapper(["tabs_heading", "tab_1_title", "tab_1_text", "tab_2_title", "tab_2_text", "tab_3_title", "tab_3_text"], ["look_image_3", "product_image_1", "look_image_1"]),
     },
     {
         key: "pf-amour-promise",
-        name: "Kluck AI - Amour Promise",
+        name: "Roarr - Amour Promise",
         applyHomeData: mapper(["promise_heading", "promise_1_label", "promise_1_text", "promise_2_label", "promise_2_text", "promise_3_label", "promise_3_text", "promise_4_label", "promise_4_text", "promise_5_label", "promise_5_text"], []),
     },
     {
         key: "pf-amour-gallery",
-        name: "Kluck AI - Amour Gallery",
+        name: "Roarr - Amour Gallery",
         applyHomeData: mapper(["gallery_heading", "gallery_1_label", "gallery_2_label", "gallery_3_label", "gallery_4_label", "gallery_5_label", "gallery_6_label"], ["product_image_1", "look_image_1", "product_image_2", "look_image_2", "product_image_3", "look_image_3"]),
     },
 ];

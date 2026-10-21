@@ -1,11 +1,11 @@
 /**
- * Kluck AI - FAQ Section Accordion
- * Initializes accordion behavior for all .kluck-faq-section blocks on the page.
+ * Roarr - FAQ Section Accordion
+ * Initializes accordion behavior for all .roarr-faq-section blocks on the page.
  */
 
 (function () {
   const initFaq = () => {
-    const sections = document.querySelectorAll('.kluck-faq-section:not([data-faq-initialized])');
+    const sections = document.querySelectorAll('.roarr-faq-section:not([data-faq-initialized])');
     sections.forEach((section) => {
       section.setAttribute('data-faq-initialized', 'true');
       const items = section.querySelectorAll('.faq-item');

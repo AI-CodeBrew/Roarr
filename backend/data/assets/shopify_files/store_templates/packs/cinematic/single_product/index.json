@@ -2,7 +2,7 @@
   "sections": {
     "kluck-ai-cinematic-announcement": {
       "type": "kluck-ai-cinematic-announcement",
-      "name": "Kluck AI - Cin Announce",
+      "name": "Roarr - Cin Announce",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-1"
@@ -10,7 +10,7 @@
     },
     "kluck-ai-cinematic-hero": {
       "type": "kluck-ai-cinematic-hero",
-      "name": "Kluck AI - Cin Hero",
+      "name": "Roarr - Cin Hero",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-1"
@@ -18,7 +18,7 @@
     },
     "kluck-ai-cinematic-trust": {
       "type": "kluck-ai-cinematic-trust",
-      "name": "Kluck AI - Cin Trust",
+      "name": "Roarr - Cin Trust",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-2"
@@ -26,7 +26,7 @@
     },
     "kluck-ai-cinematic-product-story": {
       "type": "kluck-ai-cinematic-product-story",
-      "name": "Kluck AI - Cin Story",
+      "name": "Roarr - Cin Story",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-1"
@@ -34,7 +34,7 @@
     },
     "kluck-ai-cinematic-inspiration": {
       "type": "kluck-ai-cinematic-inspiration",
-      "name": "Kluck AI - Cin Inspire",
+      "name": "Roarr - Cin Inspire",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-1"
@@ -42,7 +42,7 @@
     },
     "kluck-ai-cinematic-feature-ticker": {
       "type": "kluck-ai-cinematic-feature-ticker",
-      "name": "Kluck AI - Cin Ticker",
+      "name": "Roarr - Cin Ticker",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-2"
@@ -50,7 +50,7 @@
     },
     "kluck-ai-cinematic-why-shop": {
       "type": "kluck-ai-cinematic-why-shop",
-      "name": "Kluck AI - Cin Why Shop",
+      "name": "Roarr - Cin Why Shop",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-1"
@@ -58,7 +58,7 @@
     },
     "kluck-ai-cinematic-feature-orbit": {
       "type": "kluck-ai-cinematic-feature-orbit",
-      "name": "Kluck AI - Cin Orbit",
+      "name": "Roarr - Cin Orbit",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-2"
@@ -66,7 +66,7 @@
     },
     "kluck-ai-cinematic-reviews": {
       "type": "kluck-ai-cinematic-reviews",
-      "name": "Kluck AI - Cin Reviews",
+      "name": "Roarr - Cin Reviews",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-1"
@@ -74,7 +74,7 @@
     },
     "kluck-ai-cinematic-faq": {
       "type": "kluck-ai-cinematic-faq",
-      "name": "Kluck AI - Cin FAQ",
+      "name": "Roarr - Cin FAQ",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-2"
@@ -82,7 +82,7 @@
     },
     "kluck-ai-cinematic-sticky-bar": {
       "type": "kluck-ai-cinematic-sticky-bar",
-      "name": "Kluck AI - Cin Sticky",
+      "name": "Roarr - Cin Sticky",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "scheme-1"

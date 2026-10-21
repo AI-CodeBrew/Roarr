@@ -8,7 +8,7 @@ These products/scenes are intentionally distinct from:
   - Velvet cinematic demos
   - Sleek / Vibe PDP demos
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python scripts/generate_classic_prepaid_demo_images.py
     ./venv/bin/python scripts/generate_classic_prepaid_demo_images.py --category fashion
     ./venv/bin/python scripts/generate_classic_prepaid_demo_images.py --dry-run

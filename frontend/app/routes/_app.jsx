@@ -53,7 +53,7 @@ export function shouldRevalidate() {
 // Remember the onboarding verdict across reloads so returning users don't
 // wait on /api/app-data before we can show the app shell. `sessionStorage`
 // is scoped per tab/iframe which is fine for embedded apps.
-const ONBOARDED_CACHE_KEY = "klucky:isOnboarded";
+const ONBOARDED_CACHE_KEY = "roarr:isOnboarded";
 /** SSR-safe: `useLayoutEffect` warns on the server; `useEffect` is a no-op there but avoids the warning. */
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -251,7 +251,7 @@ function AppContent({ apiKey, crispWebsiteId, shop: shopFromLoader }) {
         Crisp.configure(crispWebsiteId, { autoload: true });
         Crisp.session.setData({
           shop,
-          app: "KluckAI",
+          app: "Roarr",
           environment: "Production",
         });
         Crisp.user.setNickname(shop.replace(".myshopify.com", ""));

@@ -814,8 +814,8 @@ if(document.readyState==="complete")runReinit();else window.addEventListener("lo
     function formatSectionName(template) {
         const specialCases = {
             'before-after': 'Before & After',
-            'product-section': 'Kluck AI Hero Section',
-            'hero-section': 'Kluck AI Hero Section'
+            'product-section': 'Roarr Hero Section',
+            'hero-section': 'Roarr Hero Section'
         };
         if (specialCases[template]) return specialCases[template];
         return template

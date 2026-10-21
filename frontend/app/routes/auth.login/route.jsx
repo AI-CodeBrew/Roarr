@@ -12,7 +12,7 @@ import { login } from "../../shopify.server";
 
 //   // const { redirect } = await authenticate.admin(request);
 //   // Try to get shop from URL path pattern: /store/{shop}/apps/...
-//   // Example: https://admin.shopify.com/store/burhan-dev/apps/kluckyv5/auth/login
+//   // Example: https://admin.shopify.com/store/burhan-dev/apps/roarr/auth/login
 //   const pathMatch = url.pathname.match(/\/store\/([^/]+)\/apps/);
 //   let shopFromPath = pathMatch ? pathMatch[1] : null;
 

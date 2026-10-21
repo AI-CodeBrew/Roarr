@@ -5,7 +5,7 @@ Product-page images for the prepaid Velvet demo.
 Each category uses the SAME product already on the cinematic homepage, but every
 slot is a new shot sized for the Vibe product page. Homepage banners are not reused.
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python -u scripts/generate_velvet_pdp_demo_images.py
 """
 

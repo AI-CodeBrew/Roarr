@@ -11,11 +11,11 @@ export default function IntroStep({ onStart }) {
         <InlineStack gap="200" blockAlign="center">
           <img
             src="https://cdn.shopify.com/s/files/1/0704/0119/6122/files/New_Project.png?v=1769678513"
-            alt="Kluck AI"
+            alt="Roarr"
             style={{ width: 30, height: 30, borderRadius: 4, objectFit: "cover" }}
           />
           <Text as="p" variant="headingMd" fontWeight="medium">
-            Welcome to Kluck AI
+            Welcome to Roarr
           </Text>
         </InlineStack>
 

@@ -335,21 +335,21 @@ export default function BrandAdsCampaignsTable({ onEdit, onListResolved }) {
               </Box>
             ) : (
               <>
-                <Box maxWidth="100%" overflowX="hidden" className="kluck-brandads-table-host">
+                <Box maxWidth="100%" overflowX="hidden" className="roarr-brandads-table-host">
                   <style>{`
                     /* BrandAds is client-side paginated; prevent internal scrolling/scrollbars. */
-                    .kluck-brandads-table-host {
+                    .roarr-brandads-table-host {
                       overflow: hidden !important;
                       max-height: none !important;
                     }
-                    .kluck-brandads-table-host .Polaris-IndexTable__Table {
+                    .roarr-brandads-table-host .Polaris-IndexTable__Table {
                       overflow: hidden !important;
                       max-height: none !important;
                     }
-                    .kluck-brandads-table-host .Polaris-IndexTable__Table--sticky {
+                    .roarr-brandads-table-host .Polaris-IndexTable__Table--sticky {
                       overflow: hidden !important;
                     }
-                    .kluck-brandads-table-host .Polaris-IndexTable__StickyTableHeader {
+                    .roarr-brandads-table-host .Polaris-IndexTable__StickyTableHeader {
                       position: static !important;
                       top: auto !important;
                       inset-block-start: auto !important;

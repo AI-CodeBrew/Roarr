@@ -140,19 +140,19 @@
         "text_hHcRTH": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "text_dtkJPV": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "text_UUKCkK": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         }
       },
@@ -161,7 +161,7 @@
         "text_dtkJPV",
         "text_UUKCkK"
       ],
-      "name": "Kluck AI - Marquee",
+      "name": "Roarr - Marquee",
       "settings": {
         "use_metafields": true,
         "background_color": "#e9eafb",
@@ -218,7 +218,7 @@
       "block_order": [
         "kluck_ai_heading_subheading"
       ],
-      "name": "Kluck AI - Heading Subheading",
+      "name": "Roarr - Heading Subheading",
       "settings": {
         "use_metafields": false,
         "background_color": "#ffffff",
@@ -259,7 +259,7 @@
       "block_order": [
         "kluck_ai_loved_by_everyone"
       ],
-      "name": "Kluck AI - Loved By Everyone",
+      "name": "Roarr - Loved By Everyone",
       "settings": {
         "use_metafields": false,
         "background_color": "#ffffff",
@@ -318,7 +318,7 @@
       "block_order": [
         "kluck_ai_before_after"
       ],
-      "name": "Kluck AI - Before/After",
+      "name": "Roarr - Before/After",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -371,7 +371,7 @@
       "block_order": [
         "kluck_ai_image_with_text"
       ],
-      "name": "Kluck AI - Image With Text",
+      "name": "Roarr - Image With Text",
       "settings": {
         "use_metafields": false,
         "background_color": "#ffffff",
@@ -426,7 +426,7 @@
       "block_order": [
         "kluck_ai_circular_feature"
       ],
-      "name": "Kluck AI - Circular Feature",
+      "name": "Roarr - Circular Feature",
       "settings": {
         "use_metafields": false,
         "background_color": "#ffffff",
@@ -481,7 +481,7 @@
       "block_order": [
         "kluck_ai_four_blocks"
       ],
-      "name": "Kluck AI - Four Blocks",
+      "name": "Roarr - Four Blocks",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -532,7 +532,7 @@
       "block_order": [
         "kluck_ai_impact_stats"
       ],
-      "name": "Kluck AI - Impact Stats",
+      "name": "Roarr - Impact Stats",
       "settings": {
         "use_metafields": false,
         "background_color": "#ffffff",
@@ -597,7 +597,7 @@
       "block_order": [
         "kluck_ai_comparison_table"
       ],
-      "name": "Kluck AI - Comparison Table",
+      "name": "Roarr - Comparison Table",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -655,7 +655,7 @@
         "faq_TeKyaK",
         "faq_W4hCqF"
       ],
-      "name": "Kluck AI - FAQ Section",
+      "name": "Roarr - FAQ Section",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",

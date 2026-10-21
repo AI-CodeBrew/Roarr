@@ -84,14 +84,14 @@
   }
 
   /* --- BUTTON (Untouched) --- */
-  #sb-{{ section.id }} .kluck-button {
+  #sb-{{ section.id }} .roarr-button {
     display: inline-block;
     text-decoration: none;
     border-radius: 50px;
     padding: 15px 30px;
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
-  #sb-{{ section.id }} .kluck-button:hover {
+  #sb-{{ section.id }} .roarr-button:hover {
     transform: translateY(-2px);
     opacity: 0.9;
   }
@@ -127,8 +127,8 @@
   }
 
   /* --- INTELLIGENCE OVERRIDES (Text Only) --- */
-.sb-light-bg h2, .sb-light-bg p, .sb-light-bg .sb-eyebrow, .sb-light-bg .kluck-button { color: #484B4F !important; }
-  .sb-dark-bg h2, .sb-dark-bg p, .sb-dark-bg .sb-eyebrow, .sb-dark-bg .kluck-button { color: #ffffff !important; }
+.sb-light-bg h2, .sb-light-bg p, .sb-light-bg .sb-eyebrow, .sb-light-bg .roarr-button { color: #484B4F !important; }
+  .sb-dark-bg h2, .sb-dark-bg p, .sb-dark-bg .sb-eyebrow, .sb-dark-bg .roarr-button { color: #ffffff !important; }
 
   /* --- MOBILE RESPONSIVE --- */
   @media (max-width: 900px) {
@@ -167,7 +167,7 @@
         </p>
         
           {% if section.settings.btn_label != blank %}
-            <a href="{{ routes.all_products_collection_url }}" class="kluck-button">
+            <a href="{{ routes.all_products_collection_url }}" class="roarr-button">
               {{ section.settings.btn_label }}
             </a>
           {% endif %}
@@ -245,7 +245,7 @@
     {
       "type": "checkbox",
       "id": "use_kluck_ai_metafields",
-      "label": "Use Kluck AI metafields",
+      "label": "Use Roarr metafields",
       "default": true
     },
     { "type": "header", "content": "Section Layout" },

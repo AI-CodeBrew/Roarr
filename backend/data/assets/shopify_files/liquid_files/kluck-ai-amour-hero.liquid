@@ -112,7 +112,7 @@
   }
 
 </style>
-<div id="amour-{{ section.id }}" class="kluck-amour color-{{ section_scheme }}">
+<div id="amour-{{ section.id }}" class="roarr-amour color-{{ section_scheme }}">
 <section class="ah">
   <div class="ah__bg">{%- if banner_image != blank -%}{%- if banner_image contains 'http' or banner_image contains '//' -%}<img src="{{ banner_image }}" alt="{{ hero_heading | escape }}" loading="lazy" class="">{%- else -%}<img src="{{ banner_image | image_url: width: 2400 }}" alt="{{ hero_heading | escape }}" loading="lazy" class="">{%- endif -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'a-ph' }}{%- endif -%}</div>
   <div class="ah__content">
@@ -127,9 +127,9 @@
 
 {% schema %}
 {
-  "name": "Kluck AI - Amour Hero",
+  "name": "Roarr - Amour Hero",
   "tag": "section",
-  "class": "kluck-amour-section",
+  "class": "roarr-amour-section",
   "settings": [
     {
       "type": "color_scheme",
@@ -140,7 +140,7 @@
     {
       "type": "checkbox",
       "id": "use_kluck_ai_metafields",
-      "label": "Use Kluck AI metafields",
+      "label": "Use Roarr metafields",
       "default": true
     },
     {
@@ -215,7 +215,7 @@
   ],
   "presets": [
     {
-      "name": "Kluck AI - Amour Hero"
+      "name": "Roarr - Amour Hero"
     }
   ]
 }

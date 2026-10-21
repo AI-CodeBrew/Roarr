@@ -172,7 +172,7 @@ function PackCard({ packKey, pack, onBuy, busy, mostPopular, promoPending }) {
         {promoPending ? (
           <div>
             <Text as="p" fontWeight="semibold">
-              {formatCredits(grantedCredits, "credits")} with KLUCK2X
+              {formatCredits(grantedCredits, "credits")} with ROARR2X
             </Text>
             <Text as="p" tone="subdued" variant="bodySm">
               Normally {formatCredits(baseCredits, "credits")}
@@ -447,7 +447,7 @@ export function CreditPacks() {
             </Text>
             {promoPending && (
               <Banner tone="success">
-                KLUCK2X is active. Your next pack purchase grants double
+                ROARR2X is active. Your next pack purchase grants double
                 credits.
               </Banner>
             )}

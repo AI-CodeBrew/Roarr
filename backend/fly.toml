@@ -1,8 +1,8 @@
-# Fly.io — Kluck v2 API
-# Create: fly apps create kluck-v2-api
+# Fly.io — Roarr API
+# Create: fly apps create roarr-api
 # Secrets: fly secrets set DATABASE_URL=... SUPABASE_URL=... SUPABASE_JWT_SECRET=... BUNNY_*=... SHOPIFY_*=...
 
-app = "kluck-v2-api"
+app = "roarr-api"
 primary_region = "iad"
 
 [build]

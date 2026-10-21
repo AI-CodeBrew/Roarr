@@ -1,10 +1,10 @@
 {% comment %}
-  Section: Kluck AI - Pillow Banner
+  Section: Roarr - Pillow Banner
   - Purpose: Sculpted banner with a static "scooped" cutout effect.
   - Updates: 
     1. Shows Setting Image first, falls back to Product Image.
     2. Button acts as "Buy Now" (Direct Checkout).
-    3. Button Background & Arrow color pull from Kluck AI Metafields.
+    3. Button Background & Arrow color pull from Roarr Metafields.
     4. Cutout background remains neutral (manual setting).
 {% endcomment %}
 
@@ -60,7 +60,7 @@
   {% endif %}
   {% comment %} --- DATA SOURCE LOGIC END --- {% endcomment %}
 
-  <div id="PillowBanner-{{ section.id }}" class="kluck-pillow-banner-{{ section.id }}">
+  <div id="PillowBanner-{{ section.id }}" class="roarr-pillow-banner-{{ section.id }}">
     <div class="inner-container-{{ section.id }}">
       
       <div class="sculpted-container">
@@ -139,7 +139,7 @@
 
 <!-- 3. CSS STYLES & VARIABLES -->
 <style>
-  .kluck-pillow-banner-{{ section.id }} {
+  .roarr-pillow-banner-{{ section.id }} {
     /* --- Layout & Background Variables --- */
     --bg-color: {{ bg_color }};
     --bg-opacity: {{ opacity }};
@@ -174,7 +174,7 @@
     overflow: hidden;
   }
 
-  .kluck-pillow-banner-{{ section.id }}::before {
+  .roarr-pillow-banner-{{ section.id }}::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -279,14 +279,14 @@
 
 {% schema %}
 {
-  "name": "Kluck AI - Pillow Banner",
+  "name": "Roarr - Pillow Banner",
   "tag": "section",
   "settings": [
     {
       "type": "header",
       "content": "Background & Layout"
     },
-    { "type": "checkbox", "id": "use_metafields", "label": "Use Kluck AI metafields", "default": true, "info": "Enables color_schema, pillow_banner_heading, and pillow_banner_subheading metafields." },
+    { "type": "checkbox", "id": "use_metafields", "label": "Use Roarr metafields", "default": true, "info": "Enables color_schema, pillow_banner_heading, and pillow_banner_subheading metafields." },
     { "type": "color", "id": "background_color", "label": "Manual background color", "default": "#ffffff", "info": "This color appears under the cutout. Usually matches your page background." },
     { "type": "range", "id": "background_opacity", "label": "Background opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100 },
     { "type": "range", "id": "container_max_width", "min": 800, "max": 1800, "step": 50, "unit": "px", "label": "Container Max Width", "default": 1250 },
@@ -374,7 +374,7 @@
     { "type": "@app" }
   ],
   "presets": [
-    { "name": "Kluck AI - Pillow Banner" }
+    { "name": "Roarr - Pillow Banner" }
   ]
 }
 {% endschema %}

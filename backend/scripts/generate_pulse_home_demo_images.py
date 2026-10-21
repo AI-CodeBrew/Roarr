@@ -8,7 +8,7 @@ slot is a new shot sized for the classic homepage. Product-page files are not re
 Ratios match store/templates/single_store/image_keys.json:
   banner_image 16:9, every other homepage slot 1:1.
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python -u scripts/generate_pulse_home_demo_images.py
     ./venv/bin/python -u scripts/generate_pulse_home_demo_images.py --category fashion
 """

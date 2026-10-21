@@ -4,7 +4,7 @@
 
 import { authenticate } from "../../shopify.server";
 
-const APP_CHARGES_HANDLE = process.env.SHOPIFY_APP_CHARGES_HANDLE || "kluckyv5";
+const APP_CHARGES_HANDLE = process.env.SHOPIFY_APP_CHARGES_HANDLE || "roarr";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);

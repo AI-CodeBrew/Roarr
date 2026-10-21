@@ -1,5 +1,5 @@
 """
-ISO 3166-1 alpha-2 country code from the Remix app (``X-Kluck-Pricing-Country``).
+ISO 3166-1 alpha-2 country code from the Remix app (``X-Roarr-Pricing-Country``).
 
 We do not infer country from the Shopify shop address. Actual prices come from
 DynamoDB when a row exists for that code; otherwise the default catalog applies.

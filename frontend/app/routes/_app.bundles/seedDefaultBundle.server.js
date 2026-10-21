@@ -16,7 +16,7 @@ import {
   uuidv4,
   formatQuantityDiscountTier,
   DEFAULT_STYLE_SETTINGS,
-  KLUCK_DEFAULT_BUNDLE_FLAG,
+  ROARR_DEFAULT_BUNDLE_FLAG,
 } from "./bundleParsing.server";
 import { ensureBundlerDiscount } from "./ensureBundlerDiscount.server";
 
@@ -192,7 +192,7 @@ function buildDefaultBundle({ productSelectionType, productIds }) {
     allowVariantSelection: false,
     quantityDiscountTiers: tiers.map(formatQuantityDiscountTier),
     styleSettings: { ...DEFAULT_STYLE_SETTINGS },
-    [KLUCK_DEFAULT_BUNDLE_FLAG]: true,
+    [ROARR_DEFAULT_BUNDLE_FLAG]: true,
     createdAt: now,
     updatedAt: now,
   };
@@ -243,7 +243,7 @@ function widenDefaultBundle(bundle, { productSelectionType, productIds }) {
  * @param {object} admin Shopify admin API client.
  * @param {object} options
  * @param {"global"|"products"} options.scope `global` when every product gets
- *   the Kluck product template (store publish), `products` when only the given
+ *   the Roarr product template (store publish), `products` when only the given
  *   products do (premium PDP publish).
  * @param {Array<string|number>} [options.productIds] Required for `products`.
  * @param {string} [options.shopifyJwtToken] Session token so the seed is also
@@ -293,7 +293,7 @@ export async function seedDefaultBundleIfNeeded(admin, options = {}) {
 
     const defaultIndex = existingBundles.findIndex(
       (bundle) =>
-        bundle?.[KLUCK_DEFAULT_BUNDLE_FLAG] === true && isActiveBundle(bundle),
+        bundle?.[ROARR_DEFAULT_BUNDLE_FLAG] === true && isActiveBundle(bundle),
     );
 
     let bundles;

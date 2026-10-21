@@ -1,6 +1,6 @@
 {% comment %}
-  Block: Kluck AI - Marquee Banner
-  - Purpose: Horizontal scrolling strip with "Kluck AI" global controls.
+  Block: Roarr - Marquee Banner
+  - Purpose: Horizontal scrolling strip with "Roarr" global controls.
   - Logic: Metafields for color, max-width container, typography, text + image items.
 {% endcomment %}
 
@@ -112,10 +112,10 @@
 
   {% comment %} 2. MAIN CONTENT WRAPPER {% endcomment %}
   <div
-    id="KluckMarquee-{{ block.id }}"
-    class="kluck-marquee-wrapper kluck-marquee-wrapper-{{ block_slug }} app_blocks_class"
+    id="RoarrMarquee-{{ block.id }}"
+    class="roarr-marquee-wrapper roarr-marquee-wrapper-{{ block_slug }} app_blocks_class"
   >
-    <div class="kluck-marquee-inner kluck-marquee-inner-{{ block_slug }}">
+    <div class="roarr-marquee-inner roarr-marquee-inner-{{ block_slug }}">
       <div class="mq-section">
         <div class="mq-track">
           {% comment %} Repeat 4 times for seamless infinite scroll on wide screens {% endcomment %}
@@ -181,7 +181,7 @@
 
   {% comment %} 3. CSS STYLES & VARIABLES {% endcomment %}
   <style>
-    .kluck-marquee-wrapper-{{ block_slug }} {
+    .roarr-marquee-wrapper-{{ block_slug }} {
       /* --- Layout & Background Variables --- */
       --bg-color: {{ bg_color }};
       --bg-opacity: {{ opacity }};
@@ -236,7 +236,7 @@
     }
 
     {% if show_background != false and show_background != 'false' %}
-    .kluck-marquee-wrapper-{{ block_slug }}::before {
+    .roarr-marquee-wrapper-{{ block_slug }}::before {
       content: "";
       position: absolute;
       inset: 0;
@@ -246,7 +246,7 @@
     }
     {% endif %}
 
-    .kluck-marquee-inner-{{ block_slug }} {
+    .roarr-marquee-inner-{{ block_slug }} {
       position: relative;
       z-index: 1;
       max-width: var(--container-width);
@@ -285,7 +285,7 @@
     }
 
     {% if s.pause_hover %}
-    .kluck-marquee-wrapper-{{ block_slug }} .mq-section:hover .mq-group {
+    .roarr-marquee-wrapper-{{ block_slug }} .mq-section:hover .mq-group {
       animation-play-state: paused;
     }
     {% endif %}
@@ -328,16 +328,16 @@
     }
 
     @media (max-width: 768px) {
-      .kluck-marquee-wrapper-{{ block_slug }} .mq-group {
+      .roarr-marquee-wrapper-{{ block_slug }} .mq-group {
         animation-duration: var(--speed-m);
       }
-      .kluck-marquee-wrapper-{{ block_slug }} .mq-item {
+      .roarr-marquee-wrapper-{{ block_slug }} .mq-item {
         margin-right: var(--gap-m);
       }
-      .kluck-marquee-wrapper-{{ block_slug }} {
+      .roarr-marquee-wrapper-{{ block_slug }} {
         font-size: calc(var(--h2-size) * 0.7);
       }
-      .kluck-marquee-wrapper-{{ block_slug }} .mq-img-wrap {
+      .roarr-marquee-wrapper-{{ block_slug }} .mq-img-wrap {
         height: var(--img-height-m);
       }
     }

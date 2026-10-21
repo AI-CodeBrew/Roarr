@@ -39,7 +39,7 @@ export const BLOCK_TYPOGRAPHY_SETTINGS = {
 
 
 
-/** HERO Section - Combines Kluck AI Hero, Product Details, Buy Now Button, Delivery Estimator, Frequently Bought, Accordion */
+/** HERO Section - Combines Roarr Hero, Product Details, Buy Now Button, Delivery Estimator, Frequently Bought, Accordion */
 export const HERO_SECTION_BLOCK = {
     id: "hero_section_1",
     settings: {
@@ -343,7 +343,7 @@ export const FAQ_BLOCK = {
     }
 };
 
-/** Kluck AI - FAQ Section (new design with external CSS/JS) */
+/** Roarr - FAQ Section (new design with external CSS/JS) */
 export const NEW_FAQ_BLOCK = {
     id: "new_faq_1",
     settings: {
@@ -625,7 +625,7 @@ export const TEXT_MARQUEE_BLOCK = {
     }
 };
 
-/** Block config for product-section (Kluck AI Hero Block) - two-panel layout with product media */
+/** Block config for product-section (Roarr Hero Block) - two-panel layout with product media */
 export const PRODUCT_SECTION_BLOCK = {
     id: "product-section-hero",
     settings: {

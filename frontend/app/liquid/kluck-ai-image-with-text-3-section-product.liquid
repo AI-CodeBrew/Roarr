@@ -85,7 +85,7 @@
   }
 
   /* --- BUTTON (Untouched) --- */
-  #sb-{{ section.id }} .kluck-button {
+  #sb-{{ section.id }} .roarr-button {
     display: inline-block;
     text-decoration: none;
     border-radius: 50px;
@@ -94,10 +94,10 @@
     color:white;
     background: {{ color_schema }};
   }
-  .kluck-button p {
+  .roarr-button p {
   color:white;
 }
-  #sb-{{ section.id }} .kluck-button:hover {
+  #sb-{{ section.id }} .roarr-button:hover {
     transform: translateY(-2px);
     opacity: 0.9;
   }
@@ -169,7 +169,7 @@
         </p>
         
           {% if section.settings.btn_label != blank %}
-            <a href="{{ routes.all_products_collection_url }}" class="kluck-button">
+            <a href="{{ routes.all_products_collection_url }}" class="roarr-button">
               {{ section.settings.btn_label }}
             </a>
           {% endif %}

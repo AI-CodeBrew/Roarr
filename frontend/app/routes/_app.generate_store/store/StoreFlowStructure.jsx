@@ -1949,7 +1949,7 @@ export default function StoreFlowStructure({
     }
 
     if (completed || (genData && !inFlight)) {
-      // Edit generation opens the Kluck preview so merchants can edit colors/text and Save.
+      // Edit generation opens the Roarr preview so merchants can edit colors/text and Save.
       // Use Configuration → Save & regenerate only when changing store type/theme/products.
       setStep(2);
       setStoreGenerationSucceeded(true);
@@ -2815,10 +2815,10 @@ export default function StoreFlowStructure({
     try {
       if (isOnboarding && storeGenerationPageId) {
         sessionStorage.setItem(
-          "klucky:onboardingStorePageId",
+          "roarr:onboardingStorePageId",
           String(storeGenerationPageId),
         );
-        sessionStorage.setItem("klucky:resumeOnboardingStore", "1");
+        sessionStorage.setItem("roarr:resumeOnboardingStore", "1");
       }
     } catch {
       /* ignore */

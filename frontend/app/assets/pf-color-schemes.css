@@ -63,7 +63,7 @@
 /* Global typography fallback for all scheme-wrapped sections */
 .color-scheme-1,
 .color-scheme-2,
-[class*="color-scheme-kluck-"] {
+[class*="color-scheme-roarr-"] {
   --section-heading-font: var(--font-heading--family, var(--font-heading-family, sans-serif));
   --section-body-font: var(--font-body--family, var(--font-body-family, sans-serif));
 }
@@ -80,12 +80,12 @@
 .color-scheme-2 h4,
 .color-scheme-2 h5,
 .color-scheme-2 h6,
-[class*="color-scheme-kluck-"] h1,
-[class*="color-scheme-kluck-"] h2,
-[class*="color-scheme-kluck-"] h3,
-[class*="color-scheme-kluck-"] h4,
-[class*="color-scheme-kluck-"] h5,
-[class*="color-scheme-kluck-"] h6 {
+[class*="color-scheme-roarr-"] h1,
+[class*="color-scheme-roarr-"] h2,
+[class*="color-scheme-roarr-"] h3,
+[class*="color-scheme-roarr-"] h4,
+[class*="color-scheme-roarr-"] h5,
+[class*="color-scheme-roarr-"] h6 {
   font-family: var(--section-heading-font);
 }
 
@@ -105,13 +105,13 @@
 .color-scheme-2 textarea,
 .color-scheme-2 select,
 .color-scheme-2 li,
-[class*="color-scheme-kluck-"] p,
-[class*="color-scheme-kluck-"] span,
-[class*="color-scheme-kluck-"] a,
-[class*="color-scheme-kluck-"] button,
-[class*="color-scheme-kluck-"] input,
-[class*="color-scheme-kluck-"] textarea,
-[class*="color-scheme-kluck-"] select,
-[class*="color-scheme-kluck-"] li {
+[class*="color-scheme-roarr-"] p,
+[class*="color-scheme-roarr-"] span,
+[class*="color-scheme-roarr-"] a,
+[class*="color-scheme-roarr-"] button,
+[class*="color-scheme-roarr-"] input,
+[class*="color-scheme-roarr-"] textarea,
+[class*="color-scheme-roarr-"] select,
+[class*="color-scheme-roarr-"] li {
   font-family: var(--section-body-font);
 }

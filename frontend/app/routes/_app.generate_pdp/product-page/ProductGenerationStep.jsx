@@ -94,7 +94,7 @@ export default function ProductGenerationStep({
     {
       title: "Under 3 minutes",
       description:
-        "Kluck is the first AI-powered builder that takes you from product to a finished store instantly.",
+        "Roarr is the first AI-powered builder that takes you from product to a finished store instantly.",
       imageUrl:
         "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/WhatsApp_Image_2026-01-28_at_3.13.30_PM_1.jpg?v=1769595526",
     },

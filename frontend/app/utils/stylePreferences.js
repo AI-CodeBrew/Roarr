@@ -39,7 +39,7 @@ function toGoogleFontUrl(fontName) {
  * scheme-1: dynamicColor → primary_button_background
  * scheme-2: dynamicColor → background, primary_button_text, primary_button_hover_background
  * Optional sectionColors: { [sectionKey]: "#hex" | { background, button, text } }
- * → .color-scheme-kluck-* classes with independent solid colors.
+ * → .color-scheme-roarr-* classes with independent solid colors.
  */
 export function generateColorSchemeCss(dynamicColor, sectionColors = null) {
   const color = dynamicColor || "#bca38f";
@@ -150,7 +150,7 @@ function cssClassForSectionSlot(sectionKey, slotKey) {
     .slice(0, 40);
   if (!sec) return null;
   if (slotKey === "color_scheme" || slotKey === "section_color_scheme") {
-    return `color-scheme-kluck-${sec}`;
+    return `color-scheme-roarr-${sec}`;
   }
   const slot = String(slotKey || "")
     .replace(/_color_scheme$/i, "")
@@ -158,7 +158,7 @@ function cssClassForSectionSlot(sectionKey, slotKey) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 24);
-  return `color-scheme-kluck-${sec}-${slot || "slot"}`;
+  return `color-scheme-roarr-${sec}-${slot || "slot"}`;
 }
 
 function normalizeSectionColorsForCss(entry) {

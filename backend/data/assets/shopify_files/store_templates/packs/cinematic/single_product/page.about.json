@@ -2,7 +2,7 @@
   "sections": {
     "kluck-ai-about-us-h1-section": {
       "type": "kluck-ai-about-us-h1-section",
-      "name": "Kluck AI - About",
+      "name": "Roarr - About",
       "settings": {
         "color_scheme": "scheme-1",
         "watermark_text": "Our Story",
@@ -58,7 +58,7 @@
         }
       },
       "block_order": ["tab_start", "tab_today", "tab_next"],
-      "name": "Kluck AI - About Tabs",
+      "name": "Roarr - About Tabs",
       "settings": {
         "container_width": 1400,
         "container_radius": 20,

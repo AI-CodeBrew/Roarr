@@ -1790,7 +1790,7 @@ const AMOUR_TEXT_OVERRIDES = {
 /**
  * Amour demo images: category-aware Amour pipeline (beauty = dark wine; kids/fashion =
  * bright; home = warm wood). Regenerate via:
- *   kluck-ai/backend/scripts/generate_amour_demo_images.py
+ *   backend/backend/scripts/generate_amour_demo_images.py
  */
 const AMOUR_HOME_IMAGES_BY_CATEGORY = {
     "health_beauty": {

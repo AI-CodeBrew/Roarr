@@ -56,7 +56,7 @@
         <b data-qty>1</b>
         <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
       </div>
-      <button class="gl-atc" type="button">{% render 'snippets/kluck-ui-string', key: 'add_to_cart' %}</button>
+      <button class="gl-atc" type="button">{% render 'snippets/roarr-ui-string', key: 'add_to_cart' %}</button>
       <ul class="gl-notes">
         <li>{{ delivery }}</li>
         <li>{{ shipping }}</li>
@@ -130,7 +130,7 @@
   .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
   .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Cormorant Garamond", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
   .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
-  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+  .kl-rtl:is(#kl-rtl, *) :is(.roarr-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.roarr-play-marquee, .pk-marquee) * { direction: ltr; }
 </style>
 {%- else -%}
 {{ kl_rtl_html }}

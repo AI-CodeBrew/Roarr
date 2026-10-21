@@ -1,5 +1,5 @@
 {% comment %}
-  Section: Kluck AI - Trust Badges
+  Section: Roarr - Trust Badges
   - Purpose: Trust badges with icon and text, optional mobile marquee.
   - Adapted for app preview: uses block instead of section, separate CSS file.
 {% endcomment %}
@@ -44,8 +44,8 @@
 
   <link rel="stylesheet" href="{{ 'trust-badges.css' | asset_url }}" media="all">
   <div
-    id="KluckBadges-{{ block.id }}"
-    class="kluck-badges-wrapper{% if mobile_marquee %} tb-marquee-enabled{% endif %}"
+    id="RoarrBadges-{{ block.id }}"
+    class="roarr-badges-wrapper{% if mobile_marquee %} tb-marquee-enabled{% endif %}"
     style="
       --bg-color: {{ bg_color }};
       --bg-opacity: {{ opacity }};

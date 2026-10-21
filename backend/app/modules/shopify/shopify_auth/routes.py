@@ -744,7 +744,7 @@ def subscription_update_webhook():
     """
     Handle Shopify subscription update webhook
     Requires Shopify authentication
-    Stores all fields from app_subscription to kluck_subscription_history table
+    Stores all fields from app_subscription to roarr_subscription_history table
     """
     try:
         # Get the webhook payload
@@ -783,7 +783,7 @@ def subscription_update_webhook():
         # Log subscription details
         logger.info(f"Subscription details: {app_subscription}")
 
-        # Store all fields to kluck_subscription_history table
+        # Store all fields to roarr_subscription_history table
         try:
             shop = document_store.get_shop_details(user_id)
             subscriptions_history = document_store.get_user_subscription_history(

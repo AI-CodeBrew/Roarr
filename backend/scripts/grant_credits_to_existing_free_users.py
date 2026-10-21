@@ -11,7 +11,7 @@ USAGE
 -----
 1) Test run against a SINGLE known store first:
 
-       cd kluck-server/backend
+       cd backend
        ./VENV/bin/python scripts/grant_credits_to_existing_free_users.py \\
            --test-shop rafay-dev-store-for-kluck.myshopify.com \\
            --test-token shpat_xxx \\
@@ -72,19 +72,19 @@ REPORT_DIR = os.path.join(
 # between dev and prod (no dev_ variant in eu-west-3).
 TABLE_MAP: Dict[str, Dict[str, str]] = {
     "dev": {
-        "DYNAMO_TABLE_SHOPS": "dev_kluck_users_stores",
-        "DYNAMO_TABLE_SUBSCRIPTION_HISTORY": "dev_kluck_subscription_history",
-        "DYNAMO_TABLE_CREDIT_WALLET": "dev_kluck_user_credit_wallet",
-        "DYNAMO_TABLE_CREDIT_LEDGER": "dev_kluck_credit_ledger",
-        "DYNAMO_TABLE_CREDIT_PURCHASES": "dev_kluck_credit_purchases",
+        "DYNAMO_TABLE_SHOPS": "dev_roarr_users_stores",
+        "DYNAMO_TABLE_SUBSCRIPTION_HISTORY": "dev_roarr_subscription_history",
+        "DYNAMO_TABLE_CREDIT_WALLET": "dev_roarr_user_credit_wallet",
+        "DYNAMO_TABLE_CREDIT_LEDGER": "dev_roarr_credit_ledger",
+        "DYNAMO_TABLE_CREDIT_PURCHASES": "dev_roarr_credit_purchases",
         "DYNAMO_TABLE_SUBSCRIPTION_TRANSACTIONS": "user_subscription_transaction",
     },
     "prod": {
-        "DYNAMO_TABLE_SHOPS": "kluck_users_stores",
-        "DYNAMO_TABLE_SUBSCRIPTION_HISTORY": "kluck_subscription_history",
-        "DYNAMO_TABLE_CREDIT_WALLET": "kluck_user_credit_wallet",
-        "DYNAMO_TABLE_CREDIT_LEDGER": "kluck_credit_ledger",
-        "DYNAMO_TABLE_CREDIT_PURCHASES": "kluck_credit_purchases",
+        "DYNAMO_TABLE_SHOPS": "roarr_users_stores",
+        "DYNAMO_TABLE_SUBSCRIPTION_HISTORY": "roarr_subscription_history",
+        "DYNAMO_TABLE_CREDIT_WALLET": "roarr_user_credit_wallet",
+        "DYNAMO_TABLE_CREDIT_LEDGER": "roarr_credit_ledger",
+        "DYNAMO_TABLE_CREDIT_PURCHASES": "roarr_credit_purchases",
         "DYNAMO_TABLE_SUBSCRIPTION_TRANSACTIONS": "user_subscription_transaction",
     },
 }

@@ -93,8 +93,8 @@ export function CreditsProvider({ children, enabled = true }) {
         setLifetimeGranted(Number(json.lifetime_granted) || 0);
         setLifetimeSpent(Number(json.lifetime_spent) || 0);
         setHasActivePurchase(purchased);
-        setPromoPending(Boolean(json.promo_kluck2x_pending));
-        setPromoRedeemed(Boolean(json.promo_kluck2x_redeemed));
+        setPromoPending(Boolean(json.promo_roarr2x_pending));
+        setPromoRedeemed(Boolean(json.promo_roarr2x_redeemed));
         setActivePromo(
           typeof json.active_promo === "string" && json.active_promo
             ? json.active_promo

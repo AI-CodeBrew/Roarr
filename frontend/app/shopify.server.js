@@ -21,7 +21,7 @@ function signPayload(payload) {
 }
 
 /**
- * Sets shop `app.block_control` to true so Kluck storefront blocks render.
+ * Sets shop `app.block_control` to true so Roarr storefront blocks render.
  * Call on every install path (OAuth afterAuth, install notify, etc.).
  */
 export async function ensureShopBlockControlEnabled(admin, session) {

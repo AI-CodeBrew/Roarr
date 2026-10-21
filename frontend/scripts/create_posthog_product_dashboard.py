@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Rebuild the Kluck dashboard: stat cards on top, full-width funnels.
+Rebuild the Roarr dashboard: stat cards on top, full-width funnels.
 
   export POSTHOG_PERSONAL_API_KEY='phx_...'
   export POSTHOG_PROJECT_ID=296750
@@ -45,7 +45,7 @@ DASHBOARD_ID = os.environ.get("POSTHOG_DASHBOARD_ID", "1998629").strip()
 
 DATE = {"date_from": "-30d", "explicitDate": False}
 
-NAME = "Kluck — usage & drop-off"
+NAME = "Roarr — usage & drop-off"
 DESCRIPTION = (
     "Totals first, then COD and prepaid stat cards and funnels. Last 30 days."
 )

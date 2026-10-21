@@ -4,7 +4,7 @@
  */
 export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
     "pf-k-hero-peek-slider": {
-        displayName: "Kluck AI - Hero Banner",
+        displayName: "Roarr - Hero Banner",
         useForm: true,
         fields: [
             { type: "image", key: "banner_image", formKey: "images.banner_image", label: "Banner image" },
@@ -14,7 +14,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "marquee-scrolling-banner": {
-        displayName: "Kluck AI - Marquee Banner",
+        displayName: "Roarr - Marquee Banner",
         useForm: true,
         fields: [
             { type: "text", key: "marquee_text_1", formKey: "text.marquee_text_1", label: "Marquee text 1" },
@@ -23,7 +23,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-custom-new-image-with-text": {
-        displayName: "Kluck AI - Image with Text - 1",
+        displayName: "Roarr - Image with Text - 1",
         useForm: true,
         fields: [
             { type: "image", key: "product_impact_image", formKey: "images.product_impact_image", label: "Center image" },
@@ -33,7 +33,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-new-features-center-image": {
-        displayName: "Kluck AI - Features Center",
+        displayName: "Roarr - Features Center",
         useForm: true,
         fields: [
             { type: "image", key: "feature_image", formKey: "images.feature_image", label: "Feature image" },
@@ -53,7 +53,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-inline-headline": {
-        displayName: "Kluck AI - Headline",
+        displayName: "Roarr - Headline",
         useForm: true,
         fields: [
             {
@@ -62,7 +62,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-new-ingreds-features": {
-        displayName: "Kluck AI - Image with Text - 2",
+        displayName: "Roarr - Image with Text - 2",
         useForm: true,
         fields: [
             { type: "image", key: "creative_image", formKey: "images.creative_image", label: "Accordion image" },
@@ -78,7 +78,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-trust-badges": {
-        displayName: "Kluck AI - Trust Badges",
+        displayName: "Roarr - Trust Badges",
         useForm: true,
         fields: [
             { type: "text", key: "why_choose_us_reason_1_heading", formKey: "text.why_choose_us_reason_1_heading", label: "Badge 1" },
@@ -92,7 +92,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
      * Title/price/images come from the selected Shopify product; these fields edit section chrome.
      */
     "pf-new-default-product-hero": {
-        displayName: "Kluck AI Hero Section",
+        displayName: "Roarr Hero Section",
         useForm: true,
         fields: [
             { type: "text", key: "hero_new_badge_text", formKey: "text.hero_new_badge_text", label: "New badge text", default: "New" },
@@ -111,7 +111,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-testimonials01": {
-        displayName: "Kluck AI - Testimonials",
+        displayName: "Roarr - Testimonials",
         useForm: true,
         fields: [
             { type: "text", key: "customer_name_1", formKey: "text.customer_name_1", label: "Customer 1 name" },
@@ -127,7 +127,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-split-feature": {
-        displayName: "Kluck AI - Image with Text - 3",
+        displayName: "Roarr - Image with Text - 3",
         useForm: true,
         fields: [
             { type: "image", key: "highlight_image", formKey: "images.highlight_image", label: "Banner image" },
@@ -137,7 +137,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-faq-splitimage": {
-        displayName: "Kluck AI - FAQ",
+        displayName: "Roarr - FAQ",
         useForm: true,
         fields: [
             { type: "image", key: "creative_image", formKey: "images.creative_image", label: "Showcase image" },
@@ -158,7 +158,7 @@ export const HOME_SINGLE_TEMPLATE_SCHEMAS = {
  */
 export const HOME_MULTI_TEMPLATE_SCHEMAS = {
     "pf-k-hero-peek-slider": {
-        displayName: "Kluck AI - Hero Banner",
+        displayName: "Roarr - Hero Banner",
         useForm: true,
         fields: [
             { type: "image", key: "banner_image_1", formKey: "images.banner_image_1", label: "Slide 1 image" },
@@ -176,7 +176,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "marquee-scrolling-banner": {
-        displayName: "Kluck AI - Marquee Banner",
+        displayName: "Roarr - Marquee Banner",
         useForm: true,
         fields: [
             { type: "text", key: "marquee_text_1", formKey: "text.marquee_text_1", label: "Marquee text 1" },
@@ -185,7 +185,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-inline-headline": {
-        displayName: "Kluck AI - Headline",
+        displayName: "Roarr - Headline",
         useForm: true,
         fields: [
             {
@@ -197,7 +197,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-collection-showcase": {
-        displayName: "Kluck AI - Collections",
+        displayName: "Roarr - Collections",
         useForm: true,
         fields: [
             { type: "image", key: "product_impact_image_1", formKey: "images.product_impact_image_1", label: "Card 1 lifestyle image" },
@@ -213,7 +213,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
 
     },
     "pf-feature-product-section": {
-        displayName: "Kluck AI - Featured Products",
+        displayName: "Roarr - Featured Products",
         useForm: true,
         fields: [
             { type: "image", key: "feature_image_1", formKey: "images.feature_image_1", label: "Card 1 image" },
@@ -228,7 +228,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-feature-banner": {
-        displayName: "Kluck AI - Feature Banner",
+        displayName: "Roarr - Feature Banner",
         useForm: true,
         fields: [
             { type: "image", key: "feature_image_1", formKey: "images.feature_image_1", label: "Card 1 image" },
@@ -243,7 +243,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "infinite-marquee": {
-        displayName: "Kluck AI - Infinite Marquee",
+        displayName: "Roarr - Infinite Marquee",
         useForm: true,
         fields: [
             { type: "text", key: "marquee_text_1", formKey: "text.marquee_text_1", label: "Text 1" },
@@ -255,12 +255,12 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-product-lookbook": {
-        displayName: "Kluck AI - Product Lookbook",
+        displayName: "Roarr - Product Lookbook",
         useForm: true,
         fields: []
     },
     "pf-product-grid1x1": {
-        displayName: "Kluck AI - Products Grid",
+        displayName: "Roarr - Products Grid",
         useForm: true,
         fields: [
             { type: "text", key: "product_grid_tab_1", formKey: "text.product_grid_tab_1", label: "Tab 1 label" },
@@ -272,7 +272,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-split-feature": {
-        displayName: "Kluck AI - Image with Text - 3",
+        displayName: "Roarr - Image with Text - 3",
         useForm: true,
         fields: [
             { type: "image", key: "highlight_image", formKey: "images.highlight_image", label: "Banner image" },
@@ -282,7 +282,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-trust-badges": {
-        displayName: "Kluck AI - Trust Badges",
+        displayName: "Roarr - Trust Badges",
         useForm: true,
         fields: [
             { type: "text", key: "star_product_feature_1", formKey: "text.star_product_feature_1", label: "Badge 1" },
@@ -292,7 +292,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-selected-prod-3in1": {
-        displayName: "Kluck AI - Product Column",
+        displayName: "Roarr - Product Column",
         useForm: true,
         fields: [
             { type: "image", key: "star_image", formKey: "images.star_image", label: "Hero image" },
@@ -307,12 +307,12 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "collection-list": {
-        displayName: "Kluck AI - Collection List",
+        displayName: "Roarr - Collection List",
         useForm: true,
         fields: []
     },
     "pf-testimonials01": {
-        displayName: "Kluck AI - Testimonials",
+        displayName: "Roarr - Testimonials",
         useForm: true,
         fields: [
             { type: "text", key: "customer_name_1", formKey: "text.customer_name_1", label: "Customer 1 name" },
@@ -328,7 +328,7 @@ export const HOME_MULTI_TEMPLATE_SCHEMAS = {
         ]
     },
     "pf-faq-splitimage": {
-        displayName: "Kluck AI - FAQ",
+        displayName: "Roarr - FAQ",
         useForm: true,
         fields: [
             { type: "image", key: "highlight_image", formKey: "images.highlight_image", label: "Showcase image" },

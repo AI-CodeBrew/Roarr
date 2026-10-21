@@ -14,15 +14,15 @@
 
   :root {
     {% if heading_font != blank %}
-      --kluck-font-heading-family: {{ heading_font.family  }};
-      --kluck-font-heading-style: {{ heading_font.style }};
-      --kluck-font-heading-weight: {{ heading_font.weight }};
+      --roarr-font-heading-family: {{ heading_font.family  }};
+      --roarr-font-heading-style: {{ heading_font.style }};
+      --roarr-font-heading-weight: {{ heading_font.weight }};
     {% endif %}
 
     {% if body_font != blank %}
-      --kluck-font-body-family: {{ body_font.family }};
-      --kluck-font-body-style: {{ body_font.style }};
-      --kluck-font-body-weight: {{ body_font.weight }};
+      --roarr-font-body-family: {{ body_font.family }};
+      --roarr-font-body-style: {{ body_font.style }};
+      --roarr-font-body-weight: {{ body_font.weight }};
     {% endif %}
   }
 
@@ -30,15 +30,15 @@
   html span,
   html a {
     font-family: var(
-      --kluck-font-body-family,
+      --roarr-font-body-family,
       system-ui,
       -apple-system,
       BlinkMacSystemFont,
       "Segoe UI",
       sans-serif
     ) !important;
-    font-style: var(--kluck-font-body-style, normal);
-    font-weight: var(--kluck-font-body-weight, 400);
+    font-style: var(--roarr-font-body-style, normal);
+    font-weight: var(--roarr-font-body-weight, 400);
   }
 
   html body h1,
@@ -48,22 +48,22 @@
   html body h5,
   html body h6 {
     font-family: var(
-      --kluck-font-heading-family,
+      --roarr-font-heading-family,
       system-ui,
       -apple-system,
       BlinkMacSystemFont,
       "Segoe UI",
       sans-serif
     ) !important;
-    font-style: var(--kluck-font-heading-style, inherit);
-    font-weight: var(--kluck-font-heading-weight, 700);
+    font-style: var(--roarr-font-heading-style, inherit);
+    font-weight: var(--roarr-font-heading-weight, 700);
   }
 {% endstyle %}
 
 {% comment %}
-  Kluck sections read --color-background / --color-primary-button-background / --color-accent.
+  Roarr sections read --color-background / --color-primary-button-background / --color-accent.
   Dawn often does not emit those vars for color_scheme_group entries, and previously this
-  snippet only styled scheme-1 and scheme-2 — so scheme-kluck-* (per-section colors)
+  snippet only styled scheme-1 and scheme-2 — so scheme-roarr-* (per-section colors)
   rendered with generation defaults. Emit the same vars for every scheme in settings.
 {% endcomment %}
 <style>
@@ -117,7 +117,7 @@
   }
 {% endfor %}
 
-.kluck-button {
+.roarr-button {
   background-color: var(--color-primary-button-background, {{ scheme2_btn }});
   color: var(--color-primary-button-text, #ffffff);
 }

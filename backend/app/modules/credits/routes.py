@@ -166,8 +166,8 @@ def get_balance():
             user_id, limit=1, status=PURCHASE_STATUS_ACTIVE
         )
         has_active_purchase = bool(active_purchases)
-        promo_pending = bool(wallet.get("promo_kluck2x_pending"))
-        promo_redeemed = bool(wallet.get("promo_kluck2x_redeemed_at"))
+        promo_pending = bool(wallet.get("promo_roarr2x_pending"))
+        promo_redeemed = bool(wallet.get("promo_roarr2x_redeemed_at"))
 
         return (
             jsonify(
@@ -182,9 +182,9 @@ def get_balance():
                     "packs": get_credit_packs_catalog(pricing_row),
                     "pricing_region": pricing_region,
                     "pricing_country_name": pricing_country_name or "",
-                    "promo_kluck2x_pending": promo_pending,
-                    "promo_kluck2x_redeemed": promo_redeemed,
-                    "active_promo": "KLUCK2X" if promo_pending else None,
+                    "promo_roarr2x_pending": promo_pending,
+                    "promo_roarr2x_redeemed": promo_redeemed,
+                    "active_promo": "ROARR2X" if promo_pending else None,
                 }
             ),
             200,
@@ -219,7 +219,7 @@ def redeem_promo():
     """
     Redeem a lifetime promo code once per shop.
 
-    Body: { "code": "KLUCK2X" }
+    Body: { "code": "ROARR2X" }
     Does not grant credits immediately — arms a 2x multiplier for the next
     paid pack purchase confirmation.
     """
@@ -252,7 +252,7 @@ def purchase_pack():
       1. Validate pack name.
       2. Look up the user's Shopify creds.
       3. POST to Shopify's application_charges.json (one-time, non-recurring).
-      4. Persist a `pending` row in kluck_credit_purchases keyed on charge_id.
+      4. Persist a `pending` row in roarr_credit_purchases keyed on charge_id.
       5. Return the confirmation_url; user is redirected there to approve.
       6. On approval, Shopify sends a webhook -> we call
          wallet_service.confirm_pack_purchase(charge_id) which grants credits.
@@ -316,10 +316,10 @@ def purchase_pack():
             )
         is_test_mode = os.getenv("SHOPIFY_TEST_MODE", "false").lower() == "true"
 
-        # If KLUCK2X (or similar) is armed, Shopify's approve page should show
+        # If ROARR2X (or similar) is armed, Shopify's approve page should show
         # the credits that will actually be granted after approval.
         wallet = wallet_service.get_wallet(user_id) or {}
-        promo_pending = bool(wallet.get("promo_kluck2x_pending"))
+        promo_pending = bool(wallet.get("promo_roarr2x_pending"))
         charge_credits = int(pack["credits"]) * (2 if promo_pending else 1)
         charge_name = f"{pack['name']} credit pack ({charge_credits} credits)"
         if promo_pending:

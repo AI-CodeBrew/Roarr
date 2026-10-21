@@ -3,7 +3,7 @@
 Generate cinematic COD single-product demo images for every store category,
 upload them to the public Zambeel S3 bucket, and write a JSON manifest.
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     python scripts/generate_cinematic_demo_images.py
     python scripts/generate_cinematic_demo_images.py --category fashion
     python scripts/generate_cinematic_demo_images.py --dry-run

@@ -75,7 +75,7 @@
         "kluck_ai_delivery_estimator",
         "kluck_ai_frequently_bought"
       ],
-      "name": "Kluck AI - Hero Section",
+      "name": "Roarr - Hero Section",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -133,7 +133,7 @@
         "text_hHcRTH": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "image_QMjQyV": {
@@ -143,7 +143,7 @@
         "text_dtkJPV": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "image_8fNrM9": {
@@ -153,7 +153,7 @@
         "text_K7Ybmz": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "image_q8Xry6": {
@@ -169,7 +169,7 @@
         "text_K7Ybmz",
         "image_q8Xry6"
       ],
-      "name": "Kluck AI - Marquee",
+      "name": "Roarr - Marquee",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -225,7 +225,7 @@
       "block_order": [
         "kluck_ai_bento_grid"
       ],
-      "name": "Kluck AI - Bento Grid",
+      "name": "Roarr - Bento Grid",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -287,7 +287,7 @@
         "badge_EenDwy",
         "badge_drcC84"
       ],
-      "name": "Kluck AI - Badges",
+      "name": "Roarr - Badges",
       "settings": {
         "use_metafields": false,
         "background_color": "#ffffff",
@@ -343,7 +343,7 @@
       "block_order": [
         "kluck_ai_image_with_text"
       ],
-      "name": "Kluck AI - Image With Text",
+      "name": "Roarr - Image With Text",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -398,7 +398,7 @@
       "block_order": [
         "kluck_ai_circular_feature"
       ],
-      "name": "Kluck AI - Ciruclar Feature",
+      "name": "Roarr - Ciruclar Feature",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -428,7 +428,7 @@
     },
     "kluck-ai-pillow-banner": {
       "type": "kluck-ai-pillow-banner-section",
-      "name": "Kluck AI - Pillow Banner",
+      "name": "Roarr - Pillow Banner",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -492,7 +492,7 @@
         "faq_rgaC4H",
         "faq_THEDDt"
       ],
-      "name": "Kluck AI - FAQ Section",
+      "name": "Roarr - FAQ Section",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",

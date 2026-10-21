@@ -1,13 +1,13 @@
 {% comment %}
   Split Feature Banner — Customizable Pro
   - Text column width, section max width, typography.
-  - Optional Kluck AI metafields; layout in pf-split-feature.css.
+  - Optional Roarr metafields; layout in pf-split-feature.css.
 {% endcomment %}
 
 {%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
 {%- assign card_scheme = section.settings.card_color_scheme | default: 'scheme-2' -%}
-{%- comment -%} Default off when unset so section heading/body always show until Kluck is explicitly enabled. {%- endcomment -%}
+{%- comment -%} Default off when unset so section heading/body always show until Roarr is explicitly enabled. {%- endcomment -%}
 {%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
 
 {%- assign kluck_heading = blank -%}

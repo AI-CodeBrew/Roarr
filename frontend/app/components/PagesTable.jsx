@@ -33,7 +33,7 @@ import { usePosthogAfterIdentify } from "../lib/PosthogIdentityContext";
  * scroll and a stray vertical line. Scoped overrides match embedded hub behavior (Brand Ads
  * table has no Frame).
  */
-const PAGES_TABLE_FRAME_HOST_CLASS = "kluck-pages-table-frame-host";
+const PAGES_TABLE_FRAME_HOST_CLASS = "roarr-pages-table-frame-host";
 const pagesTableFrameHostStyles = (
   <style>{`
     .${PAGES_TABLE_FRAME_HOST_CLASS} .Polaris-Frame {
@@ -57,7 +57,7 @@ const pagesTableFrameHostStyles = (
 );
 
 /** Client-side paginated IndexTable: avoid Polaris sticky/max-height scrollbars inside hubs. */
-const PAGES_TABLE_INDEX_HOST_CLASS = "kluck-pages-table-host";
+const PAGES_TABLE_INDEX_HOST_CLASS = "roarr-pages-table-host";
 const pagesTableIndexHostStyles = (
   <style>{`
     .${PAGES_TABLE_INDEX_HOST_CLASS} {
@@ -491,7 +491,7 @@ export default function PagesTable({
       }
 
       // Entire store: open theme editor only (no previewPath). Product pages need the API
-      // so previewPath targets that product + Kluck template in the editor.
+      // so previewPath targets that product + Roarr template in the editor.
       if (isEntireStore && themeId && storeSlug) {
         const url = `https://admin.shopify.com/store/${storeSlug}/themes/${themeId}/editor`;
         window.open(url);
@@ -583,7 +583,7 @@ export default function PagesTable({
 
       setToggleSuccessToast(
         nextEnabled
-          ? "Kluck AI version is now applied on the product page."
+          ? "Roarr version is now applied on the product page."
           : "Product page reverted to the original version.",
       );
     } catch (err) {
@@ -1235,7 +1235,7 @@ export default function PagesTable({
                                   ? !hasOriginalContent
                                     ? "Not supported for this page"
                                     : "Revert product page to original"
-                                  : "Apply Kluck AI version on product page"
+                                  : "Apply Roarr version on product page"
                               }
                               disabled={!(enabledValue === true && !hasOriginalContent)}
                             >
@@ -1248,14 +1248,14 @@ export default function PagesTable({
                                     checked={!!enabledValue}
                                     disabled={toggleDisabled}
                                     loading={isToggling}
-                                    ariaLabel={enabledValue ? "Product page: Kluck AI (toggle to show Original)" : "Product page: Original (toggle to show Kluck AI)"}
+                                    ariaLabel={enabledValue ? "Product page: Roarr (toggle to show Original)" : "Product page: Original (toggle to show Roarr)"}
                                     onToggle={(nextChecked, e) =>
                                       handleToggleEnabled(e, page, nextChecked)
                                     }
                                   />
                                 </span>
                                 <Text as="span" variant="bodySm" tone={enabledValue ? "success" : "subdued"}>
-                                  Kluck AI
+                                  Roarr
                                 </Text>
                               </InlineStack>
                             </Tooltip>

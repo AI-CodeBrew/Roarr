@@ -92,7 +92,7 @@
   }
 
 </style>
-<div id="amour-{{ section.id }}" class="kluck-amour color-{{ section_scheme }}">
+<div id="amour-{{ section.id }}" class="roarr-amour color-{{ section_scheme }}">
 <section class="ae"><div class="a-wrap"><div class="ae__grid">
   <div class="ae__card">
     <a class="a-media" href="{{ amour_product_url }}">{%- if editorial_image_1 != blank -%}{%- if editorial_image_1 contains 'http' or editorial_image_1 contains '//' -%}<img src="{{ editorial_image_1 }}" alt="{{ editorial_1_heading | escape }}" loading="eager" class="">{%- else -%}<img src="{{ editorial_image_1 | image_url: width: 1400 }}" alt="{{ editorial_1_heading | escape }}" loading="eager" class="">{%- endif -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'a-ph' }}{%- endif -%}</a>

@@ -7,7 +7,7 @@ import {
   uuidv4,
   formatQuantityDiscountTier,
   DEFAULT_STYLE_SETTINGS,
-  KLUCK_DEFAULT_BUNDLE_FLAG,
+  ROARR_DEFAULT_BUNDLE_FLAG,
 } from "./bundleParsing.server";
 
 const SHOP_QUERY = `#graphql
@@ -183,9 +183,9 @@ async function handleCreateOrUpdate(admin, formData, intent) {
   if (
     intent === "update" &&
     existingBundleIndex >= 0 &&
-    existingBundles[existingBundleIndex][KLUCK_DEFAULT_BUNDLE_FLAG] === true
+    existingBundles[existingBundleIndex][ROARR_DEFAULT_BUNDLE_FLAG] === true
   ) {
-    bundleData[KLUCK_DEFAULT_BUNDLE_FLAG] = true;
+    bundleData[ROARR_DEFAULT_BUNDLE_FLAG] = true;
   }
 
   if (bundleType === "discounted") {

@@ -115,7 +115,7 @@ _TEMPLATE_FOLDER_MAP = {
 # The per-file "skip if present" rule leaves stale copies in themes published
 # before a fix shipped: kluck-ai-product-hero-section rendered its blocks with a
 # `case block.type` that had no `@app` branch, so the bundle app block was
-# silently dropped on Kluck's simple product page.
+# silently dropped on Roarr's simple product page.
 _FORCE_UPDATE_SECTIONS = {
     "kluck-ai-product-hero-section.liquid",
     # Play keeps per-section colors. Older copies paint every band from color_schema.
@@ -207,7 +207,7 @@ def _force_reupload_cinematic_section_liquids(user_id, theme_id):
 
 
 def _force_reupload_kluck_color_snippet(user_id, theme_id):
-    """Push Kluck snippets (color CSS vars + UI i18n) to the live theme."""
+    """Push Roarr snippets (color CSS vars + UI i18n) to the live theme."""
     try:
         snippet_dir = (
             Path(__file__).resolve().parents[4]
@@ -1532,7 +1532,7 @@ def _bind_cod_premium_product_to_shopify(
             upload_result = shopify_utils.upload_image_to_shopify(
                 image_url=image_url,
                 filename=filename,
-                alt_text=f"Kluck AI {str(image_key).replace('_', ' ').title()}",
+                alt_text=f"Roarr {str(image_key).replace('_', ' ').title()}",
                 user_id=user_id,
             )
             if upload_result.get("success") and upload_result.get("file_id"):
@@ -1701,7 +1701,7 @@ def _execute_publish_store(user_id, data):
             store.get("duplicated_theme_id") if isinstance(store, dict) else None
         )
 
-        # Reuse the Kluck duplicated theme whenever it still exists on the shop.
+        # Reuse the Roarr duplicated theme whenever it still exists on the shop.
         # Duplicate from live only when there is no stored id or the theme was removed in Shopify.
         reuse_existing = bool(
             stored_duplicated_theme_id
@@ -1725,14 +1725,14 @@ def _execute_publish_store(user_id, data):
                 )
             duplicate_result = shopify_utils.duplicate_theme(
                 theme_id=source_live_theme_id,
-                new_name="Kluck AI Theme",
+                new_name="Roarr Theme",
                 user_id=user_id,
             )
             if not duplicate_result.get("success") or not (
                 (duplicate_result.get("theme") or {}).get("id")
             ):
                 raise RuntimeError(
-                    "Failed to duplicate live theme as 'Kluck AI Theme': "
+                    "Failed to duplicate live theme as 'Roarr Theme': "
                     f"{duplicate_result.get('error', 'Unknown error')}"
                 )
 
@@ -1742,7 +1742,7 @@ def _execute_publish_store(user_id, data):
                 f"publish-store: using new duplicated theme "
                 f"'{(duplicate_result.get('theme') or {}).get('name')}' "
                 f"(ID: {live_theme_id}) from live source theme {source_live_theme_id} "
-                f"(no reusable Kluck theme id or prior theme removed from shop)"
+                f"(no reusable Roarr theme id or prior theme removed from shop)"
             )
             # Theme copy finishes in the background. Uploading before layout/theme.liquid
             # is readable returns 404/409 and used to fail the whole push.
@@ -1874,7 +1874,7 @@ def _execute_publish_store(user_id, data):
         else:
             logger.warning(f"⚠️ liquid_files folder not found: {liquid_files_dir}")
 
-        # 2) Always re-upload Kluck snippets (fonts/colors + UI i18n strings).
+        # 2) Always re-upload Roarr snippets (fonts/colors + UI i18n strings).
         # Skipping when they "already exist" left stale CSS / English chrome.
         for snippet_name in (
             "kluck-ai-font-and-color.liquid",
@@ -1903,7 +1903,7 @@ def _execute_publish_store(user_id, data):
                 )
                 upload_success = False
 
-        # 3) Ensure Kluck font/color snippet render exists in layout/theme.liquid <head>.
+        # 3) Ensure Roarr font/color snippet render exists in layout/theme.liquid <head>.
         try:
             theme_asset_key = "layout/theme.liquid"
             theme_asset_result = shopify_utils.get_theme_asset(
@@ -1936,7 +1936,7 @@ def _execute_publish_store(user_id, data):
 
             if render_new in theme_raw_value:
                 logger.info(
-                    "✅ layout/theme.liquid already contains Kluck font/color snippet render. Skipping patch."
+                    "✅ layout/theme.liquid already contains Roarr font/color snippet render. Skipping patch."
                 )
             elif render_old in theme_raw_value:
                 theme_updated = theme_raw_value.replace(render_old, render_new)
@@ -1974,7 +1974,7 @@ def _execute_publish_store(user_id, data):
 
                 if theme_upload_result.get("success"):
                     logger.info(
-                        "✅ Injected/updated Kluck font/color snippet render in layout/theme.liquid <head>"
+                        "✅ Injected/updated Roarr font/color snippet render in layout/theme.liquid <head>"
                     )
                     uploaded_files.append("layout/theme.liquid")
                 else:
@@ -2134,7 +2134,7 @@ def _execute_publish_store(user_id, data):
                 f"⚠️ templates_files folder not found: {templates_files_dir}"
             )
 
-        # 5) Patch config/settings_schema.json with Kluck typography + color controls.
+        # 5) Patch config/settings_schema.json with Roarr typography + color controls.
         page_id = data.get("page_id") or data.get("pageId")
         generated_page = (
             document_store.get_generated_page_by_id(str(page_id)) if page_id else None
@@ -2326,7 +2326,7 @@ def _execute_publish_store(user_id, data):
             if not isinstance(schema_data, list):
                 raise ValueError("settings_schema.json must be a JSON array.")
 
-            kluck_typography_name = "Kluck AI - Typography"
+            kluck_typography_name = "Roarr - Typography"
             kluck_typography_settings = [
                 {"type": "header", "content": "Fonts"},
                 {
@@ -2343,7 +2343,7 @@ def _execute_publish_store(user_id, data):
                 },
             ]
 
-            kluck_color_name = "Kluck AI - Color"
+            kluck_color_name = "Roarr - Color"
             kluck_color_settings = [
                 {"type": "header", "content": "Color Schemes"},
                 {
@@ -2390,7 +2390,7 @@ def _execute_publish_store(user_id, data):
                     kluck_typography_settings
                 )
                 logger.info(
-                    "publish-store: updated Kluck AI - Typography schema block (settings refreshed)"
+                    "publish-store: updated Roarr - Typography schema block (settings refreshed)"
                 )
             else:
                 schema_data.insert(
@@ -2402,14 +2402,14 @@ def _execute_publish_store(user_id, data):
                 )
                 typography_idx = 0
                 logger.info(
-                    "publish-store: inserted Kluck AI - Typography schema block (first time)"
+                    "publish-store: inserted Roarr - Typography schema block (first time)"
                 )
 
             if color_idx is not None:
                 schema_data[color_idx]["name"] = kluck_color_name
                 schema_data[color_idx]["settings"] = copy.deepcopy(kluck_color_settings)
                 logger.info(
-                    "publish-store: updated Kluck AI - Color schema block (settings refreshed)"
+                    "publish-store: updated Roarr - Color schema block (settings refreshed)"
                 )
             else:
                 insert_color_at = (
@@ -2423,7 +2423,7 @@ def _execute_publish_store(user_id, data):
                     },
                 )
                 logger.info(
-                    "publish-store: inserted Kluck AI - Color schema block (first time)"
+                    "publish-store: inserted Roarr - Color schema block (first time)"
                 )
 
             # Shopify color_scheme section settings require a color_scheme_group in
@@ -2447,7 +2447,7 @@ def _execute_publish_store(user_id, data):
 
             if not has_color_scheme_group:
                 kluck_schemes_block = {
-                    "name": "Kluck AI - Color Schemes",
+                    "name": "Roarr - Color Schemes",
                     "settings": [
                         {
                             "type": "color_scheme_group",
@@ -2561,7 +2561,7 @@ def _execute_publish_store(user_id, data):
             if schema_upload_result.get("success"):
                 logger.info(
                     "✅ Successfully uploaded config/settings_schema.json "
-                    "(Kluck typography + color)"
+                    "(Roarr typography + color)"
                 )
                 uploaded_files.append("config/settings_schema.json")
             else:
@@ -2693,7 +2693,7 @@ def _execute_publish_store(user_id, data):
                     existing = entry.get("settings")
                     if not isinstance(existing, dict):
                         existing = {}
-                    # Always apply Kluck accent-driven keys; keep any extra theme keys.
+                    # Always apply Roarr accent-driven keys; keep any extra theme keys.
                     existing.update(settings)
                     entry["settings"] = existing
                     color_schemes[scheme_id] = entry
@@ -2745,7 +2745,7 @@ def _execute_publish_store(user_id, data):
                 if settings_data_upload_result.get("success"):
                     logger.info(
                         "✅ Successfully uploaded config/settings_data.json "
-                        "(current Kluck typography + color values)"
+                        "(current Roarr typography + color values)"
                     )
                     uploaded_files.append("config/settings_data.json")
 
@@ -2883,7 +2883,7 @@ def _execute_publish_store(user_id, data):
                                 upload_result = shopify_utils.upload_image_to_shopify(
                                     image_url=image_url,
                                     filename=filename,
-                                    alt_text=f"Kluck AI {image_key.replace('_', ' ').title()}",
+                                    alt_text=f"Roarr {image_key.replace('_', ' ').title()}",
                                     user_id=user_id,
                                 )
                                 if upload_result.get("success") and upload_result.get(
@@ -3125,7 +3125,7 @@ def _execute_publish_store(user_id, data):
                     f"publish-store COD: error binding premium PDPs: {cod_bind_err}"
                 )
 
-        # 4) Mark generated page published, set theme_id (Kluck theme assets were pushed to), and sync store
+        # 4) Mark generated page published, set theme_id (Roarr theme assets were pushed to), and sync store
         if page_id and upload_success:
             try:
                 logger.info(f"publish-store: marking page_id={page_id} as published")
@@ -3140,7 +3140,7 @@ def _execute_publish_store(user_id, data):
                 if live_theme_id:
                     logger.info(
                         f"publish-store: set generated page theme_id={live_theme_id} "
-                        f"(theme where Kluck assets were pushed)"
+                        f"(theme where Roarr assets were pushed)"
                     )
                 if mark_ok:
                     logger.info(
@@ -3889,7 +3889,7 @@ def publish_page():
                                 upload_result = shopify_utils.upload_image_to_shopify(
                                     image_url=image_url,
                                     filename=filename,
-                                    alt_text=f"Kluck AI {image_key.replace('_', ' ').title()}",
+                                    alt_text=f"Roarr {image_key.replace('_', ' ').title()}",
                                     user_id=user_id,
                                 )
 
@@ -4052,7 +4052,7 @@ def publish_page():
                         )
                     else:
                         logger.info(
-                            f"Syncing Kluck assets for '{template_category}' template {selected_template} "
+                            f"Syncing Roarr assets for '{template_category}' template {selected_template} "
                             "to live theme (skip per file if already present)."
                         )
 
@@ -4541,7 +4541,7 @@ def update_publish_page():
                         upload_result = shopify_utils.upload_image_to_shopify(
                             image_url=image_url,
                             filename=filename,
-                            alt_text=f"Kluck AI {image_key.replace('_', ' ').title()}",
+                            alt_text=f"Roarr {image_key.replace('_', ' ').title()}",
                             user_id=user_id,
                         )
                         if upload_result.get("success") and upload_result.get(
@@ -4878,7 +4878,7 @@ def _patch_amour_section_accents(
 
 
 # Preview section key → live theme section `type` (templates/index.json).
-# Keep in sync with kluck-embeded sectionColorUtils.PREVIEW_SECTION_KEY_TO_LIVE_TYPES.
+# Keep in sync with frontend sectionColorUtils.PREVIEW_SECTION_KEY_TO_LIVE_TYPES.
 _PREVIEW_SECTION_KEY_TO_LIVE_TYPES = {
     "pf-k-hero-peek-slider": ["kluck-ai-home-hero-section"],
     "pf-inline-headline": ["kluck-ai-headline-section"],
@@ -5190,7 +5190,7 @@ def _apply_section_colors_to_live_theme(
                     scheme_ids_by_type[f"{live_type}::{slot_key}"] = scheme_id
                     if slot_key in ("color_scheme", "section_color_scheme"):
                         scheme_ids_by_type[live_type] = scheme_id
-                        # Cinematic + many Kluck sections use either key.
+                        # Cinematic + many Roarr sections use either key.
                         scheme_ids_by_type[
                             f"{live_type}::color_scheme"
                         ] = scheme_id
@@ -5341,7 +5341,7 @@ def _apply_section_colors_to_live_theme(
 
 def _patch_kluck_theme_style_settings(user_id, theme_id, data, generation_data=None):
     """
-    Patch live theme config/settings_data.json with Kluck fonts + accent color schemes.
+    Patch live theme config/settings_data.json with Roarr fonts + accent color schemes.
     Mirrors publish-store settings_data step so Edit generation → Save updates the online store.
     """
     try:
@@ -5690,7 +5690,7 @@ def update_publish_store():
                             upload_result = shopify_utils.upload_image_to_shopify(
                                 image_url=image_url,
                                 filename=filename,
-                                alt_text=f"Kluck AI {image_key.replace('_', ' ').title()}",
+                                alt_text=f"Roarr {image_key.replace('_', ' ').title()}",
                                 user_id=user_id,
                             )
                             if upload_result.get("success") and upload_result.get(

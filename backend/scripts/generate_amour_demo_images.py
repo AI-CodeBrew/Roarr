@@ -4,10 +4,10 @@ Generate Amour homepage demo images for every store category (all 12 slots),
 using the category-aware templated prompts (kids/fashion bright; beauty dark).
 
 Uploads to the public Zambeel S3 bucket and writes a JSON manifest. Paste the
-manifest into kluck-embeded/.../home-data.js → AMOUR_HOME_IMAGES_BY_CATEGORY
+manifest into frontend/.../home-data.js → AMOUR_HOME_IMAGES_BY_CATEGORY
 (keeping each category's existing product_base_image as the reference).
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python -u scripts/generate_amour_demo_images.py
     ./venv/bin/python -u scripts/generate_amour_demo_images.py --category kids_toys
     ./venv/bin/python -u scripts/generate_amour_demo_images.py --dry-run

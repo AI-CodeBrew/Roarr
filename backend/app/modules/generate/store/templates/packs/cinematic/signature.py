@@ -1,6 +1,6 @@
 """
 Cinematic COD single-store homepage copy schema.
-Maps to Kluck React example sections (Hero, Trust, ProductStory, Inspiration,
+Maps to Roarr example sections (Hero, Trust, ProductStory, Inspiration,
 FeatureTicker, WhyShop, FeatureOrbit, Reviews, FAQ).
 """
 from pydantic import BaseModel, Field

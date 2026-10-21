@@ -323,16 +323,16 @@ export function schemeSlugForSlot(slotKey) {
     .slice(0, 24) || "section";
 }
 
-/** Custom scheme id for a section + slot, e.g. scheme-kluck-pf-faq-faq */
+/** Custom scheme id for a section + slot, e.g. scheme-roarr-pf-faq-faq */
 export function schemeIdForSectionSlot(sectionKey, slotKey = "color_scheme") {
   const sec = schemeSlugForSectionKey(sectionKey);
   const slot = schemeSlugForSlot(slotKey);
-  if (!sec) return "scheme-kluck-section";
+  if (!sec) return "scheme-roarr-section";
   // Primary section slot keeps shorter id for backwards compat
   if (slotKey === "color_scheme" || slotKey === "section_color_scheme") {
-    return `scheme-kluck-${sec}`;
+    return `scheme-roarr-${sec}`;
   }
-  return `scheme-kluck-${sec}-${slot}`;
+  return `scheme-roarr-${sec}-${slot}`;
 }
 
 export function schemeIdForSectionKey(sectionKey) {

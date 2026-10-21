@@ -34,12 +34,12 @@ export default function Onboarding({ onComplete, shop, locales: localesProp = []
   // Resume entire-store onboarding after "View credit packs" → buy → back.
   useEffect(() => {
     try {
-      const resume = sessionStorage.getItem("klucky:resumeOnboardingStore") === "1";
+      const resume = sessionStorage.getItem("roarr:resumeOnboardingStore") === "1";
       const pageId =
         searchParams.get("pageId") ||
-        sessionStorage.getItem("klucky:onboardingStorePageId");
+        sessionStorage.getItem("roarr:onboardingStorePageId");
       if (resume || (pageId && searchParams.get("entireStore") === "1")) {
-        sessionStorage.removeItem("klucky:resumeOnboardingStore");
+        sessionStorage.removeItem("roarr:resumeOnboardingStore");
         setActiveOnboardingFlow("store");
       }
     } catch {
@@ -143,7 +143,7 @@ export default function Onboarding({ onComplete, shop, locales: localesProp = []
   }
 
   return (
-    <s-page heading="Kluck AI - Onboarding" inlineSize="large">
+    <s-page heading="Roarr - Onboarding" inlineSize="large">
       <CreditWalletWidget floating={false} slot="secondary-actions" />
       <div
         style={{

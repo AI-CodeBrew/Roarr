@@ -657,7 +657,7 @@ export default function BundlesPage() {
                 </Text>
                 <BlockStack gap="200">
                   <Text as="p" variant="bodyMd">
-                    <strong>1.</strong> Make sure the <strong>Kluck AI</strong> app embed is
+                    <strong>1.</strong> Make sure the <strong>Roarr</strong> app embed is
                     enabled for your theme (Online Store → Themes → Customize → App embeds).
                   </Text>
                   <Text as="p" variant="bodyMd">
@@ -665,7 +665,7 @@ export default function BundlesPage() {
                   </Text>
                   <Text as="p" variant="bodyMd">
                     <strong>3.</strong> Click <strong>Apps</strong>, search for{" "}
-                    <strong>Kluck Bundler</strong>, and add the block.
+                    <strong>Roarr Bundler</strong>, and add the block.
                   </Text>
                 </BlockStack>
                 </BlockStack>

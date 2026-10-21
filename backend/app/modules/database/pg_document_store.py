@@ -45,7 +45,7 @@ def _json_safe(obj: Any) -> Any:
 def _pk_from_key(key: Dict[str, Any]) -> tuple[str, str]:
     if not key:
         return "", ""
-    # Common Kluck patterns: PK only, or session_id, or composite
+    # Common Roarr patterns: PK only, or session_id, or composite
     if "PK" in key:
         pk = str(key["PK"])
         sk = str(key.get("SK", key.get("sk", "")))
@@ -151,7 +151,7 @@ def _apply_update(
     if not set_part:
         return out
 
-    # Split on commas not inside nested paths — simple split is enough for Kluck exprs
+    # Split on commas not inside nested paths — simple split is enough for Roarr exprs
     clauses = [c.strip() for c in set_part.split(",") if c.strip()]
     for clause in clauses:
         # if_not_exists(attr, :val)

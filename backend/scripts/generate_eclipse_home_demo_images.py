@@ -8,7 +8,7 @@ slot is a new shot sized for the cinematic homepage. Product-page files are not 
 Ratios match packs/cinematic/image_keys.json:
   banner_image 16:9, banner_image_mobile 9:16, story / why-shop / circle 1:1.
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     ./venv/bin/python -u scripts/generate_eclipse_home_demo_images.py
 """
 

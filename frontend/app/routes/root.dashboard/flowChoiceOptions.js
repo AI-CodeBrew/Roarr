@@ -20,7 +20,7 @@ export const FLOW_CHOICE_OPTIONS = [
     title: "Full Store Revamp",
     titleBadge: "",
     description:
-      "Your entire store redesigned and branded by Kluck AI. Every single page with Kluck’s premium Theme.",
+      "Your entire store redesigned and branded by Roarr. Every single page with Roarr’s premium Theme.",
     cta: "Revamp my Full Store",
     image: "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/full-store.png?v=1775027492",
     pillLabel: "Free Preview",
@@ -30,7 +30,7 @@ export const FLOW_CHOICE_OPTIONS = [
       "Header + Footer",
       "Product pages",
       "Contact Us",
-      "Kluck Theme",
+      "Roarr Theme",
     ],
   },
 ];

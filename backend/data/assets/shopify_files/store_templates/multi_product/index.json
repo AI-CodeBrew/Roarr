@@ -64,7 +64,7 @@
         "slide_qQa6G3",
         "slide_nUjdBn"
       ],
-      "name": "Kluck AI - Hero Banner",
+      "name": "Roarr - Hero Banner",
       "settings": {
         "use_kluck_ai_metafields": true,
         "height_desktop": 550,
@@ -149,7 +149,7 @@
         "text_segment_VLFLKN",
         "image_pill_we8Mhg"
       ],
-      "name": "Kluck AI - Headline",
+      "name": "Roarr - Headline",
       "settings": {
         "use_kluck_ai_metafields": true,
         "color_scheme": "",
@@ -210,7 +210,7 @@
         "collection_card_QgrGKJ",
         "collection_card_jxYiGn"
       ],
-      "name": "Kluck AI - Collections",
+      "name": "Roarr - Collections",
       "settings": {
         "use_kluck_ai_metafields": true,
         "title": "Shop by Collections",
@@ -263,7 +263,7 @@
         "product_card_W7xU7P",
         "product_card_qg4hEb"
       ],
-      "name": "Kluck AI - Featured Products",
+      "name": "Roarr - Featured Products",
       "settings": {
         "use_kluck_ai_metafields": true,
         "title": "Our Featured Products",
@@ -346,7 +346,7 @@
         "testimonial_kdF4AE",
         "testimonial_xzQLEF"
       ],
-      "name": "Kluck AI - Testimonials",
+      "name": "Roarr - Testimonials",
       "settings": {
         "use_kluck_ai_metafields": true,
         "section_full_width": false,
@@ -365,7 +365,7 @@
     },
     "kluck-ai-tabbed-grid-section": {
       "type": "kluck-ai-tabbed-grid-section",
-      "name": "Kluck AI - Products Grid",
+      "name": "Roarr - Products Grid",
       "settings": {
         "cols_desktop": 3,
         "cols_mobile": "2",
@@ -421,7 +421,7 @@
         "image_UNgKAj",
         "text_ca4xmH"
       ],
-      "name": "Kluck AI - Marquee Banner",
+      "name": "Roarr - Marquee Banner",
       "settings": {
         "use_kluck_ai_metafields": true,
         "direction": "left",
@@ -444,7 +444,7 @@
     },
     "kluck-ai-image-with-text-3-section": {
       "type": "kluck-ai-image-with-text-3-section",
-      "name": "Kluck - AI - Image with Text",
+      "name": "Roarr - AI - Image with Text",
       "settings": {
         "use_kluck_ai_metafields": true,
         "section_width": 1300,
@@ -500,7 +500,7 @@
         "badge_kU3jXK",
         "badge_i9jGhW"
       ],
-      "name": "Kluck AI - Trust Badge",
+      "name": "Roarr - Trust Badge",
       "settings": {
         "max_width": 1400,
         "alignment": "center",
@@ -568,7 +568,7 @@
         "feature_HYV34p",
         "feature_8hBrHJ"
       ],
-      "name": "Kluck AI - Product Column",
+      "name": "Roarr - Product Column",
       "settings": {
         "use_kluck_ai_metafields": true,
         "heading_part_1": "Star Product",
@@ -623,7 +623,7 @@
         "faq_item_eiwdQt",
         "faq_item_BNn7GA"
       ],
-      "name": "Kluck AI - FAQ",
+      "name": "Roarr - FAQ",
       "settings": {
         "use_kluck_ai_metafields": true,
         "section_full_width": false,

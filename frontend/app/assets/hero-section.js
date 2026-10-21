@@ -1,5 +1,5 @@
 /**
- * Kluck AI - Hero Section (Product Split)
+ * Roarr - Hero Section (Product Split)
  * Gallery thumbnails, FAQ toggle, touch swipe, variant selection, buy now, delivery estimator
  */
 (function () {

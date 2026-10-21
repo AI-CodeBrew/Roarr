@@ -1,16 +1,16 @@
 /**
- * Kluck AI - Marquee Banner
+ * Roarr - Marquee Banner
  * Base styles; full variables and scoped styles are inline in text-marquee.liquid.
  * This file provides fallbacks when the block is rendered without inline styles.
  */
 
-.kluck-marquee-wrapper {
+.roarr-marquee-wrapper {
   position: relative;
   width: 100%;
   overflow: hidden;
 }
 
-.kluck-marquee-wrapper::before {
+.roarr-marquee-wrapper::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -19,7 +19,7 @@
   z-index: 0;
 }
 
-.kluck-marquee-inner {
+.roarr-marquee-inner {
   position: relative;
   z-index: 1;
   max-width: var(--container-width, 2000px);

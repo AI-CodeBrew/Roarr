@@ -8,8 +8,8 @@
 
 {% assign review_heading = section.settings.review_heading | default: 'What customers say' %}
 {% assign review_eyebrow = section.settings.review_eyebrow | default: 'Reviews' %}
-{%- capture ph_reviewer_name -%}{% render 'kluck-ui-string', key: 'reviewer_name' %}{%- endcapture -%}
-{%- capture ph_review_body -%}{% render 'kluck-ui-string', key: 'review_body' %}{%- endcapture -%}
+{%- capture ph_reviewer_name -%}{% render 'roarr-ui-string', key: 'reviewer_name' %}{%- endcapture -%}
+{%- capture ph_review_body -%}{% render 'roarr-ui-string', key: 'review_body' %}{%- endcapture -%}
 {% assign customer_name_1 = section.settings.customer_name_1 | default: ph_reviewer_name %}
 {% assign customer_review_1 = section.settings.customer_review_1 | default: ph_review_body %}
 {% assign customer_name_2 = section.settings.customer_name_2 | default: ph_reviewer_name %}
@@ -150,7 +150,7 @@
 
 {% schema %}
 {
-  "name": "Kluck AI - Cin Reviews",
+  "name": "Roarr - Cin Reviews",
   "settings": [
     {
       "type": "color_scheme",
@@ -161,7 +161,7 @@
     {
       "type": "checkbox",
       "id": "use_kluck_ai_metafields",
-      "label": "Use Kluck AI metafields",
+      "label": "Use Roarr metafields",
       "default": true
     },
     {
@@ -215,7 +215,7 @@
   ],
   "presets": [
     {
-      "name": "Kluck AI - Cin Reviews"
+      "name": "Roarr - Cin Reviews"
     }
   ]
 }

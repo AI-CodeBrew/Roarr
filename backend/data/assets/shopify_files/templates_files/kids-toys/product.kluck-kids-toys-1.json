@@ -77,7 +77,7 @@
         "kluck_ai_delivery_estimator",
         "kluck_ai_frequently_bought"
       ],
-      "name": "Kluck AI - Hero Section",
+      "name": "Roarr - Hero Section",
       "settings": {
         "use_metafields": true,
         "background_color": "#187631",
@@ -135,7 +135,7 @@
         "text_hHcRTH": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "image_QMjQyV": {
@@ -147,7 +147,7 @@
         "text_dtkJPV": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "image_8fNrM9": {
@@ -159,7 +159,7 @@
         "text_Nnqr7z": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "image_HUDJ36": {
@@ -175,7 +175,7 @@
         "text_Nnqr7z",
         "image_HUDJ36"
       ],
-      "name": "Kluck AI - Marquee",
+      "name": "Roarr - Marquee",
       "settings": {
         "use_metafields": true,
         "background_color": "#187631",
@@ -231,7 +231,7 @@
       "block_order": [
         "kluck_ai_bento_grid"
       ],
-      "name": "Kluck AI - Bento Grid",
+      "name": "Roarr - Bento Grid",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -265,19 +265,19 @@
         "text_HTREnX": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "text_gKN9Ct": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         },
         "text_FWJLaL": {
           "type": "text",
           "settings": {
-            "text": "Kluck AI Quality"
+            "text": "Roarr Quality"
           }
         }
       },
@@ -286,7 +286,7 @@
         "text_gKN9Ct",
         "text_FWJLaL"
       ],
-      "name": "Kluck AI - Marquee",
+      "name": "Roarr - Marquee",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -348,7 +348,7 @@
       "block_order": [
         "kluck_ai_image_with_text"
       ],
-      "name": "Kluck AI - Image With Text",
+      "name": "Roarr - Image With Text",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -410,7 +410,7 @@
         "badge_EenDwy",
         "badge_drcC84"
       ],
-      "name": "Kluck AI - Badges",
+      "name": "Roarr - Badges",
       "settings": {
         "use_metafields": false,
         "use_metafield_text": true,
@@ -472,7 +472,7 @@
       "block_order": [
         "kluck_ai_four_blocks"
       ],
-      "name": "Kluck AI - Four Block",
+      "name": "Roarr - Four Block",
       "settings": {
         "use_metafields": true,
         "background_color": "#187631",
@@ -528,7 +528,7 @@
       "block_order": [
         "kluck_ai_circular_feature"
       ],
-      "name": "Kluck AI - Circular Feature",
+      "name": "Roarr - Circular Feature",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -558,7 +558,7 @@
     },
     "kluck-ai-pillow-banner-section": {
       "type": "kluck-ai-pillow-banner-section",
-      "name": "Kluck AI - Pillow Banner",
+      "name": "Roarr - Pillow Banner",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -629,7 +629,7 @@
       "block_order": [
         "kluck_ai_comparison_table"
       ],
-      "name": "Kluck AI - Comparison Table",
+      "name": "Roarr - Comparison Table",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",
@@ -687,7 +687,7 @@
         "faq_wTb6EQ",
         "faq_4hkFdm"
       ],
-      "name": "Kluck AI - FAQ Section",
+      "name": "Roarr - FAQ Section",
       "settings": {
         "use_metafields": true,
         "background_color": "#ffffff",

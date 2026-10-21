@@ -108,7 +108,7 @@ export default function SelectProductStep({
                   <BlockStack gap="100">
                     <InlineStack gap="200" blockAlign="center" wrap>
                       <Text as="span" variant="bodySm" tone="subdued">
-                        Your store speaks {storeLanguage.flag} <strong>{storeLanguage.name}</strong>, so will the Kluck AI Page.{" "}
+                        Your store speaks {storeLanguage.flag} <strong>{storeLanguage.name}</strong>, so will the Roarr Page.{" "}
                         <button
                           type="button"
                           onClick={() => languageSelectRef.current?.querySelector?.("button")?.click?.()}

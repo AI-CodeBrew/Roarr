@@ -128,7 +128,7 @@ CATEGORY_DEFAULTS: Dict[str, Dict[str, str]] = {
         "mood": "playful bright",
         "palette": "sunny orange, lime, soft yellow, pastel blue — never dark or moody",
     },
-    # Kluck store category keys
+    # Roarr store category keys
     "health_beauty": {
         "interaction": "applying",
         "setting": "elegant bathroom vanity",

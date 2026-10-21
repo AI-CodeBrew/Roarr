@@ -1,9 +1,9 @@
 {%- capture kl_rtl_html -%}
 {% render 'snippets/play-fonts' %}
 {%- assign m = product.metafields.kluck_ai -%}
-{%- capture ph_review_title -%}{% render 'snippets/kluck-ui-string', key: 'review_title' %}{%- endcapture -%}
-{%- capture ph_review_body -%}{% render 'snippets/kluck-ui-string', key: 'review_body' %}{%- endcapture -%}
-{%- capture ph_reviewer_name -%}{% render 'snippets/kluck-ui-string', key: 'reviewer_name' %}{%- endcapture -%}
+{%- capture ph_review_title -%}{% render 'snippets/roarr-ui-string', key: 'review_title' %}{%- endcapture -%}
+{%- capture ph_review_body -%}{% render 'snippets/roarr-ui-string', key: 'review_body' %}{%- endcapture -%}
+{%- capture ph_reviewer_name -%}{% render 'snippets/roarr-ui-string', key: 'reviewer_name' %}{%- endcapture -%}
 <section class="pk-reviews">
   <div class="pk-reviews-wrap">
     <h2>Lovely Customers</h2>
@@ -50,7 +50,7 @@
   .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
   .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Caveat Brush", "Lalezar", "Tajawal", cursive !important; line-height: 1.4 !important; font-weight: 400 !important; }
   .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
-  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+  .kl-rtl:is(#kl-rtl, *) :is(.roarr-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.roarr-play-marquee, .pk-marquee) * { direction: ltr; }
 </style>
 {%- else -%}
 {{ kl_rtl_html }}

@@ -97,7 +97,7 @@
         "accordion_T43g9G",
         "accordion_wCrxN6"
       ],
-      "name": "Kluck AI - Hero Banner",
+      "name": "Roarr - Hero Banner",
       "settings": {
         "product": "",
         "container_width": 1400,
@@ -149,7 +149,7 @@
         "badge_RiFeL9",
         "badge_qRdnjd"
       ],
-      "name": "Kluck AI - Trust Badges",
+      "name": "Roarr - Trust Badges",
       "settings": {
         "max_width": 1400,
         "alignment": "center",
@@ -179,7 +179,7 @@
     },
     "kluck-ai-product-image-with-text": {
       "type": "kluck-ai-product-image-with-text",
-      "name": "Kluck AI - Image with text",
+      "name": "Roarr - Image with text",
       "settings": {
         "section_width": 1400,
         "text_column_width": 50,
@@ -238,7 +238,7 @@
         "faq_item_gWbzLQ",
         "faq_item_ap7YXg"
       ],
-      "name": "Kluck AI - FAQ - 2",
+      "name": "Roarr - FAQ - 2",
       "settings": {
         "heading": "Questions check here",
         "heading_alignment": "center",

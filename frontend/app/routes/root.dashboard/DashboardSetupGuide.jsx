@@ -226,7 +226,7 @@ export default function DashboardSetupGuide({
               </ButtonGroup>
             </InlineStack>
             <Text as="p" variant="bodyMd" tone="subdued">
-              Use this personalized guide to get Kluck installed and publishing on your storefront.
+              Use this personalized guide to get Roarr installed and publishing on your storefront.
             </Text>
             <InlineStack gap="200" blockAlign="center" wrap>
               <Text as="span" variant="bodySm">
@@ -244,20 +244,20 @@ export default function DashboardSetupGuide({
             <BlockStack gap="100">
               <SetupStepRow
                 id="setup-embed"
-                title="Turn on Kluck in your theme"
+                title="Turn on Roarr in your theme"
                 complete={embedDone}
                 isOpen={openStepIndex === 0}
                 onToggle={() => toggleStep(0)}
               >
                 <BlockStack gap="300" inlineAlign="start">
                   <Text as="p" variant="bodyMd">
-                    Kluck needs the <strong>Kluck AI Theme Extension</strong> app embed enabled in
+                    Roarr needs the <strong>Roarr Theme Extension</strong> app embed enabled in
                     your live theme.
                   </Text>
                   <Divider />
                   <Text as="p" variant="bodyMd">
                     <strong>1.</strong> Open the theme editor—we&apos;ll jump to{" "}
-                    <strong>App embeds</strong> for Kluck:
+                    <strong>App embeds</strong> for Roarr:
                   </Text>
                   <Button
                     icon={ArrowDiagonalIcon}
@@ -270,7 +270,7 @@ export default function DashboardSetupGuide({
                   </Button>
                   <Divider />
                   <Text as="p" variant="bodyMd">
-                    <strong>2.</strong> Turn on <strong>Kluck AI Theme Extension</strong>, then click{" "}
+                    <strong>2.</strong> Turn on <strong>Roarr Theme Extension</strong>, then click{" "}
                     <strong>Save</strong> in the editor.
                   </Text>
                   {!embedDone ? (
@@ -284,7 +284,7 @@ export default function DashboardSetupGuide({
 
               <SetupStepRow
                 id="setup-build"
-                title="Build your first Kluck page"
+                title="Build your first Roarr page"
                 complete={pagesDone}
                 isOpen={openStepIndex === 1}
                 onToggle={() => toggleStep(1)}
@@ -292,7 +292,7 @@ export default function DashboardSetupGuide({
                 <BlockStack gap="300">
                   <Text as="p" variant="bodyMd">
                     Pick a flow on this dashboard (product landing page or entire store redesign) and
-                    generate your page. Saved pages appear in your Kluck library.
+                    generate your page. Saved pages appear in your Roarr library.
                   </Text>
                   <InlineStack gap="200" wrap>
                     <Button variant="primary" onClick={onCreateProductPage}>

@@ -1,6 +1,6 @@
 /**
  * Multi-Purpose Image Accordion - Accordion + image sync
- * data-accordion-single-image="true": one creative image (Kluck); no per-tab image swap
+ * data-accordion-single-image="true": one creative image (Roarr); no per-tab image swap
  */
 
 (function() {

@@ -29,7 +29,7 @@ const faqs = [
     {
         id: 2,
         category: FAQ_CATEGORIES.GENERAL,
-        question: "How does Kluck create my page?",
+        question: "How does Roarr create my page?",
         answer:"Our AI looks at your product image and description to understand what you're selling. It then researches the niche, picks the best design template for your product type and automatically creates professional copy, headings, and enhanced images that help convert visitors into customers.",
         icon: SettingsIcon,
     },
@@ -43,24 +43,24 @@ const faqs = [
     {
         id: 4,
         category: FAQ_CATEGORIES.GENERAL,
-        question: "Do I need coding skills to use Kluck?",
-        answer: "No, everything is automated with Kluck, so no-coding or designing skills are required.",
+        question: "Do I need coding skills to use Roarr?",
+        answer: "No, everything is automated with Roarr, so no-coding or designing skills are required.",
         icon: SettingsIcon,
     },
     {
         id: 5,
         category: FAQ_CATEGORIES.GENERAL,
-        question: "Will Kluck slow down my store?",
-        answer: "No, not at all. After rigorous testing we have made Kluck generated stores and product pages to load fast and even improve your SEO.",
+        question: "Will Roarr slow down my store?",
+        answer: "No, not at all. After rigorous testing we have made Roarr generated stores and product pages to load fast and even improve your SEO.",
         icon: SettingsIcon,
     },
     {
         id: 6,
         category: FAQ_CATEGORIES.GENERAL,
-        question: "What can Kluck create for me?",
+        question: "What can Roarr create for me?",
         answer: (
             <>
-                Kluck creates two types of pages:{"\n"}
+                Roarr creates two types of pages:{"\n"}
                 • <span style={{ fontWeight: "bold" }}>Product Pages</span> - Beautiful landing pages for individual products that are proven to improve conversion rates.{"\n"}
                 • <span style={{ fontWeight: "bold" }}>Store Enhancement</span> - A complete store makeover including your home page, collection pages, header, footer, and product pages (available on Starter and Premium plans)
             </>
@@ -73,7 +73,7 @@ const faqs = [
         category: FAQ_CATEGORIES.CUSTOMIZATION,
         question: "Can I edit the page after it is generated?",
         answer:
-            "Yes! After Kluck generates your page, you can edit the text, regenerate images, and adjust the styling in our editor. Once you publish, you can also make unlimited changes using Shopify's Theme Editor anytime. ",
+            "Yes! After Roarr generates your page, you can edit the text, regenerate images, and adjust the styling in our editor. Once you publish, you can also make unlimited changes using Shopify's Theme Editor anytime. ",
         icon: EditIcon,
     },
     {
@@ -81,13 +81,13 @@ const faqs = [
         category: FAQ_CATEGORIES.CUSTOMIZATION,
         question: "Will the page match my current Shopify theme?",
         answer:
-            "Kluck uses specially designed templates that are built to maximize sales. These templates have their own styling (like sticky 'Add to Cart' buttons and trust badges) to ensure everything works perfectly for conversions.",
+            "Roarr uses specially designed templates that are built to maximize sales. These templates have their own styling (like sticky 'Add to Cart' buttons and trust badges) to ensure everything works perfectly for conversions.",
         icon: EditIcon,
     },
     {
         id: 9,
         category: FAQ_CATEGORIES.CUSTOMIZATION,
-        question: "Why do Kluck pages convert better?",
+        question: "Why do Roarr pages convert better?",
         answer:(
             <>
                 Our AI doesn't just create pages; it creates pages that sell. Every page automatically includes:{"\n"}
@@ -115,7 +115,7 @@ const faqs = [
         question: "Is there a free version?",
         answer:(
             <>
-                You can install Kluck and explore the app; AI generation uses <span style={{ fontWeight: "bold" }}>credits</span> from your wallet. Buy credit packs when you&apos;re ready to run full generations.{"\n"}
+                You can install Roarr and explore the app; AI generation uses <span style={{ fontWeight: "bold" }}>credits</span> from your wallet. Buy credit packs when you&apos;re ready to run full generations.{"\n"}
             </>
         ),
         icon: CreditCardIcon,
@@ -126,7 +126,7 @@ const faqs = [
         question: "How does pricing work?",
         answer:(
             <>
-                Kluck is <span style={{ fontWeight: "bold" }}>credit-based</span>. You purchase credit packs in the app and spend credits when you generate product pages, entire store experiences, and other AI features. Larger packs usually offer a lower cost per credit.{"\n"}
+                Roarr is <span style={{ fontWeight: "bold" }}>credit-based</span>. You purchase credit packs in the app and spend credits when you generate product pages, entire store experiences, and other AI features. Larger packs usually offer a lower cost per credit.{"\n"}
             </>
         ),
         icon: CreditCardIcon,
@@ -137,7 +137,7 @@ const faqs = [
         question: "Do credits expire?",
         answer:(
             <>
-                Your wallet balance stays with your shop while the app is installed. If you uninstall Kluck, you lose access to the app and wallet until you install again—see the Credits page FAQ for details.
+                Your wallet balance stays with your shop while the app is installed. If you uninstall Roarr, you lose access to the app and wallet until you install again—see the Credits page FAQ for details.
             </>
         ),
         icon: CreditCardIcon,
@@ -148,7 +148,7 @@ const faqs = [
         question: "What happens if I uninstall the app?",
         answer:(
             <>
-                Your Kluck-generated pages will <span style={{ fontWeight: "bold" }}>stop working</span> if you uninstall the app. This is because Kluck serves optimized content from our servers to keep your pages fast and high-converting. Make sure you're ready to switch before uninstalling.
+                Your Roarr-generated pages will <span style={{ fontWeight: "bold" }}>stop working</span> if you uninstall the app. This is because Roarr serves optimized content from our servers to keep your pages fast and high-converting. Make sure you're ready to switch before uninstalling.
             </>
         ),
         icon: CreditCardIcon,
@@ -161,13 +161,13 @@ const faqs = [
         answer:(
             <>
                 This issue is usually happens when your Shopify Theme is <span style={{ fontWeight: "bold" }}>locked</span> by another app.{"\n\n"} 
-                <span style={{ fontWeight: "bold" }}>What causes this?</span> If you've previously installed other page-builder or design apps, they may have locked your current theme. When a theme is locked, Kluck can generate your pages successfully, but you won't be able to see or preview them because the other app is blocking access to your theme{"\n\n"}
+                <span style={{ fontWeight: "bold" }}>What causes this?</span> If you've previously installed other page-builder or design apps, they may have locked your current theme. When a theme is locked, Roarr can generate your pages successfully, but you won't be able to see or preview them because the other app is blocking access to your theme{"\n\n"}
                 <span style={{ fontWeight: "bold" }}>How to fix this?</span>{"\n"}
                 • Go to your Shopify Admin.{"\n"}
                 • Click Online Store {'>'} Themes.{"\n"}
                 • Check if your current active theme shows as locked when you try to preview it.{"\n"}
                 • If it is locked, switch to a standard unlocked theme (like Shopify's free Dawn theme).{"\n"}
-                • Return to Kluck and click Publish again.{"\n\n"}
+                • Return to Roarr and click Publish again.{"\n\n"}
 
                 Your page should now appear and work correctly!.{"\n"}
 
@@ -184,8 +184,8 @@ const faqs = [
         question: "Why can't I see my published page (or why did it disappear)?",
         answer:(
             <>
-                This happens when Kluck's app embed is disabled in your theme.{"\n"} 
-                <span style={{ fontWeight: "bold" }}>What causes this?</span> Kluck AI needs to be enabled as an "app embed block" in your Shopify theme to display your product pages and home page. Sometimes this gets accidentally disabled or wasn't turned on during installation.{"\n\n"}
+                This happens when Roarr's app embed is disabled in your theme.{"\n"} 
+                <span style={{ fontWeight: "bold" }}>What causes this?</span> Roarr needs to be enabled as an "app embed block" in your Shopify theme to display your product pages and home page. Sometimes this gets accidentally disabled or wasn't turned on during installation.{"\n\n"}
 
                 <span style={{ fontWeight: "bold" }}>How to fix this?</span>{"\n"}
                 • Go to your Shopify Admin.{"\n"}
@@ -193,12 +193,12 @@ const faqs = [
                 • On your active theme, click Customize.{"\n"}
                 • In the theme editor, click the Theme Settings icon (usually in the top left or sidebar).{"\n"}
                 • Scroll down and find App embeds section.{"\n"}
-                • Look for Kluck AI - Theme Extension in the list.{"\n"}
-                • Toggle the switch to enable Kluck.{"\n"}
+                • Look for Roarr - Theme Extension in the list.{"\n"}
+                • Toggle the switch to enable Roarr.{"\n"}
                 • Click Save in the top right corner.{"\n\n"}
 
 
-                Your Kluck pages should now be visible on your store!.{"\n"}
+                Your Roarr pages should now be visible on your store!.{"\n"}
             </>
         ),
         icon: AdjustIcon,

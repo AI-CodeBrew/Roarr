@@ -152,7 +152,7 @@ export function generateTemplateConfig(detectedCategory, productData, templateNu
 
   if (categoryFolder === "fashion") {
     // Premium PDP stacks (same style as other categories). Do not route Sleek/Vibe
-    // to store simple `product.kluck-fashion-*` templates — that looked like the
+    // to store simple `product.roarr-fashion-*` templates — that looked like the
     // simple product page in Entire Store demo preview.
     if (templateNumber === 2) {
       rows = [

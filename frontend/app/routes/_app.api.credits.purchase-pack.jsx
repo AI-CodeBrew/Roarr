@@ -11,7 +11,7 @@ import { authenticate } from "../shopify.server";
 import { pricingHeadersForPython } from "../lib/pricing-region.server";
 
 const PYTHON_API_URL = process.env.PYTHON_API_URL || "http://localhost:8000";
-const APP_CHARGES_HANDLE = process.env.SHOPIFY_APP_CHARGES_HANDLE || "kluckyv5";
+const APP_CHARGES_HANDLE = process.env.SHOPIFY_APP_CHARGES_HANDLE || "roarr";
 
 export const action = async ({ request }) => {
   if (request.method !== "POST") {

@@ -2,7 +2,7 @@
 """
 Print all 12 filled Amour image prompts for a sample product (no image generation).
 
-Usage (from kluck-ai/backend):
+Usage (from backend/backend):
     python3 scripts/preview_amour_prompts.py
     python3 scripts/preview_amour_prompts.py --category beauty --title "Rose Serum"
     python3 scripts/preview_amour_prompts.py --llm   # call LLM for variables (needs OPENAI_API_KEY)

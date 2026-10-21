@@ -225,7 +225,7 @@ export default function StorePreviewEditor({
   selectedSingleProduct = null,
   selectedProductForPreview = null,
   onSelectedProductForPreviewChange,
-  /** Product page liquid template (1 | 2). Fashion uses `product.kluck-fashion-1` (1) or `product.kluck-fashion-2` (2) section JSON in the Liquid preview. */
+  /** Product page liquid template (1 | 2). Fashion uses `product.roarr-fashion-1` (1) or `product.roarr-fashion-2` (2) section JSON in the Liquid preview. */
   selectedProductTemplate = 1,
   /** When set, {@link Page} wraps the workspace and toolbar controls render in `secondaryActions`. */
   pageChrome,

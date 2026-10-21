@@ -1,5 +1,5 @@
 {
-  "name": "kluck-v2-frontend",
+  "name": "roarr-frontend",
   "private": true,
   "scripts": {
     "liquid-to-app": "node scripts/liquid-to-app.mjs",

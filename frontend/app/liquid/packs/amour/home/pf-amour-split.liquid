@@ -101,7 +101,7 @@
   }
 
 </style>
-<div id="amour-{{ section.id }}" class="kluck-amour color-{{ section_scheme }}">
+<div id="amour-{{ section.id }}" class="roarr-amour color-{{ section_scheme }}">
 <section class="asp"><div class="asp__grid">
   <div class="asp__main a-media">{%- if split_image != blank -%}{%- if split_image contains 'http' or split_image contains '//' -%}<img src="{{ split_image }}" alt="{{ split_heading | escape }}" loading="eager" class="">{%- else -%}<img src="{{ split_image | image_url: width: 1600 }}" alt="{{ split_heading | escape }}" loading="eager" class="">{%- endif -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'a-ph' }}{%- endif -%}</div>
   <div class="asp__side">

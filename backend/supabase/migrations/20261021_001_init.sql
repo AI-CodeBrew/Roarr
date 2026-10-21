@@ -1,4 +1,4 @@
--- Kluck v2: Supabase Postgres schema
+-- Roarr: Supabase Postgres schema
 -- Document store mirrors former DynamoDB tables (jsonb items).
 -- Relational views are optional; app uses dynamo_items via PgTable shim.
 

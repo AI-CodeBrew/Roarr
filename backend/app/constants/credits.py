@@ -20,8 +20,8 @@ DAILY_TOPUP_MAX = 30
 # Lifetime promo codes (never expire). Each shop may redeem a given code once.
 # Redeem arms a pending multiplier; the next paid pack grant consumes it.
 CREDIT_PROMOS: Dict[str, Dict[str, Any]] = {
-    "KLUCK2X": {
-        "code": "KLUCK2X",
+    "ROARR2X": {
+        "code": "ROARR2X",
         "multiplier": 2,
         "applies_to": "grant_pack",
         "description": "Double credits on your next credit pack purchase.",

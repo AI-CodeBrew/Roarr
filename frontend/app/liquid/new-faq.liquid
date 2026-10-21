@@ -1,6 +1,6 @@
 {% comment %}
-  Block: Kluck AI - FAQ Section
-  - Purpose: Accordion-style FAQ with Kluck AI design standards.
+  Block: Roarr - FAQ Section
+  - Purpose: Accordion-style FAQ with Roarr design standards.
   - Unified container width, corrected background opacity, fixed vertical centering.
   - CSS and JS in external files: new-faq.css, new-faq.js
 {% endcomment %}
@@ -77,7 +77,7 @@
 {% comment %} 2. MAIN CONTENT WRAPPER {% endcomment %}
 <div
   id="FAQ-{{ block.id }}"
-  class="kluck-faq-section kluck-faq-section-{{ block_slug }} app_blocks_class"
+  class="roarr-faq-section roarr-faq-section-{{ block_slug }} app_blocks_class"
   data-faq-id="{{ block.id }}"
   style="
     --bg-color: {{ bg_color }};
@@ -115,7 +115,7 @@
     --h6-weight: {{ h6_weight }};
   "
 >
-  <div class="kluck-faq-inner">
+  <div class="roarr-faq-inner">
     {% if title_content != blank or subtitle_content != blank %}
       <div class="faq-header">
         {% if title_content != blank %}

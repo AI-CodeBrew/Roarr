@@ -10,8 +10,8 @@ Postgres document-store-backed per-country credit pack prices.
   Shopify (e.g. ``20.00``). Omitted or empty fields fall back to the default
   catalog for that pack.
 
-Table name: ``DYNAMO_TABLE_CREDIT_PACK_PRICING`` (default ``kluck_credit_pack_pricing``).
-Rows live in the Postgres document store (table name via DYNAMO_TABLE_CREDIT_PACK_PRICING env, default kluck_credit_pack_pricing).
+Table name: ``DYNAMO_TABLE_CREDIT_PACK_PRICING`` (default ``roarr_credit_pack_pricing``).
+Rows live in the Postgres document store (table name via DYNAMO_TABLE_CREDIT_PACK_PRICING env, default roarr_credit_pack_pricing).
 """
 
 import logging
@@ -23,7 +23,7 @@ from app.modules.database.pg_document_store import PgDynamoResource
 logger = logging.getLogger(__name__)
 
 TABLE_ENV = "DYNAMO_TABLE_CREDIT_PACK_PRICING"
-DEFAULT_TABLE_NAME = "kluck_credit_pack_pricing"
+DEFAULT_TABLE_NAME = "roarr_credit_pack_pricing"
 
 
 class CreditPackPricingStore:

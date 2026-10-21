@@ -265,7 +265,7 @@ export default function Index() {
                 <Button
                   variant="secondary"
                   onClick={() => setAppBlocksModalOpen(true)}
-                  aria-label="View Kluck app blocks status"
+                  aria-label="View Roarr app blocks status"
                   fullWidth={isMobileLayout}
                 >
                   <span className="inline-flex items-center gap-2">
@@ -315,13 +315,13 @@ export default function Index() {
             {isEmbedEnabled === false ? (
               <>
                 <Text as="p" variant="bodyMd">
-                  Kluck needs the <strong>Kluck AI Theme Extension</strong> app embed turned on in
-                  your live theme. Until it&apos;s enabled, storefront pages built in Kluck may not
+                  Roarr needs the <strong>Roarr Theme Extension</strong> app embed turned on in
+                  your live theme. Until it&apos;s enabled, storefront pages built in Roarr may not
                   display correctly.
                 </Text>
                 <Text as="p" variant="bodyMd" tone="subdued">
                   Use <strong>Open theme editor</strong> below—we&apos;ll open the theme editor with
-                  App embeds focused. Turn on <strong>Kluck AI Theme Extension</strong>, then click{" "}
+                  App embeds focused. Turn on <strong>Roarr Theme Extension</strong>, then click{" "}
                   <strong>Save</strong>.
                 </Text>
                 <BlockStack gap="150">
@@ -330,7 +330,7 @@ export default function Index() {
                   </Text>
                   <Text as="p" variant="bodySm" tone="subdued">
                     Shopify Admin → Online Store → Themes → Customize → Theme settings → App embeds
-                    → enable Kluck AI Theme Extension → Save.
+                    → enable Roarr Theme Extension → Save.
                   </Text>
                 </BlockStack>
               </>
@@ -370,7 +370,7 @@ export default function Index() {
         <Modal.Section>
           <BlockStack gap="400">
             <Text as="p" variant="bodyMd" tone="subdued">
-            All relevant app blocks are added automatically when you generate a PDP or Full Store through Kluck. This view shows all available blocks in case you want to add any manually via the theme editor.
+            All relevant app blocks are added automatically when you generate a PDP or Full Store through Roarr. This view shows all available blocks in case you want to add any manually via the theme editor.
             </Text>
             <BlockStack gap="0">
               {(appBlocksStatus?.blocks || []).map((block, index, blocks) => (

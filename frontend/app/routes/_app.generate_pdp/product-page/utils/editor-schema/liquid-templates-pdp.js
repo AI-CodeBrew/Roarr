@@ -40,7 +40,7 @@ export const PDP_TEMPLATE_SCHEMAS = {
         ]
     },
     "bundle": {
-        displayName: "Kluck Bundler",
+        displayName: "Roarr Bundler",
         useForm: false,
         fields: []
     },
@@ -145,7 +145,7 @@ export const PDP_TEMPLATE_SCHEMAS = {
         ]
     },
     "new-faq": {
-        displayName: "FAQ (Kluck AI)",
+        displayName: "FAQ (Roarr)",
         useForm: true,
         fields: [
             { type: "text", key: "title", formKey: "text.faq_section_title", label: "Heading", placeholder: "Frequently Asked Questions", productMetafield: "kluck_ai.faq_section_title" },
@@ -231,7 +231,7 @@ export const PDP_TEMPLATE_SCHEMAS = {
         ]
     },
     "product-section": {
-        displayName: "Kluck AI Hero Section",
+        displayName: "Roarr Hero Section",
         useForm: false,
         fields: [
             { type: "text", key: "show_media", formKey: "show_media", label: "Show product media", placeholder: "true" },
@@ -241,7 +241,7 @@ export const PDP_TEMPLATE_SCHEMAS = {
         ]
     },
     "hero-section": {
-        displayName: "Kluck AI Hero Section",
+        displayName: "Roarr Hero Section",
         useForm: true,
         fields: [
             { type: "image", key: "product_image_1", formKey: "images.product_images.product_image_1", label: "Product image 1", productMetafield: "kluck_ai.product_image_1" },
@@ -296,9 +296,9 @@ export const PDP_TEMPLATE_SCHEMAS = {
         displayName: "Marquee",
         useForm: true,
         fields: [
-            { type: "text", key: "text_1", formKey: "text.marquee_text_1", label: "Text 1", placeholder: "Kluck AI Quality", productMetafield: "kluck_ai.marquee_text_1" },
-            { type: "text", key: "text_2", formKey: "text.marquee_text_2", label: "Text 2", placeholder: "Kluck AI Quality", productMetafield: "kluck_ai.marquee_text_2" },
-            { type: "text", key: "text_3", formKey: "text.marquee_text_3", label: "Text 3", placeholder: "Kluck AI Quality", productMetafield: "kluck_ai.marquee_text_3" }
+            { type: "text", key: "text_1", formKey: "text.marquee_text_1", label: "Text 1", placeholder: "Roarr Quality", productMetafield: "kluck_ai.marquee_text_1" },
+            { type: "text", key: "text_2", formKey: "text.marquee_text_2", label: "Text 2", placeholder: "Roarr Quality", productMetafield: "kluck_ai.marquee_text_2" },
+            { type: "text", key: "text_3", formKey: "text.marquee_text_3", label: "Text 3", placeholder: "Roarr Quality", productMetafield: "kluck_ai.marquee_text_3" }
         ]
     },
     "kluck-ai-product-feature-details-section": {

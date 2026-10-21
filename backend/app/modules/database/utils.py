@@ -37,20 +37,20 @@ class DocumentStore:
         self.subscription_transactions_table = os.getenv(
             "DYNAMO_TABLE_SUBSCRIPTION_TRANSACTIONS", "user_subscription_transaction"
         )
-        self.shops_table = os.getenv("DYNAMO_TABLE_SHOPS", "kluck_users_stores")
-        self.users_table = os.getenv("DYNAMO_TABLE_SHOPS", "kluck_users_stores")
-        self.stores_table = os.getenv("DYNAMO_TABLE_SHOPS", "kluck_users_stores")
-        self.pages_table = os.getenv("DYNAMO_TABLE_PAGES", "kluck-generated-pages")
-        self.coupons_table = os.getenv("DYNAMO_TABLE_COUPONS", "kluck_coupons")
+        self.shops_table = os.getenv("DYNAMO_TABLE_SHOPS", "roarr_users_stores")
+        self.users_table = os.getenv("DYNAMO_TABLE_SHOPS", "roarr_users_stores")
+        self.stores_table = os.getenv("DYNAMO_TABLE_SHOPS", "roarr_users_stores")
+        self.pages_table = os.getenv("DYNAMO_TABLE_PAGES", "roarr-generated-pages")
+        self.coupons_table = os.getenv("DYNAMO_TABLE_COUPONS", "roarr_coupons")
         self.subscription_history_table = os.getenv(
-            "DYNAMO_TABLE_SUBSCRIPTION_HISTORY", "kluck_subscription_history"
+            "DYNAMO_TABLE_SUBSCRIPTION_HISTORY", "roarr_subscription_history"
         )
-        self.bundler_table = os.getenv("DYNAMO_TABLE_BUNDLER", "kluck_bundles")
+        self.bundler_table = os.getenv("DYNAMO_TABLE_BUNDLER", "roarr_bundles")
         self.user_dna_table = os.getenv(
-            "DYNAMO_TABLE_USER_DNA", "dev_kluck_user_dna"
+            "DYNAMO_TABLE_USER_DNA", "dev_roarr_user_dna"
         )
         self.user_campaigns_table = os.getenv(
-            "DYNAMO_TABLE_USER_CAMPAIGNS", "dev_kluck_user_campaigns"
+            "DYNAMO_TABLE_USER_CAMPAIGNS", "dev_roarr_user_campaigns"
         )
 
         try:
@@ -971,12 +971,12 @@ class DocumentStore:
             return False
 
     def mark_shopify_kluck_uninstalled(self, shop_domain: str) -> bool:
-        """Mark Shopify Kluck app as uninstalled on the shop details table with timestamp."""
+        """Mark Shopify Roarr app as uninstalled on the shop details table with timestamp."""
         try:
             # Shops table uses PK = myshopify domain (see store_shop_details)
             # On uninstall we also wipe the stored access token.
             logger.info(
-                f"Marking Shopify Kluck app as uninstalled for shop {shop_domain}"
+                f"Marking Shopify Roarr app as uninstalled for shop {shop_domain}"
             )
             self.shops_table_ref.update_item(
                 Key={"PK": shop_domain},
@@ -1027,7 +1027,7 @@ class DocumentStore:
             ):
                 logger.error(f"Shop not found for domain: {shop_domain}")
                 return False
-            logger.error(f"Error marking Shopify Kluck uninstalled: {e}")
+            logger.error(f"Error marking Shopify Roarr uninstalled: {e}")
             return False
 
     def get_user_shopify_app_status(self, cognito_user_id: str) -> Dict[str, Any]:
@@ -2903,7 +2903,7 @@ class DocumentStore:
             return False
 
     # ---------------------------------------------------------------
-    # Brand DNA persistence (kluck_user_dna / kluck_user_dna_dev)
+    # Brand DNA persistence (roarr_user_dna / roarr_user_dna_dev)
     # ---------------------------------------------------------------
     def save_user_dna(
         self,
@@ -3084,7 +3084,7 @@ class DocumentStore:
             return None
 
     # ---------------------------------------------------------------
-    # Generated brand-ad campaigns (kluck_user_campaigns / dev_*)
+    # Generated brand-ad campaigns (roarr_user_campaigns / dev_*)
     #
     # Schema (per row):
     #   HASH  PK (string) = campaign_id (uuid)
