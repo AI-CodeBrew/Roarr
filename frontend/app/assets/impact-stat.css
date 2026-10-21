@@ -1,0 +1,204 @@
+.impact {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.impact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--product-section-bg, #ffffff);
+  opacity: var(--product-section-opacity, 0.1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.impact > * {
+  position: relative;
+  z-index: 1;
+}
+
+.impact__heading-wrapper {
+  background-color: var(--impact-primary-color, transparent);
+  padding: 24px 32px;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+@media(min-width:1024px){
+  .impact__inner {
+    max-width: 1400px;
+  }
+}
+
+.impact__main-heading {
+  text-align: center;
+  margin: 0;
+  color: #fff;
+}
+
+.impact__inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--section-padding-v-d, 36px) var(--section-padding-h-d, 16px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 991.98px) {
+  .impact__inner {
+    padding: var(--section-padding-v-m, 5px) var(--section-padding-h-m, 20px);
+  }
+}
+
+.impact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
+  column-gap: 48px;
+  align-items: center;
+}
+
+.impact__left {
+  align-self: center;
+}
+
+.impact__right {
+  align-self: center;
+}
+
+@media(max-width:991.98px){
+  .impact__grid {
+    grid-template-columns: 1fr;
+    row-gap: 24px;
+  }
+}
+
+.impact__eyebrow {
+  margin: 0 0 .25rem;
+  color: #616161;
+}
+
+.impact__heading {
+  margin: 0 0 .5rem;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.impact__subheading {
+  color: #616161;
+  text-align: left;
+  max-width: 56ch;
+}
+
+@media(max-width:991.98px){
+  .impact__heading {
+    text-align: center;
+  }
+  .impact__subheading {
+    text-align: center;
+    margin-inline: auto;
+    max-width: 100%;
+  }
+}
+
+.impact__media {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 12px auto 0;
+}
+
+.impact__media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+@media(max-width:991.98px){
+  .impact__media {
+    margin-inline: 0;
+  }
+}
+
+.impact__right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.impact__row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.impact__row + .impact__row {
+  border-top: 1px solid #EAEAEA;
+}
+
+.impact__row-title {
+  margin: 0 0 .1rem;
+}
+
+.impact__row-body {
+  color: #666;
+  line-height: 1.55;
+}
+
+.impact__footnote {
+  margin-top: 12px;
+  color: #616161;
+}
+
+.impact__dial {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.impact__svg {
+  width: 86px;
+  height: 86px;
+}
+
+.impact__track {
+  fill: none;
+  stroke: #F1F1F1;
+  stroke-width: 10;
+}
+
+.impact__progress {
+  fill: none;
+  stroke: var(--impact-primary-color, #E02626);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.impact__center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.impact__dial-text {
+  color: var(--impact-primary-color, #E02626);
+  line-height: 1;
+}
+
+.impact__dial-text small {
+  color: inherit;
+}
+

@@ -1,0 +1,82 @@
+{%- comment -%}
+  Preview stand-in for the Kluck Bundler app block (premium PDP / edit generation).
+  Live themes render extensions/pdpbuilder/blocks/bundle.liquid from shop metafields.
+  This mirrors the default seeded "Bundle and Save" tiers so Product preview shows
+  the offer without requiring metafields in the liquid iframe.
+{%- endcomment -%}
+<link rel="stylesheet" href="{{ 'bundle.css' | asset_url }}" media="all">
+<script src="{{ 'bundle.js' | asset_url }}" type="module" defer></script>
+
+{%- assign current_variant = product.selected_or_first_available_variant | default: product.variants.first -%}
+{%- assign unit_price = current_variant.price | default: product.price | default: product.price_min | default: 2300 -%}
+{%- if unit_price == blank or unit_price == 0 -%}
+  {%- assign unit_price = 2300 -%}
+{%- endif -%}
+{%- assign t1_orig = unit_price -%}
+{%- assign t2_orig = unit_price | times: 2 -%}
+{%- assign t2_disc = t2_orig | times: 10 | divided_by: 100 -%}
+{%- assign t2_price = t2_orig | minus: t2_disc -%}
+{%- assign t3_orig = unit_price | times: 3 -%}
+{%- assign t3_disc = t3_orig | times: 15 | divided_by: 100 -%}
+{%- assign t3_price = t3_orig | minus: t3_disc -%}
+{%- assign preview_product_id = product.id | default: 'preview' -%}
+
+<div
+  class="bundle-save-container app_blocks_class"
+  data-liquid-section-display-name="Kluck Bundler"
+  data-variant-gid="{{ current_variant.id }}"
+  data-product-id="{{ product.id }}"
+  data-current-variant-id="{{ current_variant.id | split: '/' | last }}"
+  data-current-variant-price="{{ unit_price }}"
+  data-bundle-id="preview-default"
+  data-bundle-type="discounted"
+  data-primary-color="#2563EB"
+  data-corner-roundness="9"
+  data-breathing-space="14"
+  data-most-popular-badge-color="#F59E0B"
+  style="--bundle-primary-color:#2563EB;--bundle-primary-color-rgb:37,99,235;--bundle-corner-roundness:9px;width:100%;margin:8px 0 12px;padding:0;"
+>
+  <div class="bundle-header-with-lines">
+    <div class="bundle-header-line"></div>
+    <h2>Bundle and Save</h2>
+    <div class="bundle-header-line"></div>
+  </div>
+  <div class="bundle-options" style="gap:14px;">
+    <label class="bundle-option bundle-option-wrapper" data-quantity="1" data-discount-type="percentage" data-selected="true" style="border-radius:9px;">
+      <input type="radio" name="bundle-quantity-{{ preview_product_id }}" value="1" class="bundle-quantity-radio" data-product-id="{{ product.id }}" checked>
+      <div class="bundle-option-details">
+        <div class="bundle-option-title">Buy 1</div>
+        <div class="bundle-option-discount">Standard Price</div>
+      </div>
+      <div class="bundle-option-pricing">
+        <div class="bundle-option-price">{{ t1_orig | money }}</div>
+      </div>
+    </label>
+    <label class="bundle-option bundle-option-wrapper" data-quantity="2" data-discount-type="percentage" style="border-radius:9px;">
+      <div class="bundle-most-popular-badge">
+        <span class="bundle-most-popular-star" aria-hidden="true"></span>
+        Most Popular
+      </div>
+      <input type="radio" name="bundle-quantity-{{ preview_product_id }}" value="2" class="bundle-quantity-radio" data-product-id="{{ product.id }}">
+      <div class="bundle-option-details">
+        <div class="bundle-option-title">Buy 2</div>
+        <div class="bundle-option-discount">10% OFF</div>
+      </div>
+      <div class="bundle-option-pricing">
+        <div class="bundle-option-price">{{ t2_price | money }}</div>
+        <div class="bundle-option-original-price">{{ t2_orig | money }}</div>
+      </div>
+    </label>
+    <label class="bundle-option bundle-option-wrapper" data-quantity="3" data-discount-type="percentage" style="border-radius:9px;">
+      <input type="radio" name="bundle-quantity-{{ preview_product_id }}" value="3" class="bundle-quantity-radio" data-product-id="{{ product.id }}">
+      <div class="bundle-option-details">
+        <div class="bundle-option-title">Buy 3</div>
+        <div class="bundle-option-discount">15% OFF</div>
+      </div>
+      <div class="bundle-option-pricing">
+        <div class="bundle-option-price">{{ t3_price | money }}</div>
+        <div class="bundle-option-original-price">{{ t3_orig | money }}</div>
+      </div>
+    </label>
+  </div>
+</div>

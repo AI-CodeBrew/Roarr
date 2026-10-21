@@ -1,0 +1,655 @@
+
+ {
+  "sections": {
+    "kluck-ai-home-hero-section": {
+      "type": "kluck-ai-home-hero-section",
+      "blocks": {
+        "slide_a6PQQB": {
+          "type": "slide",
+          "settings": {
+            "overlay": 0,
+            "product": "",
+            "slide_color_scheme": "",
+            "eyebrow": "Enter your text",
+            "heading": "Enter your text",
+            "btn_text": "Shop Now",
+            "h_size": 40,
+            "h_weight": "500",
+            "content_max_width": 340,
+            "e_size": 16,
+            "h_align": "flex-start",
+            "v_align": "center",
+            "text_align": "center"
+          }
+        },
+        "slide_qQa6G3": {
+          "type": "slide",
+          "settings": {
+            "overlay": 0,
+            "product": "",
+            "slide_color_scheme": "",
+            "eyebrow": "Enter your text",
+            "heading": "Enter your text",
+            "btn_text": "Shop Now",
+            "h_size": 40,
+            "h_weight": "500",
+            "content_max_width": 340,
+            "e_size": 16,
+            "h_align": "flex-start",
+            "v_align": "center",
+            "text_align": "center"
+          }
+        },
+        "slide_nUjdBn": {
+          "type": "slide",
+          "settings": {
+            "overlay": 0,
+            "product": "",
+            "slide_color_scheme": "",
+            "eyebrow": "Enter your text",
+            "heading": "Enter your text",
+            "btn_text": "Shop Now",
+            "h_size": 40,
+            "h_weight": "500",
+            "content_max_width": 340,
+            "e_size": 16,
+            "h_align": "flex-start",
+            "v_align": "center",
+            "text_align": "center"
+          }
+        }
+      },
+      "block_order": [
+        "slide_a6PQQB",
+        "slide_qQa6G3",
+        "slide_nUjdBn"
+      ],
+      "name": "Kluck AI - Hero Banner",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "height_desktop": 550,
+        "height_mobile": 300,
+        "border_radius": 0,
+        "autoplay_speed": 5000,
+        "zoom_duration": 3,
+        "color_scheme": "",
+        "padding_top": 5
+      }
+    },
+    "kluck-ai-headline-section": {
+      "type": "kluck-ai-headline-section",
+      "blocks": {
+        "text_segment_jUddaH": {
+          "type": "text_segment",
+          "settings": {
+            "text": "Enter your text",
+            "italic": false,
+            "font_family": "heading",
+            "text_scale": 100
+          }
+        },
+        "image_pill_mMkmEw": {
+          "type": "image_pill",
+          "settings": {
+            "link": ""
+          }
+        },
+        "text_segment_ULDyrq": {
+          "type": "text_segment",
+          "settings": {
+            "text": "Enter your text",
+            "italic": false,
+            "font_family": "heading",
+            "text_scale": 100
+          }
+        },
+        "line_break_anmX9U": {
+          "type": "line_break",
+          "settings": {}
+        },
+        "text_segment_mHtJDf": {
+          "type": "text_segment",
+          "settings": {
+            "text": "Enter your text",
+            "italic": false,
+            "font_family": "heading",
+            "text_scale": 100
+          }
+        },
+        "image_pill_TAp6d3": {
+          "type": "image_pill",
+          "settings": {
+            "image": "shopify://shop_images/5752fd81_zambeel_ai_generated_image.jpg",
+            "link": ""
+          }
+        },
+        "text_segment_VLFLKN": {
+          "type": "text_segment",
+          "settings": {
+            "text": "Enter your text",
+            "italic": false,
+            "font_family": "heading",
+            "text_scale": 100
+          }
+        },
+        "image_pill_we8Mhg": {
+          "type": "image_pill",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_segment_jUddaH",
+        "image_pill_mMkmEw",
+        "text_segment_ULDyrq",
+        "line_break_anmX9U",
+        "text_segment_mHtJDf",
+        "image_pill_TAp6d3",
+        "text_segment_VLFLKN",
+        "image_pill_we8Mhg"
+      ],
+      "name": "Kluck AI - Headline",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "color_scheme": "",
+        "size_desktop": 69,
+        "size_mobile": 45,
+        "line_height": 1,
+        "max_width": 1100
+      }
+    },
+    "kluck-ai-collection-showcase-section": {
+      "type": "kluck-ai-collection-showcase-section",
+      "blocks": {
+        "collection_card_4c8x8t": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "",
+            "layout_d": "row",
+            "text_align": "center",
+            "eyebrow": "Featured",
+            "title": "",
+            "text": "",
+            "btn_label": "Shop Now",
+            "btn_link": "",
+            "color_scheme": ""
+          }
+        },
+        "collection_card_QgrGKJ": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "",
+            "layout_d": "row",
+            "text_align": "center",
+            "eyebrow": "Featured",
+            "title": "",
+            "text": "",
+            "btn_label": "Shop Now",
+            "btn_link": "",
+            "color_scheme": ""
+          }
+        },
+        "collection_card_jxYiGn": {
+          "type": "collection_card",
+          "settings": {
+            "collection": "",
+            "layout_d": "row",
+            "text_align": "center",
+            "eyebrow": "Featured",
+            "title": "",
+            "text": "",
+            "btn_label": "Shop Now",
+            "btn_link": "",
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_card_4c8x8t",
+        "collection_card_QgrGKJ",
+        "collection_card_jxYiGn"
+      ],
+      "name": "Kluck AI - Collections",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "title": "Shop by Collections",
+        "main_h_size": 42,
+        "card_width_d": 85,
+        "desktop_height": 550,
+        "card_radius": 20,
+        "slide_gap": 20,
+        "track_offset": 48,
+        "container_pl": 95,
+        "h_size_d": 48,
+        "h_size_m": 32,
+        "p_size_d": 16,
+        "p_size_m": 14,
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "kluck-ai-feature-product-section": {
+      "type": "kluck-ai-feature-product-section",
+      "blocks": {
+        "product_card_ACPRxJ": {
+          "type": "product_card",
+          "settings": {
+            "heading": "Enter your text",
+            "text": "Enter your text",
+            "product": ""
+          }
+        },
+        "product_card_W7xU7P": {
+          "type": "product_card",
+          "settings": {
+            "heading": "Enter your text",
+            "text": "Enter your text",
+            "product": ""
+          }
+        },
+        "product_card_qg4hEb": {
+          "type": "product_card",
+          "settings": {
+            "heading": "Enter your text",
+            "text": "Enter your text",
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_card_ACPRxJ",
+        "product_card_W7xU7P",
+        "product_card_qg4hEb"
+      ],
+      "name": "Kluck AI - Featured Products",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "title": "Our Featured Products",
+        "container_pl": 95,
+        "track_offset": 48,
+        "card_width_d": 400,
+        "gap_d": 30,
+        "img_height_d": 300,
+        "card_width_m": 85,
+        "gap_m": 16,
+        "img_height_m": 250,
+        "color_scheme": "scheme-2",
+        "card_color_scheme": "",
+        "card_radius": 20,
+        "show_shadow": false,
+        "shop_btn_label": "Shop Now",
+        "btn_size_d": 12,
+        "btn_size_m": 11,
+        "btn_radius": 4,
+        "h_size_d": 42,
+        "h_size_m": 32,
+        "card_h_size_d": 20,
+        "card_h_size_m": 18,
+        "card_p_size_d": 16,
+        "card_p_size_m": 14,
+        "pt_d": 60,
+        "pb_d": 60,
+        "pt_m": 40,
+        "pb_m": 40
+      }
+    },
+    "kluck-ai-testimonials-section": {
+      "type": "kluck-ai-testimonials-section",
+      "blocks": {
+        "testimonial_t9AwTm": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "John M.",
+            "stars": 5,
+            "review_text": "Enter your text. Enter your text. Enter your text. Enter your text. Enter your text. Enter your text."
+          }
+        },
+        "testimonial_RHxXEF": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "John M.",
+            "stars": 5,
+            "review_text": "Enter your text. Enter your text. Enter your text. Enter your text. Enter your text. Enter your text."
+          }
+        },
+        "testimonial_YLWXfA": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "John M.",
+            "stars": 5,
+            "review_text": "Enter your text. Enter your text. Enter your text. Enter your text. Enter your text. Enter your text."
+          }
+        },
+        "testimonial_kdF4AE": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "John M.",
+            "stars": 5,
+            "review_text": "Enter your text. Enter your text. Enter your text. Enter your text. Enter your text. Enter your text."
+          }
+        },
+        "testimonial_xzQLEF": {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "John D.",
+            "stars": 5,
+            "review_text": "Enter your text. Enter your text. Enter your text. Enter your text. Enter your text. Enter your text."
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_t9AwTm",
+        "testimonial_RHxXEF",
+        "testimonial_YLWXfA",
+        "testimonial_kdF4AE",
+        "testimonial_xzQLEF"
+      ],
+      "name": "Kluck AI - Testimonials",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "section_full_width": false,
+        "section_max_width": 1320,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "color_scheme": "",
+        "card_color_scheme": "scheme-2",
+        "star_color": "#ffca0a",
+        "heading": "<p>Customer <em>Love & Feedback</em></p>",
+        "card_width_desktop": 250,
+        "card_width_mobile": 280,
+        "card_radius": 20,
+        "image_border_width": 1
+      }
+    },
+    "kluck-ai-tabbed-grid-section": {
+      "type": "kluck-ai-tabbed-grid-section",
+      "name": "Kluck AI - Products Grid",
+      "settings": {
+        "cols_desktop": 3,
+        "cols_mobile": "2",
+        "grid_gap": 30,
+        "card_radius": 16,
+        "color_scheme": "",
+        "sale_color": "#cf2e2e",
+        "badge_sale_bg": "#cf2e2e",
+        "badge_sale_text": "#ffffff",
+        "badge_custom_bg": "#000000",
+        "badge_custom_text": "#ffffff"
+      }
+    },
+    "kluck-ai-marquee-section-2": {
+      "type": "kluck-ai-marquee-section-2",
+      "blocks": {
+        "image_QCyM8d": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_yjhJrm": {
+          "type": "text",
+          "settings": {
+            "text": "Made with love"
+          }
+        },
+        "image_txzqpp": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_qYcKHE": {
+          "type": "text",
+          "settings": {
+            "text": "New Season Essential"
+          }
+        },
+        "image_UNgKAj": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_ca4xmH": {
+          "type": "text",
+          "settings": {
+            "text": "New Season Essential"
+          }
+        }
+      },
+      "block_order": [
+        "image_QCyM8d",
+        "text_yjhJrm",
+        "image_txzqpp",
+        "text_qYcKHE",
+        "image_UNgKAj",
+        "text_ca4xmH"
+      ],
+      "name": "Kluck AI - Marquee Banner",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "direction": "left",
+        "pause_hover": false,
+        "show_border_top": true,
+        "show_border_bottom": true,
+        "color_scheme": "",
+        "speed_d": 20,
+        "font_size_d": 32,
+        "img_height_d": 75,
+        "gap_d": 70,
+        "padding_d": 30,
+        "speed_m": 15,
+        "font_size_m": 24,
+        "img_height_m": 40,
+        "gap_m": 30,
+        "padding_m": 20,
+        "img_radius": 100
+      }
+    },
+    "kluck-ai-image-with-text-3-section": {
+      "type": "kluck-ai-image-with-text-3-section",
+      "name": "Kluck - AI - Image with Text",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "section_width": 1300,
+        "text_column_width": 50,
+        "border_radius": 20,
+        "color_scheme": "scheme-1",
+        "card_color_scheme": "scheme-2",
+        "eyebrow": "Best out there",
+        "heading": "Elevate Your Daily Rituals",
+        "text": "We combine smart technology with gentle design to bring you personal care tools that truly understand your body.",
+        "heading_size": 55,
+        "body_size": 19,
+        "eyebrow_size": 15,
+        "watermark_text": "",
+        "watermark_color": "#000000",
+        "btn_label": "Shop Best Sellers",
+        "btn_link": "shopify://products/benvoro™-pro-ear-cleaner",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "kluck-ai-trust-badge-2-section": {
+      "type": "kluck-ai-trust-badge-2-section",
+      "blocks": {
+        "badge_pMUQ7W": {
+          "type": "badge",
+          "settings": {
+            "text": "Free Shipping"
+          }
+        },
+        "badge_dLzyKU": {
+          "type": "badge",
+          "settings": {
+            "text": "Money Guarantee"
+          }
+        },
+        "badge_kU3jXK": {
+          "type": "badge",
+          "settings": {
+            "text": "Flexible Payment"
+          }
+        },
+        "badge_i9jGhW": {
+          "type": "badge",
+          "settings": {
+            "text": "Online Support"
+          }
+        }
+      },
+      "block_order": [
+        "badge_pMUQ7W",
+        "badge_dLzyKU",
+        "badge_kU3jXK",
+        "badge_i9jGhW"
+      ],
+      "name": "Kluck AI - Trust Badge",
+      "settings": {
+        "max_width": 1400,
+        "alignment": "center",
+        "mobile_auto_scroll": true,
+        "scroll_speed": 20,
+        "border_width": 1,
+        "border_radius": 50,
+        "font_family": "almarai_n4",
+        "font_weight": 400,
+        "pt_d": 40,
+        "pb_d": 70,
+        "gap_d": 20,
+        "font_size_d": 16,
+        "icon_size_d": 32,
+        "item_pad_x_d": 20,
+        "item_pad_y_d": 10,
+        "pt_m": 30,
+        "pb_m": 30,
+        "gap_m": 12,
+        "font_size_m": 14,
+        "icon_size_m": 28,
+        "item_pad_x_m": 15,
+        "item_pad_y_m": 8
+      }
+    },
+    "kluck-ai-product-column-section": {
+      "type": "kluck-ai-product-column-section",
+      "blocks": {
+        "feature_99Hikm": {
+          "type": "feature",
+          "settings": {
+            "icon_select": "drop",
+            "heading": "Deeply hydrating",
+            "text": "Up to 130% increase in skin hydration."
+          }
+        },
+        "feature_gpmwQE": {
+          "type": "feature",
+          "settings": {
+            "icon_select": "star",
+            "heading": "Deeply hydrating",
+            "text": "Up to 130% increase in skin hydration."
+          }
+        },
+        "feature_HYV34p": {
+          "type": "feature",
+          "settings": {
+            "icon_select": "leaf",
+            "heading": "Deeply hydrating",
+            "text": "Up to 130% increase in skin hydration."
+          }
+        },
+        "feature_8hBrHJ": {
+          "type": "feature",
+          "settings": {
+            "icon_select": "moon",
+            "heading": "Deeply hydrating",
+            "text": "Up to 130% increase in skin hydration."
+          }
+        }
+      },
+      "block_order": [
+        "feature_99Hikm",
+        "feature_gpmwQE",
+        "feature_HYV34p",
+        "feature_8hBrHJ"
+      ],
+      "name": "Kluck AI - Product Column",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "heading_part_1": "Star Product",
+        "heading_part_2": "of this season",
+        "color_scheme": "",
+        "col_2_color_scheme": "scheme-1",
+        "col_3_color_scheme": "scheme-2",
+        "section_height": 600,
+        "border_radius": 20,
+        "video_url": "",
+        "product": "",
+        "show_float_badge": true,
+        "float_badge_text": "BEST SELLER",
+        "show_stars": false,
+        "review_count_manual": "",
+        "show_pill": true,
+        "pill_text": "Loved-by-everyone",
+        "pill_icon_select": "heart",
+        "show_btn": true,
+        "btn_label": "Shop Now",
+        "feat_h_size": 20,
+        "feat_p_size": 14
+      }
+    },
+    "kluck-ai-faq-section-home-1": {
+      "type": "kluck-ai-faq-section-home-1",
+      "blocks": {
+        "faq_item_MnAkKt": {
+          "type": "faq_item",
+          "settings": {
+            "title": "How long does shipping take?",
+            "content": "3-5 business days."
+          }
+        },
+        "faq_item_eiwdQt": {
+          "type": "faq_item",
+          "settings": {
+            "title": "How long does shipping take?",
+            "content": "3-5 business days."
+          }
+        },
+        "faq_item_BNn7GA": {
+          "type": "faq_item",
+          "settings": {
+            "title": "How long does shipping take?",
+            "content": "3-5 business days."
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_MnAkKt",
+        "faq_item_eiwdQt",
+        "faq_item_BNn7GA"
+      ],
+      "name": "Kluck AI - FAQ",
+      "settings": {
+        "use_kluck_ai_metafields": true,
+        "section_full_width": false,
+        "section_max_width": 1300,
+        "color_scheme": "",
+        "faq_color_scheme": "scheme-1",
+        "heading": "We're answerable!",
+        "text": "<p>Any question about our products? Check here.</p>",
+        "btn_label": "See More Answers",
+        "btn_link": "shopify://pages/faq",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "kluck-ai-home-hero-section",
+    "kluck-ai-headline-section",
+    "kluck-ai-collection-showcase-section",
+    "kluck-ai-feature-product-section",
+    "kluck-ai-testimonials-section",
+    "kluck-ai-tabbed-grid-section",
+    "kluck-ai-marquee-section-2",
+    "kluck-ai-image-with-text-3-section",
+    "kluck-ai-trust-badge-2-section",
+    "kluck-ai-product-column-section",
+    "kluck-ai-faq-section-home-1"
+  ]
+}

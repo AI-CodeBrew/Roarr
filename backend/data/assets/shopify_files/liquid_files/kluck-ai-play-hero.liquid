@@ -1,0 +1,388 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Poppins:wght@400;500;600;700&display=swap">
+{%- assign current = product.selected_or_first_available_variant -%}
+{%- assign kicker = section.settings.kicker -%}
+{%- if product.type != blank -%}
+  {%- assign kicker = product.type -%}
+{%- endif -%}
+
+<div id="KluckPlayHero-{{ section.id }}" class="kluck-play-hero">
+  <div class="kluck-play-hero__card">
+    <div class="kluck-play-hero__grid">
+      <div>
+        <div class="kluck-play-hero__gallery">
+          <span class="kluck-play-hero__badge">
+            {%- if current.compare_at_price > current.price -%}
+              {%- assign savings = current.compare_at_price | minus: current.price | times: 100.0 | divided_by: current.compare_at_price | round -%}
+              Save<br>{{ savings }}%
+            {%- else -%}
+              Save<br>50%
+            {%- endif -%}
+          </span>
+          {%- if product.featured_image -%}
+            <img
+              id="KluckPlayMain-{{ section.id }}"
+              src="{{ product.featured_image | image_url: width: 1200 }}"
+              alt="{{ product.title | escape }}"
+              width="1200"
+              height="1200"
+            >
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'kluck-play-hero__placeholder' }}
+          {%- endif -%}
+        </div>
+        {%- if product.images.size > 1 -%}
+          <div class="kluck-play-hero__thumbs">
+            {%- for image in product.images limit: 4 -%}
+              <button
+                type="button"
+                class="kluck-play-hero__thumb{% if forloop.first %} is-on{% endif %}"
+                data-src="{{ image | image_url: width: 1200 }}"
+                aria-label="Show image {{ forloop.index }}"
+              >
+                <img src="{{ image | image_url: width: 200 }}" alt="" width="144" height="144">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div>
+        <p class="kluck-play-hero__kicker">{{ kicker | escape }}</p>
+        <h1>{{ product.title | escape }}</h1>
+        <div class="kluck-bundle-slot">
+          {%- for block in section.blocks -%}
+            {% render block %}
+          {%- endfor -%}
+        </div>
+        {% form 'product', product, class: 'kluck-play-hero__form' %}
+          <input type="hidden" name="id" value="{{ current.id }}">
+          <div class="kluck-play-hero__price">
+            <strong data-price>{{ current.price | money }}</strong>
+            <s data-compare {% unless current.compare_at_price > current.price %}hidden{% endunless %}>
+              {%- if current.compare_at_price > current.price -%}{{ current.compare_at_price | money }}{%- endif -%}
+            </s>
+          </div>
+          {%- unless product.has_only_default_variant -%}
+            <div class="kluck-play-hero__variants">
+              {%- for variant in product.variants limit: 6 -%}
+                <button
+                  type="button"
+                  class="kluck-play-hero__variant{% if variant.id == current.id %} is-on{% endif %}"
+                  data-id="{{ variant.id }}"
+                  data-price="{{ variant.price | money | escape }}"
+                  data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | escape }}{% endif %}"
+                >{{ variant.title | escape }}</button>
+              {%- endfor -%}
+            </div>
+          {%- endunless -%}
+          <div class="kluck-play-hero__buy">
+            <div class="kluck-play-hero__qty">
+              <button type="button" data-qty-minus aria-label="Decrease quantity">−</button>
+              <b data-qty>1</b>
+              <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
+            </div>
+            <input type="hidden" name="quantity" value="1">
+            <button class="kluck-play-hero__atc" type="submit">{% render 'kluck-ui-string', key: 'add_to_cart' %}</button>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% style %}
+
+  @import url("https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Poppins:wght@400;500;600;700&display=swap");
+  #shopify-section-{{ section.id }} {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    font-family: Poppins, sans-serif !important;
+  }
+  #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }} * { box-sizing: border-box; }
+  #shopify-section-{{ section.id }} h1,
+  #shopify-section-{{ section.id }} h2,
+  #shopify-section-{{ section.id }} h3,
+  #shopify-section-{{ section.id }} .kluck-play-hero__badge,
+  #shopify-section-{{ section.id }} .kluck-play-designed__badge,
+  #shopify-section-{{ section.id }} .kluck-play-marquee__track span,
+  #shopify-section-{{ section.id }} .kluck-play-story__mix,
+  #shopify-section-{{ section.id }} summary {
+    font-family: "Caveat Brush", cursive !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+  }
+  #shopify-section-{{ section.id }} p,
+  #shopify-section-{{ section.id }} button,
+  #shopify-section-{{ section.id }} b,
+  #shopify-section-{{ section.id }} strong,
+  #shopify-section-{{ section.id }} .kluck-play-hero__kicker,
+  #shopify-section-{{ section.id }} .kluck-play-hero__price,
+  #shopify-section-{{ section.id }} .kluck-play-story__pills span,
+  #shopify-section-{{ section.id }} .kluck-play-promo__code,
+  #shopify-section-{{ section.id }} details p {
+    font-family: Poppins, sans-serif !important;
+    text-transform: none;
+  }
+  #shopify-section-{{ section.id }} button {
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    box-shadow: none;
+    min-height: 0;
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} button:before,
+  #shopify-section-{{ section.id }} button:after { content: none !important; display: none !important; }
+  #shopify-section-{{ section.id }} { margin: 0; padding: 0; }
+  #KluckPlayHero-{{ section.id }} {
+    background: #FFFCF5 url("{{ section.settings.background_image }}") center / cover no-repeat;
+    color: #6F2424;
+    font-family: Poppins, sans-serif !important;
+    padding: 72px 0;
+    overflow-x: clip;
+    max-width: 100%;
+  }
+  #KluckPlayHero-{{ section.id }} h1 {
+    font-family: "Caveat Brush", cursive !important;
+    font-weight: 400 !important;
+    font-size: 48px !important;
+    line-height: 1.05 !important;
+    margin: 0 !important;
+    color: #6F2424 !important;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__card {
+    width: min(1100px, calc(100% - 48px));
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #6F2424;
+    border-radius: 20px;
+    padding: 40px 48px;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 36px;
+    align-items: center;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__grid > * { min-width: 0; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__form { margin: 0; max-width: 100%; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__gallery { position: relative; max-width: 100%; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__gallery > img,
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__placeholder {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: contain;
+    border-radius: 20px;
+    background: #fff;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__badge {
+    position: absolute;
+    top: 18px;
+    inset-inline-start: 18px;
+    width: 121px;
+    height: 121px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: #fff;
+    background: url("{{ section.settings.badge_image }}") center / cover no-repeat;
+    font-family: "Caveat Brush", cursive !important;
+    font-size: 28px !important;
+    line-height: 0.95 !important;
+    transform: rotate(-21deg);
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__thumbs { display: flex; gap: 10px; margin-top: 12px; min-width: 0; max-width: 100%; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__thumb {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 72px;
+    padding: 0;
+    border: 2px solid #fff;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__thumb.is-on { border-color: #6F2424; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__thumb img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__kicker {
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin: 0 0 8px;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__price {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__price strong { font-size: 28px !important; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__price s { color: #b08989; font-size: 18px !important; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__variants { display: flex; gap: 8px; margin: 8px 0 18px; flex-wrap: wrap; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__variant {
+    border: 1.5px solid #6F2424 !important;
+    border-radius: 999px !important;
+    padding: 8px 14px !important;
+    font-family: Poppins, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: normal !important;
+    color: #6F2424 !important;
+    background: #fff !important;
+    cursor: pointer;
+    width: auto !important;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__variant.is-on { background: #6F2424 !important; color: #fff !important; }
+  #KluckPlayHero-{{ section.id }} .kluck-bundle-slot { width: 100%; margin: 4px 0 14px; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__buy { display: flex; gap: 10px; align-items: center; min-width: 0; max-width: 100%; }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__qty {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    border: 1.5px solid #6F2424;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__qty button,
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__qty b {
+    width: 42px !important;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    background: transparent !important;
+    border: 0 !important;
+    color: #6F2424 !important;
+    font-family: Poppins, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    cursor: pointer;
+  }
+  #KluckPlayHero-{{ section.id }} .kluck-play-hero__atc {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 52px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #6F2424 !important;
+    color: #fff !important;
+    font-family: Poppins, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    width: auto !important;
+    max-width: 100%;
+    padding: 0 16px !important;
+  }
+  @media (max-width: 800px) {
+    #KluckPlayHero-{{ section.id }} { padding: 28px 0; }
+    #KluckPlayHero-{{ section.id }} .kluck-play-hero__card {
+      width: calc(100% - 24px);
+      padding: 16px 12px;
+    }
+    #KluckPlayHero-{{ section.id }} .kluck-play-hero__grid { grid-template-columns: 1fr; }
+    #KluckPlayHero-{{ section.id }} h1 { font-size: 42px !important; overflow-wrap: anywhere; }
+    #KluckPlayHero-{{ section.id }} .kluck-play-hero__gallery > img { max-height: 280px; }
+    #KluckPlayHero-{{ section.id }} .kluck-play-hero__badge {
+      width: 92px;
+      height: 92px;
+      top: 10px;
+      inset-inline-start: 10px;
+      font-size: 22px !important;
+    }
+  }
+{% endstyle %}
+
+<script>
+  (function () {
+    var root = document.getElementById("KluckPlayHero-{{ section.id }}");
+    if (!root) return;
+    var main = document.getElementById("KluckPlayMain-{{ section.id }}");
+    var qtyLabel = root.querySelector("[data-qty]");
+    var qtyInput = root.querySelector('input[name="quantity"]');
+    var price = root.querySelector("[data-price]");
+    var compare = root.querySelector("[data-compare]");
+    var idInput = root.querySelector('input[name="id"]');
+    root.querySelectorAll(".kluck-play-hero__thumb").forEach(function (button) {
+      button.addEventListener("click", function () {
+        if (main && button.dataset.src) main.src = button.dataset.src;
+        root.querySelectorAll(".kluck-play-hero__thumb").forEach(function (item) {
+          item.classList.remove("is-on");
+        });
+        button.classList.add("is-on");
+      });
+    });
+    function setQty(next) {
+      var value = Math.max(1, next);
+      if (qtyInput) qtyInput.value = String(value);
+      if (qtyLabel) qtyLabel.textContent = String(value);
+    }
+    var minus = root.querySelector("[data-qty-minus]");
+    var plus = root.querySelector("[data-qty-plus]");
+    if (minus) minus.addEventListener("click", function () { setQty(parseInt(qtyInput.value || "1", 10) - 1); });
+    if (plus) plus.addEventListener("click", function () { setQty(parseInt(qtyInput.value || "1", 10) + 1); });
+    root.querySelectorAll(".kluck-play-hero__variant").forEach(function (button) {
+      button.addEventListener("click", function () {
+        if (idInput) idInput.value = button.dataset.id;
+        if (price) price.textContent = button.dataset.price || "";
+        if (compare) {
+          if (button.dataset.compare) {
+            compare.hidden = false;
+            compare.textContent = button.dataset.compare;
+          } else {
+            compare.hidden = true;
+            compare.textContent = "";
+          }
+        }
+        root.querySelectorAll(".kluck-play-hero__variant").forEach(function (item) {
+          item.classList.remove("is-on");
+        });
+        button.classList.add("is-on");
+      });
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--play" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: Poppins, "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Caveat Brush", "Lalezar", "Tajawal", cursive !important; line-height: 1.4 !important; font-weight: 400 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kluck Play Hero",
+  "tag": "section",
+  "class": "kluck-play-section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Kids toys" },
+    { "type": "text", "id": "background_image", "label": "Background image", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/product-bg.png?v=1726116403" },
+    { "type": "text", "id": "badge_image", "label": "Badge image", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/sale-badge.png?v=1726541080" }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "Kluck Play Hero" }]
+}
+{% endschema %}

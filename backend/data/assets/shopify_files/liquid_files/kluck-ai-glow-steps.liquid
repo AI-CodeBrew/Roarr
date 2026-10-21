@@ -1,0 +1,62 @@
+{%- capture kl_rtl_html -%}
+{%- assign m = product.metafields.kluck_ai -%}
+{%- assign label = m.creative_sassy_product_heading.value | default: m.creative_sassy_product_heading | default: 'How to Use' -%}
+{%- assign heading = m.creative_sassy_product_subheading_4.value | default: m.creative_sassy_product_subheading_4 | default: "It's time to achieve more with less" -%}
+{%- assign body = m.how_to_body.value | default: m.how_to_body -%}
+{%- assign n1 = m.creative_sassy_product_subheading_1.value | default: m.creative_sassy_product_subheading_1 | default: 'Cleanse your face' -%}
+{%- assign d1 = m.creative_sassy_product_subheading_1_description.value | default: m.creative_sassy_product_subheading_1_description -%}
+{%- assign n2 = m.creative_sassy_product_subheading_2.value | default: m.creative_sassy_product_subheading_2 | default: 'Apply' -%}
+{%- assign d2 = m.creative_sassy_product_subheading_2_description.value | default: m.creative_sassy_product_subheading_2_description -%}
+{%- assign n3 = m.creative_sassy_product_subheading_3.value | default: m.creative_sassy_product_subheading_3 | default: 'Use twice daily' -%}
+{%- assign d3 = m.creative_sassy_product_subheading_3_description.value | default: m.creative_sassy_product_subheading_3_description -%}
+{%- assign p1 = m.how_to_image_1.value | default: m.how_to_image_1 | default: m.product_image_3.value | default: m.product_image_3 -%}
+{%- assign p2 = m.how_to_image_2.value | default: m.how_to_image_2 | default: m.product_image_4.value | default: m.product_image_4 -%}
+{%- assign p3 = m.how_to_image_3.value | default: m.how_to_image_3 | default: m.product_image_5.value | default: m.product_image_5 -%}
+<section class="gl-steps">
+  <p>{{ label }}</p>
+  <h2>{{ heading }}</h2>
+  {%- if body != blank -%}<span>{{ body }}</span>{%- endif -%}
+  <div class="gl-steps-grid">
+    <article>{%- if p1 != blank -%}<img src="{{ p1 | image_url: width: 800 }}" alt="">{%- endif -%}<b>Step 01</b><h3>{{ n1 }}</h3>{%- if d1 != blank -%}<em>{{ d1 }}</em>{%- endif -%}</article>
+    <article>{%- if p2 != blank -%}<img src="{{ p2 | image_url: width: 800 }}" alt="">{%- endif -%}<b>Step 02</b><h3>{{ n2 }}</h3>{%- if d2 != blank -%}<em>{{ d2 }}</em>{%- endif -%}</article>
+    <article>{%- if p3 != blank -%}<img src="{{ p3 | image_url: width: 800 }}" alt="">{%- endif -%}<b>Step 03</b><h3>{{ n3 }}</h3>{%- if d3 != blank -%}<em>{{ d3 }}</em>{%- endif -%}</article>
+  </div>
+</section>
+<style>
+  .gl-steps { background: #fff; color: #222; font-family: "DM Sans", sans-serif; padding: 72px 0 32px; text-align: center; }
+  .gl-steps > p { margin: 0; letter-spacing: 0.18em; text-transform: uppercase; font-size: 12px; font-weight: 700; }
+  .gl-steps h2 { font-family: "Cormorant Garamond", serif; font-weight: 500; font-style: italic; font-size: 52px; line-height: 1.1; margin: 10px auto; max-width: 720px; }
+  .gl-steps > span { display: block; max-width: 560px; margin: 0 auto 36px; font-size: 15px; line-height: 1.6; color: #3a3a3a; }
+  .gl-steps-grid { width: min(980px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .gl-steps img { width: min(300px, 100%); aspect-ratio: 1; height: auto; border-radius: 50%; object-fit: cover; object-position: center; display: block; margin: 0 auto 18px; }
+  .gl-steps b { display: block; letter-spacing: 0.14em; text-transform: uppercase; font-size: 11px; font-weight: 600; margin-bottom: 6px; }
+  .gl-steps h3 { font-family: "DM Sans", sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 8px; }
+  .gl-steps em { display: block; font-style: normal; font-size: 14px; line-height: 1.5; color: #3a3a3a; }
+  @media (max-width: 800px) { .gl-steps-grid { grid-template-columns: 1fr; } .gl-steps h2 { font-size: 40px; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--glow" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "DM Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Cormorant Garamond", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kluck Glow Steps",
+  "tag": "section",
+  "class": "kluck-glow-section",
+  "settings": [],
+  "presets": [{ "name": "Kluck Glow Steps" }]
+}
+{% endschema %}

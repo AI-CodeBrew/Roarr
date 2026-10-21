@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "glow-hero": {
+      "type": "kluck-ai-glow-hero",
+      "blocks": {
+        "kluck_ai_bundle": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/bundle/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {}
+        }
+      },
+      "block_order": ["kluck_ai_bundle"],
+      "settings": {}
+    },
+    "glow-special": { "type": "kluck-ai-glow-special", "settings": {} },
+    "glow-stats": { "type": "kluck-ai-glow-stats", "settings": {} },
+    "glow-ingredients": { "type": "kluck-ai-glow-ingredients", "settings": {} },
+    "glow-steps": { "type": "kluck-ai-glow-steps", "settings": {} },
+    "glow-faq": { "type": "kluck-ai-glow-faq", "settings": {} }
+  },
+  "order": ["glow-hero", "glow-special", "glow-stats", "glow-ingredients", "glow-steps", "glow-faq"]
+}

@@ -1,0 +1,126 @@
+{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+
+{% if shop.metafields.app.block_control.value %}
+{% comment %}
+  Hero Peek Slider - Product Pro Version
+{% endcomment %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-k-hero-peek-slider.css' | asset_url }}" media="all">
+
+{% style %}
+  #hs-{{ section.id }} {
+    --font-h: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-b: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --slide-height-d: {{ section.settings.height_desktop }}px;
+    --slide-height-m: {{ section.settings.height_mobile }}px;
+    --slide-radius: {{ section.settings.border_radius }}px;
+    --zoom-speed: {{ section.settings.zoom_duration }}s;
+    --pt: {{ section.settings.padding_top }}px;
+    --center-width: 100%;
+    --gap: 0px;
+    --autoplay-speed: {{ section.settings.autoplay_speed }}ms;
+  }
+{% endstyle %}
+
+<div
+  id="hs-{{ section.id }}"
+  class="color-{{ section.settings.color_scheme }}"
+  data-hero-peek-slider
+  data-section-id="{{ section.id }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+>
+  <div class="hs-section">
+    <div class="hs-track-wrapper" id="hs-track-{{ section.id }}">
+      {%- assign total_blocks = section.blocks.size -%}
+
+      {% for block in section.blocks %}
+        {%- if total_blocks == 1 -%}
+          {%- assign kluck_banner_image = shop.metafields.kluck_ai.banner_image.value -%}
+          {%- assign kluck_banner_heading = store_gen.home_page.text.banner_heading -%}
+          {%- assign kluck_banner_eyebrow = store_gen.home_page.text.banner_eyebrow -%}
+          {%- assign kluck_product_handle = store_gen.home_page.text.selected_product -%}
+        {%- else -%}
+          {%- assign i = forloop.index -%}
+          {%- assign img_key = 'banner_image_' | append: i -%}
+          {%- assign heading_key = 'banner_heading_' | append: i -%}
+          {%- assign eyebrow_key = 'banner_eyebrow_' | append: i -%}
+          {%- assign product_key = 'selected_product_' | append: i -%}
+
+          {%- assign kluck_banner_image = shop.metafields.kluck_ai[img_key].value -%}
+          {%- assign kluck_banner_heading = store_gen.home_page.text[heading_key] -%}
+          {%- assign kluck_banner_eyebrow = store_gen.home_page.text[eyebrow_key] -%}
+          {%- assign kluck_product_handle = store_gen.home_page.text[product_key] -%}
+        {%- endif -%}
+
+        {%- assign selected_product = block.settings.product -%}
+        {%- if section.settings.use_kluck_ai_metafields and kluck_product_handle != blank -%}
+          {%- assign selected_product = all_products[kluck_product_handle] -%}
+        {%- endif -%}
+
+        <div
+          class="hs-slide {% if forloop.first %}active{% endif %}"
+          onclick="if(!this.classList.contains('active')) window['hsGoToSlide_{{ section.id }}']({{ forloop.index0 }})"
+          {{ block.shopify_attributes }}
+        >
+          <style>
+            #hs-{{ section.id }} [data-block-id="{{ block.id }}"] { justify-content: {{ block.settings.v_align }}; align-items: {{ block.settings.h_align }}; }
+            #hs-{{ section.id }} [data-block-id="{{ block.id }}"] .hs-text-content-inner { max-width: {{ block.settings.content_max_width }}px; width: 100%; text-align: {{ block.settings.text_align }}; }
+            #hs-{{ section.id }} [data-block-id="{{ block.id }}"] .hs-btn {
+              {% if block.settings.text_align == 'right' %} margin-left: auto; margin-right: 0; {% elsif block.settings.text_align == 'center' %} margin-left: auto; margin-right: auto; {% else %} margin-left: 0; margin-right: auto; {% endif %}
+            }
+            #hs-{{ section.id }} [data-block-id="{{ block.id }}"] h2 { font-size: {{ block.settings.h_size }}px; font-weight: {{ block.settings.h_weight }}; }
+            #hs-{{ section.id }} [data-block-id="{{ block.id }}"] .hs-eyebrow { font-size: {{ block.settings.e_size }}px; }
+          </style>
+
+          <div class="hs-bg-wrap">
+            {% if section.settings.use_kluck_ai_metafields and kluck_banner_image != blank %}
+              <img src="{{ kluck_banner_image | image_url: width: 2000, height: 1125, crop: 'center' }}" class="hs-bg-img" alt="{{ kluck_banner_heading | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+            {% elsif block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 2000, height: 1125, crop: 'center' }}" class="hs-bg-img" alt="{{ block.settings.heading | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+            {% else %}
+              <div class="hs-bg-img" style="background: #e5c3b1;"></div>
+            {% endif %}
+            <div class="hs-overlay" style="position:absolute; inset:0; background: rgba(0,0,0,{{ block.settings.overlay | divided_by: 100.0 }});"></div>
+          </div>
+
+          <div class="hs-content-box color-{{ block.settings.slide_color_scheme }}" data-block-id="{{ block.id }}" style="background-color: transparent !important;">
+            <div class="hs-text-content-inner">
+              {% if section.settings.use_kluck_ai_metafields and kluck_banner_eyebrow != blank %}
+                <span class="hs-eyebrow">{{ kluck_banner_eyebrow }}</span>
+              {% elsif block.settings.eyebrow != blank %}
+                <span class="hs-eyebrow">{{ block.settings.eyebrow }}</span>
+              {% endif %}
+
+              <h2>
+                {% if section.settings.use_kluck_ai_metafields and kluck_banner_heading != blank %}
+                  {{ kluck_banner_heading }}
+                {% else %}
+                  {{ block.settings.heading }}
+                {% endif %}
+              </h2>
+
+              {% if selected_product != blank %}
+                <a href="{{ selected_product.url }}" class="hs-btn">{{ block.settings.btn_text }}</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="hs-pagination">
+      {% for block in section.blocks %}
+        <div
+          class="hs-dot {% if forloop.first %}active{% endif %}"
+          onclick="window['hsGoToSlide_{{ section.id }}']({{ forloop.index0 }})"
+        >
+          <div class="hs-progress"></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'pf-k-hero-peek-slider.js' | asset_url }}" defer></script>
+{% endif %}

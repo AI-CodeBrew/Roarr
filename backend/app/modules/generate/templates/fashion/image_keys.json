@@ -1,0 +1,35 @@
+{
+  "1": {
+    "product_images": [
+      "product_image_1",
+      "product_image_2",
+      "product_image_3",
+      "product_image_4",
+      "product_image_5"
+    ],
+    "body_images": [
+      "happy_customer_image_1",
+      "happy_customer_image_2",
+      "happy_customer_image_3",
+      "feature_image",
+      "product_impact_image",
+      "problem_solving_image"
+    ]
+  },
+  "2": {
+    "product_images": [
+      "product_image_1",
+      "product_image_2",
+      "product_image_3",
+      "product_image_4",
+      "product_image_5"
+    ],
+    "body_images": [
+      "happy_customer_image_1",
+      "happy_customer_image_2",
+      "happy_customer_image_3",
+      "feature_image",
+      "product_impact_image"
+    ]
+  }
+}

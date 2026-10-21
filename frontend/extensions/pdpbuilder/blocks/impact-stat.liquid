@@ -1,0 +1,151 @@
+{%- liquid
+  assign s = block.settings
+  assign color_schema = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#A34E4E'
+  
+  if s.use_metafields
+    assign heading_content = product.metafields.kluck_ai.stats_section_heading.value | default: s.heading
+    assign point_1_heading = product.metafields.kluck_ai.stats_section_point_1_heading.value | default: s.row1_title
+    assign point_1_desc = product.metafields.kluck_ai.stats_section_point_1_desc.value | default: s.row1_body
+    assign point_2_heading = product.metafields.kluck_ai.stats_section_point_2_heading.value | default: s.row2_title
+    assign point_2_desc = product.metafields.kluck_ai.stats_section_point_2_desc.value | default: s.row2_body
+    assign point_3_heading = product.metafields.kluck_ai.stats_section_point_3_heading.value | default: s.row3_title
+    assign point_3_desc = product.metafields.kluck_ai.stats_section_point_3_desc.value | default: s.row3_body
+  else
+    assign heading_content = s.heading
+    assign point_1_heading = s.row1_title
+    assign point_1_desc = s.row1_body
+    assign point_2_heading = s.row2_title
+    assign point_2_desc = s.row2_body
+    assign point_3_heading = s.row3_title
+    assign point_3_desc = s.row3_body
+  endif
+  assign image_content = blank
+  if product.metafields.kluck_ai.problem_solving_image
+    assign image_meta = product.metafields.kluck_ai.problem_solving_image
+    assign image_content = image_meta.value | default: image_meta
+  endif
+  if s.image != blank
+    assign image_content = s.image
+  endif
+-%}
+
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'impact-stat.css' | asset_url }}" media="all">
+
+<div 
+  id="impact-{{ block.id }}" 
+  class="impact app_blocks_class" 
+  aria-label="Impact metrics"
+  style="display: none; --impact-primary-color: {{ color_schema }};"
+>
+    {% if heading_content != blank %}
+      <div class="impact__heading-wrapper">
+        <h3 class="impact__main-heading">{{ heading_content }}</h3>
+      </div>
+    {% endif %}
+    <div class="impact__inner">
+    <div class="impact__grid">
+      <!-- Left -->
+      <div class="impact__left">
+        <div class="impact__media">
+          {% if image_content != blank %}
+            <img 
+              src="{{ image_content | image_url: width: 800 }}"
+              srcset="{{ image_content | image_url: width: 400 }} 400w,
+                      {{ image_content | image_url: width: 800 }} 800w,
+                      {{ image_content | image_url: width: 1200 }} 1200w"
+              sizes="(max-width: 991px) 100vw, 42vw"
+              alt="{{ image_content.alt | default: 'Impact image' }}"
+              loading="lazy"
+              width="800"
+              height="600"
+            >
+          {% else %}
+            <img src="{{ 'image-svg.svg' | asset_url }}" width="48" height="48" alt="" loading="lazy">
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right: up to 3 rows -->
+<div class="impact__right" role="list">
+  {% for i in (1..3) %}
+    {% assign base = 'row' | append: i %}
+    {% assign key_percent = base | append: '_percent' %}
+    {% assign percent = s[key_percent] | default: 0 | at_least: 0 | at_most: 100 %}
+    
+    {% if i == 1 %}
+      {% assign title = point_1_heading %}
+      {% assign body = point_1_desc %}
+    {% elsif i == 2 %}
+      {% assign title = point_2_heading %}
+      {% assign body = point_2_desc %}
+    {% else %}
+      {% assign title = point_3_heading %}
+      {% assign body = point_3_desc %}
+    {% endif %}
+
+    {% if title != blank or body != blank %}
+      <article role="listitem" class="impact__row">
+        <div class="impact__dial" data-percent="{{ percent }}">
+          <svg class="impact__svg" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="impact__track" cx="50" cy="50" r="45"></circle>
+            <circle class="impact__progress" cx="50" cy="50" r="45"></circle>
+          </svg>
+          <div class="impact__center">
+            <h4 class="impact__dial-text">{{ percent }}</h4>
+          </div>
+        </div>
+        <div class="impact__text">
+          {% if title != blank %}
+          <h4 class="impact__row-title">{{ title }}</h4>
+          {% endif %}
+          {% if body != blank %}
+          <p class="impact__row-body rte">{{ body }}</p>
+          {% endif %}
+        </div>
+      </article>
+    {% endif %}
+  {% endfor %}
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'impact-stat.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Impact Stats",
+  "target":"section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_metafields",
+      "label": "Use Kluck AI metafields",
+      "default": true,
+      "info": "When enabled, content will be pulled from product metafields created by Kluck AI. When disabled, you can manually enter text."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Enter your Text"
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "row1_title", "label": "Row 1 title", "default": "Enter your text" },
+    { "type": "richtext", "id": "row1_body", "label": "Row 1 body", "default": "<p>Enter your text</p>" },
+    { "type": "range", "id": "row1_percent", "label": "Row 1 percentage", "min": 0, "max": 100, "step": 1, "default": 95 },
+    { "type": "text", "id": "row2_title", "label": "Row 2 title", "default": "Enter your text" },
+    { "type": "richtext", "id": "row2_body", "label": "Row 2 body", "default": "<p>Enter your text.</p>" },
+    { "type": "range", "id": "row2_percent", "label": "Row 2 percentage", "min": 0, "max": 100, "step": 1, "default": 92 },
+    { "type": "text", "id": "row3_title", "label": "Row 3 title", "default": "Enter your text." },
+    { "type": "richtext", "id": "row3_body", "label": "Row 3 body", "default": "<p>Enter your text.</p>" },
+    { "type": "range", "id": "row3_percent", "label": "Row 3 percentage", "min": 0, "max": 100, "step": 1, "default": 88 }
+  ]
+}
+{% endschema %}

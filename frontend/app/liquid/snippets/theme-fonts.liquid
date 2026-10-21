@@ -1,0 +1,14 @@
+{% comment %}
+  Theme fonts - type_heading_font, type_body_font, type_subheading_font, type_accent_font
+  Call with: {% render 'snippets/theme-fonts', settings: settings %}
+{% endcomment %}
+{%- assign font_h = settings.type_heading_font | default: 'oswald_n4' -%}
+{%- assign font_b = settings.type_body_font | default: 'roboto_n4' -%}
+{%- assign font_sub = settings.type_subheading_font | default: 'oswald_n4' -%}
+{%- assign font_a = settings.type_accent_font | default: 'roboto_n4' -%}
+<style>
+  {{ font_h | font_face: font_display: 'swap' }}
+  {{ font_b | font_face: font_display: 'swap' }}
+  {{ font_sub | font_face: font_display: 'swap' }}
+  {{ font_a | font_face: font_display: 'swap' }}
+</style>

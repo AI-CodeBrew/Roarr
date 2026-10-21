@@ -1,0 +1,137 @@
+{% comment %}
+  Modern Contact — split image panel + form (preview uses plain HTML form)
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-new-contact.css' | asset_url }}" media="all">
+<script src="{{ 'pf-new-contact.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  [id="ModernContact-{{ section.id }}"] {
+    --font-h: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-b: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-sub: {{ settings.type_subheading_font.family | default: settings.type_heading_font.family }}, sans-serif;
+    --font-btn: {{ settings.type_accent_font.family | default: settings.type_body_font.family }}, sans-serif;
+
+    --container-width: {{ section.settings.container_width }}px;
+    --section-radius: {{ section.settings.section_radius }}px;
+
+    --img-text-color: {{ section.settings.img_text_color }};
+    --overlay-color: {{ section.settings.overlay_color }};
+    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --btn-1-bg: {{ section.settings.btn_1_bg }};
+    --btn-1-text: {{ section.settings.btn_1_text }};
+
+    --input-bg: {{ section.settings.input_bg }};
+    --input-border: {{ section.settings.input_border }};
+    --input-focus: {{ section.settings.input_focus }};
+    --input-radius: {{ section.settings.input_radius }}px;
+    --btn-2-bg: {{ section.settings.btn_2_bg }};
+    --btn-2-text: {{ section.settings.btn_2_text }};
+
+    --img-heading-size: {{ section.settings.img_heading_size }}px;
+    --form-heading-size: {{ section.settings.form_heading_size }}px;
+
+    --mc-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+    --mc-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --mc-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+    --mc-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  }
+{%- endstyle -%}
+
+<div
+  id="ModernContact-{{ section.id }}"
+  class="modern-contact-root color-{{ section_scheme }}"
+  data-image-position="{{ section.settings.image_position }}"
+>
+  <div class="modern-contact-wrapper">
+    <div class="modern-contact__inner color-{{ section.settings.form_color_scheme | default: section_scheme }} gradient">
+
+      <div class="modern-contact__image-panel">
+        {%- if section.settings.image != blank -%}
+          {%- assign _contact_bg = section.settings.image | image_url: width: 1200 -%}
+          <img src="{{ _contact_bg }}" class="modern-contact__bg-image" width="1200" height="800" loading="lazy" alt="">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'modern-contact__bg-image' }}
+        {%- endif -%}
+
+        <div class="modern-contact__overlay"></div>
+
+        <div class="modern-contact__info-content">
+          {%- if section.settings.img_heading != blank -%}
+            <h2 class="modern-contact__info-title">{{ section.settings.img_heading }}</h2>
+          {%- endif -%}
+
+          {%- if section.settings.address != blank -%}
+            <p class="modern-contact__info-text">{{ section.settings.address }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.phone != blank -%}
+            <p class="modern-contact__info-text">{{ section.settings.phone }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.hours != blank -%}
+            <p class="modern-contact__info-text">{{ section.settings.hours }}</p>
+          {%- endif -%}
+
+          {%- if section.settings.btn_1_label != blank -%}
+            <a href="{{ section.settings.btn_1_link | default: '#' }}" class="modern-contact__btn-directions">
+              {{ section.settings.btn_1_label }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="modern-contact__form-panel">
+        {%- if section.settings.form_heading != blank -%}
+          <h2 class="modern-contact__form-title">{{ section.settings.form_heading }}</h2>
+        {%- endif -%}
+
+        <form action="/contact#ContactForm" method="post" id="ModernContactForm" class="modern-contact__form" accept-charset="UTF-8">
+          <input type="hidden" name="form_type" value="contact">
+          <input type="hidden" name="utf8" value="✓">
+
+          {%- if form.posted_successfully -%}
+            <div class="form-success">
+              {{ 'templates.contact.form.post_success' | t | default: 'Thanks for contacting us! We will get back to you soon.' }}
+            </div>
+          {%- elsif form.errors -%}
+            <div class="form-error">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="form-row-2">
+            <div class="modern-contact__field">
+              <label for="ContactForm-name">Name</label>
+              <input type="text" id="ContactForm-name" name="contact[name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" class="modern-contact__input" placeholder="Name" required>
+            </div>
+            <div class="modern-contact__field">
+              <label for="ContactForm-email">Email *</label>
+              <input type="email" id="ContactForm-email" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" class="modern-contact__input" placeholder="Email" required>
+            </div>
+          </div>
+
+          <div class="modern-contact__field">
+            <label for="ContactForm-phone">Phone</label>
+            <input type="tel" id="ContactForm-phone" name="contact[phone]" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}" class="modern-contact__input" placeholder="Phone">
+          </div>
+
+          <div class="modern-contact__field">
+            <label for="ContactForm-body">Your message</label>
+            <textarea id="ContactForm-body" name="contact[body]" class="modern-contact__input" placeholder="Your message" required>{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
+          </div>
+
+          <div class="modern-contact__submit-wrapper">
+            <button type="submit" class="modern-contact__btn-submit">
+              {{ section.settings.btn_2_label | default: 'Submit Now' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

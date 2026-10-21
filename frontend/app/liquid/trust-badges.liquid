@@ -1,0 +1,175 @@
+{% comment %}
+  Section: Kluck AI - Trust Badges
+  - Purpose: Trust badges with icon and text, optional mobile marquee.
+  - Adapted for app preview: uses block instead of section, separate CSS file.
+{% endcomment %}
+
+{%- assign heading_font = block.settings.heading_font_family -%}
+{%- assign body_font = block.settings.body_font_family -%}
+
+{% if heading_font != blank or body_font != blank %}
+  <style>
+    {% if heading_font != blank %}{{ heading_font | font_face: font_display: 'swap' }}{% endif %}
+    {% if body_font != blank %}{{ body_font | font_face: font_display: 'swap' }}{% endif %}
+  </style>
+{% endif %}
+
+{% if shop.metafields.app.block_control.value %}
+  {%- liquid
+    assign s = block.settings
+    assign m = product.metafields.kluck_ai
+    assign color_schema = m.color_schema.value | default: m.color_schema | default: '#fcb105'
+    assign opacity_val = s.background_opacity | default: 100 | divided_by: 100.0
+    if s.show_background == false
+      assign opacity = 0
+    else
+      assign opacity = opacity_val
+    endif
+    assign bg_color = s.background_color | default: '#ffffff'
+    unless s.use_metafields_bg == false
+      if s.use_metafields_bg and product != blank and m.color_schema != blank
+        assign bg_color = m.color_schema.value | default: m.color_schema
+      elsif s.use_metafields and product != blank and m.color_schema != blank
+        assign bg_color = m.color_schema.value | default: m.color_schema
+      endif
+    endunless
+
+    assign icon_bg_color = s.icon_bg | default: color_schema | default: '#fcb105'
+    if s.use_metafields and product != blank and m.color_schema != blank
+      assign icon_bg_color = m.color_schema.value | default: m.color_schema
+    endif
+
+    assign mobile_marquee = s.mobile_auto_scroll
+  -%}
+
+  <link rel="stylesheet" href="{{ 'trust-badges.css' | asset_url }}" media="all">
+  <div
+    id="KluckBadges-{{ block.id }}"
+    class="kluck-badges-wrapper{% if mobile_marquee %} tb-marquee-enabled{% endif %}"
+    style="
+      --bg-color: {{ bg_color }};
+      --bg-opacity: {{ opacity }};
+      --container-width: {{ s.container_max_width }}px;
+      --item-bg: {{ s.item_bg }};
+      --item-text: {{ s.item_text }};
+      --item-border: {{ s.item_border }};
+      --icon-circle-bg: {{ icon_bg_color }};
+      --icon-color: {{ s.icon_color }};
+      --radius: {{ s.badge_radius }}px;
+      --padding-v-d: {{ s.padding_v_d }}px;
+      --padding-v-m: {{ s.padding_v_m }}px;
+      --gap-d: {{ s.gap_d }}px;
+      --gap-m: {{ s.gap_m }}px;
+      --alignment: {{ s.alignment }};
+      --font-heading-family: {% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};
+      --font-body-family: {% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};
+      --body-size: {{ s.body_size | default: 16 }}px;
+      --body-weight: {{ s.body_weight | default: 400 }};
+      --h1-size: {{ s.h1_size | default: 48 }}px;
+      --h1-weight: {{ s.h1_weight | default: 700 }};
+      --h2-size: {{ s.h2_size | default: 36 }}px;
+      --h2-weight: {{ s.h2_weight | default: 700 }};
+      --h3-size: {{ s.h3_size | default: 30 }}px;
+      --h3-weight: {{ s.h3_weight | default: 600 }};
+      --h4-size: {{ s.h4_size | default: 24 }}px;
+      --h4-weight: {{ s.h4_weight | default: 600 }};
+      --h5-size: {{ s.h5_size | default: 20 }}px;
+      --h5-weight: {{ s.h5_weight | default: 500 }};
+      --h6-size: {{ s.h6_size | default: 16 }}px;
+      --h6-weight: {{ s.h6_weight | default: 500 }};
+      --icon-size-d: {{ s.icon_size_d }}px;
+      --icon-size-m: {{ s.icon_size_m }}px;
+      --scroll-speed: {{ s.scroll_speed }}s;
+    "
+  >
+    <div class="inner-container">
+      <div class="tb-track">
+        {% for i in (1..5) %}
+          {%- liquid
+            assign text_key = 'badge_text_' | append: i
+            assign alt_text_key = 'badge_' | append: i | append: '_text'
+            assign icon_key = 'badge_icon_' | append: i
+            assign alt_icon_key = 'badge_' | append: i | append: '_icon'
+            assign meta_key = 'badge_text_' | append: i
+            assign badge_text = s[text_key] | default: s[alt_text_key]
+            assign badge_icon = s[icon_key] | default: s[alt_icon_key]
+            if product != blank
+              assign meta_raw = product.metafields.kluck_ai[meta_key]
+              if meta_raw.value != blank
+                assign badge_text = meta_raw.value
+              elsif meta_raw != blank
+                assign badge_text = meta_raw
+              endif
+            endif
+          -%}
+          {% if badge_text != blank or badge_icon != blank %}
+            <div class="tb-item">
+              <div class="tb-icon-wrap">
+                {% if badge_icon != blank %}
+                  <img src="{{ badge_icon | img_url: '60x' }}" class="tb-custom-img" alt="{{ badge_text | escape }}">
+                {% else %}
+                  <svg
+                    class="tb-icon-svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                {% endif %}
+              </div>
+              <span class="tb-text">{{ badge_text | default: 'Badge' }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% if mobile_marquee %}
+          {% for i in (1..5) %}
+            {%- liquid
+              assign text_key = 'badge_text_' | append: i
+              assign alt_text_key = 'badge_' | append: i | append: '_text'
+              assign icon_key = 'badge_icon_' | append: i
+              assign alt_icon_key = 'badge_' | append: i | append: '_icon'
+              assign meta_key = 'badge_text_' | append: i
+              assign badge_text = s[text_key] | default: s[alt_text_key]
+              assign badge_icon = s[icon_key] | default: s[alt_icon_key]
+              if product != blank
+                assign meta_raw = product.metafields.kluck_ai[meta_key]
+                if meta_raw.value != blank
+                  assign badge_text = meta_raw.value
+                elsif meta_raw != blank
+                  assign badge_text = meta_raw
+                endif
+              endif
+            -%}
+            {% if badge_text != blank or badge_icon != blank %}
+              <div class="tb-item tb-cloned" aria-hidden="true">
+                <div class="tb-icon-wrap">
+                  {% if badge_icon != blank %}
+                    <img src="{{ badge_icon | img_url: '60x' }}" class="tb-custom-img" alt="{{ badge_text | escape }}">
+                  {% else %}
+                    <svg
+                      class="tb-icon-svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  {% endif %}
+                </div>
+                <span class="tb-text">{{ badge_text | default: 'Badge' }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}

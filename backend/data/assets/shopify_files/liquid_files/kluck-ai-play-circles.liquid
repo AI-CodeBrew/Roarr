@@ -1,0 +1,137 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Poppins:wght@400;500;600;700&display=swap">
+
+<section class="kluck-play-circles">
+  {%- assign circle_keys = "happy_customer_image_1,happy_customer_image_2,happy_customer_image_3,product_highlight_4" | split: "," -%}
+  {%- for i in (1..4) -%}
+    {%- capture title_key -%}title_{{ i }}{%- endcapture -%}
+    {%- capture caption_key -%}circle_{{ i }}{%- endcapture -%}
+    {%- assign caption = section.settings[title_key] -%}
+    {%- if product.metafields.kluck_ai[caption_key] != blank -%}
+      {%- assign caption = product.metafields.kluck_ai[caption_key] -%}
+    {%- endif -%}
+    {%- assign media_key = circle_keys[forloop.index0] -%}
+    {%- assign media = product.metafields.kluck_ai[media_key].value -%}
+    <div>
+      {%- if media != blank -%}
+        <img src="{{ media | image_url: width: 400 }}" alt="">
+      {%- else -%}
+        {%- capture image_key -%}image_{{ i }}{%- endcapture -%}
+        <img src="{{ section.settings[image_key] }}" alt="">
+      {%- endif -%}
+      <h3>{{ caption }}</h3>
+    </div>
+  {%- endfor -%}
+</section>
+
+{% style %}
+
+  @import url("https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Poppins:wght@400;500;600;700&display=swap");
+  #shopify-section-{{ section.id }} {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    font-family: Poppins, sans-serif !important;
+  }
+  #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }} * { box-sizing: border-box; }
+  #shopify-section-{{ section.id }} h1,
+  #shopify-section-{{ section.id }} h2,
+  #shopify-section-{{ section.id }} h3,
+  #shopify-section-{{ section.id }} .kluck-play-hero__badge,
+  #shopify-section-{{ section.id }} .kluck-play-designed__badge,
+  #shopify-section-{{ section.id }} .kluck-play-marquee__track span,
+  #shopify-section-{{ section.id }} .kluck-play-story__mix,
+  #shopify-section-{{ section.id }} summary {
+    font-family: "Caveat Brush", cursive !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+  }
+  #shopify-section-{{ section.id }} p,
+  #shopify-section-{{ section.id }} button,
+  #shopify-section-{{ section.id }} b,
+  #shopify-section-{{ section.id }} strong,
+  #shopify-section-{{ section.id }} .kluck-play-hero__kicker,
+  #shopify-section-{{ section.id }} .kluck-play-hero__price,
+  #shopify-section-{{ section.id }} .kluck-play-story__pills span,
+  #shopify-section-{{ section.id }} .kluck-play-promo__code,
+  #shopify-section-{{ section.id }} details p {
+    font-family: Poppins, sans-serif !important;
+    text-transform: none;
+  }
+  #shopify-section-{{ section.id }} button {
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    box-shadow: none;
+    min-height: 0;
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} button:before,
+  #shopify-section-{{ section.id }} button:after { content: none !important; display: none !important; }
+  #shopify-section-{{ section.id }} { margin: 0; padding: 0; background: #FFFCF5; }
+  #shopify-section-{{ section.id }} .kluck-play-circles {
+    width: min(1100px, calc(100% - 48px));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    text-align: center;
+    padding: 36px 0 56px;
+    color: #6F2424;
+    font-family: Poppins, sans-serif !important;
+  }
+  #shopify-section-{{ section.id }} img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+  }
+  #shopify-section-{{ section.id }} h3 {
+    font-family: "Caveat Brush", cursive !important;
+    font-weight: 400 !important;
+    font-size: 24px !important;
+    margin: 0;
+    color: #6F2424;
+  }
+  @media (max-width: 800px) {
+    #shopify-section-{{ section.id }} .kluck-play-circles { grid-template-columns: 1fr 1fr; }
+  }
+{% endstyle %}
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--play" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: Poppins, "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Caveat Brush", "Lalezar", "Tajawal", cursive !important; line-height: 1.4 !important; font-weight: 400 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kluck Play Circles",
+  "tag": "section",
+  "class": "kluck-play-section",
+  "settings": [
+    { "type": "text", "id": "image_1", "label": "Image 1", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c1.png?v=1726200609" },
+    { "type": "text", "id": "title_1", "label": "Title 1", "default": "Pieces for the senses" },
+    { "type": "text", "id": "image_2", "label": "Image 2", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c2.png?v=1726200610" },
+    { "type": "text", "id": "title_2", "label": "Title 2", "default": "For anytime, anywhere" },
+    { "type": "text", "id": "image_3", "label": "Image 3", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c3.png?v=1726200609" },
+    { "type": "text", "id": "title_3", "label": "Title 3", "default": "Original die cut" },
+    { "type": "text", "id": "image_4", "label": "Image 4", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c4.png?v=1726200609" },
+    { "type": "text", "id": "title_4", "label": "Title 4", "default": "Easy-to-see" }
+  ],
+  "presets": [{ "name": "Kluck Play Circles" }]
+}
+{% endschema %}

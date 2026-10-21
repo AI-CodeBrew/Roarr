@@ -1,0 +1,117 @@
+/**
+ * Color Schemes - Maps theme color_schemes to CSS variables
+ * Values from config/settings/theme-settings.json
+ * Use class .color-scheme-1 or .color-scheme-2 on a container to apply
+ */
+
+/* scheme-1: Light (white bg, dark text) */
+.color-scheme-1 {
+  --color-background: #ffffff;
+  --color-foreground-heading: #000000;
+  --color-foreground: #000000;
+  --color-foreground-muted: rgba(0, 0, 0, 0.6);
+  --color-primary: #000000;
+  --color-primary-hover: #000000;
+  --color-border: #0000000f;
+  --color-shadow: #000000;
+  --color-primary-button-background: #bca38fcc;
+  --color-primary-button-text: #ffffff;
+  --color-primary-button-border: rgba(0, 0, 0, 0);
+  --color-primary-button-hover-background: #bca38fcc;
+  --color-primary-button-hover-text: #ffffff;
+  --color-primary-button-hover-border: #bca38fcc;
+  --color-secondary-button-background: #e6e6e6;
+  --color-secondary-button-text: #000000;
+  --color-secondary-button-border: #0000000f;
+  --color-secondary-button-hover-background: #333333;
+  --color-secondary-button-hover-text: #ffffff;
+  --color-secondary-button-hover-border: #333333;
+  --color-accent: #bca38f;
+  --color-accent-soft: #bca38f4d;
+  --color-on-accent: #000000;
+  --color-on-accent-muted: rgba(0, 0, 0, 0.55);
+}
+
+/* scheme-2: Accent (bca38f bg, white text) */
+.color-scheme-2 {
+  --color-background: #bca38f4d;
+  --color-foreground-heading: #000000;
+  --color-foreground: #000000;
+  --color-foreground-muted: rgba(0, 0, 0, 0.8);
+  --color-primary: #000000;
+  --color-primary-hover: #000000;
+  --color-border: #dfdfdf;
+  --color-shadow: #000000;
+  --color-primary-button-background: #bca38fcc;
+  --color-primary-button-text: #ffffff;
+  --color-primary-button-border: rgba(0, 0, 0, 0);
+  --color-primary-button-hover-background: #bca38fcc;
+  --color-primary-button-hover-text: #ffffff;
+  --color-primary-button-hover-border: #bca38fcc;
+  --color-secondary-button-background: #ffffffb0;
+  --color-secondary-button-text: #000000;
+  --color-secondary-button-border: #ffffffb0;
+  --color-secondary-button-hover-background: #ffffff;
+  --color-secondary-button-hover-text: #000000;
+  --color-secondary-button-hover-border: #ffffff;
+  --color-accent: #bca38f;
+  --color-accent-soft: #bca38f4d;
+  --color-on-accent: #000000;
+  --color-on-accent-muted: rgba(0, 0, 0, 0.55);
+}
+
+/* Global typography fallback for all scheme-wrapped sections */
+.color-scheme-1,
+.color-scheme-2,
+[class*="color-scheme-kluck-"] {
+  --section-heading-font: var(--font-heading--family, var(--font-heading-family, sans-serif));
+  --section-body-font: var(--font-body--family, var(--font-body-family, sans-serif));
+}
+
+.color-scheme-1 h1,
+.color-scheme-1 h2,
+.color-scheme-1 h3,
+.color-scheme-1 h4,
+.color-scheme-1 h5,
+.color-scheme-1 h6,
+.color-scheme-2 h1,
+.color-scheme-2 h2,
+.color-scheme-2 h3,
+.color-scheme-2 h4,
+.color-scheme-2 h5,
+.color-scheme-2 h6,
+[class*="color-scheme-kluck-"] h1,
+[class*="color-scheme-kluck-"] h2,
+[class*="color-scheme-kluck-"] h3,
+[class*="color-scheme-kluck-"] h4,
+[class*="color-scheme-kluck-"] h5,
+[class*="color-scheme-kluck-"] h6 {
+  font-family: var(--section-heading-font);
+}
+
+.color-scheme-1 p,
+.color-scheme-1 span,
+.color-scheme-1 a,
+.color-scheme-1 button,
+.color-scheme-1 input,
+.color-scheme-1 textarea,
+.color-scheme-1 select,
+.color-scheme-1 li,
+.color-scheme-2 p,
+.color-scheme-2 span,
+.color-scheme-2 a,
+.color-scheme-2 button,
+.color-scheme-2 input,
+.color-scheme-2 textarea,
+.color-scheme-2 select,
+.color-scheme-2 li,
+[class*="color-scheme-kluck-"] p,
+[class*="color-scheme-kluck-"] span,
+[class*="color-scheme-kluck-"] a,
+[class*="color-scheme-kluck-"] button,
+[class*="color-scheme-kluck-"] input,
+[class*="color-scheme-kluck-"] textarea,
+[class*="color-scheme-kluck-"] select,
+[class*="color-scheme-kluck-"] li {
+  font-family: var(--section-body-font);
+}

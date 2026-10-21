@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Play kids product page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: auto; min-height: 0; background: #FFFCF5; color: #6F2424; font-family: Poppins, sans-serif; }
+    h1, h2, h3 { font-family: "Caveat Brush", cursive; font-weight: 400; margin: 0; overflow-wrap: anywhere; }
+    img { max-width: 100%; display: block; }
+    .wrap { width: min(1100px, calc(100% - 48px)); margin: 0 auto; }
+    .hero-band {
+      background-image: url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/product-bg.png?v=1726116403");
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      padding: 72px 0;
+    }
+    .hero-card {
+      background: #fff;
+      border: 1px solid #6F2424;
+      border-radius: 20px;
+      padding: 40px 48px;
+    }
+    .hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 36px; align-items: center; }
+    .gallery { background: #fff; position: relative; }
+    .gallery img { width: 100%; height: auto; max-height: 420px; object-fit: contain; border-radius: 20px; background: #fff; }
+    .badge {
+      position: absolute; top: 18px; left: 18px; width: 121px; height: 121px;
+      display: grid; place-items: center; text-align: center; color: #fff;
+      background-image: url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/sale-badge.png?v=1726541080");
+      background-position: center; background-size: cover; background-repeat: no-repeat;
+      font-family: "Caveat Brush", cursive; font-size: 28px; line-height: 0.95;
+      transform: rotate(-21deg);
+    }
+    .thumbs { display: flex; gap: 10px; margin-top: 12px; }
+    .thumbs img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; border: 2px solid #fff; }
+    .kicker { letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 600; margin: 0 0 8px; }
+    .hero h1 { font-size: 48px; line-height: 1.05; }
+    .price { display: flex; align-items: baseline; gap: 12px; margin: 16px 0; }
+    .price strong { font-size: 28px; }
+    .price s { color: #b08989; font-size: 18px; }
+    .variants { display: flex; gap: 8px; margin: 8px 0 18px; }
+    .variants span { border: 1.5px solid #6F2424; border-radius: 999px; padding: 8px 14px; font-size: 13px; }
+    .variants span.on { background: #6F2424; color: #fff; }
+    .buy { display: flex; gap: 10px; align-items: center; }
+    .qty { display: flex; align-items: center; border: 1.5px solid #6F2424; border-radius: 999px; overflow: hidden; }
+    .qty button, .qty b { width: 42px; height: 52px; display: grid; place-items: center; background: transparent; border: 0; color: inherit; font: inherit; }
+    .atc { flex: 1; height: 52px; border: 0; border-radius: 999px; background: #6F2424; color: #fff; font: 600 16px Poppins, sans-serif; }
+    .marquee { width: 100%; background: #FFC2D4; overflow: hidden; border-top: 1px solid #6F2424; border-bottom: 1px solid #6F2424; }
+    .marquee-track { display: flex; align-items: center; width: max-content; animation: ticker 22s linear infinite; }
+    .marquee-track span { font-family: "Caveat Brush", cursive; font-size: 28px; line-height: 1; color: #6F2424; padding: 10px 16px; white-space: nowrap; }
+    .marquee-track img { width: 22px; height: 22px; flex: none; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; padding: 48px 0; text-align: center; }
+    .features img { width: 48px; height: 48px; object-fit: contain; margin: 0 auto 12px; }
+    .features h2 { font-size: 32px; line-height: 1; }
+    .features p { margin: 8px 0 0; font-size: 14px; line-height: 1.5; }
+    .promo { background: #E0F4E0; }
+    .promo .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; padding: 48px 0; }
+    .promo h2 { font-size: 44px; line-height: 1.05; }
+    .code { margin-top: 18px; display: inline-block; background: #fff; border: 2px dashed #3F9D3E; color: #3F9D3E; border-radius: 999px; padding: 12px 22px; font-weight: 700; letter-spacing: 0.08em; }
+    .promo img { width: 100%; height: auto; object-fit: contain; border-radius: 24px; }
+    .story { padding: 56px 0 28px; text-align: center; }
+    .mix { font-family: "Caveat Brush", cursive; font-size: 48px; line-height: 1.35; color: #6F2424; }
+    .mix img { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; display: inline-block; vertical-align: middle; margin: 0 8px; }
+    .pills { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .pills span { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #6F2424; border-radius: 999px; padding: 8px 16px; font-family: Poppins, sans-serif; font-size: 15px; font-weight: 600; }
+    .pills i { width: 22px; height: 22px; border-radius: 50%; background: #FFD74F; color: #6F2424; display: grid; place-items: center; font-style: normal; font-size: 13px; }
+    .faq { background: #FFF1C0; padding: 64px 0 72px; }
+    .faq h2 { font-size: 56px; line-height: 1; text-align: center; margin-bottom: 28px; }
+    .designed { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .arch { position: relative; }
+    .arch img { width: 100%; height: auto; display: block; }
+    .recycle {
+      position: absolute; top: 18px; left: 6px; width: 150px; height: 150px;
+      display: grid; place-items: center; text-align: center; color: #fff;
+      background: url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/sale-badge.png?v=1726541080") center / cover no-repeat;
+      font-family: "Caveat Brush", cursive; font-size: 30px; line-height: 0.95;
+      transform: rotate(-15deg);
+    }
+    .faq details { background: #fff; border: 1px solid #6F2424; border-radius: 20px; margin: 0 0 16px; padding: 6px 20px; }
+    .faq summary { cursor: pointer; font-family: "Caveat Brush", cursive; font-weight: 400; font-size: 32px; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary:after { content: "⌄"; font-family: Poppins, sans-serif; font-size: 18px; }
+    .faq details[open] summary { border-bottom: 1px solid #6F2424; }
+    .faq details[open] summary:after { content: "⌃"; }
+    .faq details p { margin: 14px 0; color: rgba(111, 36, 36, 0.8); font-size: 15px; line-height: 1.6; }
+    .senses { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; text-align: center; padding: 36px 0 56px; }
+    .senses img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin: 0 auto 12px; }
+    .senses h3 { font-size: 24px; }
+    .reviews { background: #FFFCF5 url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/testi-bg.png?v=1726201762") center top / cover no-repeat; padding: 100px 0 70px; }
+    .reviews h2 { text-align: center; font-size: 56px; line-height: 1; }
+    .cards { display: flex; gap: 16px; margin-top: 28px; overflow: hidden; }
+    .card { flex: 0 0 260px; background: #fff; border: 1px solid #6F2424; border-radius: 20px; padding: 28px 22px 22px; text-align: left; }
+    .stars { color: #E0A106; letter-spacing: 2px; font-size: 14px; }
+    .card h3 { font-size: 28px; margin: 8px 0; }
+    .card p { margin: 0 0 18px; font-size: 14px; line-height: 1.5; }
+    .card b { font-family: Poppins, sans-serif; font-size: 13px; letter-spacing: 0.04em; }
+    .ig { background: #6F2424; color: #fff; padding: 36px 0 32px; }
+    .ig-head { margin-bottom: 18px; }
+    .ig h2 { font-size: 48px; color: #fff; line-height: 1; }
+    .ig-row { display: flex; gap: 12px; align-items: stretch; }
+    .ig-cell { flex: 1 1 0; min-width: 0; border-radius: 16px; overflow: hidden; background: #fff; }
+    .ig-row img { position: static; width: 100%; height: auto; aspect-ratio: 1 / 1; max-width: 100%; object-fit: cover; display: block; }
+    @media (max-width: 800px) {
+      .hero, .promo .wrap, .features, .senses, .designed { grid-template-columns: 1fr; }
+      .ig-row { flex-wrap: wrap; }
+      .ig-cell { flex: 1 1 calc(50% - 6px); }
+      .mix { font-size: 32px; }
+      .hero h1, .promo h2, .story h2, .faq h2, .reviews h2 { font-size: 42px; }
+      .row { grid-template-columns: 1fr; }
+      .hero-band { padding: 28px 0; }
+      .hero-card { padding: 20px 16px; }
+      .gallery img { max-height: 280px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero-band">
+  <div class="wrap hero-card">
+  <div class="hero">
+    <div>
+      <div class="gallery">
+        <span class="badge">Save<br>50%</span>
+        <img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/cad40108_zambeel_ai_generated_image.jpg" alt="Wooden abacus toy" />
+      </div>
+      <div class="thumbs">
+        <img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a99e0b4d_zambeel_ai_generated_image.jpg" alt="" />
+        <img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b32e56e8_zambeel_ai_generated_image.jpg" alt="" />
+        <img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6a5e3b61_zambeel_ai_generated_image.jpg" alt="" />
+      </div>
+    </div>
+    <div>
+      <p class="kicker">Kids toys</p>
+      <h1>Wooden Abacus &amp; Ramp Set</h1>
+      <div class="price"><strong>$24.00</strong><s>$48.00</s></div>
+      <div class="variants"><span class="on">Natural</span><span>Rainbow</span><span>Mint</span></div>
+      <div class="buy">
+        <div class="qty"><button type="button">−</button><b>1</b><button type="button">+</button></div>
+        <button class="atc" type="button">Add to cart</button>
+      </div>
+    </div>
+  </div>
+  </div>
+  </section>
+
+  <div class="marquee"><div class="marquee-track"><span>Sale 50% Off</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Giving back 10%</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Black Friday</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Sale 50% Off</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Giving back 10%</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Black Friday</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Sale 50% Off</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Giving back 10%</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Black Friday</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Sale 50% Off</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Giving back 10%</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Black Friday</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Sale 50% Off</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Giving back 10%</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Black Friday</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""></div></div>
+
+  <section class="wrap features">
+    <div>
+      <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-1.png?v=1726124152" alt="" />
+      <h2>Large, canvas pieces</h2>
+    </div>
+    <div>
+      <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-2.png?v=1726124153" alt="" />
+      <h2>100% recycled</h2>
+    </div>
+    <div>
+      <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-3.png?v=1726124153" alt="" />
+      <h2>Giving back 10%</h2>
+    </div>
+  </section>
+
+  <section class="promo">
+    <div class="wrap">
+      <div>
+        <h2>A brighter way to play, half off this week.</h2>
+        <p>Use the code at checkout. It stacks with the sale price.</p>
+        <div class="code">BLACKFRIDAY</div>
+      </div>
+      <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/iwt-1c.png?v=1726197375" alt="Kids playing" />
+    </div>
+  </section>
+
+  <section class="story">
+    <div class="wrap mix">
+      We created <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-1_bf88d73e-47ac-4511-b9b4-94fca069ec43.png?v=1726197308" alt=""> original die cut <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-2.png?v=1726197308" alt=""><br>
+      <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-3.png?v=1726197308" alt=""> to make pieces that are <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-4.png?v=1726197308" alt=""> easy-to-see
+    </div>
+    <div class="wrap pills">
+      <span><i>✓</i> 10% Giving back</span>
+      <span><i>✓</i> Free Shipping over $100 order</span>
+      <span><i>✓</i> 90 Days free return</span>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="wrap">
+      <h2>Thoughtfully Designed</h2>
+      <div class="designed">
+        <div class="arch">
+          <span class="recycle">100%<br>Recycled</span>
+          <img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/iwt-2c.png?v=1726197375" alt="" />
+        </div>
+        <div>
+          <details><summary>Description</summary><p>A wooden set for counting, color sorting, and rolling play.</p></details>
+          <details open><summary>Details</summary><p>Your little one can count, sort, and roll. Solid wood, rounded edges, and water-based color. Wipe clean with a damp cloth.</p></details>
+          <details><summary>Shipping &amp; Return</summary><p>Free shipping. 90-day returns on unused toys in the original box.</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee"><div class="marquee-track"><span>Kid Safe</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Free Shipping</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>90 Days Returns</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Gift Favorite</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Kid Safe</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Free Shipping</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>90 Days Returns</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Gift Favorite</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Kid Safe</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Free Shipping</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>90 Days Returns</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""><span>Gift Favorite</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt=""></div></div>
+
+  <section class="wrap senses">
+    <div><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c1.png?v=1726200609" alt=""><h3>Pieces for the senses</h3></div>
+    <div><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c2.png?v=1726200610" alt=""><h3>For anytime, anywhere</h3></div>
+    <div><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c3.png?v=1726200609" alt=""><h3>Original die cut</h3></div>
+    <div><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c4.png?v=1726200609" alt=""><h3>Easy-to-see</h3></div>
+  </section>
+
+  <section class="reviews">
+    <div class="wrap">
+      <h2>Lovely Customers</h2>
+      <div class="cards">
+        <div class="card"><div class="stars">★★★★★</div><h3>“Amazing”</h3><p>The box!! The pieces!! …I simply LOVED everything about this puzzle.</p><b>LAUREL L.</b></div>
+        <div class="card"><div class="stars">★★★★★</div><h3>“Amazing”</h3><p>Puzzlers like to talk to other puzzlers about what they are working on.</p><b>SELENA G.</b></div>
+        <div class="card"><div class="stars">★★★★★</div><h3>“WOWwowWOW!!”</h3><p>I’m looking forward to sharing it with my family full of musical mycophiles.</p><b>SALLY L.</b></div>
+        <div class="card"><div class="stars">★★★★★</div><h3>“Extremely”</h3><p>Doing Different Puzzles makes me feel like I’m part of a secret club.</p><b>AILEN M.</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ig">
+    <div class="wrap">
+      <div class="ig-head"><h2>Instagram</h2></div>
+      <div class="ig-row">
+        <div class="ig-cell"><img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/cad40108_zambeel_ai_generated_image.jpg" alt="" width="672" height="672"></div>
+        <div class="ig-cell"><img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a99e0b4d_zambeel_ai_generated_image.jpg" alt="" width="672" height="672"></div>
+        <div class="ig-cell"><img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b32e56e8_zambeel_ai_generated_image.jpg" alt="" width="672" height="672"></div>
+        <div class="ig-cell"><img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6a5e3b61_zambeel_ai_generated_image.jpg" alt="" width="672" height="672"></div>
+        <div class="ig-cell"><img src="https://product-images-zambeel.s3.eu-west-3.amazonaws.com/07d81bd7_zambeel_ai_generated_image.jpg" alt="" width="672" height="672"></div>
+      </div>
+    </div>
+  </section>
+  <script>
+    function reportPlayHeight() {
+      var ig = document.querySelector(".ig");
+      var height = ig
+        ? Math.ceil(ig.offsetTop + ig.offsetHeight)
+        : Math.ceil(document.body.offsetHeight);
+      var search = location.search;
+      if (/[?&]measure=1(?:&|$)/.test(search)) {
+        parent.postMessage({ type: "kluck-play-preview-height", height: height }, "*");
+      }
+      if (/[?&]card=1(?:&|$)/.test(search)) {
+        parent.postMessage({ type: "kluck-play-card-height", height: height }, "*");
+      }
+    }
+    window.addEventListener("load", reportPlayHeight);
+    window.addEventListener("resize", reportPlayHeight);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reportPlayHeight);
+    if (window.ResizeObserver) {
+      var band = document.querySelector(".ig");
+      if (band) new ResizeObserver(reportPlayHeight).observe(band);
+    }
+    document.querySelectorAll(".ig-row img").forEach(function (img) {
+      img.addEventListener("load", reportPlayHeight);
+    });
+    setTimeout(reportPlayHeight, 200);
+    setTimeout(reportPlayHeight, 800);
+  </script>
+</body>
+</html>

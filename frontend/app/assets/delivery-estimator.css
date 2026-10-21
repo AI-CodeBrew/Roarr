@@ -1,0 +1,322 @@
+.de-fe {
+  position: relative;
+  --line-thickness: 2px;
+  --line-inset: 12%;
+  --icon-wrap: 64px;
+  --icon-wrap-m: 56px;
+  --icon-inner: 38px;
+  --icon-inner-m: 38px;
+  --stroke: 1;
+  --icon-bg: #ffffff;
+  --icon-bdw: 2px;
+  --gap-x: 48px;
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+  background: transparent;
+  border-radius: 0;
+  padding: 0 15px;
+  /* margin-top: 10px; */
+  margin-bottom: 0;
+  overflow-x: hidden;
+}
+
+.de-fe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--product-section-bg, #ffffff);
+  opacity: var(--product-section-opacity, 0.1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.de-fe > * {
+  position: relative;
+  z-index: 1;
+}
+
+.de-fe__container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(100%, var(--container-width, 1250px));
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.de-fe__title {
+  margin: 0 0 18px;
+  text-align: center;
+  color: var(--txt, #111111);
+}
+
+.de-fe__simple-line {
+  color: var(--txt, #111111);
+  margin: 0;
+  line-height: 1.4;
+  text-align: center;
+  font-size: 13px;
+}
+
+.de-fe__simple-line [data-date-today],
+.de-fe__simple-line [data-date-processing],
+.de-fe__simple-line [data-date-delivered] {
+  color: var(--date, #666666);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.de-fe__steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  gap: clamp(8px, 2.5vw, var(--gap-x, 48px));
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.de-fe__line {
+  display: none;
+}
+
+.de-fe__step {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.de-fe__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: calc(50% + var(--icon-wrap) / 2);
+  width: calc(100% + clamp(8px, 2.5vw, var(--gap-x, 48px)) - var(--icon-wrap));
+  top: calc(var(--icon-wrap) / 2);
+  height: var(--line-thickness);
+  background: var(--line, #e0e0e0);
+  z-index: 1;
+}
+
+.de-fe__content {
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+}
+
+.de-fe__content p {
+  margin: 0 0 4px;
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--txt, #111111);
+}
+
+.de-fe__iconWrap {
+  width: var(--icon-wrap);
+  height: var(--icon-wrap);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--icon-color, #111111);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  animation: de-fe-pulse 2s ease-in-out infinite;
+}
+
+.de-fe__iconWrap:hover {
+  transform: scale(1.06);
+}
+
+.de-fe__iconWrap.is-circle {
+  border-radius: 999px;
+}
+
+.de-fe__iconImg,
+.de-fe__iconSvg {
+  width: var(--icon-inner);
+  height: var(--icon-inner);
+  object-fit: contain;
+  display: block;
+}
+
+.de-fe__iconSvg svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-width: var(--stroke);
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--icon-color, currentColor);
+}
+
+.de-fe__iconSvg svg path,
+.de-fe__iconSvg svg g {
+  stroke: var(--icon-color, currentColor);
+  fill: inherit;
+  color: var(--icon-color, currentColor);
+}
+
+.de-fe__t {
+  color: #666;
+  margin: 10px 0 4px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.de-fe__date {
+  color: var(--date, #666666);
+  margin: 0 0 2px;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.de-fe__service-container {
+  background: #f9f9f9;
+  border-radius: 16px;
+  margin-top: 25px;
+  padding: 10px 20px;
+}
+
+.de-fe__service-bar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 10px;
+}
+
+.de-fe__service-item {
+  display: flex;
+  align-items: center; /* This will now work correctly */
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  padding: 8px 12px;
+  position: relative;
+  user-select: none;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  line-height: 1.2;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  min-width: 0;
+}
+
+.de-fe__service-item svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  display: block;
+}
+
+/* --- THIS IS THE FIX --- */
+/* Reset the default browser margin on the paragraph tag */
+.de-fe__service-item p {
+  margin: 0;
+  font-size: 12px !important;
+  line-height: 1.6; /* You can keep your line-height here */
+}
+
+.de-fe__service-item:hover {
+  background: #f0f0f0;
+}
+
+.de-fe__service-item.is-active {
+  color: #444;
+  background: rgba(255, 255, 255, 0.35);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.de-fe__service-content {
+  display: none;
+  padding: 15px 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+  animation: de-fe-slide-down 0.3s ease;
+}
+
+.de-fe__service-content.active {
+  display: block;
+}
+
+@keyframes de-fe-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes de-fe-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 749px) {
+  .de-fe {
+    padding: 0;
+  }
+  .de-fe__container {
+    padding: 0;
+  }
+  .de-fe__steps {
+    gap: 12px;
+    overflow-x: hidden;
+  }
+  .de-fe__step:not(:last-child)::after {
+    width: calc(100% + 12px - var(--icon-wrap-m));
+    left: calc(50% + var(--icon-wrap-m) / 2);
+    top: calc(var(--icon-wrap-m) / 2);
+  }
+  .de-fe__iconWrap {
+    width: var(--icon-wrap-m);
+    height: var(--icon-wrap-m);
+  }
+  .de-fe__iconImg,
+  .de-fe__iconSvg {
+    width: var(--icon-inner-m);
+    height: var(--icon-inner-m);
+  }
+  .de-fe__step {
+    min-width: 0;
+    flex: 1;
+    padding: 0 2px;
+  }
+}
+
+@media (max-width: 500px) {
+  .de-fe__service-item {
+    gap: 10px;
+    font-size: 12px;
+    padding: 8px 6px;
+    justify-content: flex-start;
+    text-align: left;
+    
+  }
+}

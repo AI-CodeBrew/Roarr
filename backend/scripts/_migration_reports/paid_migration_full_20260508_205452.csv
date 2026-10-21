@@ -1,0 +1,47 @@
+fk_user_id,shop_url,subscription_id,plan_name,price,interval,classification,credits_to_grant,shopify_verify,shopify_status,cancel_status,grant_status,purchase_row_status,ledger_entry_id,new_balance,error,dry_run
+ypa1gq-8v.myshopify.com,ypa1gq-8v.myshopify.com,26705494086,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,b9a7e61d-884c-4d5f-bbfb-1bfd35966f15,500,,False
+q301ag-09.myshopify.com,q301ag-09.myshopify.com,26297466916,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+m98d20-rg.myshopify.com,m98d20-rg.myshopify.com,36257628470,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,a2946ac7-2fdf-4e90-a9af-5b2a7091eaad,500,,False
+ej2371-a0.myshopify.com,ej2371-a0.myshopify.com,32237224178,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,658959a7-882a-4e50-86f0-bd77d8b24ad5,500,,False
+m5ckpv-w8.myshopify.com,m5ckpv-w8.myshopify.com,28738912310,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,active,active,cancelled,granted,seeded,7fd8dad9-686f-4f7a-8269-0afd16ce5785,1200,,False
+arsx0r-zd.myshopify.com,arsx0r-zd.myshopify.com,28451242031,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+gdsrb2-rc.myshopify.com,gdsrb2-rc.myshopify.com,32538394820,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+h9wfg7-x7.myshopify.com,h9wfg7-x7.myshopify.com,47670985022,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+s6ck1n-sc.myshopify.com,s6ck1n-sc.myshopify.com,48854794536,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+0uve3i-5w.myshopify.com,0uve3i-5w.myshopify.com,78553907281,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,f2f19041-9260-4a68-aab4-efd9fa7ea29d,500,,False
+wqqdee-un.myshopify.com,wqqdee-un.myshopify.com,25152323655,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+icdf4z-0e.myshopify.com,icdf4z-0e.myshopify.com,29982884026,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,a6271363-32b9-4164-870c-5865e40d5bba,500,,False
+es11yj-ba.myshopify.com,es11yj-ba.myshopify.com,30076764352,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,426d5118-4c51-4760-a935-e0b74d423f2f,500,,False
+2h0rk1-cf.myshopify.com,2h0rk1-cf.myshopify.com,78519468113,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,active,active,cancelled,granted,seeded,11b86f81-4fbe-46ef-8dd7-6086c216e5f3,1200,,False
+wqqdee-un.myshopify.com,wqqdee-un.myshopify.com,25149046855,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+kwhw70-zk.myshopify.com,kwhw70-zk.myshopify.com,32484622579,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,8be67138-4c32-42aa-94f2-1d4534102bad,500,,False
+7irruz-py.myshopify.com,7irruz-py.myshopify.com,28962619439,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,05e88a73-98a5-449b-ae16-b2de719a815e,500,,False
+rkti0x-yf.myshopify.com,rkti0x-yf.myshopify.com,31156568286,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,8d9dcb11-9b36-4b67-bb65-c603aa26ecb0,500,,False
+b8xnbe-3n.myshopify.com,b8xnbe-3n.myshopify.com,27938095241,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+anivhg-6x.myshopify.com,anivhg-6x.myshopify.com,30134042797,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,4c0d66a6-4206-44d6-895a-5d5d9fc7fcbb,500,,False
+aevo-final.myshopify.com,aevo-final.myshopify.com,30868537597,Value Monthly,34.00,every_30_days,name~value,1200,error,"HTTP 401: {""errors"":""[API] Invalid API key or access token (unrecognized login or wrong password)""}",skipped (shopify=error),skipped,,,,,False
+ksa-zam.myshopify.com,ksa-zam.myshopify.com,28013559865,Value Monthly,34.00,every_30_days,name~value,1200,active,active,cancelled,granted,seeded,7980ed5a-3e9c-44c7-92de-e2c8d8b91980,1200,,False
+wrzv56-ed.myshopify.com,wrzv56-ed.myshopify.com,27824422974,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,bde19a6b-78dd-48fb-9db0-c2b98cd4b68c,500,,False
+rcukh6-ck.myshopify.com,rcukh6-ck.myshopify.com,29779427520,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,40b84eaf-b580-40cf-9d45-3ba5ccf0eff8,500,,False
+xuyw41-gq.myshopify.com,xuyw41-gq.myshopify.com,35403464815,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,6f106966-969e-49e8-972f-ef41cc70dbf5,500,,False
+2wqabe-va.myshopify.com,2wqabe-va.myshopify.com,36877304171,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,9b91b3c7-dc07-4f3f-9bd9-46b651c3a5ec,500,,False
+7dqt8a-eb.myshopify.com,7dqt8a-eb.myshopify.com,28109111436,Premium Monthly,99.00,every_30_days,name~premium,2500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+cjjuht-8p.myshopify.com,cjjuht-8p.myshopify.com,26851835990,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,057bac9b-f943-4fc5-b829-981d772c67bd,500,,False
+bqjkhs-94.myshopify.com,bqjkhs-94.myshopify.com,70188269906,Value Monthly,34.00,every_30_days,name~value,1200,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+j4r5zt-in.myshopify.com,j4r5zt-in.myshopify.com,25449463883,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,active,active,cancelled,granted,seeded,e9f7cb7c-0349-4cd4-bf06-cf07048ca565,1500,,False
+4a7nd1-mq.myshopify.com,4a7nd1-mq.myshopify.com,25730908259,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,c1d16285-1791-47a3-ba27-f71925cfb39f,500,,False
+vzmizv-sb.myshopify.com,vzmizv-sb.myshopify.com,27142160515,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,active,active,cancelled,granted,seeded,c6a6ef74-7c49-43e3-8062-3ee2c750568c,1200,,False
+w1snjg-kj.myshopify.com,w1snjg-kj.myshopify.com,100855808224,Starter 2025 Annual,144.00,annual,name~starter,500,active,active,cancelled,granted,seeded,bf312dfe-c102-4ce0-aec4-1180d10f484a,500,,False
+xfs1hm-gv.myshopify.com,xfs1hm-gv.myshopify.com,27254030422,Premium 2025 Annual,374.40,annual,name~premium,2500,active,active,cancelled,granted,seeded,33b498da-ede1-4737-9b04-84f65f5ff4f2,2500,,False
+pm9zqj-hh.myshopify.com,pm9zqj-hh.myshopify.com,36750623040,Premium 2025 Monthly,39.00,every_30_days,price=39.00,2500,active,active,cancelled,granted,seeded,59529faa-54c3-4430-9150-f56181a2a37f,2500,,False
+xehdq6-ut.myshopify.com,xehdq6-ut.myshopify.com,32533905621,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,active,active,cancelled,granted,seeded,0c281496-7e67-46e9-8e77-c76415294cfb,1200,,False
+khhwbd-kg.myshopify.com,khhwbd-kg.myshopify.com,28961079343,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,bbd34ffc-8493-460e-87f7-dbb72b9e3316,500,,False
+w0mdak-1z.myshopify.com,w0mdak-1z.myshopify.com,25554911335,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,active,active,cancelled,granted,seeded,360b2d02-283a-4fb5-9b89-ce1b9f555210,1200,,False
+z7mht7-gr.myshopify.com,z7mht7-gr.myshopify.com,63418466647,Starter Monthly,19.00,every_30_days,name~starter,500,not_found,404,skipped (shopify=not_found),skipped,,,,,False
+0bka5s-e9.myshopify.com,0bka5s-e9.myshopify.com,30968053992,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+hmdz0b-eq.myshopify.com,hmdz0b-eq.myshopify.com,47757033807,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,active,active,cancelled,granted,seeded,b0690708-cdf4-44b8-b464-37034f853f7a,1200,,False
+3vvdt4-5a.myshopify.com,3vvdt4-5a.myshopify.com,36018684177,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,c1598ba7-2897-4f7e-b7e1-3d8691dd5984,500,,False
+e9khae-vm.myshopify.com,e9khae-vm.myshopify.com,47344189725,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,115bb716-a23d-47d7-8553-49e39f7c9dc8,500,,False
+syy30h-hc.myshopify.com,syy30h-hc.myshopify.com,29052371100,Starter Monthly,19.00,every_30_days,name~starter,500,no_token,missing access_token,skipped (shopify=no_token),skipped,,,,,False
+bc00t9-xt.myshopify.com,bc00t9-xt.myshopify.com,30887543029,Value 2025 Monthly,22.00,every_30_days,price=22.00,1200,active,active,cancelled,granted,seeded,5f3d1d99-074d-4d43-9255-41e24860289c,1200,,False
+u86gnp-y8.myshopify.com,u86gnp-y8.myshopify.com,25108611157,Starter 2025 Monthly,15.00,every_30_days,price=15.00,500,active,active,cancelled,granted,seeded,94319766-ffee-4d37-8927-14bdf2130e2f,500,,False

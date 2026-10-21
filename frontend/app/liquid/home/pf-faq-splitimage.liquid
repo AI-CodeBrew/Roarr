@@ -1,0 +1,106 @@
+{% comment %}
+  FAQ & Showcase - Split Image Layout
+  - Text column, image, FAQ accordion; optional Kluck FAQ copy
+  - Layout: pf-faq-splitimage.css | Accordion: pf-faq-splitimage.js
+{% endcomment %}
+
+{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{%- assign faq_scheme = section.settings.faq_color_scheme | default: 'scheme-2' -%}
+{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+
+{% if shop.metafields.app.block_control.value %}
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-faq-splitimage.css' | asset_url }}" media="all">
+
+{% style %}
+  #fs-{{ section.id }} {
+    --font-h: {{ settings.type_heading_font | font_family: 'sans-serif' }};
+    --font-b: {{ settings.type_body_font | font_family: 'sans-serif' }};
+    --pt: {{ section.settings.padding_top | default: 60 }}px;
+    --pb: {{ section.settings.padding_bottom | default: 60 }}px;
+    --max-width: {% if section.settings.section_full_width %}100%{% else %}{{ section.settings.section_max_width | default: 1300 }}px{% endif %};
+  }
+{% endstyle %}
+
+<div id="fs-{{ section.id }}" class="fs-section-wrapper color-{{ section_scheme }}">
+
+  <div class="fs-container">
+
+    <div class="fs-text-col">
+      <h2>{{ section.settings.heading }}</h2>
+      <div class="fs-rte">{{ section.settings.text }}</div>
+      {% if section.settings.btn_link != blank %}
+        <a href="{{ section.settings.btn_link }}" class="fs-btn">{{ section.settings.btn_label }}</a>
+      {% endif %}
+    </div>
+
+    <div class="fs-image-col">
+      {% if section.settings.image != blank %}
+        {{ section.settings.image | image_url: width: 800 | image_tag: 'fs-img', 'lazy' }}
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'fs-img' }}
+      {% endif %}
+    </div>
+
+    <div class="fs-faq-col">
+      {% for block in section.blocks %}
+        {% assign kq = blank %}
+        {% assign ka = blank %}
+        {% if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank %}
+          {% assign _t = store_gen.home_page.text %}
+          {% case forloop.index %}
+            {% when 1 %}
+              {% assign kq = _t.faq_question_1 %}
+              {% assign ka = _t.faq_answer_1 %}
+            {% when 2 %}
+              {% assign kq = _t.faq_question_2 %}
+              {% assign ka = _t.faq_answer_2 %}
+            {% when 3 %}
+              {% assign kq = _t.faq_question_3 %}
+              {% assign ka = _t.faq_answer_3 %}
+            {% when 4 %}
+              {% assign kq = _t.faq_question_4 %}
+              {% assign ka = _t.faq_answer_4 %}
+          {% endcase %}
+        {% endif %}
+
+        <div class="fs-faq-item color-{{ faq_scheme }}" {{ block.shopify_attributes }}>
+          <div class="fs-faq-header">
+            <h3 class="fs-faq-title">
+              {% assign kq_stripped = kq | strip %}
+              {% if use_kluck_ai and kq_stripped != blank %}
+                {{ kq | strip }}
+              {% else %}
+                {{ block.settings.title }}
+              {% endif %}
+            </h3>
+            <div class="fs-faq-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line class="fs-vertical-line" x1="12" y1="5" x2="12" y2="19"></line>
+                <line class="fs-horizontal-line" x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </div>
+          </div>
+          <div class="fs-faq-content">
+            <div class="fs-faq-inner">
+              {% assign ka_stripped = ka | strip %}
+              {% if use_kluck_ai and ka_stripped != blank %}
+                {{ ka | strip }}
+              {% else %}
+                {{ block.settings.content }}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</div>
+
+<script src="{{ 'pf-faq-splitimage.js' | asset_url }}" defer></script>
+{% endif %}

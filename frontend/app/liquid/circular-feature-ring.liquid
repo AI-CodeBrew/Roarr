@@ -1,0 +1,148 @@
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+  {%- liquid
+    assign s = block.settings
+    assign m = product.metafields.kluck_ai
+    assign c = m.color_schema.value | default: m.color_schema | default: '#111'
+
+    assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
+    if s.show_background == false
+      assign opacity = 0
+    else
+      assign opacity = opacity_val
+    endif
+    assign bg_color = s.background_color | default: '#ffffff'
+    unless s.use_metafields_bg == false
+      if s.use_metafields_bg and product != blank and m.color_schema != blank
+        assign bg_color = m.color_schema.value | default: m.color_schema
+      elsif s.use_metafields and product != blank and m.color_schema != blank
+        assign bg_color = m.color_schema.value | default: m.color_schema
+      endif
+    endunless
+
+    assign heading_font = s.heading_font_family
+    assign body_font = s.body_font_family
+    assign img = m.feature_image.value | default: m.feature_image | default: s.image
+
+    assign h = s.heading
+    assign sh = s.subheading
+    if s.use_metafields
+      assign h = m.circular_features_heading.value | default: m.circular_features_heading | default: h
+      assign sh = m.circular_features_subheading.value | default: m.circular_features_subheading | default: sh
+    endif
+
+    assign group_a = ''
+    assign group_b = ''
+    assign timeline_html = ''
+
+    for i in (1..4)
+      assign t_key = 'feature' | append: i | append: '_title'
+      assign d_key = 'feature' | append: i | append: '_text'
+      assign t = s[t_key]
+      assign d = s[d_key]
+
+      if s.use_metafields
+        assign mf_t = 'circular_feature_' | append: i | append: '_name'
+        assign mf_d = 'circular_feature_' | append: i | append: '_desc'
+        assign t = m[mf_t].value | default: m[mf_t] | default: t
+        assign d = m[mf_d].value | default: m[mf_d] | default: d
+      endif
+
+      if t != blank or d != blank
+        capture item_html
+          echo '<div class="cfr-item">'
+          if t != blank
+            echo '<h4 class="cfr-item-title">' | append: t | append: '</h4>'
+          endif
+          if d != blank
+            echo '<p class="cfr-item-desc">' | append: d | append: '</p>'
+          endif
+          echo '</div>'
+        endcapture
+
+        capture timeline_item
+          echo '<div class="cfr-mobile-item"><div class="cfr-mobile-item-content">'
+          if t != blank
+            echo '<h4 class="cfr-mobile-item-title">' | append: t | append: '</h4>'
+          endif
+          if d != blank
+            echo '<p class="cfr-mobile-item-desc">' | append: d | append: '</p>'
+          endif
+          echo '</div></div>'
+        endcapture
+
+        assign timeline_html = timeline_html | append: timeline_item
+        if i <= 2
+          assign group_a = group_a | append: item_html
+        else
+          assign group_b = group_b | append: item_html
+        endif
+      endif
+    endfor
+
+    assign all_cards = group_a | append: group_b
+    assign pos = s.image_position | default: 'center'
+    assign pad_v_d = s.padding_vertical_desktop | default: 10
+    assign pad_h_d = s.padding_horizontal_desktop | default: 10
+    assign pad_v_m = s.padding_vertical_mobile | default: 20
+    assign pad_h_m = s.padding_horizontal_mobile | default: 10
+  -%}
+
+  <link rel="stylesheet" href="{{ 'circular-feature-ring.css' | asset_url }}" media="all">
+
+  <link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+  <div
+    class="cfr-wrapper tae-circular-feature-ring cfr-image-{{ pos }} cfr-mobile-layout-{{ s.mobile_layout | default: 'timeline' }} cfr-mobile-cards-{{ s.mobile_cards_layout | default: 'stacked' }} tae-circular-feature-ring-{{ block.id | replace: '_', '-' | downcase }} app_blocks_class"
+    style="display: block; --product-section-bg:{{ bg_color }}; --product-section-opacity:{{ opacity }}; --bg-color:{{ bg_color }}; --bg-opacity:{{ opacity }}; --container-width:{{ s.container_max_width | default: 1250 }}px; --cfr-heading-color: {{ c }}; --cfr-timeline-color: {{ c }}; --cfr-image-radius: {{ s.image_border_radius | default: 50 }}%; --section-padding-v-d: {{ pad_v_d }}px; --section-padding-h-d: {{ pad_h_d }}px; --section-padding-v-m: {{ pad_v_m }}px; --section-padding-h-m: {{ pad_h_m }}px; --font-heading-family:{% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %}; --font-body-family:{% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %}; --body-size:{{ s.body_size | default: 16 }}px; --body-weight:{{ s.body_weight | default: 400 }}; --h1-size:{{ s.h1_size | default: 48 }}px; --h1-weight:{{ s.h1_weight | default: 700 }}; --h2-size:{{ s.h2_size | default: 36 }}px; --h2-weight:{{ s.h2_weight | default: 700 }}; --h3-size:{{ s.h3_size | default: 30 }}px; --h3-weight:{{ s.h3_weight | default: 600 }}; --h4-size:{{ s.h4_size | default: 24 }}px; --h4-weight:{{ s.h4_weight | default: 600 }}; --h5-size:{{ s.h5_size | default: 20 }}px; --h5-weight:{{ s.h5_weight | default: 500 }}; --h6-size:{{ s.h6_size | default: 16 }}px; --h6-weight:{{ s.h6_weight | default: 500 }};"
+  >
+    <div class="cfr-container">
+      <div class="cfr-header">
+        {% if h != blank %}
+          <h3>{{ h }}</h3>
+        {% endif %}
+        {% if sh != blank %}
+          <p class="cfr-subheading">{{ sh }}</p>
+        {% endif %}
+      </div>
+
+      <div class="cfr-grid">
+        {%- if pos == 'right' -%}
+          <div class="cfr-col cfr-col-cards">{{ all_cards }}</div>
+        {%- endif -%}
+
+        {%- if pos == 'center' -%}
+          <div class="cfr-col cfr-col-side">{{ group_a }}</div>
+        {%- endif -%}
+
+        <div class="cfr-col cfr-col-center">
+          <div class="cfr-main-image-wrap">
+            {% if img != blank %}
+              <img
+                src="{{ img | image_url: width: 800 }}"
+                srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1200 }} 1200w"
+                sizes="(max-width: 900px) 280px, 400px"
+                alt="{{ img.alt | default: h }}"
+                loading="lazy"
+                width="800"
+                height="800"
+              >
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'cfr-placeholder-svg' }}
+            {% endif %}
+          </div>
+        </div>
+
+        {%- if pos == 'center' -%}
+          <div class="cfr-col cfr-col-side">{{ group_b }}</div>
+        {%- endif -%}
+
+        {%- if pos == 'left' -%}
+          <div class="cfr-col cfr-col-cards">{{ all_cards }}</div>
+        {%- endif -%}
+      </div>
+
+      <div class="cfr-mobile-timeline">{{ timeline_html }}</div>
+      <div class="cfr-mobile-cards-wrap">{{ all_cards }}</div>
+    </div>
+  </div>
+{%- endif -%}

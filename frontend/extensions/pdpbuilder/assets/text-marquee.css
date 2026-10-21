@@ -1,0 +1,93 @@
+/**
+ * Kluck AI - Marquee Banner
+ * Base styles; full variables and scoped styles are inline in text-marquee.liquid.
+ * This file provides fallbacks when the block is rendered without inline styles.
+ */
+
+.kluck-marquee-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.kluck-marquee-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-color, #ffffff);
+  opacity: var(--bg-opacity, 0.1);
+  z-index: 0;
+}
+
+.kluck-marquee-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-width, 2000px);
+  margin: 0 auto;
+}
+
+.mq-section {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  -webkit-mask-image: linear-gradient(to right, transparent, black var(--mask-width, 50px), black calc(100% - var(--mask-width, 50px)), transparent);
+  mask-image: linear-gradient(to right, transparent, black var(--mask-width, 50px), black calc(100% - var(--mask-width, 50px)), transparent);
+}
+
+.mq-track {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  background-color: var(--marquee-bg-color, #BCCCE0);
+  color: #ffffff;
+  padding: 15px 0;
+}
+
+.mq-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+.mq-item {
+  display: inline-flex;
+  align-items: center;
+  margin-right: var(--gap-d, 60px);
+  flex-shrink: 0;
+  color: #ffffff;
+}
+
+.mq-text {
+  font-family: var(--font-heading-family, inherit);
+  font-size: var(--h2-size, 64px);
+  font-weight: var(--h2-weight, 500);
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.mq-img-wrap {
+  height: var(--img-height-d, 60px);
+  display: block;
+}
+
+.mq-img {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  border-radius: var(--img-radius, 10px);
+}
+
+@media (max-width: 768px) {
+  .mq-item {
+    margin-right: var(--gap-m, 30px);
+  }
+  .mq-text {
+    font-size: calc(var(--h2-size, 64px) * 0.7);
+  }
+  .mq-img-wrap {
+    height: var(--img-height-m, 40px);
+  }
+}

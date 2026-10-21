@@ -1,0 +1,23 @@
+{
+  "ratings": {
+    "stars": {
+      "label": "Ratings"
+    },
+    "home": {
+      "recommendationText": "Recommended Product!"
+    }
+  },
+  "actions": {
+
+    "close": "Close",
+    "zoom": "Zoom"
+  },
+  "blocks": {
+    "buy_now": {
+      "button_label": "Buy Now",
+      "quantity": "Quantity",
+      "quantity_increase": "Increase quantity",
+      "quantity_decrease": "Decrease quantity"
+    }
+  }
+}

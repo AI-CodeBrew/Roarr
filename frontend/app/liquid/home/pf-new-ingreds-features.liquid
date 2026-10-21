@@ -1,0 +1,200 @@
+{% comment %}
+  Multi-Purpose Image Accordion - Pro Version
+  - Optional Kluck heading, why_choose_us_reason_n_*, creative_image metafield
+  - Layout: pf-new-ingreds-features.css | Accordion: pf-new-ingreds-features.js
+{% endcomment %}
+
+{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign section_scheme = section.settings.section_color_scheme | default: 'scheme-1' -%}
+{%- assign container_scheme = section.settings.container_color_scheme | default: 'scheme-2' -%}
+{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+{%- assign kluck_creative = shop.metafields.kluck_ai.creative_image.value -%}
+
+{%- assign kluck_main_heading = blank -%}
+{%- if store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+  {%- assign kluck_main_heading = store_gen.home_page.text.why_choose_us_heading -%}
+{%- endif -%}
+
+{%- assign accordion_single_image = false -%}
+{%- if use_kluck_ai and kluck_creative != blank -%}
+  {%- assign accordion_single_image = true -%}
+{%- endif -%}
+
+{% if shop.metafields.app.block_control.value %}
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-new-ingreds-features.css' | asset_url }}" media="all">
+
+{% style %}
+  #shopify-section-{{ section.id }} {
+    --padding-top-m: {{ section.settings.padding_top_mobile }}px;
+    --padding-bottom-m: {{ section.settings.padding_bottom_mobile }}px;
+    --padding-top-d: {{ section.settings.padding_top_desktop }}px;
+    --padding-bottom-d: {{ section.settings.padding_bottom_desktop }}px;
+    --main-heading-font: {{ settings.type_heading_font | font_family: 'sans-serif' }};
+    --main-heading-weight: 400;
+    --main-heading-size-d: {{ section.settings.main_heading_size_desktop }}px;
+    --main-heading-size-m: {{ section.settings.main_heading_size_mobile }}px;
+    --title-spacing-d: {{ section.settings.title_spacing_desktop }}px;
+    --title-spacing-m: {{ section.settings.title_spacing_mobile }}px;
+    --acc-heading-font: {{ settings.type_subheading_font | font_family: 'sans-serif' }};
+    --acc-heading-weight: 400;
+    --acc-heading-size-d: {{ section.settings.acc_heading_size_desktop }}px;
+    --acc-heading-size-m: {{ section.settings.acc_heading_size_mobile }}px;
+    --body-font: {{ settings.type_body_font | font_family: 'sans-serif' }};
+    --body-size-d: {{ section.settings.body_size_desktop }}px;
+    --body-size-m: {{ section.settings.body_size_mobile }}px;
+    --max-width: {{ section.settings.max_width }}px;
+    --border-radius: {{ section.settings.border_radius }}px;
+    --desktop-layout: {% if section.settings.desktop_layout == 'image_left' %}row-reverse{% else %}row{% endif %};
+    --text-padding-left: {% if section.settings.desktop_layout == 'image_left' %}80px{% else %}60px{% endif %};
+    --text-padding-right: {% if section.settings.desktop_layout == 'image_left' %}60px{% else %}80px{% endif %};
+    {%- if section.settings.border_color != blank -%}
+    --border-divider: {{ section.settings.border_color }};
+    {%- endif -%}
+  }
+{% endstyle %}
+
+<div id="shopify-section-{{ section.id }}"
+     class="img-acc-section img-acc-section--{{ section.id }} color-{{ section_scheme }}"
+     data-accordion-single-image="{% if accordion_single_image %}true{% else %}false{% endif %}">
+
+  {% if use_kluck_ai %}
+    {% assign hs = kluck_main_heading | strip %}
+    {% if hs != blank %}
+      <h2 class="img-acc-main-title img-acc-main-title--{{ section.id }}">{{ kluck_main_heading | strip }}</h2>
+    {% elsif section.settings.main_heading != blank %}
+      <h2 class="img-acc-main-title img-acc-main-title--{{ section.id }}">{{ section.settings.main_heading }}</h2>
+    {% endif %}
+  {% else %}
+    {% if section.settings.main_heading != blank %}
+      <h2 class="img-acc-main-title img-acc-main-title--{{ section.id }}">{{ section.settings.main_heading }}</h2>
+    {% endif %}
+  {% endif %}
+
+  <div class="img-acc-container img-acc-container--{{ section.id }}">
+
+    <div class="img-acc-text-side img-acc-text-side--{{ section.id }} color-{{ container_scheme }}">
+      {%- for block in section.blocks -%}
+        {%- assign reason_heading = blank -%}
+        {%- assign reason_description = blank -%}
+        {%- if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+          {%- assign _t = store_gen.home_page.text -%}
+          {%- case forloop.index -%}
+            {%- when 1 -%}
+              {%- assign reason_heading = _t.why_choose_us_reason_1_heading -%}
+              {%- assign reason_description = _t.why_choose_us_reason_1_description -%}
+            {%- when 2 -%}
+              {%- assign reason_heading = _t.why_choose_us_reason_2_heading -%}
+              {%- assign reason_description = _t.why_choose_us_reason_2_description -%}
+            {%- when 3 -%}
+              {%- assign reason_heading = _t.why_choose_us_reason_3_heading -%}
+              {%- assign reason_description = _t.why_choose_us_reason_3_description -%}
+            {%- when 4 -%}
+              {%- assign reason_heading = _t.why_choose_us_reason_4_heading -%}
+              {%- assign reason_description = _t.why_choose_us_reason_4_description -%}
+            {%- when 5 -%}
+              {%- assign reason_heading = _t.why_choose_us_reason_5_heading -%}
+              {%- assign reason_description = _t.why_choose_us_reason_5_description -%}
+            {%- when 6 -%}
+              {%- assign reason_heading = _t.why_choose_us_reason_6_heading -%}
+              {%- assign reason_description = _t.why_choose_us_reason_6_description -%}
+            {%- when 7 -%}
+              {%- assign reason_heading = _t.why_choose_us_reason_7_heading -%}
+              {%- assign reason_description = _t.why_choose_us_reason_7_description -%}
+            {%- when 8 -%}
+              {%- assign reason_heading = _t.why_choose_us_reason_8_heading -%}
+              {%- assign reason_description = _t.why_choose_us_reason_8_description -%}
+          {%- endcase -%}
+        {%- endif -%}
+
+        <div class="img-acc-item img-acc-item--{{ section.id }}" {{ block.shopify_attributes }}>
+          <button type="button" class="img-acc-trigger img-acc-trigger--{{ section.id }} {% if forloop.first %}is-open{% endif %}" data-index="{{ forloop.index0 }}">
+            {%- if use_kluck_ai -%}
+              {%- assign rs = reason_heading | strip -%}
+              {%- if rs != blank -%}
+                {{ reason_heading | strip }}
+              {%- else -%}
+                {{ block.settings.title }}
+              {%- endif -%}
+            {%- else -%}
+              {{ block.settings.title }}
+            {%- endif -%}
+            <svg class="img-acc-trigger-icon" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="img-acc-content img-acc-content--{{ section.id }}" {% if forloop.first %}style="max-height: 1000px;"{% endif %}>
+            <div class="img-acc-content-inner">
+              <div class="img-acc-desc img-acc-desc--{{ section.id }}">
+                {%- if use_kluck_ai -%}
+                  {%- assign ds = reason_description | strip -%}
+                  {%- if ds != blank -%}
+                    {{ reason_description }}
+                  {%- else -%}
+                    {{ block.settings.description }}
+                  {%- endif -%}
+                {%- else -%}
+                  {{ block.settings.description }}
+                {%- endif -%}
+              </div>
+
+              {%- if block.settings.btn_label != blank -%}
+                <a href="{{ block.settings.btn_link }}" class="img-acc-link img-acc-link--{{ section.id }}">
+                  {{ block.settings.btn_label }}
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="img-acc-image-side img-acc-image-side--{{ section.id }}">
+      {%- if use_kluck_ai and kluck_creative != blank -%}
+        <img
+          src="{{ kluck_creative | image_url: width: 1200 }}"
+          alt=""
+          class="img-acc-image is-active"
+          loading="lazy"
+          data-index="0"
+        >
+      {%- elsif use_kluck_ai -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 1200 }}"
+              alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+              class="img-acc-image{% if forloop.first %} is-active{% endif %}"
+              data-index="{{ forloop.index0 }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            <svg class="img-acc-image placeholder-svg{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 525.5 525.5" width="525" height="525" aria-hidden="true"><rect width="525.5" height="525.5" fill="#f0f0f0"/><path fill="#ccc" d="M262.7 161.6c-55.7 0-101 45.2-101 101s45.2 101 101 101 101-45.2 101-101-45.3-101-101-101zm0 168.3c-37.1 0-67.2-30.1-67.2-67.2s30.1-67.2 67.2-67.2 67.2 30.1 67.2 67.2-30.1 67.2-67.2 67.2z"/><path fill="#ccc" d="M415.6 214.9c-4.2-9.2-9.4-18-15.4-26.2-6.1-8.2-13.1-15.8-20.9-22.6-7.8-6.9-16.4-12.9-25.6-17.9-9.2-5-18.9-9-28.9-11.9-10-2.9-20.3-4.7-30.7-5.4-10.4-.7-20.9-.3-31.2 1.2-10.3 1.5-20.4 4.3-30 7.9-9.6 3.7-18.7 8.4-27.2 14-8.5 5.6-16.4 12.2-23.6 19.5-7.2 7.3-13.6 15.2-19.2 23.6-5.6 8.5-10.2 17.3-13.9 26.4-3.7 9.1-6.4 18.5-8.1 28-1.7 9.5-2.4 19.2-2 28.8.4 9.6 1.7 19.1 3.8 28.4 2.1 9.3 5 18.4 8.6 27.2 3.6 8.8 7.9 17.2 13 25.1 5.1 7.9 10.9 15.3 17.4 22 6.5 6.7 13.7 12.8 21.5 18.1 7.8 5.3 16.1 9.8 24.9 13.4 8.8 3.6 18 6.3 27.4 8.1 9.4 1.8 18.9 2.6 28.4 2.4 9.5-.2 19-.9 28.3-2.2 9.3-1.3 18.4-3.5 27.2-6.4 8.8-2.9 17.3-6.6 25.4-11 8.1-4.4 15.8-9.5 22.9-15.2 7.1-5.7 13.6-12.2 19.3-19.3 5.7-7.1 10.7-14.8 14.8-22.9 4.1-8.2 7.4-16.8 9.8-25.7 2.4-8.9 3.9-18 4.5-27.2.6-9.2.3-18.5-.9-27.6-1.2-9.1-3.2-18-6-26.6-2.8-8.6-6.3-16.8-10.5-24.6z"/></svg>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 1200 }}"
+              alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+              class="img-acc-image{% if forloop.first %} is-active{% endif %}"
+              data-index="{{ forloop.index0 }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            <svg class="img-acc-image placeholder-svg{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 525.5 525.5" width="525" height="525" aria-hidden="true"><rect width="525.5" height="525.5" fill="#f0f0f0"/><path fill="#ccc" d="M262.7 161.6c-55.7 0-101 45.2-101 101s45.2 101 101 101 101-45.2 101-101-45.3-101-101-101zm0 168.3c-37.1 0-67.2-30.1-67.2-67.2s30.1-67.2 67.2-67.2 67.2 30.1 67.2 67.2-30.1 67.2-67.2 67.2z"/><path fill="#ccc" d="M415.6 214.9c-4.2-9.2-9.4-18-15.4-26.2-6.1-8.2-13.1-15.8-20.9-22.6-7.8-6.9-16.4-12.9-25.6-17.9-9.2-5-18.9-9-28.9-11.9-10-2.9-20.3-4.7-30.7-5.4-10.4-.7-20.9-.3-31.2 1.2-10.3 1.5-20.4 4.3-30 7.9-9.6 3.7-18.7 8.4-27.2 14-8.5 5.6-16.4 12.2-23.6 19.5-7.2 7.3-13.6 15.2-19.2 23.6-5.6 8.5-10.2 17.3-13.9 26.4-3.7 9.1-6.4 18.5-8.1 28-1.7 9.5-2.4 19.2-2 28.8.4 9.6 1.7 19.1 3.8 28.4 2.1 9.3 5 18.4 8.6 27.2 3.6 8.8 7.9 17.2 13 25.1 5.1 7.9 10.9 15.3 17.4 22 6.5 6.7 13.7 12.8 21.5 18.1 7.8 5.3 16.1 9.8 24.9 13.4 8.8 3.6 18 6.3 27.4 8.1 9.4 1.8 18.9 2.6 28.4 2.4 9.5-.2 19-.9 28.3-2.2 9.3-1.3 18.4-3.5 27.2-6.4 8.8-2.9 17.3-6.6 25.4-11 8.1-4.4 15.8-9.5 22.9-15.2 7.1-5.7 13.6-12.2 19.3-19.3 5.7-7.1 10.7-14.8 14.8-22.9 4.1-8.2 7.4-16.8 9.8-25.7 2.4-8.9 3.9-18 4.5-27.2.6-9.2.3-18.5-.9-27.6-1.2-9.1-3.2-18-6-26.6-2.8-8.6-6.3-16.8-10.5-24.6z"/></svg>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+<script src="{{ 'pf-new-ingreds-features.js' | asset_url }}" defer></script>
+{% endif %}

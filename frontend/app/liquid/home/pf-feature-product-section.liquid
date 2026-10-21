@@ -1,0 +1,166 @@
+{% comment %}
+  Featured Products Slider — image, text, product link per card
+  - Kluck preview: featured_product_headline_n, featured_product_subheadline_n, feature_image_n; layout: pf-feature-product-section.css + .js
+{% endcomment %}
+
+{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{%- assign card_scheme = section.settings.card_color_scheme | default: 'scheme-2' -%}
+{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+
+{% if shop.metafields.app.block_control.value %}
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-feature-product-section.css' | asset_url }}" media="all">
+
+{% style %}
+  #fp-{{ section.id }} {
+    --font-h: {{ settings.type_heading_font | font_family: 'sans-serif' }};
+    --font-b: {{ settings.type_body_font | font_family: 'sans-serif' }};
+    --font-btn: {{ settings.type_accent_font | default: settings.type_body_font | font_family: 'sans-serif' }};
+    --pt-d: {{ section.settings.pt_d | default: 60 }}px;
+    --pb-d: {{ section.settings.pb_d | default: 60 }}px;
+    --h-size-d: {{ section.settings.h_size_d | default: 42 }}px;
+    --card-h-size-d: {{ section.settings.card_h_size_d | default: 20 }}px;
+    --card-p-size-d: {{ section.settings.card_p_size_d | default: 16 }}px;
+    --card-width-d: {{ section.settings.card_width_d | default: 400 }}px;
+    --img-height-d: {{ section.settings.img_height_d | default: 300 }}px;
+    --gap-d: {{ section.settings.gap_d | default: 30 }}px;
+    --container-pl: {{ section.settings.container_pl | default: 20 }}px;
+    --track-offset: {{ section.settings.track_offset | default: 0 }}px;
+    --btn-size-d: {{ section.settings.btn_size_d | default: 12 }}px;
+    --pt-m: {{ section.settings.pt_m | default: 40 }}px;
+    --pb-m: {{ section.settings.pb_m | default: 40 }}px;
+    --h-size-m: {{ section.settings.h_size_m | default: 32 }}px;
+    --card-h-size-m: {{ section.settings.card_h_size_m | default: 18 }}px;
+    --card-p-size-m: {{ section.settings.card_p_size_m | default: 14 }}px;
+    --card-width-m: {{ section.settings.card_width_m | default: 85 }}%;
+    --img-height-m: {{ section.settings.img_height_m | default: 250 }}px;
+    --gap-m: {{ section.settings.gap_m | default: 16 }}px;
+    --btn-size-m: {{ section.settings.btn_size_m | default: 11 }}px;
+    --radius: {{ section.settings.card_radius | default: 20 }}px;
+    --btn-radius: {{ section.settings.btn_radius | default: 4 }}px;
+    --fp-card-shadow: {% if section.settings.show_shadow %}0 4px 20px rgba(0, 0, 0, 0.06){% else %}none{% endif %};
+  }
+{% endstyle %}
+
+<div id="fp-{{ section.id }}" class="color-{{ section_scheme }}">
+  <div class="fp-container">
+
+    <div class="fp-header">
+      <h2 class="fp-heading">{{ section.settings.title }}</h2>
+      <div class="fp-nav">
+        <button type="button" class="fp-btn prev" aria-label="Previous">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="fp-btn next" aria-label="Next">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="fp-track" id="track-{{ section.id }}">
+      {% for block in section.blocks %}
+        {% assign product = block.settings.product %}
+        {% if product != blank and product.title == blank %}
+          {% assign product = all_products[product] %}
+        {% endif %}
+
+        {% assign kluck_punchline = blank %}
+        {% assign kluck_punchline_description = blank %}
+        {% assign kluck_product_impact = blank %}
+
+        {% if store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank %}
+          {% assign _t = store_gen.home_page.text %}
+          {% case forloop.index %}
+            {% when 1 %}
+              {% assign kluck_punchline = _t.top_product_punchline_1 %}
+              {% assign kluck_punchline_description = _t.top_product_punchline_1_description %}
+            {% when 2 %}
+              {% assign kluck_punchline = _t.top_product_punchline_2 %}
+              {% assign kluck_punchline_description = _t.top_product_punchline_2_description %}
+            {% when 3 %}
+              {% assign kluck_punchline = _t.top_product_punchline_3 %}
+              {% assign kluck_punchline_description = _t.top_product_punchline_3_description %}
+          {% endcase %}
+        {% endif %}
+
+        {% case forloop.index %}
+          {% when 1 %}
+            {% assign kluck_product_impact = shop.metafields.kluck_ai.product_impact_image_1.value %}
+          {% when 2 %}
+            {% assign kluck_product_impact = shop.metafields.kluck_ai.product_impact_image_2.value %}
+          {% when 3 %}
+            {% assign kluck_product_impact = shop.metafields.kluck_ai.product_impact_image_3.value %}
+        {% endcase %}
+
+        <div class="fp-card color-{{ card_scheme }}" {{ block.shopify_attributes }}>
+          <div class="fp-card-img-wrap">
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 800 | image_tag: 'fp-card-img', 'lazy' }}
+            {% elsif use_kluck_ai and kluck_product_impact != blank %}
+              {{ kluck_product_impact | image_url: width: 800 | image_tag: 'fp-card-img', 'lazy' }}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'fp-card-img' }}
+            {% endif %}
+          </div>
+
+          <div class="fp-card-body">
+            {% if use_kluck_ai %}
+              {% assign ps = kluck_punchline | strip %}
+              {% if ps != blank %}
+                <h3 class="fp-card-title">{{ kluck_punchline | strip }}</h3>
+              {% else %}
+                <h3 class="fp-card-title">{{ block.settings.heading }}</h3>
+              {% endif %}
+            {% else %}
+              <h3 class="fp-card-title">{{ block.settings.heading }}</h3>
+            {% endif %}
+
+            <div class="fp-card-text">
+              {% if use_kluck_ai %}
+                {% assign ds = kluck_punchline_description | strip %}
+                {% if ds != blank %}
+                  {{ kluck_punchline_description }}
+                {% else %}
+                  {{ block.settings.text }}
+                {% endif %}
+              {% else %}
+                {{ block.settings.text }}
+              {% endif %}
+            </div>
+
+            <div class="fp-divider"></div>
+
+            {% if product != blank %}
+              <a href="{{ product.url }}" class="fp-product-link">
+                <div class="fp-prod-header">
+                  {% if product.featured_image != blank %}
+                    {{ product.featured_image | image_url: width: 100 | image_tag: 'fp-thumb', 'lazy' }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'fp-thumb' }}
+                  {% endif %}
+                  <span class="fp-prod-name">{{ product.title }}</span>
+                </div>
+                <span class="fp-shop-btn">{{ section.settings.shop_btn_label }}</span>
+              </a>
+            {% else %}
+              <div class="fp-product-link">
+                <div class="fp-prod-header">
+                  {{ 'product-1' | placeholder_svg_tag: 'fp-thumb' }}
+                  <span class="fp-prod-name">Product Title Here</span>
+                </div>
+                <span class="fp-shop-btn">{{ section.settings.shop_btn_label }}</span>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<script src="{{ 'pf-feature-product-section.js' | asset_url }}" defer></script>
+{% endif %}

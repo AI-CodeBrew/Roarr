@@ -1,0 +1,95 @@
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+{%- liquid
+  assign s = block.settings
+  assign kai = product.metafields.kluck_ai
+  assign cust = product.metafields.custom
+  assign color = kai.color_schema.value | default: kai.color_schema | default: '#a34e4e'
+
+  assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
+  if s.show_background == false
+    assign opacity = 0
+  else
+    assign opacity = opacity_val
+  endif
+  assign bg_color = s.background_color | default: '#ffffff'
+  if s.use_metafields_bg and product != blank and kai.color_schema != blank
+    assign bg_color = kai.color_schema.value | default: kai.color_schema
+  elsif product != blank and kai.color_schema != blank
+    assign bg_color = kai.color_schema.value | default: kai.color_schema
+  endif
+
+  assign heading_font = s.heading_font_family
+  assign body_font = s.body_font_family
+  assign d_color = cust.discount_badge_color.value | default: cust.discount_badge_color | default: color
+  assign b_text = cust.badge_text.value | default: cust.badge_text | default: s.badge_text
+  assign subtitle = product.description | strip_html
+  if s.use_metafields
+    assign subtitle = kai.product_subtitle.value | default: kai.product_subtitle | default: subtitle
+  endif
+
+  assign cur_v = product.selected_or_first_available_variant
+  assign pr = cur_v.price
+  assign cp = cur_v.compare_at_price
+  assign save = 0
+  if cp > pr
+    assign save = cp | minus: pr | times: 100.0 | divided_by: cp | round
+  endif
+-%}
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'product-details.css' | asset_url }}" media="all">
+<script src="{{ 'product-details.js' | asset_url }}" defer></script>
+<div class="tae-product-details tae-product-details-{{ block.id | replace: '_', '-' }} tae-product-details--badge-{{ s.badge_align | default: 'center' }} tae-product-details--badge-shape-{{ s.badge_shape | default: 'ribbon' }} tae-product-details--title-{{ s.content_align | default: 'center' }} tae-product-details--subtitle-{{ s.content_align | default: 'center' }} tae-product-details--rating-text-{{ s.rating_text_align | default: 'center' }} tae-product-details--price-{{ s.price_align | default: 'center' }} tae-product-details--variants-{{ s.variants_align | default: 'center' }} app_blocks_class" style="--product-section-bg:{{ bg_color }};--product-section-opacity:{{ opacity }};--bg-color:{{ bg_color }};--bg-opacity:{{ opacity }};--container-width:{{ s.container_max_width | default: 1250 }}px;--product-details-max-width:600px;--product-details-gap:12px;--product-features-icon-color:{{ color }};--badge-1-text:{{ color }};--discount-badge-color:{{ d_color }};--product-details-badge-bg:#ffdb66;--variants-border-radius:{{ s.variants_border_radius | default: 8 }}px;--font-heading-family:{% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--font-body-family:{% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--body-size:{{ s.body_size | default: 16 }}px;--body-weight:{{ s.body_weight | default: 400 }};--h1-size:{{ s.h1_size | default: 48 }}px;--h1-weight:{{ s.h1_weight | default: 700 }};--h2-size:{{ s.h2_size | default: 36 }}px;--h2-weight:{{ s.h2_weight | default: 700 }};--h3-size:{{ s.h3_size | default: 30 }}px;--h3-weight:{{ s.h3_weight | default: 600 }};--h4-size:{{ s.h4_size | default: 24 }}px;--h4-weight:{{ s.h4_weight | default: 600 }};--h5-size:{{ s.h5_size | default: 20 }}px;--h5-weight:{{ s.h5_weight | default: 500 }};--h6-size:{{ s.h6_size | default: 16 }}px;--h6-weight:{{ s.h6_weight | default: 500 }};display:block;">
+  {%- if b_text != blank -%}<div class="tae-product-details-badge"><span> {{ b_text | upcase }}</span></div>{%- endif -%}
+  {%- if product -%}<h3 class="tae-product-details-title">{{ product.title }}</h3>{%- endif -%}
+  {%- if subtitle != blank -%}<p class="tae-product-details-subtitle rte">{{ subtitle }}</p>{%- endif -%}
+  {%- if s.show_rating != false -%}
+    <div class="tae-product-details-rating">
+      <div class="tae-product-details-stars"><span class="tae-product-details-star">★★★★★</span></div>
+      <span class="tae-product-details-rating-text">Best Quality</span>
+    </div>
+  {%- endif -%}
+  {%- if s.show_features != false and s.features_text != blank -%}
+    <div class="tae-product-details-features-grid">
+      {%- assign feats = s.features_text | split: '#' -%}
+      {%- for f in feats -%}
+        {%- assign ft = f | strip -%}
+        {%- if ft != blank -%}
+          {%- assign mod = forloop.index0 | modulo: 3 | plus: 1 -%}
+          <div class="tae-product-details-feature">
+            <div class="tae-product-details-feature-icon">
+              {%- if mod == 1 -%}{% render 'snippets/feature-1-icon' %}
+              {%- elsif mod == 2 -%}{% render 'snippets/feature-2-icon' %}
+              {%- else -%}{% render 'snippets/feature-3-icon' %}{%- endif -%}
+            </div>
+            <p class="tae-product-details-feature-text">{{ ft }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+  {%- if product and s.show_price != false -%}
+    <div class="tae-product-details-price-row" data-price-row>
+      <h4 class="tae-product-details-price-current" data-price-current>{{ pr | money }}</h4>
+      {%- if cp > pr -%}<p class="tae-product-details-price-compare" data-price-compare>{{ cp | money }}</p>{%- endif -%}
+      {%- if save > 0 -%}<span class="tae-product-details-discount-badge" data-discount-badge><p data-discount-text>{{ save }}% off</p></span>{%- endif -%}
+    </div>
+    {%- if product.variants.size > 1 -%}
+      {%- if product.options_with_values.size > 0 -%}<div class="tae-product-details-variant-label">{{ product.options_with_values.first.name }}:</div>{%- endif -%}
+      <div class="tae-product-details-variants" data-variants-container>
+        {%- for v in product.variants -%}
+          {%- if v.available -%}
+            {%- liquid
+              assign vs = 0
+              if v.compare_at_price > v.price
+                assign vs = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
+              endif
+            -%}
+            <button type="button" class="tae-product-details-variant-btn{% if v.id == cur_v.id %} is-selected{% endif %}" data-variant-id="{{ v.id }}" data-variant-price="{{ v.price }}" data-variant-price-formatted="{{ v.price | money }}" data-variant-compare-price="{{ v.compare_at_price | default: 0 }}" data-variant-compare-price-formatted="{{ v.compare_at_price | money }}" data-variant-discount-percentage="{{ vs }}" aria-label="{{ v.title }}">{{ v.title }}</button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+{%- endif -%}

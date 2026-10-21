@@ -1,0 +1,70 @@
+{%- liquid
+    assign s = block.settings
+    assign color_schema = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#A34E4E'
+  -%}
+  
+  {%- assign render_flag = shop.metafields.app.block_control.value -%}
+  {%- if render_flag == true -%}
+  <link rel="stylesheet" href="{{ 'faq.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+  
+  
+  <div 
+    class="tae-faq tae-faq-{{ block.id | replace: '_', '-' | downcase }} app_blocks_class"
+    style="display: none; --faq-primary-color: {{ color_schema }};"
+  >
+    <div class="tae-faq-header">
+      <div class="tae-faq-subheading">Got questions?</div>
+      <h3 class="tae-faq-heading">
+        We've Got <span class="tae-faq-heading-highlight" style="color: {{ color_schema }};">Answers</span>
+      </h3>
+    </div>
+  
+    <div class="tae-faq-accordion">
+      {%- for i in (1..5) -%}
+        {%- liquid
+          assign question_key = 'question_' | append: i
+          assign answer_key = 'answer_' | append: i
+  
+          if s.use_metafields
+            assign question_meta_key = 'faq_question_' | append: i
+            assign answer_meta_key = 'faq_answer_' | append: i
+  
+            assign question_meta = product.metafields.kluck_ai[question_meta_key]
+            assign answer_meta = product.metafields.kluck_ai[answer_meta_key]
+  
+            assign question = question_meta.value | default: question_meta | default: s[question_key]
+            assign answer = answer_meta.value | default: answer_meta | default: s[answer_key]
+          else
+            assign question = s[question_key]
+            assign answer = s[answer_key]
+          endif
+        -%}
+  
+        {%- if question != blank or answer != blank -%}
+          <details class="tae-faq-item">
+            <summary>
+              <div class="tae-faq-item-header">
+                <h5 class="tae-faq-question">{{ question }}</h5>
+                <span class="tae-faq-icon">
+                  <img src="{{ 'accordion-plus-icon.svg' | asset_url }}" width="16" height="16" alt="" loading="lazy">
+                </span>
+              </div>
+            </summary>
+            <div class="tae-faq-answer rte">
+              {{ answer }}
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  
+    {%- unless s.hide_kluck_credit -%}
+      <div class="tae-faq-credit">
+        Built using <a href="https://kluck.ai" target="_blank" rel="noopener noreferrer">kluck.ai</a>
+      </div>
+    {%- endunless -%}
+  </div>
+  {%- endif -%}
+  
+  {% schema %} { "name": "FAQ", "target": "section", "settings": [ { "type": "checkbox", "id": "use_metafields", "label": "Use Kluck AI metafields", "default": true, "info": "When enabled, content will be pulled from product metafields created by Kluck AI. When disabled, you can manually enter text." }, { "type": "header", "content": "FAQ Item 1" }, { "type": "text", "id": "question_1", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_1", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 2" }, { "type": "text", "id": "question_2", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_2", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 3" }, { "type": "text", "id": "question_3", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_3", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 4" }, { "type": "text", "id": "question_4", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_4", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 5" }, { "type": "text", "id": "question_5", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_5", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "checkbox", "id": "hide_kluck_credit", "label": "Hide kluck.ai", "default": false, "info": "Hide the 'Built using kluck.ai' text at the bottom right" }, ] } {% endschema %}

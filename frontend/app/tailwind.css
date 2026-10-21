@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Embedded admin: avoid a stray vertical “edge” from sub-pixel overflow */
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+}
+
+/* Embedded app top nav — React Router NavLink (avoids full reload from s-link) */
+@layer components {
+  .embedded-app-nav__link {
+    @apply inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 no-underline transition-colors;
+  }
+  .embedded-app-nav__link:hover {
+    @apply bg-gray-100 text-gray-900;
+  }
+  .embedded-app-nav__link--active {
+    @apply bg-gray-200 text-gray-900;
+  }
+  /* Home target for admin chrome — keep in DOM for App Bridge, not `hidden` on <a> */
+  .embedded-app-nav__link--home {
+    @apply sr-only;
+  }
+}

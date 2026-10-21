@@ -1,0 +1,117 @@
+{% comment %}
+  Custom Split FAQ Section — preview: config/liquid-preview/faq/faq-1.js
+{% endcomment %}
+
+{%- assign _faq_bg = section.settings.bg_color | default: '#ffffff' -%}
+{%- assign _faq_text = section.settings.text_color | default: '#000000' -%}
+{%- assign _faq_border = section.settings.border_color | default: '#eaeaea' -%}
+{%- assign _faq_q_size = section.settings.question_size | default: 18 -%}
+
+<link rel="stylesheet" href="{{ 'pf-new-FAQ-page.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-new-defaultprod-FAQ.css' | asset_url }}" media="all">
+<script src="{{ 'pf-new-defaultprod-FAQ.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  #pf-faq-split-{{ section.id }} {
+    --pf-faq-pt-mobile: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    --pf-faq-pb-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    --pf-faq-pt-desktop: {{ section.settings.padding_top }}px;
+    --pf-faq-pb-desktop: {{ section.settings.padding_bottom }}px;
+    --pf-faq-bg: {{ _faq_bg }};
+    --pf-faq-text: {{ _faq_text }};
+    --pf-faq-text-muted: {{ _faq_text | color_modify: 'alpha', 0.8 }};
+    --pf-faq-max-width: {{ section.settings.max_width }}px;
+    color: var(--pf-faq-text);
+    background-color: var(--pf-faq-bg);
+  }
+
+  #FaqSection-{{ section.id }} {
+    --faq-pt-mobile: 0px;
+    --faq-pb-mobile: 0px;
+    --faq-pt-desktop: 0px;
+    --faq-pb-desktop: 0px;
+    --faq-bg-color: transparent;
+    --faq-text-color: {{ _faq_text }};
+    --faq-border-color: {{ _faq_border }};
+    --faq-container-width: 100%;
+    --faq-heading-alignment: left;
+    --faq-heading-size-mobile: 32px;
+    --faq-heading-size-desktop: 48px;
+    --faq-question-size: {{ _faq_q_size }}px;
+  }
+{%- endstyle -%}
+
+<div
+  id="pf-faq-split-{{ section.id }}"
+  class="pf-faq-split-page"
+  style="--pf-faq-bg: {{ _faq_bg }}; --pf-faq-text: {{ _faq_text }}; --pf-faq-text-muted: {{ _faq_text | color_modify: 'alpha', 0.8 }}; background-color: {{ _faq_bg }}; color: {{ _faq_text }};"
+>
+  <div class="faq-split-wrapper">
+    <div class="faq-header-area">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="faq-main-title">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <div class="faq-subtitle">{{ section.settings.subheading }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="faq-content-grid">
+      <div class="faq-accordion-col" id="FAQ-Accordion-{{ section.id }}">
+        <div
+          class="minimal-faq-section pf-faq-split__minimal"
+          id="FaqSection-{{ section.id }}"
+          data-auto-close="{% if section.settings.auto_close == false %}false{% else %}true{% endif %}"
+        >
+          <div class="minimal-faq">
+            <div class="minimal-faq__list">
+              {%- for block in section.blocks -%}
+                <div class="minimal-faq__item {% if section.settings.open_first and forloop.first %}is-open{% endif %}" {{ block.shopify_attributes }}>
+                  <button type="button" class="minimal-faq__question" aria-expanded="{% if section.settings.open_first and forloop.first %}true{% else %}false{% endif %}">
+                    <span class="minimal-faq__question-text">{{ block.settings.question | escape }}</span>
+                    <span class="minimal-faq__icon" aria-hidden="true"></span>
+                  </button>
+
+                  <div class="minimal-faq__answer-wrapper">
+                    <div class="minimal-faq__answer-inner">
+                      {{ block.settings.answer }}
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-image-col">
+        <div class="faq-image-card">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 800 | image_tag: 'faq-card-img', 'lazy' }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+
+          <div class="faq-image-overlay"></div>
+
+          <div class="faq-card-content">
+            {%- if section.settings.card_heading != blank -%}
+              <h3 class="faq-card-title">{{ section.settings.card_heading }}</h3>
+            {%- endif -%}
+
+            {%- if section.settings.card_text != blank -%}
+              <p class="faq-card-text">{{ section.settings.card_text }}</p>
+            {%- endif -%}
+
+            {%- if section.settings.btn_label != blank -%}
+              <a href="{{ section.settings.btn_link }}" class="faq-card-btn">
+                {{ section.settings.btn_label }}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

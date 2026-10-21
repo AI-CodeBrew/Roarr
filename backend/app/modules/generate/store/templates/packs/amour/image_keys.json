@@ -1,0 +1,17 @@
+{
+  "home_page": {
+    "banner_image": "16:9",
+    "banner_image_2": "16:9",
+    "product_image_1": "3:4",
+    "product_image_2": "3:4",
+    "product_image_3": "3:4",
+    "look_image_1": "3:4",
+    "look_image_2": "3:4",
+    "look_image_3": "3:4",
+    "split_image": "1:1",
+    "editorial_image_1": "16:9",
+    "editorial_image_2": "16:9",
+    "story_image": "4:5"
+  },
+  "product_page": {}
+}

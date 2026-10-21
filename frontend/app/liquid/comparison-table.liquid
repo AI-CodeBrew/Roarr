@@ -1,0 +1,133 @@
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+  {%- liquid
+    assign bs = block.settings
+    assign m = product.metafields.kluck_ai
+    assign c_schema = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
+
+    assign opacity_val = bs.background_opacity | default: 10 | divided_by: 100.0
+    if bs.show_background == false
+      assign opacity = 0
+    else
+      assign opacity = opacity_val
+    endif
+    assign bg_color = bs.background_color | default: '#ffffff'
+    unless bs.use_metafields_bg == false
+      if bs.use_metafields_bg and product != blank and m.color_schema != blank
+        assign bg_color = m.color_schema.value | default: m.color_schema
+      elsif bs.use_metafields and product != blank and m.color_schema != blank
+        assign bg_color = m.color_schema.value | default: m.color_schema
+      endif
+    endunless
+
+    assign heading_font = bs.heading_font_family
+    assign body_font = bs.body_font_family
+
+    assign sub = bs.subheading
+    if bs.use_metafields
+      assign sub = m.what_set_us_apart_subheading | default: bs.subheading
+    endif
+
+    assign num_rows = bs.number_of_rows | default: 3 | at_most: 5 | at_least: 1
+    assign mark_class = 'cft-mark-plain'
+    if bs.mark_circle
+      assign mark_class = 'cft-mark-circle'
+    endif
+    assign pad_v_d = bs.padding_vertical_desktop | default: 10
+    assign pad_h_d = bs.padding_horizontal_desktop | default: 10
+    assign pad_v_m = bs.padding_vertical_mobile | default: 20
+    assign pad_h_m = bs.padding_horizontal_mobile | default: 10
+  -%}
+
+  <link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'comparison-table.css' | asset_url }}" media="all">
+
+  <section
+    id="cft-{{ block.id }}"
+    class="cft cft-table-{{ bs.table_position | default: 'right' }} cft-borders-{{ bs.table_borders | default: 'full' }} cft-text-{{ bs.text_align | default: 'center' }} {{ mark_class }} app_blocks_class"
+    aria-label="Comparison table"
+    style="display:block; --product-section-bg:{{ bg_color }}; --product-section-opacity:{{ opacity }}; --bg-color:{{ bg_color }}; --bg-opacity:{{ opacity }}; --container-width:{{ bs.container_max_width | default: 1250 }}px; --cft-us-col-bg: {{ bs.us_column_bg | default: c_schema }}; --cft-table-border: {{ bs.table_border_color | default: '#e5e5e5' }}; --cft-btn-radius: {{ bs.shop_button_radius | default: 8 }}px; --cft-btn-bg: {{ c_schema }}; {% if bs.us_column_text != blank %}--cft-us-col-color: {{ bs.us_column_text }};{% endif %} --section-padding-v-d: {{ pad_v_d }}px; --section-padding-h-d: {{ pad_h_d }}px; --section-padding-v-m: {{ pad_v_m }}px; --section-padding-h-m: {{ pad_h_m }}px; --font-heading-family:{% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %}; --font-body-family:{% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %}; --body-size:{{ bs.body_size | default: 16 }}px; --body-weight:{{ bs.body_weight | default: 400 }}; --h1-size:{{ bs.h1_size | default: 48 }}px; --h1-weight:{{ bs.h1_weight | default: 700 }}; --h2-size:{{ bs.h2_size | default: 36 }}px; --h2-weight:{{ bs.h2_weight | default: 700 }}; --h3-size:{{ bs.h3_size | default: 30 }}px; --h3-weight:{{ bs.h3_weight | default: 600 }}; --h4-size:{{ bs.h4_size | default: 24 }}px; --h4-weight:{{ bs.h4_weight | default: 600 }}; --h5-size:{{ bs.h5_size | default: 20 }}px; --h5-weight:{{ bs.h5_weight | default: 500 }}; --h6-size:{{ bs.h6_size | default: 16 }}px; --h6-weight:{{ bs.h6_weight | default: 500 }};"
+  >
+    <div class="cft__inner app_blocks_class" style="display:block">
+      <div class="cft__grid">
+        <div class="cft__left">
+          <h3 class="cft__heading">Why Choose Us?</h3>
+          {% if sub != blank %}
+            <div class="cft__subheading rte">
+              <p>{{ sub }}</p>
+            </div>
+          {% endif %}
+          {% if bs.show_shop_button and bs.shop_button_label != blank %}
+            <a class="cft__shop-btn">
+              {{- bs.shop_button_label -}}
+            </a>
+          {% endif %}
+        </div>
+
+        <div class="cft__right">
+          <div class="cft__table-wrap">
+            <table class="cft__table" role="table" aria-label="Feature comparison">
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th role="columnheader" class="cft__th cft__th--feature">
+                    <p>{{ bs.feature_col_label }}</p>
+                  </th>
+                  <th role="columnheader" class="cft__th cft__th--brand">
+                    <div class="cft__th-brand-inner">
+                      {% if bs.show_us_header_image and m.product_image_1 %}
+                        <div class="cft__th-brand-img-wrap">
+                          <img
+                            class="cft__th-brand-img"
+                            src="{{ m.product_image_1 | image_url: width: 240 }}"
+                            width="120"
+                            height="120"
+                            alt="{{ product.title | escape }}"
+                            loading="lazy"
+                          >
+                        </div>
+                      {% else %}
+                        <p>{{ bs.brand_label }}</p>
+                      {% endif %}
+                    </div>
+                  </th>
+                  <th role="columnheader" class="cft__th cft__th--others">
+                    <p>{{ bs.others_label }}</p>
+                  </th>
+                </tr>
+              </thead>
+              <tbody role="rowgroup">
+                {% for i in (1..num_rows) %}
+                  {% liquid
+                    assign s_key = 'row' | append: i | append: '_feature'
+                    assign feature_text = bs[s_key]
+                    if bs.use_metafields
+                      assign m_key = 'what_sets_us_apart_feature_' | append: i
+                      assign feature_text = m[m_key] | default: feature_text
+                    endif
+                  %}
+                  {% if feature_text != blank %}
+                    <tr class="cft__row" role="row">
+                      <td role="cell" class="cft__td cft__td--feature">
+                        <p>{{ feature_text }}</p>
+                      </td>
+                      <td role="cell" class="cft__td cft__td--brand">
+                        <div class="cft__cellwrap">
+                          <span class="cft__mark cft__mark--yes">{{ bs.icon_yes_char | default: '✓' }}</span>
+                        </div>
+                      </td>
+                      <td role="cell" class="cft__td cft__td--others">
+                        <div class="cft__cellwrap">
+                          <span class="cft__mark cft__mark--no">{{ bs.icon_no_char | default: '✕' }}</span>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}

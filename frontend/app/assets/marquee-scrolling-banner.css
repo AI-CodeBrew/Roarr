@@ -1,0 +1,136 @@
+/**
+ * Infinite Marquee Banner
+ * Schemes: pf-color-schemes.css
+ * Typography: mq-font-heading | mq-font-body | mq-font-accent on root
+ */
+
+[id^="mq-"] .mq-section {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: var(--padding-d) 0;
+}
+
+/* Smart borders — currentColor at 15% */
+[id^="mq-"] .mq-section::before,
+[id^="mq-"] .mq-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--border-width);
+  background-color: currentColor;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 10;
+}
+
+[id^="mq-"] .mq-section::before {
+  top: 0;
+  display: var(--border-top-display);
+}
+
+[id^="mq-"] .mq-section::after {
+  bottom: 0;
+  display: var(--border-bottom-display);
+}
+
+/* TRACK WRAPPER */
+[id^="mq-"] .mq-track-homepage {
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
+[id^="mq-"] .mq-group {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-d);
+  flex-shrink: 0;
+  min-width: max-content;
+  will-change: transform;
+  animation: mq-scroll var(--speed-d) linear infinite;
+  padding-right: var(--gap-d);
+}
+
+[id^="mq-"].mq-dir-right .mq-group {
+  animation-direction: reverse;
+}
+
+[id^="mq-"] .mq-section.mq-pause-hover:hover .mq-group {
+  animation-play-state: paused;
+}
+
+[id^="mq-"] .mq-item {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+[id^="mq-"].mq-font-heading .mq-text {
+  font-family: var(--font-h);
+}
+
+[id^="mq-"].mq-font-body .mq-text {
+  font-family: var(--font-b);
+}
+
+[id^="mq-"].mq-font-accent .mq-text {
+  font-family: var(--font-a);
+}
+
+[id^="mq-"] .mq-text {
+  font-weight: var(--font-weight);
+  font-size: var(--font-size-d);
+  color: var(--color-foreground-heading, var(--color-foreground));
+  line-height: 1;
+  margin: 0;
+}
+
+[id^="mq-"] .mq-img-wrap {
+  height: var(--img-height-d);
+  display: block;
+  flex-shrink: 0;
+}
+
+[id^="mq-"] .mq-img {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--img-radius);
+}
+
+@keyframes mq-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  [id^="mq-"] .mq-section {
+    padding: var(--padding-m) 0;
+  }
+
+  [id^="mq-"] .mq-group {
+    animation-duration: var(--speed-m);
+    gap: var(--gap-m);
+    padding-right: var(--gap-m);
+  }
+
+  [id^="mq-"] .mq-text {
+    font-size: var(--font-size-m);
+  }
+
+  [id^="mq-"] .mq-img-wrap {
+    height: var(--img-height-m);
+  }
+}

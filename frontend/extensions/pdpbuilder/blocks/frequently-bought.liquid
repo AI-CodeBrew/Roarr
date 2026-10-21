@@ -1,0 +1,43 @@
+{%- liquid
+  assign s = block.settings
+  assign color = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#a34e4e'
+-%}
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'frequently-bought.css' | asset_url }}" media="all">
+<script src="{{ 'frequently-bought.js' | asset_url }}" defer></script>
+<div id="fbt-{{ block.id }}" class="fbt-widget-wrapper" style="--fbt-bg:#f9f9f9;--fbt-card-bg:#fff;--fbt-text:#111;--fbt-border:#e5e5e5;--fbt-btn-bg:{{ color }};--fbt-btn-text:#fff;--fbt-qty-bg:#f0f0f0;">
+  <div class="fbt-items-container">
+    {%- if s.heading != blank -%}<h5 class="fbt-header">{{ s.heading }}</h5>{%- endif -%}
+    <div class="fbt-cards-row layout-{{ s.layout_mode }}">
+    {%- for p in s.product_list -%}
+      {%- assign v = p.selected_or_first_available_variant -%}
+      {%- if v.available -%}
+        <div class="fbt-card" data-variant-id="{{ v.id }}">
+          <a href="{{ p.url }}" class="fbt-image-wrap">
+            <img src="{{ p.featured_image | image_url: width: 200 }}" alt="{{ p.title | escape }}" width="200" height="200" loading="lazy">
+          </a>
+          <div class="fbt-details">
+            <a href="{{ p.url }}" class="fbt-title" title="{{ p.title | escape }}">{{ p.title }}</a>
+            <div class="fbt-price">{{ v.price | money }}</div>
+            <div class="fbt-actions">
+              <div class="fbt-qty-control">
+                <button type="button" class="fbt-qty-btn minus">-</button>
+                <input type="number" class="fbt-qty-input" value="1" min="1" readonly>
+                <button type="button" class="fbt-qty-btn plus">+</button>
+              </div>
+              <button type="button" class="fbt-add-btn">
+                <span class="txt">Add</span>
+                <span class="loader" style="display:none;">...</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div style="font-size:13px;opacity:.6;">Select products in block settings.</div>
+    {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %} { "target": "section", "name": "FBT", "settings": [ { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently Bought Together" }, { "type": "product_list", "id": "product_list", "label": "Select Products" }, { "type": "select", "id": "layout_mode", "label": "Layout", "default": "slider", "options": [ { "value": "slider", "label": "Horizontal Slider" }, { "value": "stack", "label": "Vertical Stack" } ]} ] } {% endschema %}

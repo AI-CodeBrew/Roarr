@@ -1,0 +1,150 @@
+/**
+ * Cinematic COD single-product home — editor schemas.
+ * Keys match section ids after stripping `packs/cinematic/home/`.
+ */
+
+export const HOME_CINEMATIC_TEMPLATE_SCHEMAS = {
+    "pf-cinematic-announcement": {
+        displayName: "Kluck AI - Cinematic Announcement",
+        useForm: true,
+        fields: [
+            { type: "text", key: "announcement_1", formKey: "text.announcement_1", label: "Announcement 1" },
+            { type: "text", key: "announcement_2", formKey: "text.announcement_2", label: "Announcement 2" },
+            { type: "text", key: "announcement_3", formKey: "text.announcement_3", label: "Announcement 3" },
+            { type: "text", key: "announcement_4", formKey: "text.announcement_4", label: "Announcement 4" },
+            { type: "text", key: "announcement_5", formKey: "text.announcement_5", label: "Announcement 5" },
+        ],
+    },
+    "pf-cinematic-hero": {
+        displayName: "Kluck AI - Cinematic Hero",
+        useForm: true,
+        fields: [
+            { type: "image", key: "banner_image", formKey: "images.banner_image", label: "Banner image (16:9)" },
+            { type: "image", key: "banner_image_mobile", formKey: "images.banner_image_mobile", label: "Mobile banner (9:16)" },
+        ],
+    },
+    "pf-cinematic-trust": {
+        displayName: "Kluck AI - Cinematic Trust",
+        useForm: true,
+        fields: [
+            { type: "text", key: "trust_1_title", formKey: "text.trust_1_title", label: "Trust 1 title" },
+            { type: "text", key: "trust_1_line", formKey: "text.trust_1_line", label: "Trust 1 line" },
+            { type: "text", key: "trust_2_title", formKey: "text.trust_2_title", label: "Trust 2 title" },
+            { type: "text", key: "trust_2_line", formKey: "text.trust_2_line", label: "Trust 2 line" },
+            { type: "text", key: "trust_3_title", formKey: "text.trust_3_title", label: "Trust 3 title" },
+            { type: "text", key: "trust_3_line", formKey: "text.trust_3_line", label: "Trust 3 line" },
+            { type: "text", key: "trust_4_title", formKey: "text.trust_4_title", label: "Trust 4 title" },
+            { type: "text", key: "trust_4_line", formKey: "text.trust_4_line", label: "Trust 4 line" },
+        ],
+    },
+    "pf-cinematic-product-story": {
+        displayName: "Kluck AI - Cinematic Product Story",
+        useForm: true,
+        fields: [
+            { type: "image", key: "product_story_image", formKey: "images.product_story_image", label: "Product story image" },
+            { type: "text", key: "product_story_eyebrow", formKey: "text.product_story_eyebrow", label: "Eyebrow" },
+            { type: "text", key: "product_story_heading", formKey: "text.product_story_heading", label: "Heading" },
+            { type: "text", key: "product_story_body", formKey: "text.product_story_body", label: "Body" },
+            { type: "text", key: "product_story_cta", formKey: "text.product_story_cta", label: "CTA label" },
+        ],
+    },
+    "pf-cinematic-inspiration": {
+        displayName: "Kluck AI - Cinematic Inspiration",
+        useForm: true,
+        fields: [
+            { type: "text", key: "inspiration_line_1", formKey: "text.inspiration_line_1", label: "Line 1" },
+            { type: "text", key: "inspiration_line_1_accent", formKey: "text.inspiration_line_1_accent", label: "Line 1 accent" },
+            { type: "text", key: "inspiration_line_2", formKey: "text.inspiration_line_2", label: "Line 2" },
+        ],
+    },
+    "pf-cinematic-feature-ticker": {
+        displayName: "Kluck AI - Cinematic Feature Ticker",
+        useForm: true,
+        fields: [
+            { type: "text", key: "feature_ticker_1", formKey: "text.feature_ticker_1", label: "Phrase 1" },
+            { type: "text", key: "feature_ticker_2", formKey: "text.feature_ticker_2", label: "Phrase 2" },
+            { type: "text", key: "feature_ticker_3", formKey: "text.feature_ticker_3", label: "Phrase 3" },
+            { type: "text", key: "feature_ticker_4", formKey: "text.feature_ticker_4", label: "Phrase 4" },
+            { type: "text", key: "feature_ticker_5", formKey: "text.feature_ticker_5", label: "Phrase 5" },
+            { type: "text", key: "feature_ticker_6", formKey: "text.feature_ticker_6", label: "Phrase 6" },
+        ],
+    },
+    "pf-cinematic-why-shop": {
+        displayName: "Kluck AI - Cinematic Why Shop",
+        useForm: true,
+        fields: [
+            { type: "image", key: "why_shop_image", formKey: "images.why_shop_image", label: "Why shop image" },
+            { type: "text", key: "why_shop_heading", formKey: "text.why_shop_heading", label: "Heading" },
+            { type: "text", key: "why_1_title", formKey: "text.why_1_title", label: "Reason 1 title" },
+            { type: "text", key: "why_1_text", formKey: "text.why_1_text", label: "Reason 1 text" },
+            { type: "text", key: "why_2_title", formKey: "text.why_2_title", label: "Reason 2 title" },
+            { type: "text", key: "why_2_text", formKey: "text.why_2_text", label: "Reason 2 text" },
+            { type: "text", key: "why_3_title", formKey: "text.why_3_title", label: "Reason 3 title" },
+            { type: "text", key: "why_3_text", formKey: "text.why_3_text", label: "Reason 3 text" },
+            { type: "text", key: "why_4_title", formKey: "text.why_4_title", label: "Reason 4 title" },
+            { type: "text", key: "why_4_text", formKey: "text.why_4_text", label: "Reason 4 text" },
+            { type: "text", key: "why_5_title", formKey: "text.why_5_title", label: "Reason 5 title" },
+            { type: "text", key: "why_5_text", formKey: "text.why_5_text", label: "Reason 5 text" },
+        ],
+    },
+    "pf-cinematic-feature-orbit": {
+        displayName: "Kluck AI - Cinematic Feature Orbit",
+        useForm: true,
+        fields: [
+            { type: "image", key: "circle_feature_image", formKey: "images.circle_feature_image", label: "Circle feature image" },
+            { type: "text", key: "orbit_eyebrow", formKey: "text.orbit_eyebrow", label: "Eyebrow" },
+            { type: "text", key: "orbit_heading", formKey: "text.orbit_heading", label: "Heading" },
+            { type: "text", key: "orbit_1_title", formKey: "text.orbit_1_title", label: "Orbit 1 title" },
+            { type: "text", key: "orbit_1_text", formKey: "text.orbit_1_text", label: "Orbit 1 text" },
+            { type: "text", key: "orbit_2_title", formKey: "text.orbit_2_title", label: "Orbit 2 title" },
+            { type: "text", key: "orbit_2_text", formKey: "text.orbit_2_text", label: "Orbit 2 text" },
+            { type: "text", key: "orbit_3_title", formKey: "text.orbit_3_title", label: "Orbit 3 title" },
+            { type: "text", key: "orbit_3_text", formKey: "text.orbit_3_text", label: "Orbit 3 text" },
+            { type: "text", key: "orbit_4_title", formKey: "text.orbit_4_title", label: "Orbit 4 title" },
+            { type: "text", key: "orbit_4_text", formKey: "text.orbit_4_text", label: "Orbit 4 text" },
+            { type: "text", key: "orbit_5_title", formKey: "text.orbit_5_title", label: "Orbit 5 title" },
+            { type: "text", key: "orbit_5_text", formKey: "text.orbit_5_text", label: "Orbit 5 text" },
+            { type: "text", key: "orbit_6_title", formKey: "text.orbit_6_title", label: "Orbit 6 title" },
+            { type: "text", key: "orbit_6_text", formKey: "text.orbit_6_text", label: "Orbit 6 text" },
+        ],
+    },
+    "pf-cinematic-reviews": {
+        displayName: "Kluck AI - Cinematic Reviews",
+        useForm: true,
+        fields: [
+            { type: "text", key: "review_eyebrow", formKey: "text.review_eyebrow", label: "Eyebrow" },
+            { type: "text", key: "review_heading", formKey: "text.review_heading", label: "Heading" },
+            { type: "text", key: "customer_name_1", formKey: "text.customer_name_1", label: "Reviewer 1 name" },
+            { type: "text", key: "customer_review_1", formKey: "text.customer_review_1", label: "Review 1" },
+            { type: "text", key: "customer_name_2", formKey: "text.customer_name_2", label: "Reviewer 2 name" },
+            { type: "text", key: "customer_review_2", formKey: "text.customer_review_2", label: "Review 2" },
+            { type: "text", key: "customer_name_3", formKey: "text.customer_name_3", label: "Reviewer 3 name" },
+            { type: "text", key: "customer_review_3", formKey: "text.customer_review_3", label: "Review 3" },
+        ],
+    },
+    "pf-cinematic-faq": {
+        displayName: "Kluck AI - Cinematic FAQ",
+        useForm: true,
+        fields: [
+            { type: "text", key: "faq_1_q", formKey: "text.faq_1_q", label: "FAQ 1 question" },
+            { type: "text", key: "faq_1_a", formKey: "text.faq_1_a", label: "FAQ 1 answer" },
+            { type: "text", key: "faq_2_q", formKey: "text.faq_2_q", label: "FAQ 2 question" },
+            { type: "text", key: "faq_2_a", formKey: "text.faq_2_a", label: "FAQ 2 answer" },
+            { type: "text", key: "faq_3_q", formKey: "text.faq_3_q", label: "FAQ 3 question" },
+            { type: "text", key: "faq_3_a", formKey: "text.faq_3_a", label: "FAQ 3 answer" },
+            { type: "text", key: "faq_4_q", formKey: "text.faq_4_q", label: "FAQ 4 question" },
+            { type: "text", key: "faq_4_a", formKey: "text.faq_4_a", label: "FAQ 4 answer" },
+            { type: "text", key: "faq_5_q", formKey: "text.faq_5_q", label: "FAQ 5 question" },
+            { type: "text", key: "faq_5_a", formKey: "text.faq_5_a", label: "FAQ 5 answer" },
+            { type: "text", key: "faq_6_q", formKey: "text.faq_6_q", label: "FAQ 6 question" },
+            { type: "text", key: "faq_6_a", formKey: "text.faq_6_a", label: "FAQ 6 answer" },
+        ],
+    },
+    "pf-cinematic-sticky-bar": {
+        displayName: "Kluck AI - Cinematic Sticky Bar",
+        useForm: true,
+        fields: [
+            { type: "text", key: "sticky_cta", formKey: "text.sticky_cta", label: "CTA label" },
+        ],
+    },
+};

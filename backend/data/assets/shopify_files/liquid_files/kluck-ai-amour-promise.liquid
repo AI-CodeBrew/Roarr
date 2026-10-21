@@ -1,0 +1,240 @@
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+{% assign home = store_gen.home_page %}
+{% assign ht = home.text %}
+{% assign hi = home.images %}
+{% assign use_mf = section.settings.use_kluck_ai_metafields %}
+{% assign homeData = section.settings.homeData %}
+{% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
+{% if hi == blank and homeData.images != blank %}{% assign hi = homeData.images %}{% endif %}
+
+{% assign promise_heading = section.settings.promise_heading %}
+{% if use_mf and ht.promise_heading != blank %}{% assign promise_heading = ht.promise_heading %}{% endif %}
+{% assign promise_1_label = section.settings.promise_1_label %}
+{% if use_mf and ht.promise_1_label != blank %}{% assign promise_1_label = ht.promise_1_label %}{% endif %}
+{% assign promise_1_text = section.settings.promise_1_text %}
+{% if use_mf and ht.promise_1_text != blank %}{% assign promise_1_text = ht.promise_1_text %}{% endif %}
+{% assign promise_2_label = section.settings.promise_2_label %}
+{% if use_mf and ht.promise_2_label != blank %}{% assign promise_2_label = ht.promise_2_label %}{% endif %}
+{% assign promise_2_text = section.settings.promise_2_text %}
+{% if use_mf and ht.promise_2_text != blank %}{% assign promise_2_text = ht.promise_2_text %}{% endif %}
+{% assign promise_3_label = section.settings.promise_3_label %}
+{% if use_mf and ht.promise_3_label != blank %}{% assign promise_3_label = ht.promise_3_label %}{% endif %}
+{% assign promise_3_text = section.settings.promise_3_text %}
+{% if use_mf and ht.promise_3_text != blank %}{% assign promise_3_text = ht.promise_3_text %}{% endif %}
+{% assign promise_4_label = section.settings.promise_4_label %}
+{% if use_mf and ht.promise_4_label != blank %}{% assign promise_4_label = ht.promise_4_label %}{% endif %}
+{% assign promise_4_text = section.settings.promise_4_text %}
+{% if use_mf and ht.promise_4_text != blank %}{% assign promise_4_text = ht.promise_4_text %}{% endif %}
+{% assign promise_5_label = section.settings.promise_5_label %}
+{% if use_mf and ht.promise_5_label != blank %}{% assign promise_5_label = ht.promise_5_label %}{% endif %}
+{% assign promise_5_text = section.settings.promise_5_text %}
+{% if use_mf and ht.promise_5_text != blank %}{% assign promise_5_text = ht.promise_5_text %}{% endif %}
+
+
+
+{% if shop.metafields.app.block_control.value %}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap">
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  #amour-{{ section.id }} {
+  --a-ink: var(--color-foreground, #111111);
+  --a-paper: var(--color-background, #ffffff);
+  --a-wine: {{ section.settings.accent_color | default: '#6b0808' }};
+  --a-on-wine: #ffffff;
+  --a-blush: {{ section.settings.blush_color | default: '#ffe3de' }};
+  --a-mist: #f2f1ef;
+  --a-head: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+  --a-body: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --a-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  font-family: var(--a-body); color: var(--a-ink); background: var(--a-paper);
+  }
+
+  #amour-{{ section.id }}, #amour-{{ section.id }} * { box-sizing: border-box; }
+  #amour-{{ section.id }} img { display: block; max-width: 100%; }
+  #amour-{{ section.id }} .a-wrap { max-width: 1340px; margin: 0 auto; padding: 0 20px; }
+  #amour-{{ section.id }} .a-h2 { margin: 0; font-family: var(--a-head); font-weight: 700; text-transform: uppercase; font-size: 40px; line-height: 1.2; letter-spacing: -0.01em; }
+  #amour-{{ section.id }} .a-serif { font-family: var(--a-serif); font-style: italic; font-weight: 400; }
+  #amour-{{ section.id }} .a-serif span, #amour-{{ section.id }} .a-serif p { font-family: inherit; font-style: inherit; font-weight: inherit; }
+  #amour-{{ section.id }} .a-link { display: inline-block; font-size: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; padding: 0 0 4px; }
+  #amour-{{ section.id }} .a-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 32px; font-family: var(--a-body); font-size: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; transition: background .2s, color .2s; }
+  #amour-{{ section.id }} .a-btn--light { background: #fff; color: #000; border: 1px solid #fff; }
+  #amour-{{ section.id }} .a-btn--light:hover { background: transparent; color: #fff; }
+  #amour-{{ section.id }} .a-btn--outline { background: transparent; color: var(--a-ink); border: 1px solid var(--a-ink); }
+  #amour-{{ section.id }} .a-btn--outline:hover { background: var(--a-ink); color: var(--a-paper); }
+  #amour-{{ section.id }} .a-media { position: relative; overflow: hidden; background: var(--a-mist); }
+  #amour-{{ section.id }} .a-media img, #amour-{{ section.id }} .a-media svg { width: 100%; height: 100%; object-fit: cover; }
+  #amour-{{ section.id }} .a-ph { width: 100%; height: 100%; fill: rgba(0,0,0,.18); background: var(--a-mist); }
+  @media (max-width: 767px) {
+    #amour-{{ section.id }} .a-h2 { font-size: 28px; }
+  }
+
+  #amour-{{ section.id }} .apr { padding: 100px 0; text-align: center; }
+  #amour-{{ section.id }} .apr__inner { max-width: 1340px; margin: 0 auto; padding: 0 80px; display: flex; flex-direction: column; align-items: center; gap: 32px; }
+  #amour-{{ section.id }} .apr .a-h2 { font-size: 32px; line-height: 1; }
+  #amour-{{ section.id }} .apr__labels { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 48px; }
+  #amour-{{ section.id }} .apr__label { background: none; border: 0; padding: 6px 0; cursor: pointer; font-family: var(--a-head); font-weight: 700; font-size: 20px; text-transform: uppercase; letter-spacing: .06em; color: inherit; opacity: .3; transition: opacity .3s; }
+  #amour-{{ section.id }} .apr__label.is-active, #amour-{{ section.id }} .apr__label:hover { opacity: 1; }
+  #amour-{{ section.id }} .apr__texts { position: relative; width: 100%; max-width: 900px; min-height: 110px; }
+  #amour-{{ section.id }} .apr__text { position: absolute; inset: 0; margin: 0; font-size: 40px; line-height: 1.3; opacity: 0; transition: opacity .45s ease; }
+  #amour-{{ section.id }} .apr__text.is-active { position: relative; opacity: 1; }
+  @media (max-width: 767px) {
+    #amour-{{ section.id }} .apr { padding: 64px 0; }
+    #amour-{{ section.id }} .apr__inner { padding: 0 20px; }
+    #amour-{{ section.id }} .apr__labels { gap: 8px 24px; }
+    #amour-{{ section.id }} .apr__label { font-size: 15px; }
+    #amour-{{ section.id }} .apr__text { font-size: 28px; }
+  }
+
+</style>
+<div id="amour-{{ section.id }}" class="kluck-amour color-{{ section_scheme }}">
+<section class="apr"><div class="apr__inner">
+  {% if promise_heading != blank %}<h2 class="a-h2">{{ promise_heading }}</h2>{% endif %}
+  <div class="apr__labels" role="tablist">
+    {%- for i in (1..5) -%}
+      {%- case i -%}
+        {%- when 1 -%}{%- assign p_label = promise_1_label -%}
+        {%- when 2 -%}{%- assign p_label = promise_2_label -%}
+        {%- when 3 -%}{%- assign p_label = promise_3_label -%}
+        {%- when 4 -%}{%- assign p_label = promise_4_label -%}
+        {%- else -%}{%- assign p_label = promise_5_label -%}
+      {%- endcase -%}
+      {%- if p_label != blank -%}<button type="button" role="tab" class="apr__label{% if i == 1 %} is-active{% endif %}" data-amour-promise="{{ i }}">{{ p_label }}</button>{%- endif -%}
+    {%- endfor -%}
+  </div>
+  <div class="apr__texts">
+    {%- for i in (1..5) -%}
+      {%- case i -%}
+        {%- when 1 -%}{%- assign p_text = promise_1_text -%}
+        {%- when 2 -%}{%- assign p_text = promise_2_text -%}
+        {%- when 3 -%}{%- assign p_text = promise_3_text -%}
+        {%- when 4 -%}{%- assign p_text = promise_4_text -%}
+        {%- else -%}{%- assign p_text = promise_5_text -%}
+      {%- endcase -%}
+      {%- if p_text != blank -%}<p class="apr__text a-serif{% if i == 1 %} is-active{% endif %}" data-amour-promise-text="{{ i }}">{{ p_text }}</p>{%- endif -%}
+    {%- endfor -%}
+  </div>
+</div></section>
+</div>
+<script>(function(){
+  var root = document.getElementById('amour-{{ section.id }}'); if (!root) return;
+  var labels = Array.prototype.slice.call(root.querySelectorAll('[data-amour-promise]'));
+  if (!labels.length) return;
+  var idx = 0, timer;
+  function show(i){
+    idx = i; var n = labels[i].getAttribute('data-amour-promise');
+    labels.forEach(function(l, j){ l.classList.toggle('is-active', j === i); });
+    root.querySelectorAll('[data-amour-promise-text]').forEach(function(t){
+      t.classList.toggle('is-active', t.getAttribute('data-amour-promise-text') === n);
+    });
+  }
+  function auto(){ clearInterval(timer); timer = setInterval(function(){ show((idx + 1) % labels.length); }, 4500); }
+  labels.forEach(function(l, i){ l.addEventListener('click', function(){ show(i); auto(); }); });
+  auto();
+})();</script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Kluck AI - Amour Promise",
+  "tag": "section",
+  "class": "kluck-amour-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_kluck_ai_metafields",
+      "label": "Use Kluck AI metafields",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#6b0808"
+    },
+    {
+      "type": "color",
+      "id": "blush_color",
+      "label": "Soft background color",
+      "default": "#ffe3de"
+    },
+    {
+      "type": "text",
+      "id": "promise_heading",
+      "label": "Heading",
+      "default": "Our promise"
+    },
+    {
+      "type": "text",
+      "id": "promise_1_label",
+      "label": "Label 1",
+      "default": "Quality"
+    },
+    {
+      "type": "textarea",
+      "id": "promise_1_text",
+      "label": "Statement 1",
+      "default": "Every piece is checked by hand before it leaves us."
+    },
+    {
+      "type": "text",
+      "id": "promise_2_label",
+      "label": "Label 2",
+      "default": "Shipping"
+    },
+    {
+      "type": "textarea",
+      "id": "promise_2_text",
+      "label": "Statement 2",
+      "default": "Fast, tracked delivery straight to your door."
+    },
+    {
+      "type": "text",
+      "id": "promise_3_label",
+      "label": "Label 3",
+      "default": "Returns"
+    },
+    {
+      "type": "textarea",
+      "id": "promise_3_text",
+      "label": "Statement 3",
+      "default": "Changed your mind? Returns are simple and stress free."
+    },
+    {
+      "type": "text",
+      "id": "promise_4_label",
+      "label": "Label 4",
+      "default": "Support"
+    },
+    {
+      "type": "textarea",
+      "id": "promise_4_text",
+      "label": "Statement 4",
+      "default": "Real people, ready to help whenever you need us."
+    },
+    {
+      "type": "text",
+      "id": "promise_5_label",
+      "label": "Label 5",
+      "default": "Secure"
+    },
+    {
+      "type": "textarea",
+      "id": "promise_5_text",
+      "label": "Statement 5",
+      "default": "Checkout is encrypted and your details stay private."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kluck AI - Amour Promise"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,150 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Poppins:wght@400;500;600;700&display=swap">
+
+<section class="kluck-play-ig">
+  <div class="kluck-play-ig__wrap">
+    <h2>{{ section.settings.heading }}</h2>
+    <div class="kluck-play-ig__row">
+      {%- if product.images.size > 0 -%}
+        {%- assign ig_count = product.images.size -%}
+        {%- for i in (1..5) -%}
+          {%- assign ig_index = i | minus: 1 | modulo: ig_count -%}
+          {%- assign ig_image = product.images[ig_index] -%}
+          <div class="kluck-play-ig__cell">
+            <img src="{{ ig_image | image_url: width: 800 }}" alt="{{ product.title | escape }}" width="800" height="800">
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..5) -%}
+          {%- capture key -%}image_{{ i }}{%- endcapture -%}
+          <div class="kluck-play-ig__cell">
+            <img src="{{ section.settings[key] }}" alt="" width="672" height="672">
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+
+  @import url("https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Poppins:wght@400;500;600;700&display=swap");
+  #shopify-section-{{ section.id }} {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    font-family: Poppins, sans-serif !important;
+  }
+  #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }} * { box-sizing: border-box; }
+  #shopify-section-{{ section.id }} h1,
+  #shopify-section-{{ section.id }} h2,
+  #shopify-section-{{ section.id }} h3,
+  #shopify-section-{{ section.id }} .kluck-play-hero__badge,
+  #shopify-section-{{ section.id }} .kluck-play-designed__badge,
+  #shopify-section-{{ section.id }} .kluck-play-marquee__track span,
+  #shopify-section-{{ section.id }} .kluck-play-story__mix,
+  #shopify-section-{{ section.id }} summary {
+    font-family: "Caveat Brush", cursive !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+  }
+  #shopify-section-{{ section.id }} p,
+  #shopify-section-{{ section.id }} button,
+  #shopify-section-{{ section.id }} b,
+  #shopify-section-{{ section.id }} strong,
+  #shopify-section-{{ section.id }} .kluck-play-hero__kicker,
+  #shopify-section-{{ section.id }} .kluck-play-hero__price,
+  #shopify-section-{{ section.id }} .kluck-play-story__pills span,
+  #shopify-section-{{ section.id }} .kluck-play-promo__code,
+  #shopify-section-{{ section.id }} details p {
+    font-family: Poppins, sans-serif !important;
+    text-transform: none;
+  }
+  #shopify-section-{{ section.id }} button {
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    box-shadow: none;
+    min-height: 0;
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} button:before,
+  #shopify-section-{{ section.id }} button:after { content: none !important; display: none !important; }
+  #shopify-section-{{ section.id }} { margin: 0; padding: 0; background: #6F2424; }
+  #shopify-section-{{ section.id }} .kluck-play-ig {
+    color: #fff;
+    font-family: Poppins, sans-serif !important;
+    padding: 36px 0 28px;
+  }
+  #shopify-section-{{ section.id }} .kluck-play-ig__wrap {
+    width: min(1100px, calc(100% - 48px));
+    margin: 0 auto;
+  }
+  #shopify-section-{{ section.id }} h2 {
+    font-family: "Caveat Brush", cursive !important;
+    font-weight: 400 !important;
+    font-size: 48px !important;
+    color: #fff;
+    margin: 0 0 18px;
+  }
+  #shopify-section-{{ section.id }} .kluck-play-ig__row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+  }
+  #shopify-section-{{ section.id }} .kluck-play-ig__cell {
+    flex: 1 1 0;
+    min-width: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+  }
+  #shopify-section-{{ section.id }} .kluck-play-ig__cell img {
+    position: static;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    max-width: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 800px) {
+    #shopify-section-{{ section.id }} .kluck-play-ig__row { flex-wrap: wrap; }
+    #shopify-section-{{ section.id }} .kluck-play-ig__cell { flex: 1 1 calc(50% - 6px); }
+  }
+{% endstyle %}
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--play" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: Poppins, "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Caveat Brush", "Lalezar", "Tajawal", cursive !important; line-height: 1.4 !important; font-weight: 400 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Kluck Play Instagram",
+  "tag": "section",
+  "class": "kluck-play-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Instagram" },
+    { "type": "text", "id": "image_1", "label": "Image 1", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/ig_1.jpg?v=1726201321&width=360" },
+    { "type": "text", "id": "image_2", "label": "Image 2", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/ig_2.jpg?v=1726201321&width=360" },
+    { "type": "text", "id": "image_3", "label": "Image 3", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/ig_3.jpg?v=1726201321&width=360" },
+    { "type": "text", "id": "image_4", "label": "Image 4", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/ig_4.jpg?v=1726201321&width=360" },
+    { "type": "text", "id": "image_5", "label": "Image 5", "default": "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/ig_5.jpg?v=1726201321&width=360" }
+  ],
+  "presets": [{ "name": "Kluck Play Instagram" }]
+}
+{% endschema %}

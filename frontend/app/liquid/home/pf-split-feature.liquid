@@ -1,0 +1,104 @@
+{% comment %}
+  Split Feature Banner — Customizable Pro
+  - Text column width, section max width, typography.
+  - Optional Kluck AI metafields; layout in pf-split-feature.css.
+{% endcomment %}
+
+{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{%- assign card_scheme = section.settings.card_color_scheme | default: 'scheme-2' -%}
+{%- comment -%} Default off when unset so section heading/body always show until Kluck is explicitly enabled. {%- endcomment -%}
+{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+
+{%- assign kluck_heading = blank -%}
+{%- assign kluck_desc = blank -%}
+{%- if store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+  {%- assign _hp = store_gen.home_page.text -%}
+  {%- if _hp.highlight_banner_section_heading != blank -%}
+    {%- assign kluck_heading = _hp.highlight_banner_section_heading -%}
+  {%- endif -%}
+  {%- if _hp.highlight_banner_section_description != blank -%}
+    {%- assign kluck_desc = _hp.highlight_banner_section_description -%}
+  {%- endif -%}
+{%- endif -%}
+{%- assign kluck_highlight_image = shop.metafields.kluck_ai.highlight_image.value -%}
+
+{% if shop.metafields.app.block_control.value %}
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-split-feature.css' | asset_url }}" media="all">
+
+{% style %}
+  {% if section.settings.font_watermark != blank %}
+    {{ section.settings.font_watermark | font_face: font_display: 'swap' }}
+  {% endif %}
+
+  #sb-{{ section.id }} {
+    --text-width: {{ section.settings.text_column_width | default: 50 }}%;
+    --section-max-width: {{ section.settings.section_width | default: 1400 }}px;
+    --font-h: {{ settings.type_heading_font | font_family: 'sans-serif' }};
+    --font-b: {{ settings.type_body_font | font_family: 'sans-serif' }};
+    --font-sub: {{ settings.type_subheading_font | default: settings.type_heading_font | font_family: 'sans-serif' }};
+    --font-btn: {{ settings.type_accent_font | default: settings.type_body_font | font_family: 'sans-serif' }};
+    --font-w: {{ section.settings.font_watermark | default: 'serif' | font_family: 'serif' }};
+    --h-size: {{ section.settings.heading_size | default: 42 }}px;
+    --p-size: {{ section.settings.body_size | default: 16 }}px;
+    --e-size: {{ section.settings.eyebrow_size | default: 14 }}px;
+    --pt: {{ section.settings.padding_top | default: 60 }}px;
+    --pb: {{ section.settings.padding_bottom | default: 60 }}px;
+    --radius: {{ section.settings.border_radius | default: 20 }}px;
+    --watermark-color: {{ section.settings.watermark_color | default: '#ffffff' }};
+  }
+{% endstyle %}
+
+<div id="sb-{{ section.id }}" class="color-{{ section_scheme }}">
+  <div class="sb-section">
+    <div class="sb-container color-{{ card_scheme }}">
+
+      <div class="sb-content">
+        {% if section.settings.eyebrow != blank %}
+          <span class="sb-eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+
+        {%- assign kh = kluck_heading | strip -%}
+        {%- assign kd = kluck_desc | strip -%}
+        {% if use_kluck_ai and kh != blank %}
+          <h2>{{ kh }}</h2>
+        {% elsif section.settings.heading != blank %}
+          <h2>{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if use_kluck_ai and kd != blank %}
+          <p>{{ kd }}</p>
+        {% elsif section.settings.text != blank %}
+          <p>{{ section.settings.text }}</p>
+        {% endif %}
+
+        {% if section.settings.btn_link != blank %}
+          <a href="{{ section.settings.btn_link }}" class="sb-btn">
+            {{ section.settings.btn_label }}
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="sb-image-wrap">
+        {% if section.settings.watermark_text != blank %}
+          <div class="sb-watermark">
+            {{ section.settings.watermark_text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.image != blank %}
+          {{ section.settings.image | image_url: width: 1200 | image_tag: 'sb-img', 'lazy' }}
+        {% elsif use_kluck_ai and kluck_highlight_image != blank %}
+          {{ kluck_highlight_image | image_url: width: 1200 | image_tag: 'sb-img', 'lazy' }}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'sb-img' }}
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,260 @@
+.tae-buy-now-button {
+  position: relative;
+  max-width: var(--buy-now-button-max-width, 100%);
+  width: var(--buy-now-button-width, 100%);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--buy-now-button-gap, 12px);
+  text-align: center;
+  align-items: center;
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+.tae-buy-now-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--product-section-bg, #ffffff);
+  opacity: var(--product-section-opacity, 0.1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tae-buy-now-button > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Alignment: block position and inner alignment edge-to-edge */
+.tae-buy-now-button--align-left {
+  text-align: left;
+  align-items: flex-start;
+  margin-inline: 0;
+  margin-right: auto;
+  padding-left: 0;
+}
+.tae-buy-now-button--align-center {
+  text-align: center;
+  align-items: center;
+  margin-inline: auto;
+}
+.tae-buy-now-button--align-right {
+  text-align: right;
+  align-items: flex-end;
+  margin-inline: auto 0;
+  margin-left: auto;
+  padding-right: 0;
+}
+
+.tae-buy-now-button--align-left .tae-buy-now-button-wrapper {
+  justify-content: flex-start;
+  padding-left: 0;
+}
+.tae-buy-now-button--align-center .tae-buy-now-button-wrapper { justify-content: center; }
+.tae-buy-now-button--align-right .tae-buy-now-button-wrapper {
+  justify-content: flex-end;
+  padding-right: 0;
+}
+
+.tae-buy-now-button .tae-buy-now-button-wrapper {
+  margin: 5px 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tae-buy-now-button-container {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.tae-buy-now-quantity-selector {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: var(--quantity-width, 150px);
+  height: var(--button-height, 48px);
+}
+
+/* Option 1: Rounded with shadow */
+.tae-buy-now-quantity-selector--style-1 {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--quantity-border-radius, 12px);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Option 2: Square with border */
+.tae-buy-now-quantity-selector--style-2 {
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--quantity-border-radius, 4px);
+  overflow: hidden;
+  background: #f9f9f9;
+  box-shadow: none;
+}
+
+/* Option 3: Minimal with subtle border */
+.tae-buy-now-quantity-selector--style-3 {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--quantity-border-radius, 8px);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tae-buy-now-quantity-btn {
+  width: 44px;
+  height: 100%;
+  min-height: var(--button-height, 48px);
+  border: none;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Option 1 buttons */
+.tae-buy-now-quantity-selector--style-1 .tae-buy-now-quantity-btn {
+  background: #f8f8f8;
+}
+
+.tae-buy-now-quantity-selector--style-1 .tae-buy-now-quantity-btn:hover {
+  background: #e8e8e8;
+}
+
+.tae-buy-now-quantity-selector--style-1 .tae-buy-now-quantity-btn:active {
+  background: #d8d8d8;
+}
+
+/* Option 2 buttons */
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-btn {
+  background: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-btn:last-child {
+  border-right: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-btn:hover {
+  background: #f0f0f0;
+}
+
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-btn:active {
+  background: #e5e5e5;
+}
+
+/* Option 3 buttons */
+.tae-buy-now-quantity-selector--style-3 .tae-buy-now-quantity-btn {
+  background: transparent;
+}
+
+.tae-buy-now-quantity-selector--style-3 .tae-buy-now-quantity-btn:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.tae-buy-now-quantity-selector--style-3 .tae-buy-now-quantity-btn:active {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+
+.tae-buy-now-quantity-input {
+  width: 55px;
+  height: 100%;
+  min-height: var(--button-height, 48px);
+  text-align: center;
+  padding: 0;
+  color: #333;
+  -moz-appearance: textfield;
+  box-sizing: border-box;
+}
+
+/* Option 1 input */
+.tae-buy-now-quantity-selector--style-1 .tae-buy-now-quantity-input {
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+/* Option 2 input */
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-input {
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+/* Option 3 input */
+.tae-buy-now-quantity-selector--style-3 .tae-buy-now-quantity-input {
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  background: transparent;
+}
+
+.tae-buy-now-quantity-input::-webkit-outer-spin-button,
+.tae-buy-now-quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.tae-buy-now-button .tae-buy-now-button-wrapper form {
+  margin: 0;
+  width: 100%;
+}
+
+.tae-buy-now-button .tae-buy-now-button-btn {
+  flex: 1;
+  padding: 16px 32px;
+  margin: 0;
+  border: none;
+  color: white;
+  border-radius: var(--button-border-radius, 12px);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--button-height, 48px);
+  height: var(--button-height, 48px);
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+  max-width: var(--button-width, 100%);
+}
+
+.tae-buy-now-button .tae-buy-now-button-btn h5 {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.tae-buy-now-button .tae-buy-now-button-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.tae-buy-now-button .tae-buy-now-button-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 749px) {
+  .tae-buy-now-button {
+    max-width: 100%;
+  }
+}
+

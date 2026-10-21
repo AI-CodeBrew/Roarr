@@ -1,0 +1,152 @@
+/**
+ * Split Feature Banner - Customizable Pro
+ * Features: Adjustable Text Column Width, Section Max Width, Full Typography Control.
+ * Mobile: Automatically stacks vertically.
+ * Colors: Scheme-driven via pf-color-schemes.css
+ */
+
+[id^="sb-"] .sb-section {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding-top: var(--pt);
+  padding-bottom: var(--pb);
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+[id^="sb-"] .sb-container {
+  width: 100%;
+  max-width: var(--section-max-width);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  min-height: 500px;
+  position: relative;
+}
+
+/* --- TEXT COLUMN --- */
+[id^="sb-"] .sb-content {
+  flex: 0 0 var(--text-width);
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+}
+
+[id^="sb-"] .sb-eyebrow {
+  font-family: var(--font-sub);
+  font-size: var(--e-size);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  color: var(--color-foreground);
+  opacity: 0.85;
+}
+
+[id^="sb-"] h2 {
+  font-family: var(--font-h);
+  font-size: var(--h-size);
+  line-height: 1.1;
+  color: var(--color-foreground-heading);
+  margin: 0 0 20px 0;
+  max-width: 480px;
+}
+
+[id^="sb-"] p {
+  font-family: var(--font-b);
+  font-size: var(--p-size);
+  line-height: 1.6;
+  color: var(--color-foreground);
+  margin: 0 0 30px 0;
+  max-width: 420px;
+}
+
+/* BUTTON */
+[id^="sb-"] .sb-btn {
+  display: inline-block;
+  background-color: var(--color-primary-button-background);
+  color: var(--color-primary-button-text);
+  border: 1px solid var(--color-primary-button-border, transparent);
+  padding: 15px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: var(--font-btn);
+  font-size: 15px;
+  font-weight: 500;
+  transition: transform 0.2s ease, all 0.2s ease;
+}
+
+[id^="sb-"] .sb-btn:hover {
+  transform: translateY(-2px);
+  background-color: var(--color-primary-button-hover-background);
+  color: var(--color-primary-button-hover-text);
+  border-color: var(--color-primary-button-hover-border);
+}
+
+/* --- IMAGE COLUMN --- */
+[id^="sb-"] .sb-image-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+[id^="sb-"] .sb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- WATERMARK --- */
+[id^="sb-"] .sb-watermark {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-w);
+  font-size: 150px;
+  line-height: 0.8;
+  color: var(--watermark-color);
+  opacity: 0.9;
+  z-index: 2;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 900px) {
+  [id^="sb-"] .sb-container {
+    flex-direction: column-reverse;
+    height: auto;
+  }
+
+  [id^="sb-"] .sb-content {
+    flex: auto;
+    width: 100%;
+    padding: 40px 20px;
+  }
+
+  [id^="sb-"] .sb-image-wrap {
+    flex: auto;
+    width: 100%;
+    height: 350px;
+  }
+
+  [id^="sb-"] h2 {
+    font-size: calc(var(--h-size) * 0.75);
+  }
+
+  [id^="sb-"] .sb-watermark {
+    font-size: 90px;
+    top: 5%;
+  }
+}

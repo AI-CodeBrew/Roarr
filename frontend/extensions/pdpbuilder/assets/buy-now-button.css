@@ -1,0 +1,500 @@
+.tae-buy-now-button {
+  /* Shopify dynamic checkout may set these; neutralize layered border artifacts */
+  --border-offset: 0px !important;
+  --border-opacity: 0 !important;
+  width: var(--buy-now-container-width, 100%);
+  max-width: 100%;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--buy-now-button-gap, 12px);
+  text-align: center;
+  align-items: center;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+/* Alignment: block position and inner alignment edge-to-edge */
+.tae-buy-now-button--align-left {
+  text-align: left;
+  align-items: flex-start;
+  margin-inline: 0;
+  margin-right: auto;
+  padding-left: 0;
+}
+.tae-buy-now-button--align-center {
+  text-align: center;
+  align-items: center;
+  margin-inline: auto;
+}
+.tae-buy-now-button--align-right {
+  text-align: right;
+  align-items: flex-end;
+  margin-inline: auto 0;
+  margin-left: auto;
+  padding-right: 0;
+}
+
+.tae-buy-now-button--align-left .tae-buy-now-button-wrapper {
+  justify-content: flex-start;
+  padding-left: 0;
+}
+.tae-buy-now-button--align-center .tae-buy-now-button-wrapper { justify-content: center; }
+.tae-buy-now-button--align-right .tae-buy-now-button-wrapper {
+  justify-content: flex-end;
+  padding-right: 0;
+}
+
+.tae-buy-now-button .tae-buy-now-button-wrapper {
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.tae-buy-now-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+/* Add to cart on: quantity + add to cart centered on one row; payment buttons full width below */
+.tae-buy-now-button-container--stacked {
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.tae-buy-now-stacked-top {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.tae-buy-now-button-container--stacked .tae-buy-now-quantity-wrapper {
+  width: var(--quantity-width, 150px);
+  flex-shrink: 0;
+}
+
+/* Add to cart in stacked row: match payment button look, not full viewport width */
+.tae-buy-now-stacked-top .tae-add-to-cart-submit.shopify-payment-button__button--unbranded {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 1 auto;
+  min-width: min(100%, 160px);
+  max-width: 100%;
+  width: auto !important;
+  border-radius: var(--button-border-radius, 12px) !important;
+  min-height: var(--button-height, 48px) !important;
+  height: var(--button-height, 48px) !important;
+  padding: 16px 32px !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  background-color: var(--payment-button-color, #a34e4e) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  outline: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  transition: opacity 0.2s ease, transform 0.1s ease !important;
+  --border-offset: 0px !important;
+  --border-opacity: 0 !important;
+}
+
+.tae-buy-now-stacked-top .tae-add-to-cart-submit.shopify-payment-button__button--unbranded:hover:not(:disabled) {
+  opacity: 0.9 !important;
+  transform: translateY(-1px) !important;
+}
+
+.tae-add-to-cart__label {
+  transition: opacity 0.15s ease;
+}
+
+.tae-add-to-cart__loader {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.tae-add-to-cart-submit--loading .tae-add-to-cart__label {
+  opacity: 0;
+}
+
+.tae-add-to-cart-submit--loading .tae-add-to-cart__loader {
+  display: flex;
+}
+
+.tae-buy-now-stacked-top .tae-add-to-cart-submit--loading.shopify-payment-button__button--unbranded {
+  cursor: wait !important;
+}
+
+.tae-add-to-cart__spinner {
+  width: 1.25em;
+  height: 1.25em;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: tae-add-to-cart-spin 0.65s linear infinite;
+}
+
+@keyframes tae-add-to-cart-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tae-buy-now-button-container--stacked .tae-payment-button-wrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
+.tae-buy-now-quantity-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--quantity-width, 150px);
+  /* height: 100%; */
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.tae-buy-now-quantity-selector {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  height: var(--button-height, 48px);
+  box-sizing: border-box;
+}
+
+/* Option 1: Rounded with shadow */
+.tae-buy-now-quantity-selector--style-1 {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--quantity-border-radius, 12px);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Option 2: Square with border */
+.tae-buy-now-quantity-selector--style-2 {
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-radius: var(--quantity-border-radius, 4px);
+  overflow: hidden;
+  background: #f9f9f9;
+  box-shadow: none;
+}
+
+/* Option 3: Minimal with subtle border */
+.tae-buy-now-quantity-selector--style-3 {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--quantity-border-radius, 8px);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tae-buy-now-quantity-btn {
+  width: 44px;
+  height: 100%;
+  min-height: var(--button-height, 48px);
+  border: none;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Option 1 buttons */
+.tae-buy-now-quantity-selector--style-1 .tae-buy-now-quantity-btn {
+  background: #f8f8f8;
+}
+
+.tae-buy-now-quantity-selector--style-1 .tae-buy-now-quantity-btn:hover {
+  background: #e8e8e8;
+}
+
+.tae-buy-now-quantity-selector--style-1 .tae-buy-now-quantity-btn:active {
+  background: #d8d8d8;
+}
+
+/* Option 2 buttons */
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-btn {
+  background: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-btn:last-child {
+  border-right: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-btn:hover {
+  background: #f0f0f0;
+}
+
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-btn:active {
+  background: #e5e5e5;
+}
+
+/* Option 3 buttons */
+.tae-buy-now-quantity-selector--style-3 .tae-buy-now-quantity-btn {
+  background: transparent;
+}
+
+.tae-buy-now-quantity-selector--style-3 .tae-buy-now-quantity-btn:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.tae-buy-now-quantity-selector--style-3 .tae-buy-now-quantity-btn:active {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+
+.tae-buy-now-quantity-input {
+  width: 55px;
+  height: 100%;
+  min-height: var(--button-height, 48px);
+  text-align: center;
+  padding: 0;
+  color: #333;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  box-sizing: border-box;
+}
+
+/* Option 1 input */
+.tae-buy-now-quantity-selector--style-1 .tae-buy-now-quantity-input {
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+/* Option 2 input */
+.tae-buy-now-quantity-selector--style-2 .tae-buy-now-quantity-input {
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+/* Option 3 input */
+.tae-buy-now-quantity-selector--style-3 .tae-buy-now-quantity-input {
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  background: transparent;
+}
+
+.tae-buy-now-quantity-input::-webkit-outer-spin-button,
+.tae-buy-now-quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.tae-buy-now-button .tae-buy-now-button-wrapper form {
+  margin: 0;
+  width: 100%;
+}
+
+.tae-buy-now-button .tae-buy-now-button-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 16px 32px;
+  margin: 0;
+  border: none;
+  color: white;
+  border-radius: var(--button-border-radius, 12px);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--button-height, 48px);
+  height: var(--button-height, 48px);
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.tae-buy-now-button .tae-buy-now-button-btn h5 {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.tae-buy-now-button .tae-buy-now-button-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.tae-buy-now-button .tae-buy-now-button-btn:active {
+  transform: translateY(0);
+}
+
+/* Style Shopify payment button + Add to cart (same visual classes) */
+.tae-payment-button-wrapper {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tae-payment-button-wrapper .shopify-payment-button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tae-payment-button-wrapper .shopify-payment-button__more-options {
+  width: 100%;
+}
+
+/* Style all payment buttons (Shop Pay, Apple Pay, Google Pay, etc.) */
+.tae-payment-button-wrapper .shopify-payment-button__button {
+  --border-offset: 0px !important;
+  --border-opacity: 0 !important;
+  border-radius: var(--button-border-radius, 12px) !important;
+  min-height: var(--button-height, 48px) !important;
+  height: var(--button-height, 48px) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 16px 32px !important;
+  font-size: inherit !important;
+  transition: opacity 0.2s ease, transform 0.1s ease !important;
+  box-sizing: border-box !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  outline: none !important;
+  background-image: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+.tae-payment-button-wrapper .shopify-payment-button__button:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-1px) !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  outline: none !important;
+}
+
+.tae-payment-button-wrapper .shopify-payment-button__button:active {
+  transform: translateY(0) !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Style the unbranded "Buy it now" button with custom color */
+.tae-payment-button-wrapper .shopify-payment-button__button--unbranded {
+  --border-offset: 0px !important;
+  --border-opacity: 0 !important;
+  background-color: var(--payment-button-color, #a34e4e) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  outline: none !important;
+  background-image: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border-radius: var(--button-border-radius, 12px) !important;
+  min-height: var(--button-height, 48px) !important;
+  height: var(--button-height, 48px) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 16px 32px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+}
+
+.tae-payment-button-wrapper .shopify-payment-button__button--unbranded:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-1px) !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  outline: none !important;
+}
+
+.tae-payment-button-wrapper .shopify-payment-button__button::before,
+.tae-payment-button-wrapper .shopify-payment-button__button::after,
+.tae-payment-button-wrapper .shopify-payment-button__button--unbranded::before,
+.tae-payment-button-wrapper .shopify-payment-button__button--unbranded::after {
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  outline: none !important;
+  background-image: none !important;
+}
+
+.tae-payment-button-wrapper .shopify-payment-button__button:focus,
+.tae-payment-button-wrapper .shopify-payment-button__button:focus-visible,
+.tae-payment-button-wrapper .shopify-payment-button__button--unbranded:focus,
+.tae-payment-button-wrapper .shopify-payment-button__button--unbranded:focus-visible {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Sold out button styles */
+.tae-buy-now-button-sold-out {
+  background-color: var(--payment-button-color, #a34e4e);
+  color: #ffffff;
+  border-radius: var(--button-border-radius, 12px);
+  width: 100%;
+  cursor: not-allowed;
+  opacity: 0.5;
+  border: none;
+  padding: 16px 32px;
+  min-height: var(--button-height, 48px);
+  height: var(--button-height, 48px);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.tae-buy-now-button-sold-out:hover {
+  opacity: 0.5;
+  transform: none;
+}
+
+@media (max-width: 749px) {
+  .tae-buy-now-button {
+    max-width: 100%;
+  }
+}
+

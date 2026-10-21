@@ -1,0 +1,59 @@
+{% comment %}
+  About Us — Modern Rich Text (watermark + heading + richtext)
+  Preview defaults: config/liquid-preview/about-us/about-1.js
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-aboutus-page-H1.css' | asset_url }}" media="all">
+<script src="{{ 'pf-aboutus-page-H1.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  [id="ModernRichText-{{ section.id }}"] {
+    --mrt-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+    --mrt-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --mrt-pt-desk: {{ section.settings.padding_top_desktop }}px;
+    --mrt-pb-desk: {{ section.settings.padding_bottom_desktop }}px;
+    --mrt-watermark-offset-y: {{ section.settings.watermark_offset_y }}%;
+    --mrt-watermark-gradient: {{ section.settings.watermark_gradient }};
+    --mrt-watermark-opacity: {{ section.settings.watermark_opacity | divided_by: 100.0 }};
+    --mrt-wm-size-mobile: {{ section.settings.watermark_size_mobile }}vw;
+    --mrt-wm-size-desk: {{ section.settings.watermark_size_desktop }}vw;
+    --mrt-content-max-width: {{ section.settings.content_max_width }}px;
+    --mrt-content-gap: {{ section.settings.content_gap }}px;
+    --mrt-heading-mobile: {{ section.settings.heading_size_mobile }}px;
+    --mrt-heading-desk: {{ section.settings.heading_size_desktop }}px;
+    --mrt-text-mobile: {{ section.settings.text_size_mobile }}px;
+    --mrt-text-desk: {{ section.settings.text_size_desktop }}px;
+  }
+{%- endstyle -%}
+
+<div
+  id="ModernRichText-{{ section.id }}"
+  class="about-rich-text color-{{ section_scheme }}"
+>
+  <div class="modern-rich-text-root{% if section.settings.enable_animation %} modern-rich-text--animated{% endif %}">
+
+    {%- if section.settings.watermark_text != blank -%}
+      <div class="modern-rich-text__watermark">
+        {{ section.settings.watermark_text }}
+      </div>
+    {%- endif -%}
+
+    <div class="modern-rich-text__content">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="modern-rich-text__heading animate-el delay-1">
+          {{ section.settings.heading | newline_to_br }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="modern-rich-text__text animate-el delay-2">
+          {{ section.settings.text }}
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>

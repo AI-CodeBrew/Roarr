@@ -1,0 +1,60 @@
+{%- capture kl_rtl_html -%}
+{% render 'snippets/play-fonts' %}
+{%- assign m = product.metafields.kluck_ai -%}
+{%- assign image = m.problem_solving_image.value | default: m.problem_solving_image | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/iwt-2c.png?v=1726197375' -%}
+{%- assign q1 = m.product_question_1.value | default: m.product_question_1 | default: m.faq_question_1.value | default: m.faq_question_1 | default: 'Description' -%}
+{%- assign a1 = m.product_question_1_answer.value | default: m.product_question_1_answer | default: m.faq_answer_1.value | default: m.faq_answer_1 | default: 'A wooden set for counting, color sorting, and rolling play.' -%}
+{%- assign q2 = m.product_question_2.value | default: m.product_question_2 | default: m.faq_question_2.value | default: m.faq_question_2 | default: 'Details' -%}
+{%- assign a2 = m.product_question_2_answer.value | default: m.product_question_2_answer | default: m.faq_answer_2.value | default: m.faq_answer_2 | default: 'Solid wood, rounded edges, and water-based color.' -%}
+{%- assign q3 = m.product_question_3.value | default: m.product_question_3 | default: m.faq_question_3.value | default: m.faq_question_3 | default: 'Shipping & return' -%}
+{%- assign a3 = m.product_question_3_answer.value | default: m.product_question_3_answer | default: m.faq_answer_3.value | default: m.faq_answer_3 | default: 'Free shipping. 90-day returns on unused toys.' -%}
+<section class="pk-designed">
+  <div class="pk-designed-wrap">
+    <h2>Thoughtfully Designed</h2>
+    <div class="pk-designed-grid">
+      <div class="pk-arch">
+        <span class="pk-recycle">100%<br>Recycled</span>
+        <img src="{{ image }}" alt="">
+      </div>
+      <div>
+        <details><summary>{{ q1 }}</summary><p>{{ a1 }}</p></details>
+        <details open><summary>{{ q2 }}</summary><p>{{ a2 }}</p></details>
+        <details><summary>{{ q3 }}</summary><p>{{ a3 }}</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .pk-designed { background: #FFF1C0; color: #6F2424; padding: 64px 0 72px; font-family: Poppins, sans-serif; }
+  .pk-designed-wrap { width: min(1100px, calc(100% - 48px)); margin: 0 auto; }
+  .pk-designed h2 { font-family: "Caveat Brush", cursive !important; font-weight: 400; font-size: 56px; line-height: 1; text-align: center; margin: 0 0 28px; color: #6F2424; }
+  .pk-designed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .pk-arch { position: relative; }
+  .pk-arch img { width: 100%; height: auto; display: block; }
+  .pk-recycle { position: absolute; top: 18px; inset-inline-start: 6px; width: 150px; height: 150px; display: grid; place-items: center; text-align: center; color: #fff; background: url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/sale-badge.png?v=1726541080") center / cover no-repeat; font-family: "Caveat Brush", cursive !important; font-size: 30px; line-height: 0.95; transform: rotate(-15deg); }
+  .pk-designed details { background: #fff; border: 1px solid #6F2424; border-radius: 20px; margin: 0 0 16px; padding: 6px 20px; }
+  .pk-designed summary { cursor: pointer; font-family: "Caveat Brush", cursive !important; font-size: 32px; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+  .pk-designed summary::-webkit-details-marker { display: none; }
+  .pk-designed summary::marker { content: none; }
+  .pk-designed summary:after { content: ""; display: block; width: 10px; height: 10px; margin-inline-end: 4px; border-right: 2px solid #6F2424; border-bottom: 2px solid #6F2424; transform: rotate(45deg); flex: none; }
+  .pk-designed details[open] summary { border-bottom: 1px solid #6F2424; }
+  .pk-designed details[open] summary:after { transform: rotate(-135deg); margin-top: 6px; }
+  .pk-designed details p { margin: 14px 0; font-size: 15px; line-height: 1.6; }
+  @media (max-width: 800px) { .pk-designed-grid { grid-template-columns: 1fr; } .pk-designed h2 { font-size: 42px; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--play" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: Poppins, "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Caveat Brush", "Lalezar", "Tajawal", cursive !important; line-height: 1.4 !important; font-weight: 400 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

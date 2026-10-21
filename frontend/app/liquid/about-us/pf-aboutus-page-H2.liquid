@@ -1,0 +1,94 @@
+{% comment %}
+  About Us — Modern Tabbed Split
+  Preview defaults: config/liquid-preview/about-us/about-2.js
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.section_color_scheme | default: 'scheme-1' -%}
+{%- assign panel_scheme = section.settings.panel_color_scheme | default: 'scheme-2' -%}
+{%- assign blocks_count = section.blocks | size -%}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-aboutus-page-H2.css' | asset_url }}" media="all">
+<script src="{{ 'pf-aboutus-page-H2.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  [id="ModernTabSection-{{ section.id }}"] {
+    --at-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+    --at-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --at-pt-desk: {{ section.settings.padding_top_desktop }}px;
+    --at-pb-desk: {{ section.settings.padding_bottom_desktop }}px;
+    --at-container-width: {{ section.settings.container_width }}px;
+    --at-container-radius: {{ section.settings.container_radius }}px;
+    --at-tab-color: {{ section.settings.tab_color }};
+    --at-tab-active: {{ section.settings.tab_active_color }};
+    --at-tab-size: {{ section.settings.tab_size }}px;
+    --at-subtitle-size: {{ section.settings.subtitle_size }}px;
+    --at-heading-mobile: {{ section.settings.heading_size_mobile }}px;
+    --at-heading-desk: {{ section.settings.heading_size_desktop }}px;
+    --at-text-size: {{ section.settings.text_size }}px;
+    --font-heading: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-accent: {{ settings.type_accent_font.family | default: settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+  }
+{%- endstyle -%}
+
+<div
+  id="ModernTabSection-{{ section.id }}"
+  class="about-tabs-outer color-{{ section_scheme }} gradient"
+  data-image-position="{{ section.settings.image_position }}"
+>
+  <div class="modern-tabs-root">
+
+    {%- if blocks_count > 0 -%}
+      <div class="modern-tabs__nav" role="tablist">
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            class="modern-tabs__btn{% if forloop.first %} is-active{% endif %}"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            data-target="panel-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.tab_title }}
+          </button>
+        {%- endfor -%}
+      </div>
+
+      <div class="modern-tabs__content-wrapper color-{{ panel_scheme }} gradient">
+        {%- for block in section.blocks -%}
+          <div
+            class="modern-tabs__panel{% if forloop.first %} is-active{% endif %}"
+            id="panel-{{ block.id }}"
+            role="tabpanel"
+          >
+
+            <div class="modern-tabs__text-area">
+              {%- if block.settings.subtitle != blank -%}
+                <h4 class="modern-tabs__subtitle">{{ block.settings.subtitle }}</h4>
+              {%- endif -%}
+
+              {%- if block.settings.heading != blank -%}
+                <h2 class="modern-tabs__heading">{{ block.settings.heading }}</h2>
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <div class="modern-tabs__description">{{ block.settings.text }}</div>
+              {%- endif -%}
+            </div>
+
+            <div class="modern-tabs__image-area">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 1200 | image_tag: 'modern-tabs__image', 'lazy' }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'modern-tabs__image' }}
+              {%- endif -%}
+            </div>
+
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>

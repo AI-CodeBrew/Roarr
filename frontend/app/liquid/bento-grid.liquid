@@ -1,0 +1,87 @@
+{% comment %}
+  Modern Asymmetric Bento Grid - App Block
+  - Layout: 5 Specific Panels (2 Wide, 2 Small, 1 Tall)
+  - Scope: block.settings and block.id
+{% endcomment %}
+
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+  {%- liquid
+    assign s = block.settings
+    assign m = product.metafields.kluck_ai
+    assign color_schema = m.color_schema.value | default: m.color_schema | default: '#a34e4e'
+    assign kai = product.metafields.kluck_ai
+    assign p2_heading = kai.bento_stat_1.value | default: kai.bento_stat_1 | default: s.p2_heading
+    assign p2_text = kai.bento_stat_description_1.value | default: kai.bento_stat_description_1 | default: s.p2_text
+    assign p3_heading = kai.bento_stat_2.value | default: kai.bento_stat_2 | default: s.p3_heading
+    assign p3_text = kai.bento_stat_description_2.value | default: kai.bento_stat_description_2 | default: s.p3_text
+    assign border_radius = s.border_radius | default: 24
+    assign panel_gap = s.panel_gap | default: 20
+    assign p2_text_align = s.p2_text_align | default: 'left'
+    assign p3_text_align = s.p3_text_align | default: 'left'
+    assign pad_v_d = s.padding_vertical_desktop | default: 10
+    assign pad_h_d = s.padding_horizontal_desktop | default: 10
+    assign pad_v_m = s.padding_vertical_mobile | default: 20
+    assign pad_h_m = s.padding_horizontal_mobile | default: 10
+  -%}
+
+  <link rel="stylesheet" href="{{ 'bento-grid.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+
+  <div id="bento-{{ block.id }}" class="bento-grid-block app_blocks_class" style="--radius: {{ border_radius }}px; --bento-gap: {{ panel_gap }}px; --section-padding-v-d: {{ pad_v_d }}px; --section-padding-h-d: {{ pad_h_d }}px; --section-padding-v-m: {{ pad_v_m }}px; --section-padding-h-m: {{ pad_h_m }}px;">
+    <div class="bento-container">
+      <div class="bento-grid">
+        
+        <!-- Panel 1: Wide Image (Top Left) - happy_customer_image_1 -->
+        {%- assign img_1 = m.happy_customer_image_1.value | default: m.happy_customer_image_1 -%}
+        {%- if s.image_1 != blank %}{% assign img_1 = s.image_1 %}{% endif -%}
+        <div class="bento-panel is-image panel-1">
+          {% if img_1 != blank %}
+            <img src="{{ img_1 | image_url: width: 1000 }}" alt="{{ img_1.alt | default: 'Bento image 1' }}" loading="lazy" width="1000" height="1000">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+
+        <!-- Panel 2: Wide Text (Bottom Left) -->
+        <div class="bento-panel bento-text-panel panel-2" style="--panel-color: {{ color_schema }}; text-align: {{ p2_text_align }};">
+          {% if p2_heading != blank %}
+            <h4>{{ p2_heading }}</h4>
+          {% endif %}
+          {% if p2_text != blank %}<p>{{ p2_text }}</p>{% endif %}
+        </div>
+
+        <!-- Panel 3: Small Text (Top Middle) -->
+        <div class="bento-panel bento-text-panel panel-3" style="--panel-color: {{ color_schema }}; text-align: {{ p3_text_align }};">
+          {% if p3_heading != blank %}
+            <h4>{{ p3_heading }}</h4>
+          {% endif %}
+          {% if p3_text != blank %}<p>{{ p3_text }}</p>{% endif %}
+        </div>
+
+        <!-- Panel 4: Small Image (Bottom Middle) - happy_customer_image_2 -->
+        {%- assign img_4 = m.happy_customer_image_2.value | default: m.happy_customer_image_2 -%}
+        {%- if s.image_4 != blank %}{% assign img_4 = s.image_4 %}{% endif -%}
+        <div class="bento-panel is-image panel-4">
+          {% if img_4 != blank %}
+            <img src="{{ img_4 | image_url: width: 600 }}" alt="{{ img_4.alt | default: 'Bento image 4' }}" loading="lazy" width="600" height="600">
+          {% else %}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+
+        <!-- Panel 5: Tall Image (Right) - happy_customer_image_3 -->
+        {%- assign img_5 = m.happy_customer_image_3.value | default: m.happy_customer_image_3 -%}
+        {%- if s.image_5 != blank %}{% assign img_5 = s.image_5 %}{% endif -%}
+        <div class="bento-panel is-image panel-5">
+          {% if img_5 != blank %}
+            <img src="{{ img_5 | image_url: width: 800 }}" alt="{{ img_5.alt | default: 'Bento image 5' }}" loading="lazy" width="800" height="800">
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+{%- endif -%}

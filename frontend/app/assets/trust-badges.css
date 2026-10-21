@@ -1,0 +1,141 @@
+/* Kluck AI - Trust Badges */
+
+.kluck-badges-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: var(--padding-v-d) 0;
+}
+
+.kluck-badges-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-color);
+  opacity: var(--bg-opacity);
+  z-index: 0;
+}
+
+.kluck-badges-wrapper .inner-container {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.kluck-badges-wrapper .tb-track {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: var(--alignment);
+  gap: var(--gap-d);
+}
+
+.kluck-badges-wrapper .tb-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  background-color: var(--item-bg);
+  color: var(--item-text);
+  border: 1px solid var(--item-border);
+  border-radius: var(--radius);
+  padding: 10px 20px;
+  transition: transform 0.3s ease;
+}
+
+.kluck-badges-wrapper .tb-item:hover {
+  transform: translateY(-3px);
+}
+
+.kluck-badges-wrapper .tb-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--icon-circle-bg);
+  border-radius: 50%;
+  width: var(--icon-size-d);
+  height: var(--icon-size-d);
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.kluck-badges-wrapper .tb-icon-svg {
+  width: 55%;
+  height: 55%;
+  stroke: var(--icon-color);
+}
+
+.kluck-badges-wrapper .tb-custom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.kluck-badges-wrapper .tb-text {
+  font-family: var(--font-body-family, inherit);
+  font-size: var(--body-size);
+  font-weight: var(--body-weight);
+  line-height: 1;
+  margin: 0;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.kluck-badges-wrapper .tb-item.tb-cloned {
+  display: none;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .kluck-badges-wrapper {
+    padding: var(--padding-v-m) 0;
+  }
+
+  .kluck-badges-wrapper .tb-text {
+    font-size: calc(var(--body-size) * 0.9);
+  }
+
+  .kluck-badges-wrapper .tb-icon-wrap {
+    width: var(--icon-size-m);
+    height: var(--icon-size-m);
+    margin-right: 8px;
+  }
+}
+
+
+@keyframes tb-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile marquee: show clones only on small screens */
+@media (max-width: 768px) {
+  .kluck-badges-wrapper.tb-marquee-enabled .tb-item.tb-cloned {
+    display: inline-flex;
+  }
+  .kluck-badges-wrapper.tb-marquee-enabled .inner-container {
+    padding: 0;
+    max-width: 100vw;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  .kluck-badges-wrapper.tb-marquee-enabled .tb-track {
+    flex-wrap: nowrap;
+    width: max-content;
+    animation: tb-scroll var(--scroll-speed, 20s) linear infinite;
+    gap: var(--gap-m);
+    padding-left: var(--gap-m);
+  }
+}
+
+@media (min-width: 769px) {
+  .kluck-badges-wrapper .tb-item.tb-cloned {
+    display: none;
+  }
+}

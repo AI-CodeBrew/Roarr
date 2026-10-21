@@ -1,0 +1,209 @@
+{
+  "sections": {
+    "kluck-ai-product-hero-section-3": {
+      "type": "kluck-ai-product-hero-section-3",
+      "blocks": {
+        "title_Necbfb": {
+          "type": "title",
+          "settings": {
+            "custom_badge": "NEW",
+            "show_sale_badge": false,
+            "title_override": "",
+            "reviews_text": "(5.0)"
+          }
+        },
+        "description_KdifMA": {
+          "type": "description",
+          "settings": {}
+        },
+        "variants_TbJhNT": {
+          "type": "variants",
+          "settings": {
+            "size_chart_text": "Size chart"
+          }
+        },
+        "buy_buttons_iL7rCG": {
+          "type": "buy_buttons",
+          "settings": {
+            "add_to_cart_text": "ADD TO CART"
+          }
+        },
+        "info_pointers_TheXaf": {
+          "type": "info_pointers",
+          "settings": {
+            "text_1": "Free International Shipping over $120",
+            "icon_1": "",
+            "text_2": "Free Returns Within 30 days",
+            "icon_2": ""
+          }
+        },
+        "promo_box_VLmjcn": {
+          "type": "promo_box",
+          "settings": {
+            "title": "Limited time offer",
+            "text": "<p>Get $20 off when you spend $1,000 or more! <a href=\"#\">Learn more</a></p>"
+          }
+        },
+        "accordions_NYBdHp": {
+          "type": "accordions",
+          "settings": {
+            "tab_1_title": "Product Details",
+            "tab_1_content": "<p>Detailed information about the product goes here.</p>",
+            "tab_2_title": "Shipping & Returns",
+            "tab_2_content": "<p>Information about shipping and return policies.</p>",
+            "tab_3_title": "",
+            "tab_3_content": "",
+            "tab_4_title": "",
+            "tab_4_content": ""
+          }
+        },
+        "combine_with_hCMbbQ": {
+          "type": "combine_with",
+          "settings": {
+            "heading_text": "Combine With",
+            "btn_text": "ADD TO CART",
+            "product_1": "",
+            "product_2": ""
+          }
+        },
+        "payment_security_PhUVVz": {
+          "type": "payment_security",
+          "settings": {
+            "title": "Payment & Security",
+            "text": "Your payment information is processed securely. We do not store credit card details nor have access to your credit card information."
+          }
+        }
+      },
+      "block_order": [
+        "title_Necbfb",
+        "description_KdifMA",
+        "variants_TbJhNT",
+        "buy_buttons_iL7rCG",
+        "info_pointers_TheXaf",
+        "promo_box_VLmjcn",
+        "accordions_NYBdHp",
+        "combine_with_hCMbbQ",
+        "payment_security_PhUVVz"
+      ],
+      "name": "Custom Product Hero",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "text_opacity": 85,
+        "enable_blend_mode": false,
+        "border_radius": 0,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "kluck-ai-marquee-section-1": {
+      "type": "kluck-ai-marquee-section-1",
+      "blocks": {
+        "text_AVRi7F": {
+          "type": "text",
+          "settings": {
+            "text": "Kluck AI Quality"
+          }
+        },
+        "image_RVhXX6": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_trBtiq": {
+          "type": "text",
+          "settings": {
+            "text": "Kluck AI Quality"
+          }
+        },
+        "image_NyK3gd": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "text_AVRi7F",
+        "image_RVhXX6",
+        "text_trBtiq",
+        "image_NyK3gd"
+      ],
+      "name": "Kluck AI - Marquee",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 100,
+        "container_max_width": 2000,
+        "padding_v": 20,
+        "direction": "left",
+        "speed_d": 30,
+        "speed_m": 15,
+        "rotation": 0,
+        "mask_width": 50,
+        "pause_hover": false,
+        "gap_d": 60,
+        "gap_m": 30,
+        "img_height_d": 60,
+        "img_height_m": 40,
+        "img_radius": 10,
+        "heading_font_family": "abel_n4",
+        "body_font_family": "abel_n4",
+        "body_size": 18,
+        "body_weight": 400,
+        "h1_size": 48,
+        "h1_weight": 700,
+        "h2_size": 64,
+        "h2_weight": 500,
+        "h3_size": 30,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "kluck-ai-product-feature-details-section": {
+      "type": "kluck-ai-product-feature-details-section",
+      "blocks": {
+        "detail_item_8qGzUD": {
+          "type": "detail_item",
+          "settings": {
+            "text": "Describe a specific detail or feature of the product. Its an owner to describe a specific detail or feature of the product. Describe a specific detail or feature of the product."
+          }
+        },
+        "detail_item_yJbbtK": {
+          "type": "detail_item",
+          "settings": {
+            "text": "Describe a specific detail or feature of the product. Its an owner to describe a specific detail or feature of the product. Describe a specific detail or feature of the product. Its an owner to describe a specific detail or feature of the product."
+          }
+        },
+        "detail_item_pAECxn": {
+          "type": "detail_item",
+          "settings": {
+            "text": "Describe a specific detail or feature of the product. Its an owner to describe a specific detail or feature of the product. Describe a specific detail or feature of the product. Its an owner to describe a specific detail or feature of the product."
+          }
+        }
+      },
+      "block_order": [
+        "detail_item_8qGzUD",
+        "detail_item_yJbbtK",
+        "detail_item_pAECxn"
+      ],
+      "name": "Custom Details Grid",
+      "settings": {
+        "use_metafields": true,
+        "color_scheme": "",
+        "text_opacity": 75,
+        "pre_heading": "BECAUSE EVERY",
+        "heading": "DETAIL COUNTS",
+        "image_ratio": "4 / 5",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "kluck-ai-product-hero-section-3",
+    "kluck-ai-marquee-section-1",
+    "kluck-ai-product-feature-details-section"
+  ]
+}

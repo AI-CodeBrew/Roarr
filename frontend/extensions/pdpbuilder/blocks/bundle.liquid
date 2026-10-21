@@ -1,0 +1,110 @@
+{%- if shop.metafields.app.block_control.value == true -%}
+{%- assign money_fmt = '{{' | append: 'amount}}' -%}
+<script>window.SHOP_MONEY_FORMAT={{ shop.money_format | default: money_fmt | json }};</script>
+{%- assign sv = product.selected_or_first_available_variant | default: product.variants.first -%}
+{%- assign unit_price = sv.price | default: product.price | default: product.price_min | default: 0 -%}
+{%- assign ba = shop.metafields.kluck_bundle.bundles.value.bundles -%}
+{%- if ba -%}
+{%- assign b = null -%}
+{%- assign most_recent_created_at = '' -%}
+{%- assign product_id_parts = product.id | split: '/' -%}
+{%- assign current_product_numeric_id = product_id_parts | last -%}
+{%- for bi in ba -%}
+{%- assign bia = bi.isActive -%}
+{%- unless bia == false or bia == 'false' or bia == 0 or bia == '0' -%}
+{%- assign pst = bi.productSelectionType -%}
+{%- assign is_applicable = false -%}
+{%- if pst == 'global' -%}
+{%- assign is_applicable = true -%}
+{%- elsif pst == 'include' and bi.productIds -%}
+{%- for p in bi.productIds -%}
+{%- assign bundle_product_id_str = p | append: '' -%}
+{%- assign bundle_product_id_parts = p | split: '/' -%}
+{%- assign bundle_numeric_id = bundle_product_id_parts | last -%}
+{%- if bundle_numeric_id == current_product_numeric_id or bundle_product_id_str == product.id or p == product.id -%}
+{%- assign is_applicable = true -%}{%- break -%}
+{%- endif -%}
+{%- endfor -%}
+{%- elsif pst == 'exclude' -%}
+{%- assign is_applicable = true -%}
+{%- if bi.productIds -%}
+{%- for p in bi.productIds -%}
+{%- assign bundle_product_id_str = p | append: '' -%}
+{%- assign bundle_product_id_parts = p | split: '/' -%}
+{%- assign bundle_numeric_id = bundle_product_id_parts | last -%}
+{%- if bundle_numeric_id == current_product_numeric_id or bundle_product_id_str == product.id or p == product.id -%}
+{%- assign is_applicable = false -%}{%- break -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- endif -%}
+{%- if is_applicable -%}
+{%- assign bi_created_at = bi.createdAt | default: '' -%}
+{%- if bi_created_at != blank -%}
+{%- if most_recent_created_at == blank or bi_created_at > most_recent_created_at -%}
+{%- assign b = bi -%}{%- assign most_recent_created_at = bi_created_at -%}
+{%- endif -%}
+{%- elsif most_recent_created_at == blank -%}
+{%- assign b = bi -%}
+{%- endif -%}
+{%- endif -%}
+{%- endunless -%}
+{%- endfor -%}
+{%- endif -%}
+{%- if b != null -%}
+{%- assign biar = b.isActive -%}
+{%- unless biar == false or biar == 'false' or biar == 0 or biar == '0' -%}
+{%- if b.type == 'discounted' -%}
+{%- assign ss = b.styleSettings -%}
+<div class="bundle-save-container" data-variant-gid="{{sv.id}}" data-product-id="{{product.id}}" data-current-variant-id="{{sv.id | split: '/' | last}}" data-current-variant-price="{{unit_price}}" data-bundle-id="{{b.id}}" data-bundle-type="discounted" data-money-format="{{ shop.money_format | default: money_fmt | escape }}" data-primary-color="{{ss.primaryColor | default: '#a34e4e'}}" data-corner-roundness="{{ss.cornerRoundness}}" data-breathing-space="{{ss.breathingSpace}}" data-most-popular-badge-color="{{ss.mostPopularBadgeColor | default: '#F59E0B'}}" data-limited-offer-badge-color="{{ss.limitedOfferBadgeColor | default: '#111827'}}" data-tier-name-color="{{ss.tierNameColor | default: '#333333'}}" data-tier-card-fill-color="{{ss.tierCardFillColor | default: '#FFFFFF'}}" style="--bundle-primary-color:{{ss.primaryColor | default: '#a34e4e'}};--bundle-primary-color-rgb:{{ss.primaryColorRgb | default: '163, 78, 78'}};--bundle-corner-roundness:{{ss.cornerRoundness | default: 9}}px;--bundle-most-popular-badge-color:{{ss.mostPopularBadgeColor | default: '#F59E0B'}};--bundle-limited-offer-badge-color:{{ss.limitedOfferBadgeColor | default: '#111827'}};--bundle-tier-name-color:{{ss.tierNameColor | default: '#333333'}};--bundle-tier-card-fill-color:{{ss.tierCardFillColor | default: '#FFFFFF'}};">
+<div class="bundle-header-with-lines"><div class="bundle-header-line"></div><h2>{{ b.sectionHeader | default: 'Buy More Save More' }}</h2><div class="bundle-header-line"></div></div>
+<div class="bundle-options" style="gap:{{ss.breathingSpace}}px;">
+{%- for t in b.quantityDiscountTiers -%}
+{%- assign tq = t.quantity | default: 1 -%}
+{%- assign tdt = t.discountType | default: 'percentage' -%}
+{%- assign otc = unit_price | times: tq -%}
+{%- assign dtc = otc -%}
+{%- assign tbx = t.buyX | default: 1 -%}
+{%- assign tgy = t.getYFree | default: 1 -%}
+{%- if tdt == 'percentage' -%}
+{%- assign td = t.discountPercentage | default: t.discountValue | default: 0 -%}
+{%- assign dac = otc | times: td | divided_by: 100 -%}
+{%- assign dtc = otc | minus: dac -%}
+{%- elsif tdt == 'flat' -%}
+{%- assign fac = t.flatAmount | default: t.discountValue | default: 0 | times: 100 -%}
+{%- assign dtc = otc | minus: fac -%}
+{%- if dtc < 0 -%}{%- assign dtc = 0 -%}{%- endif -%}
+{%- elsif tdt == 'bogo' -%}
+{%- assign dtc = unit_price | times: tbx -%}
+{%- assign otc = unit_price | times: tbx | plus: unit_price | times: tgy -%}
+{%- else -%}
+{%- assign dtc = otc -%}
+{%- endif -%}
+{%- assign save_cents = otc | minus: dtc -%}
+<label class="bundle-option bundle-option-wrapper" data-quantity="{{tq}}" data-discount-type="{{tdt}}" data-buy-x="{{tbx}}" data-get-y-free="{{tgy}}" data-show-savings="{{ t.showSavings | default: true }}" data-limited-ends-at="{{ t.limitedOfferEndsAt | default: '' }}"{% if forloop.first %} data-selected="true"{% endif %} style="border-radius:{{ss.cornerRoundness}}px;">
+{%- if t.showMostPopular -%}<div class="bundle-most-popular-badge"><span class="bundle-most-popular-star" aria-hidden="true"></span>{{ t.mostPopularText }}</div>{%- endif -%}
+{%- if t.limitedOfferEnabled and t.limitedOfferEndsAt != blank -%}
+<div class="bundle-limited-offer-badge" data-ends-at="{{ t.limitedOfferEndsAt }}" data-label="{{ t.limitedOfferLabel | default: 'Limited offer' | escape }}"><span class="bundle-limited-offer-label">{{ t.limitedOfferLabel | default: 'Limited offer' }}</span><span class="bundle-limited-offer-countdown"></span></div>
+{%- endif -%}
+<input type="radio" name="bundle-quantity-{{product.id}}" value="{{tq}}" class="bundle-quantity-radio" data-product-id="{{product.id}}"{% if forloop.first %} checked{% endif %}>
+<div class="bundle-option-details">
+<div class="bundle-option-title">{{ t.title | default: 'Buy ' }}</div>
+{%- if t.showDiscountBadge -%}<div class="bundle-option-discount">{{ t.discountBadge | default: '' }}</div>{%- endif -%}
+{%- if t.showSubtitle -%}<div class="bundle-option-subtitle">{{ t.subtitle | default: '' }}</div>{%- endif -%}
+</div>
+<div class="bundle-option-pricing">
+<div class="bundle-option-price">{{ dtc | money }}</div>
+{%- if dtc != otc -%}<div class="bundle-option-original-price">{{ otc | money }}</div>{%- endif -%}
+{%- if t.showSavings != false and save_cents > 0 -%}<div class="bundle-option-savings" data-save-cents="{{ save_cents }}">You save {{ save_cents | money }}</div>{%- endif -%}
+</div>
+</label>
+{%- endfor -%}
+</div>
+</div>
+{%- else -%}<div></div>{%- endif -%}
+{%- endunless -%}
+{%- endif -%}
+<link rel="stylesheet" href="{{ 'bundle.css' | asset_url }}" media="all">
+<script src="{{ 'bundle.js' | asset_url }}" type="module" defer></script>
+{%- endif -%}
+{% schema %}{"name":"Kluck Bundler","target":"section","settings":[]}{% endschema %}

@@ -1,0 +1,102 @@
+# ----------------------------
+# Dependencies (recursive)
+# ----------------------------
+node_modules/
+**/node_modules/
+
+# ----------------------------
+# Environment files (secrets)
+# ----------------------------
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# ----------------------------
+# Logs
+# ----------------------------
+logs/
+**/logs/
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ----------------------------
+# Build outputs / bundlers
+# ----------------------------
+build/
+dist/
+public/build/
+**/build/
+**/dist/
+**/.cache/
+**/.vite/
+
+# ----------------------------
+# Remix / Vite / TS caches
+# ----------------------------
+.parcel-cache/
+.turbo/
+.nx/
+.eslintcache
+*.tsbuildinfo
+
+# ----------------------------
+# Testing / coverage
+# ----------------------------
+coverage/
+**/coverage/
+.nyc_output/
+
+# ----------------------------
+# Runtime / temp
+# ----------------------------
+tmp/
+temp/
+**/tmp/
+**/temp/
+*.pid
+*.seed
+*.pid.lock
+
+# ----------------------------
+# Prisma / SQLite (local)
+# ----------------------------
+prisma/*.sqlite
+prisma/*.sqlite-journal
+prisma/*.db
+prisma/dev.sqlite
+
+# ----------------------------
+# OS / Editor
+# ----------------------------
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+*.swp
+*.swo
+
+# VS Code / Cursor / IDEs
+.vscode/
+.idea/
+*.iml
+.cursor/
+**/.cursor/
+.shopify/
+**/.shopify/
+.react-router/
+**/.react-router/
+
+# ----------------------------
+# Misc
+# ----------------------------
+*.local
+
+# Prebuilt demo HTML (generated locally, uploaded to S3)
+scripts/demo-preview-out/

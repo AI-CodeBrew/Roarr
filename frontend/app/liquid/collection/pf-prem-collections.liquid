@@ -1,0 +1,221 @@
+{%- comment -%}
+  Custom Collection Grid
+  Replicates specific design requirements with fully adjustable settings.
+{%- endcomment -%}
+
+<link rel="stylesheet" href="{{ 'pf-prem-collections.css' | asset_url }}" media="all">
+<script src="{{ 'pf-prem-collections.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  #PremCollection-{{ section.id }} {
+    --pc-pt-mobile: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    --pc-pb-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    --pc-pt-desk: {{ section.settings.padding_top }}px;
+    --pc-pb-desk: {{ section.settings.padding_bottom }}px;
+    --pc-max-width: {{ section.settings.max_width }}px;
+    --grid-gap: {{ section.settings.grid_gap }}px;
+    --card-bg: {{ section.settings.card_bg_color }};
+    --card-radius: {{ section.settings.card_border_radius }}px;
+    --title-size: {{ section.settings.title_size }}px;
+    --price-size: {{ section.settings.price_size }}px;
+    --type-size: {{ section.settings.type_size }}px;
+    --text-color: {{ section.settings.text_color }};
+    --type-color: {{ section.settings.type_color }};
+    --columns-desktop: {{ section.settings.columns_desktop }};
+    --columns-mobile: {{ section.settings.columns_mobile }};
+    --image-ratio: {{ section.settings.image_ratio }};
+  }
+{%- endstyle -%}
+
+<div
+  id="PremCollection-{{ section.id }}"
+  class="prem-collection-section custom-collection-wrapper{% unless section.settings.show_atc_desktop %} prem-collection--hide-atc-desktop{% endunless %}"
+  data-prem-collection
+  data-section-id="{{ section.id }}"
+>
+
+  {%- assign paginated_products = collection.products | limit: section.settings.products_per_page -%}
+
+  <div class="custom-collection-container">
+
+    <!-- Mobile Toolbar -->
+    <div class="mobile-toolbar">
+      <button type="button" class="filter-btn" id="OpenMobileFilters-{{ section.id }}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6m2-6h6m2 8h6"></path></svg>
+        Filter
+      </button>
+      <div class="view-toggles">
+        <button type="button" class="active">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        </button>
+        <button type="button" style="background:#000; border:none; border-radius: 50%;">
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Desktop Top Bar -->
+    <div class="collection-top-bar">
+      <div class="collection-count">{{ collection.products_count }} products</div>
+
+      {%- if section.settings.enable_sorting -%}
+        <div class="collection-sort">
+          <label for="SortBy-{{ section.id }}">Sort by:</label>
+          <select name="sort_by" class="collection-sort__input" id="SortBy-{{ section.id }}" aria-describedby="a11y-refresh-page-message">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value | escape }}"{% if option.value == collection.sort_by %} selected="selected"{% endif %}>{{ option.name | escape }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="collection-layout">
+
+      <!-- Overlay for mobile -->
+      <div class="sidebar-overlay" id="SidebarOverlay-{{ section.id }}"></div>
+
+      <!-- Sidebar Filters -->
+      {%- if section.settings.enable_filtering -%}
+        <aside class="collection-sidebar" id="CollectionSidebar-{{ section.id }}">
+          <div class="close-sidebar" id="CloseMobileFilters-{{ section.id }}">✕ Close</div>
+          <form class="filter-form">
+            {%- for filter in collection.filters -%}
+              <details class="filter-group" open>
+                <summary>
+                  {{ filter.label }}
+                  <span class="icon-plus">＋</span>
+                  <span class="icon-minus">－</span>
+                </summary>
+
+                <div class="filter-content">
+                  {%- if filter.type == 'boolean' or filter.type == 'list' -%}
+                      <ul class="filter-list">
+                        {%- for filter_value in filter.values -%}
+                          <li>
+                            <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
+                              <input type="checkbox"
+                                name="{{ filter_value.param_name }}"
+                                value="{{ filter_value.value }}"
+                                id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                                {% if filter_value.active -%}checked{%- endif %}
+                                {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                              >
+                              {{ filter_value.label }} ({{ filter_value.count }})
+                            </label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+
+                  {%- elsif filter.type == 'price_range' -%}
+                      <div class="price-range">
+                        <div class="price-input">
+                          <span>{{ cart.currency.symbol }}</span>
+                          <input name="{{ filter.min_value.param_name }}"
+                            id="Filter-{{ filter.min_value.param_name }}"
+                            {% if filter.min_value.value -%}
+                              value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                            {%- endif %}
+                            type="number"
+                            placeholder="0"
+                            min="0"
+                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}">
+                        </div>
+                        <span>To</span>
+                        <div class="price-input">
+                          <span>{{ cart.currency.symbol }}</span>
+                          <input name="{{ filter.max_value.param_name }}"
+                            id="Filter-{{ filter.max_value.param_name }}"
+                            {% if filter.max_value.value -%}
+                              value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                            {%- endif %}
+                            type="number"
+                            placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            min="0"
+                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}">
+                        </div>
+                      </div>
+                  {%- endif -%}
+                </div>
+              </details>
+            {%- endfor -%}
+          </form>
+        </aside>
+      {%- endif -%}
+
+      <!-- Product Grid -->
+      <div class="collection-grid">
+        {%- for product in paginated_products -%}
+          {%- assign first_variant = product.variants | first -%}
+          {%- assign _variant_count = product.variants | size -%}
+          <div class="custom-product-card">
+            <div class="card-image-wrapper">
+              <!-- Image Link -->
+              <a href="{{ product.url }}" class="image-link-inner">
+                {%- if product.featured_image -%}
+                  {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy' }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag }}
+                {%- endif -%}
+              </a>
+
+              <!-- Choose Options / Add to Cart Button -->
+              {%- if _variant_count > 1 or product.available == false -%}
+                <a href="{{ product.url }}" class="hover-action-btn choose-options-btn">
+                  {%- if product.available -%}Choose Options{%- else -%}Sold Out{%- endif -%}
+                </a>
+              {%- else -%}
+                <button type="button" class="hover-action-btn choose-options-btn ajax-add-btn" data-variant-id="{{ first_variant.id }}">
+                  Add to Cart
+                </button>
+              {%- endif -%}
+            </div>
+
+            <a href="{{ product.url }}" style="text-decoration:none;">
+               <div class="card-info">
+                {%- if section.settings.show_vendor -%}
+                  <p class="card-type">{{ product.type | default: product.vendor }}</p>
+                {%- endif -%}
+                <h3 class="card-title">{{ product.title }}</h3>
+                <p class="card-price">{{ product.price | money }}</p>
+              </div>
+            </a>
+
+            <!-- Mobile Add to Cart Button (Shopping Bag Icon) -->
+            <div class="mobile-atc-wrapper">
+              {%- if _variant_count > 1 or product.available == false -%}
+                <a href="{{ product.url }}" class="mobile-atc-btn" aria-label="Choose options">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                  </svg>
+                </a>
+              {%- else -%}
+                <button type="button" class="mobile-atc-btn ajax-add-btn" aria-label="Add to cart" data-variant-id="{{ first_variant.id }}">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                  </svg>
+                </button>
+              {%- endif -%}
+            </div>
+
+          </div>
+        {%- else -%}
+          <p>No products found.</p>
+        {%- endfor -%}
+      </div>
+
+    </div>
+
+    <!-- Pagination -->
+    {%- if paginate and paginate.pages > 1 -%}
+      <div style="text-align:center; padding-top: 40px;">
+        {{ paginate | default_pagination }}
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>

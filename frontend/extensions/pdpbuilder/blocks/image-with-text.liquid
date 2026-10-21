@@ -1,0 +1,76 @@
+{%- liquid
+  unless shop.metafields.app.block_control.value
+    break
+  endunless
+
+  assign s = block.settings
+  assign m = product.metafields.kluck_ai
+  assign color_schema = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
+  assign panel_color = color_schema
+  if s.use_metafields_bg == false and s.background_color != blank
+    assign panel_color = s.background_color
+  endif
+
+  # Image Logic
+  assign img = s.image | default: m.product_impact_image.value | default: m.product_impact_image
+
+  # Heading Logic
+  assign heading = s.heading
+  if s.use_metafields
+    assign heading = m.creative_sassy_product_heading.value | default: m.creative_sassy_product_heading | default: heading
+  endif
+
+  # Subheadings Logic (Loop 1-4)
+  capture subheadings_html
+    for i in (1..4)
+      assign s_key_title = 'subheading_' | append: i
+      assign s_key_desc = 'subheading_' | append: i | append: '_desc'
+      
+      assign title = s[s_key_title]
+      assign desc = s[s_key_desc]
+
+      if s.use_metafields
+        assign m_key_title = 'creative_sassy_product_subheading_' | append: i
+        assign m_key_desc = 'creative_sassy_product_subheading_' | append: i | append: '_description'
+        assign title = m[m_key_title].value | default: m[m_key_title] | default: title
+        assign desc = m[m_key_desc].value | default: m[m_key_desc] | default: desc
+      endif
+
+      if title != blank
+        echo '<div class="tae-two-panel-item"><h4 class="tae-two-panel-item-heading">' | append: title | append: '</h4>'
+        if desc != blank
+          echo '<p class="tae-two-panel-item-desc">' | append: desc | append: '</p>'
+        endif
+        echo '</div>'
+      endif
+    endfor
+  endcapture
+-%}
+
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'image-with-text.css' | asset_url }}" media="all">
+
+<div class="tae-two-panel tae-two-panel-{{ block.id | replace: '_', '-' | downcase }} {% if s.image_position == 'right' %}tae-two-panel--image-right{% endif %} app_blocks_class" style="--image-with-text-bg-color: {{ panel_color }}; --image-with-text-radius: {{ s.container_radius | default: 0 }}px; --image-with-text-padding: {{ s.container_padding | default: 0 }}px; display: none;">
+  <div class="tae-two-panel-container">
+    <div class="tae-two-panel-left">
+      {% if img != blank %}
+        <img src="{{ img | image_url: width: 1200 }}" srcset="{{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 1200 }} 1200w, {{ img | image_url: width: 1800 }} 1800w" sizes="(max-width: 768px) 100vw, 50vw" alt="{{ img.alt | default: heading }}" loading="lazy" width="1200" height="1200">
+      {% else %}
+        <img src="{{ 'image-svg.svg' | asset_url }}" width="48" height="48" alt="" loading="lazy">
+      {% endif %}
+    </div>
+
+    <div class="tae-two-panel-right">
+      <div class="tae-two-panel-content">
+        {% if heading != blank %}
+          <h3 class="tae-two-panel-heading">{{ heading }}</h3>
+        {% endif %}
+        {{ subheadings_html }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{"name":"Image with Text","target":"section","settings":[{"type":"checkbox","id":"use_metafields","label":"Use Kluck AI metafields","default":true,"info":"When enabled, content will be pulled from product metafields created by Kluck AI."},{"type":"checkbox","id":"use_metafields_bg","label":"Use product color for background","default":true},{"type":"color","id":"background_color","label":"Background color","default":"#E0F4E0"},{"type":"image_picker","id":"image","label":"Image"},{"type":"select","id":"image_position","label":"Image position","default":"left","options":[{"value":"left","label":"Left"},{"value":"right","label":"Right"}]},{"type":"range","id":"container_radius","label":"Container border radius","min":0,"max":40,"step":1,"unit":"px","default":0},{"type":"range","id":"container_padding","label":"Outer padding","min":0,"max":60,"step":4,"unit":"px","default":0},{"type":"text","id":"heading","label":"Heading","default":"Enter your heading"},{"type":"header","content":"Subheading 1"},{"type":"text","id":"subheading_1","label":"Subheading 1","default":"Subheading 1"},{"type":"textarea","id":"subheading_1_desc","label":"Subheading 1 Description","default":"Description for subheading 1"},{"type":"header","content":"Subheading 2"},{"type":"text","id":"subheading_2","label":"Subheading 2","default":"Subheading 2"},{"type":"textarea","id":"subheading_2_desc","label":"Subheading 2 Description","default":"Description for subheading 2"},{"type":"header","content":"Subheading 3"},{"type":"text","id":"subheading_3","label":"Subheading 3","default":"Subheading 3"},{"type":"textarea","id":"subheading_3_desc","label":"Subheading 3 Description","default":"Description for subheading 3"},{"type":"header","content":"Subheading 4"},{"type":"text","id":"subheading_4","label":"Subheading 4","default":"Subheading 4"},{"type":"textarea","id":"subheading_4_desc","label":"Subheading 4 Description","default":"Description for subheading 4"}]}
+{% endschema %}

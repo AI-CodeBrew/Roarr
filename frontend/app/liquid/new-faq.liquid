@@ -1,0 +1,173 @@
+{% comment %}
+  Block: Kluck AI - FAQ Section
+  - Purpose: Accordion-style FAQ with Kluck AI design standards.
+  - Unified container width, corrected background opacity, fixed vertical centering.
+  - CSS and JS in external files: new-faq.css, new-faq.js
+{% endcomment %}
+
+{%- liquid
+  assign s = block.settings
+  assign m = product.metafields.kluck_ai
+  assign block_slug = block.id | replace: '_', '-' | downcase
+
+  assign opacity_val = s.background_opacity | default: 100 | divided_by: 100.0
+  if s.show_background == false
+    assign opacity = 0
+  else
+    assign opacity = opacity_val
+  endif
+  assign bg_color = s.background_color | default: '#ffffff'
+  if s.use_metafields_bg and product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  elsif s.use_metafields and product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  endif
+
+  assign container_max_width = s.container_max_width | default: 900
+  assign item_bg = s.item_bg | default: '#F7F7F7'
+  if s.use_metafields_bg and product != blank and m.color_schema != blank
+    assign item_bg = m.color_schema.value | default: m.color_schema
+  elsif s.use_metafields and product != blank and m.color_schema != blank
+    assign item_bg = m.color_schema.value | default: m.color_schema
+  endif
+  assign icon_bg = s.icon_bg | default: '#FFFFFF'
+  assign icon_color = s.icon_color | default: '#000000'
+  assign item_radius = s.item_radius | default: 8
+  assign text_alignment = s.text_alignment | default: 'center'
+
+  assign heading_font = s.heading_font_family
+  assign body_font = s.body_font_family
+  assign h1_size = s.h1_size | default: 48
+  assign h1_weight = s.h1_weight | default: 700
+  assign h2_size = s.h2_size | default: 36
+  assign h2_weight = s.h2_weight | default: 700
+  assign h3_size = s.h3_size | default: 30
+  assign h3_weight = s.h3_weight | default: 600
+  assign h4_size = s.h4_size | default: 24
+  assign h4_weight = s.h4_weight | default: 600
+  assign h5_size = s.h5_size | default: 20
+  assign h5_weight = s.h5_weight | default: 500
+  assign h6_size = s.h6_size | default: 16
+  assign h6_weight = s.h6_weight | default: 500
+  assign body_size = s.body_size | default: 16
+  assign body_weight = s.body_weight | default: 400
+
+  if s.use_metafields and product != blank
+    assign title_meta = product.metafields.kluck_ai.faq_section_title
+    assign title_content = title_meta.value | default: title_meta | default: s.title
+    assign subtitle_meta = product.metafields.kluck_ai.faq_section_subtitle
+    assign subtitle_content = subtitle_meta.value | default: subtitle_meta | default: s.subtitle
+  else
+    assign title_content = s.title
+    assign subtitle_content = s.subtitle
+  endif
+-%}
+
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+
+{% comment %} 1. LOAD FONTS {% endcomment %}
+{% if heading_font != blank or body_font != blank %}
+<style>
+  {% if heading_font != blank %}{{ heading_font | font_face: font_display: 'swap' }}{% endif %}
+  {% if body_font != blank %}{{ body_font | font_face: font_display: 'swap' }}{% endif %}
+</style>
+{% endif %}
+
+{% comment %} 2. MAIN CONTENT WRAPPER {% endcomment %}
+<div
+  id="FAQ-{{ block.id }}"
+  class="kluck-faq-section kluck-faq-section-{{ block_slug }} app_blocks_class"
+  data-faq-id="{{ block.id }}"
+  style="
+    --bg-color: {{ bg_color }};
+    --bg-opacity: {{ opacity }};
+    --container-width: {{ container_max_width }}px;
+    --item-bg: {{ item_bg }};
+    --item-bg-opacity: {{ opacity_val }};
+    --icon-bg: {{ icon_bg }};
+    --icon-color: {{ icon_color }};
+    --radius: {{ item_radius }}px;
+    --text-alignment: {{ text_alignment }};
+    {% if heading_font != blank and heading_font.family != blank %}
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }};
+    {% else %}
+    --font-heading-family: inherit;
+    {% endif %}
+    {% if body_font != blank and body_font.family != blank %}
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }};
+    {% else %}
+    --font-body-family: inherit;
+    {% endif %}
+    --body-size: {{ body_size }}px;
+    --body-weight: {{ body_weight }};
+    --h1-size: {{ h1_size }}px;
+    --h1-weight: {{ h1_weight }};
+    --h2-size: {{ h2_size }}px;
+    --h2-weight: {{ h2_weight }};
+    --h3-size: {{ h3_size }}px;
+    --h3-weight: {{ h3_weight }};
+    --h4-size: {{ h4_size }}px;
+    --h4-weight: {{ h4_weight }};
+    --h5-size: {{ h5_size }}px;
+    --h5-weight: {{ h5_weight }};
+    --h6-size: {{ h6_size }}px;
+    --h6-weight: {{ h6_weight }};
+  "
+>
+  <div class="kluck-faq-inner">
+    {% if title_content != blank or subtitle_content != blank %}
+      <div class="faq-header">
+        {% if title_content != blank %}
+          <h2 class="faq-main-title">{{ title_content }}</h2>
+        {% endif %}
+        {% if subtitle_content != blank %}
+          <p class="faq-main-subtitle">{{ subtitle_content }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="faq-list">
+      {%- for i in (1..5) -%}
+        {%- liquid
+          assign question_key = 'question_' | append: i
+          assign answer_key = 'answer_' | append: i
+
+          if s.use_metafields
+            assign question_meta_key = 'faq_question_' | append: i
+            assign answer_meta_key = 'faq_answer_' | append: i
+
+            assign question_meta = product.metafields.kluck_ai[question_meta_key]
+            assign answer_meta = product.metafields.kluck_ai[answer_meta_key]
+
+            assign question = question_meta.value | default: question_meta | default: s[question_key]
+            assign answer = answer_meta.value | default: answer_meta | default: s[answer_key]
+          else
+            assign question = s[question_key]
+            assign answer = s[answer_key]
+          endif
+        -%}
+
+        {%- if question != blank or answer != blank -%}
+          <div class="faq-item">
+            <button class="faq-trigger" aria-expanded="false" type="button">
+              <span class="faq-question-text">{{ question }}</span>
+              <span class="faq-icon"></span>
+            </button>
+
+            <div class="faq-content">
+              <div class="faq-content-inner">
+                {{ answer }}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="{{ 'new-faq.css' | asset_url }}" media="all">
+<script src="{{ 'new-faq.js' | asset_url }}" defer></script>
+
+{%- endif -%}

@@ -1,0 +1,197 @@
+{% comment %}
+  Product Star Showcase (3-Col)
+  - Col 1: Media (video / image / Kluck star_image)
+  - Col 2: Product | Col 3: Features + optional Kluck copy
+  - Layout: pf-selected-prod-3in1.css
+{% endcomment %}
+
+{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{%- assign col_2_scheme = section.settings.col_2_color_scheme | default: 'scheme-2' -%}
+{%- assign col_3_scheme = section.settings.col_3_color_scheme | default: 'scheme-3' -%}
+{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+{%- assign kluck_star_image = shop.metafields.kluck_ai.star_image.value -%}
+
+{% if shop.metafields.app.block_control.value %}
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-selected-prod-3in1.css' | asset_url }}" media="all">
+
+{% style %}
+  #ps-{{ section.id }} {
+    --font-h: {{ settings.type_heading_font | font_family: 'sans-serif' }};
+    --font-b: {{ settings.type_body_font | font_family: 'sans-serif' }};
+    --font-accent: {{ settings.type_accent_font | default: settings.type_heading_font | font_family: 'sans-serif' }};
+    --feat-h-size: {{ section.settings.feat_h_size | default: 16 }}px;
+    --feat-p-size: {{ section.settings.feat_p_size | default: 13 }}px;
+    --section-height: {{ section.settings.section_height | default: 700 }}px;
+    --radius: {{ section.settings.border_radius | default: 0 }}px;
+  }
+{% endstyle %}
+
+<div id="ps-{{ section.id }}" class="color-{{ section_scheme }}">
+  <div class="ps-section">
+
+    <h2 class="ps-main-heading">
+      <span class="ps-part-1">{{ section.settings.heading_part_1 }}</span>
+      <span class="ps-part-2">{{ section.settings.heading_part_2 }}</span>
+    </h2>
+
+    <div class="ps-grid">
+
+      <div class="ps-col-media">
+        {% if use_kluck_ai %}
+          {% if section.settings.video_url != blank %}
+            <video class="ps-media-item" autoplay muted loop playsinline>
+              <source src="{{ section.settings.video_url }}" type="video/mp4">
+            </video>
+          {% elsif kluck_star_image != blank %}
+            {{ kluck_star_image | image_url: width: 800 | image_tag: 'ps-media-item', 'lazy' }}
+          {% elsif section.settings.image_media != blank %}
+            {{ section.settings.image_media | image_url: width: 800 | image_tag: 'ps-media-item', 'lazy' }}
+          {% else %}
+            {{ 'collection-1' | placeholder_svg_tag: 'ps-media-item' }}
+          {% endif %}
+        {% else %}
+          {% if section.settings.video_url != blank %}
+            <video class="ps-media-item" autoplay muted loop playsinline>
+              <source src="{{ section.settings.video_url }}" type="video/mp4">
+            </video>
+          {% elsif section.settings.image_media != blank %}
+            {{ section.settings.image_media | image_url: width: 800 | image_tag: 'ps-media-item', 'lazy' }}
+          {% else %}
+            {{ 'collection-1' | placeholder_svg_tag: 'ps-media-item' }}
+          {% endif %}
+        {% endif %}
+      </div>
+
+      {% assign product = section.settings.product_ref %}
+      {% if product != blank and product.title == blank %}
+        {% assign product = all_products[product] %}
+      {% endif %}
+
+      {% assign img_obj = blank %}
+      {% if section.settings.custom_product_img != blank %}
+        {% assign img_obj = section.settings.custom_product_img %}
+      {% elsif product != blank %}
+        {% assign img_obj = product.featured_image %}
+      {% endif %}
+
+      <div class="ps-col-product color-{{ col_2_scheme }}">
+        {% if section.settings.show_float_badge %}
+          <div class="ps-float-badge">{{ section.settings.float_badge_text }}</div>
+        {% endif %}
+
+        {% if img_obj != blank %}
+          {{ img_obj | image_url: width: 600 | image_tag: 'ps-prod-img', 'lazy' }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'ps-prod-img' }}
+        {% endif %}
+
+        {% if section.settings.show_pill %}
+          <div class="ps-pill">
+            {% if section.settings.pill_custom_icon != blank %}
+              {{ section.settings.pill_custom_icon | image_url: width: 40 | image_tag: 'ps-pill-icon', 'lazy' }}
+            {% else %}
+              {% case section.settings.pill_icon_select %}
+                {% when 'leaf' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.00026 11.9997C2.00026 11.9997 3.86877 21.084 12.0003 21.084C20.1318 21.084 22.0003 11.9997 22.0003 11.9997C22.0003 11.9997 20.1318 2.91552 12.0003 2.91552C3.86877 2.91552 2.00026 11.9997 2.00026 11.9997Z" stroke="currentColor" fill="none" stroke-width="2"/><path d="M12 21V3" stroke="currentColor" stroke-width="2"/><path d="M12 12L17 7" stroke="currentColor" stroke-width="2"/><path d="M12 12L7 17" stroke="currentColor" stroke-width="2"/></svg>
+                {% when 'bunny' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 10C12 10 13.5 14 17 14C20.5 14 21 10 21 10C21 10 21 5 18 5C16.5 5 15.5 6 15.5 6C15.5 6 15 2 12 2C9 2 8.5 6 8.5 6C8.5 6 7.5 5 6 5C3 5 3 10 3 10C3 10 3.5 14 7 14C10.5 14 12 10 12 10Z" stroke="currentColor" fill="none" stroke-width="2"/><path d="M9 16V22H15V16" stroke="currentColor" stroke-width="2"/></svg>
+                {% when 'heart' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" fill="none" stroke-width="2"/></svg>
+              {% endcase %}
+            {% endif %}
+            {{ section.settings.pill_text }}
+          </div>
+        {% endif %}
+
+        <div class="ps-vendor">
+          {% if product != blank %}{{ product.vendor }}{% else %}BRAND NAME{% endif %}
+        </div>
+
+        <h3>
+          {% if product != blank %}{{ product.title }}{% else %}Product Title Here{% endif %}
+        </h3>
+
+        {% if section.settings.show_stars %}
+          <div class="ps-stars">★★★★★ ({{ section.settings.review_count_manual }})</div>
+        {% endif %}
+
+        <div class="ps-price">
+          {% if product != blank %}
+            From {{ product.price | money }}
+          {% else %}
+            From $90.00
+          {% endif %}
+        </div>
+
+        {% if section.settings.show_btn %}
+          <a href="{% if product != blank %}{{ product.url }}{% else %}#{% endif %}" class="ps-btn">
+            {{ section.settings.btn_label }}
+          </a>
+        {% endif %}
+
+      </div>
+
+      <div class="ps-col-features color-{{ col_3_scheme }}">
+        <div class="ps-scroll-wrap">
+          {% for block in section.blocks %}
+            {% assign kf = blank %}
+            {% assign kfd = blank %}
+            {% if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank %}
+              {% assign _t = store_gen.home_page.text %}
+              {% case forloop.index %}
+                {% when 1 %}
+                  {% assign kf = _t.star_product_feature_1 %}
+                  {% assign kfd = _t.star_product_feature_1_desc %}
+                {% when 2 %}
+                  {% assign kf = _t.star_product_feature_2 %}
+                  {% assign kfd = _t.star_product_feature_2_desc %}
+                {% when 3 %}
+                  {% assign kf = _t.star_product_feature_3 %}
+                  {% assign kfd = _t.star_product_feature_3_desc %}
+                {% when 4 %}
+                  {% assign kf = _t.star_product_feature_4 %}
+                  {% assign kfd = _t.star_product_feature_4_desc %}
+              {% endcase %}
+            {% endif %}
+
+            <div class="ps-feature-item" {{ block.shopify_attributes }}>
+              <div class="ps-icon-wrap">
+                {% if block.settings.custom_icon != blank %}
+                  {{ block.settings.custom_icon | image_url: width: 40 | image_tag: 'ps-icon-img', 'lazy' }}
+                {% else %}
+                  {% case block.settings.icon_select %}
+                    {% when 'drop' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22C16.4183 22 20 18.4183 20 14C20 8 12 2 12 2C12 2 4 8 4 14C4 18.4183 7.58172 22 12 22Z" /></svg>
+                    {% when 'star' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" /></svg>
+                    {% when 'leaf' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 20.2C15.5 24.9 2 21 2 21C2 21 0.400002 6.30001 5.10002 1.60001C9.80002 -3.09999 21 2 21 2C21 2 24.9 15.5 20.2 20.2Z"/><path d="M2 21L21 2"/></svg>
+                    {% when 'moon' %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                  {% endcase %}
+                {% endif %}
+              </div>
+              <div class="ps-feat-content">
+                <h4>
+                  {% assign kf_stripped = kf | strip %}
+                  {% if use_kluck_ai and kf_stripped != blank %}
+                    {{ kf | strip }}
+                  {% else %}
+                    {{ block.settings.heading }}
+                  {% endif %}
+                </h4>
+                <p>
+                  {% assign kfd_stripped = kfd | strip %}
+                  {% if use_kluck_ai and kfd_stripped != blank %}
+                    {{ kfd | strip }}
+                  {% else %}
+                    {{ block.settings.text }}
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endif %}

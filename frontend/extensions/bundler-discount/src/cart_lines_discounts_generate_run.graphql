@@ -1,0 +1,41 @@
+query CartInput {
+  cart {
+    lines {
+      id
+      quantity
+      cost {
+        subtotalAmount {
+          amount
+        }
+        amountPerQuantity {
+          amount
+        }
+      }
+      freeBundlesAttribute: attribute(key: "_free_bundles") {
+        key
+        value
+      }
+      discountPercentageAttribute: attribute(key: "_free_bundles_discount_percentage") {
+        key
+        value
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            id
+          }
+        }
+      }
+    }
+  }
+  discount {
+    discountClasses
+  }
+  shop {
+    metafield(namespace: "kluck_bundle", key: "bundles") {
+      value
+    }
+  }
+}

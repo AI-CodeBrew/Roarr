@@ -1,0 +1,1737 @@
+{% comment %}
+  Section: Custom Product Hero
+  Description: Full-bleed background, native theme buttons, sticky layout, fully customizable blocks.
+{% endcomment %}
+
+{%- style -%}
+  /* ============================================================
+     SHOPIFY COLOR SCHEME MAPPING (Premium / Modern Theme)
+     ------------------------------------------------------------
+     Mapped 1:1 to the scheme settings visible in your editor.
+     ============================================================ */
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    overflow-x: clip;
+  }
+
+  /* CRITICAL FIX: Add StickyCart ID here so it keeps colors when JS moves it to <body> */
+  .section-{{ section.id }}-padding,
+  #StickyCart-{{ section.id }} {
+    
+    /* ---- Section-local knobs ---- */
+    --text-opacity: {{ section.settings.text_opacity | divided_by: 100.0 }};
+    --ch-border-radius: {{ section.settings.border_radius }}px;
+
+    /* =================================================================
+       BASE  ·  Background / Text / Headings / Links / Borders / Shadow
+       ================================================================= */
+    --ch-surface:          var(--color-background, #ffffff);
+    --ch-surface-gradient: var(--gradient-background, var(--color-background-gradient, var(--color-background, #ffffff)));
+    --ch-text:             var(--color-text, var(--color-body, var(--color-foreground-solid, #111111)));
+    --ch-heading:          var(--color-heading, var(--color-headings, var(--color-headline, var(--ch-text))));
+    --ch-link:             var(--color-link, var(--ch-text));
+    --ch-link-hover:       var(--color-link-hover, var(--color-hover-link, var(--ch-link)));
+    --ch-border:           var(--color-border, var(--color-borders, color-mix(in srgb, var(--ch-text) 12%, transparent)));
+    --ch-shadow:           var(--color-shadow, color-mix(in srgb, var(--ch-text) 12%, transparent));
+
+    /* Muted text = Text color at user-controlled opacity */
+    --ch-text-muted:       color-mix(in srgb, var(--ch-text) calc(100% * var(--text-opacity)), transparent);
+
+    /* =================================================================
+       PRIMARY BUTTON  ·  Buy It Now + .ch-btn-primary
+       ================================================================= */
+    --ch-primary-btn-bg:             var(--color-primary-button-background, var(--color-button, var(--ch-text)));
+    --ch-primary-btn-text:           var(--color-primary-button-text, var(--color-button-text, var(--ch-surface)));
+    --ch-primary-btn-border:         var(--color-primary-button-border, var(--ch-primary-btn-bg));
+    --ch-primary-btn-bg-hover:       var(--color-primary-button-background-hover, var(--ch-primary-btn-bg));
+    --ch-primary-btn-text-hover:     var(--color-primary-button-text-hover, var(--ch-primary-btn-text));
+    --ch-primary-btn-border-hover:   var(--color-primary-button-border-hover, var(--ch-primary-btn-border));
+
+    /* =================================================================
+       SECONDARY BUTTON  ·  Add to Cart + Upsell buttons
+       ================================================================= */
+    --ch-secondary-btn-bg:           var(--color-secondary-button-background, transparent);
+    --ch-secondary-btn-text:         var(--color-secondary-button-text, var(--color-secondary-button-label, var(--ch-text)));
+    --ch-secondary-btn-border:       var(--color-secondary-button-border, var(--ch-border));
+    --ch-secondary-btn-bg-hover:     var(--color-secondary-button-background-hover, var(--ch-secondary-btn-bg));
+    --ch-secondary-btn-text-hover:   var(--color-secondary-button-text-hover, var(--ch-secondary-btn-text));
+    --ch-secondary-btn-border-hover: var(--color-secondary-button-border-hover, var(--ch-text));
+
+    /* =================================================================
+       VARIANTS  ·  Unselected size/text pills
+       ================================================================= */
+    --ch-variant-bg:             var(--color-variant-background, var(--ch-surface));
+    --ch-variant-text:           var(--color-variant-text, var(--ch-text));
+    --ch-variant-border:         var(--color-variant-border, var(--ch-border));
+    --ch-variant-bg-hover:       var(--color-variant-background-hover, var(--ch-variant-bg));
+    --ch-variant-text-hover:     var(--color-variant-text-hover, var(--ch-variant-text));
+    --ch-variant-border-hover:   var(--color-variant-border-hover, var(--ch-text));
+
+    /* =================================================================
+       SELECTED VARIANTS  ·  Active size/text pills + swatch ring
+       ================================================================= */
+    --ch-variant-sel-bg:           var(--color-variant-selected-background, var(--color-selected-variant-background, var(--ch-text)));
+    --ch-variant-sel-text:         var(--color-variant-selected-text, var(--color-selected-variant-text, var(--ch-surface)));
+    --ch-variant-sel-border:       var(--color-variant-selected-border, var(--color-selected-variant-border, var(--ch-variant-sel-bg)));
+    --ch-variant-sel-bg-hover:     var(--color-variant-selected-background-hover, var(--ch-variant-sel-bg));
+    --ch-variant-sel-text-hover:   var(--color-variant-selected-text-hover, var(--ch-variant-sel-text));
+    --ch-variant-sel-border-hover: var(--color-variant-selected-border-hover, var(--ch-variant-sel-border));
+
+    /* =================================================================
+       INPUTS  ·  Size-chart modal card, form surfaces
+       ================================================================= */
+    --ch-input-bg:     var(--color-input-background, var(--ch-surface));
+    --ch-input-text:   var(--color-input-text, var(--ch-text));
+    --ch-input-border: var(--color-input-border, var(--ch-border));
+
+    /* Modal overlay */
+    --ch-overlay:      color-mix(in srgb, var(--ch-text) 55%, transparent);
+  }
+
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* --- 2. Typography --- */
+  .ch-wrapper {
+    font-family: var(--font-body-family), sans-serif;
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    color: var(--ch-text);
+    /* Uses the scheme's gradient if defined (via .gradient class), else flat background */
+    background: var(--ch-surface-gradient);
+  }
+
+  .ch-wrapper * { box-sizing: border-box; }
+  .ch-wrapper a { color: inherit; text-decoration: none; }
+
+  .ch-text-muted { color: var(--ch-text-muted); }
+
+  .ch-title,
+  .ch-upsell-heading,
+  .ch-wrapper h1,
+  .ch-wrapper h2,
+  .ch-wrapper h3 {
+    margin: 0;
+    /* Dedicated Headings color; falls back to Text if scheme has none */
+    color: var(--ch-heading);
+    font-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }}, sans-serif !important;
+    font-style: {{ settings.type_heading_font.style }};
+    font-weight: {{ settings.type_heading_font.weight | default: 'bold' }};
+  }
+
+  .ch-wrapper button:not(.btn):not(.button), 
+  .ch-wrapper input { 
+    font-family: var(--font-body-family), sans-serif; 
+  }
+
+  /* --- 3. Master Layout Grid --- */
+  .ch-grid {
+    display: grid; grid-template-columns: 1fr; gap: 40px;
+    max-width: var(--page-width, 1400px); margin: 0 auto; padding: 0 20px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .ch-grid {
+      grid-template-columns: minmax(0, 1fr) 460px;
+      align-items: start; gap: 80px; padding: 0 40px;
+    }
+    .ch-gallery {
+      display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 40px; align-items: start;
+    }
+    .ch-col-thumb {
+      position: sticky; top: 40px; max-height: calc(100vh - 80px);
+      overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column; gap: 15px;
+    }
+    .ch-col-thumb::-webkit-scrollbar { display: none; }
+    
+    .ch-col-info {
+      position: sticky;
+      top: 40px;
+      padding: 0 10px 40px 10px; 
+      margin: 0 -10px;           
+    }
+  }
+
+  /* --- 4. Images & Galleries --- */
+  .ch-thumb-btn {
+    width: 100%; aspect-ratio: 1; padding: 2px; border: 1px solid transparent; 
+    background: transparent; cursor: pointer; transition: border-color 0.2s ease;
+    border-radius: var(--ch-border-radius);
+  }
+  .ch-thumb-btn img, .ch-main-img-wrap img {
+    width: 100%; height: 100%; object-fit: contain; background-color: transparent;
+    {% if section.settings.enable_blend_mode %}mix-blend-mode: multiply;{% endif %}
+  }
+  .ch-main-img-wrap img { height: auto; }
+  /* Active thumbnail border uses the Selected variant's border color */
+  .ch-thumb-btn.is-active { border-color: var(--ch-variant-sel-border); }
+
+  /* Placeholder thumbnail blocks — scheme-aware tint derived from Text color */
+  .ch-thumb-placeholder {
+    width: 100%; height: 100%;
+    background: color-mix(in srgb, var(--ch-text) 5%, transparent);
+  }
+  .ch-thumb-placeholder--alt {
+    background: color-mix(in srgb, var(--ch-text) 8%, transparent);
+  }
+  .ch-col-thumb.mobile-hide { display: none; }
+  
+  @media screen and (min-width: 990px) { .ch-col-thumb.mobile-hide { display: flex; } }
+  .ch-main-images { display: flex; flex-direction: column; gap: 20px; }
+
+  /* Mobile gallery = position relative so the zoom icon can overlay */
+  .ch-gallery { position: relative; }
+
+  /* Dot pagination — hidden on desktop, shown on mobile via media query below */
+  .ch-dots {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 0 4px;
+  }
+  .ch-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ch-text) 22%, transparent);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .ch-dot.is-active {
+    background: var(--ch-text);
+    transform: scale(1.15);
+  }
+
+  /* Zoom icon button — hidden on desktop, shown on mobile */
+  .ch-zoom-btn {
+    display: none;
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--ch-surface);
+    border: 1px solid var(--ch-border);
+    color: var(--ch-text);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 2;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 2px 10px -4px var(--ch-shadow);
+  }
+  .ch-zoom-btn:hover { opacity: 0.85; }
+  .ch-zoom-btn svg { width: 17px; height: 17px; display: block; }
+
+  @media screen and (max-width: 989px) {
+    .ch-main-images {
+      flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory;
+      width: auto;               
+      margin-left: -20px; 
+      margin-right: -20px;       
+      gap: 0; scrollbar-width: none;
+    }
+    .ch-main-images::-webkit-scrollbar { display: none; }
+    .ch-main-img-wrap { 
+      flex: 0 0 100%;            
+      flex-shrink: 0; scroll-snap-align: start; padding: 0 20px; 
+    }
+    .ch-dots { display: flex; }
+    .ch-zoom-btn { display: inline-flex; }
+  }
+
+  /* --- 5. Right: Product Info --- */
+  .ch-block { margin-bottom: 28px; }
+  .ch-block:last-child { margin-bottom: 0; }
+
+  /* Title block — divider below */
+  .ch-block-title {
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--ch-border);
+    margin-bottom: 28px;
+  }
+
+  /* --- Badges --- */
+  .ch-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .ch-badge {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ch-text-muted);
+    line-height: 1;
+  }
+  .ch-badge--sale {
+    border: 1px solid var(--ch-border);
+    padding: 4px 8px;
+    border-radius: 2px;
+    color: var(--ch-text);
+    display: none; /* Hidden by default unless on sale */
+  }
+  .ch-badge--sale.is-active {
+    display: inline-block;
+  }
+
+  .ch-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    color: var(--ch-heading);
+  }
+  .ch-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.15rem;
+    margin-top: 14px;
+    color: var(--ch-text);
+  }
+  .ch-price-wrapper { display: flex; align-items: center; gap: 8px; }
+  .ch-price-compare { color: var(--ch-text-muted); font-size: 0.85em; text-decoration: line-through; }
+  .ch-reviews { display: flex; align-items: center; gap: 5px; font-size: 0.9rem; color: var(--ch-text); }
+  .ch-reviews svg { width: 14px; height: 14px; }
+
+  /* --- Variants & Swatches --- */
+  .ch-variant-group { margin-bottom: 22px; }
+  .ch-variant-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    color: var(--ch-text-muted);
+  }
+  .ch-variant-label-row .selected-value { color: var(--ch-text); }
+
+  .ch-variant-options { display: flex; flex-wrap: wrap; gap: 10px; }
+  .ch-variant-options input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+
+  /* Size / Text variant pills — UNSELECTED state. */
+  .ch-variant-options label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    padding: 10px 16px;
+    border: 1px solid var(--ch-variant-border);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    border-radius: var(--ch-border-radius);
+    color: var(--ch-variant-text);
+    background-color: var(--ch-variant-bg);
+    letter-spacing: 0.04em;
+  }
+  /* Hover state → scheme "Variants → Hover bg / text / border" */
+  .ch-variant-options label:hover {
+    background-color: var(--ch-variant-bg-hover);
+    color: var(--ch-variant-text-hover);
+    border-color: var(--ch-variant-border-hover);
+  }
+
+  /* Color swatch overrides */
+  .ch-variant-options label.is-color-swatch {
+    width: 32px; height: 32px;
+    min-width: 32px;
+    padding: 2px;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+    background-color: transparent;
+  }
+  .ch-color-inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--ch-text) 10%, transparent);
+  }
+
+  /* Selected text/size pill → scheme group "Selected variants" */
+  .ch-variant-options input[type="radio"]:checked + label:not(.is-color-swatch) {
+    background-color: var(--ch-variant-sel-bg);
+    border-color: var(--ch-variant-sel-border);
+    color: var(--ch-variant-sel-text);
+  }
+  .ch-variant-options input[type="radio"]:checked + label:not(.is-color-swatch):hover {
+    background-color: var(--ch-variant-sel-bg-hover);
+    border-color: var(--ch-variant-sel-border-hover);
+    color: var(--ch-variant-sel-text-hover);
+  }
+  .ch-variant-options input[type="radio"]:checked + label.is-color-swatch {
+    border-color: var(--ch-variant-sel-border);
+    box-shadow: 0 0 0 1px var(--ch-variant-sel-border);
+  }
+  .ch-variant-options input[type="radio"]:checked + label.is-color-swatch:hover {
+    border-color: var(--ch-variant-sel-border-hover);
+    box-shadow: 0 0 0 1px var(--ch-variant-sel-border-hover);
+  }
+
+  .ch-size-chart-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--ch-text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .ch-description {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ch-text);
+  }
+  .ch-notice {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ch-text-muted);
+  }
+  .ch-notice a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--ch-link);
+    transition: color 0.2s ease;
+  }
+  .ch-notice a:hover {
+    color: var(--ch-link-hover);
+  }
+
+  /* --- Buttons --- */
+  .ch-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+
+  /* Primary button (Buy It Now / primary CTA) */
+  .ch-btn-primary {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+    font-family: var(--font-body-family), sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    border-radius: var(--ch-border-radius);
+
+    background-color: var(--ch-primary-btn-bg);
+    color: var(--ch-primary-btn-text);
+    border: 1px solid var(--ch-primary-btn-border);
+  }
+  .ch-btn-primary:hover {
+    background-color: var(--ch-primary-btn-bg-hover);
+    color: var(--ch-primary-btn-text-hover);
+    border-color: var(--ch-primary-btn-border-hover);
+  }
+
+  /* Secondary button (Add to Cart) */
+  .ch-btn-secondary {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+    font-family: var(--font-body-family), sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    border-radius: var(--ch-border-radius);
+
+    background-color: var(--ch-secondary-btn-bg);
+    color: var(--ch-secondary-btn-text);
+    border: 1px solid var(--ch-secondary-btn-border);
+  }
+  .ch-btn-secondary:hover {
+    background-color: var(--ch-secondary-btn-bg-hover);
+    color: var(--ch-secondary-btn-text-hover);
+    border-color: var(--ch-secondary-btn-border-hover);
+  }
+
+  /* --- Dynamic Checkout Button (Buy It Now) --- */
+  .shopify-payment-button__button--unbranded {
+    width: 100% !important; 
+    min-height: 52px !important; 
+    font-family: var(--font-body-family), sans-serif !important;
+    font-size: 0.85rem !important; 
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    border-radius: var(--ch-border-radius) !important;
+  }
+  .shopify-payment-button {
+    margin-top: 0 !important;
+  }
+
+  /* Info Pointers */
+  .ch-info-pointers {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .ch-info-pointer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ch-text);
+    flex: 1 1 max-content;
+  }
+  .ch-custom-svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .ch-custom-svg svg,
+  .ch-info-pointer > svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    flex-shrink: 0;
+  }
+
+  /* Promo Box */
+  .ch-promo-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background-color: #f1f8f5; 
+    border-radius: calc(var(--ch-border-radius) + 4px);
+    padding: 16px 20px;
+    color: #2b6b50;
+    position: relative;
+    margin-top: 10px;
+  }
+  .ch-promo-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    margin-top: 2px;
+  }
+  .ch-promo-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: #398c6b;
+    fill: none;
+    stroke-width: 2;
+  }
+  .ch-promo-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ch-promo-title {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .ch-promo-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  .ch-promo-text a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    color: inherit;
+    font-weight: 500;
+  }
+  .ch-promo-close {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: #2b6b50;
+    opacity: 0.6;
+    display: flex;
+    transition: opacity 0.2s ease;
+  }
+  .ch-promo-close:hover { opacity: 1; }
+  .ch-promo-close svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+
+  /* Share Icons */
+  .ch-share-icons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .ch-share-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--ch-text);
+    color: var(--ch-surface);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .ch-share-icon:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+  }
+  .ch-share-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  /* Payment & Security Box */
+  .ch-payment-security {
+    background-color: color-mix(in srgb, var(--ch-text) 4%, transparent);
+    border-radius: var(--ch-border-radius);
+    padding: 24px;
+    margin-top: 40px;
+  }
+  .ch-payment-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 24px 0 !important; /* Forced gap */
+    padding-bottom: 0 !important;
+    color: var(--ch-heading);
+    display: block;
+  }
+  .ch-payment-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .ch-pay-icon {
+    height: 26px;
+    width: auto;
+    border-radius: 4px;
+    margin: 0;
+  }
+  .ch-payment-text {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--ch-text-muted);
+    margin: 0;
+  }
+
+  /* --- More Info Link — styled as a link (uses scheme Link color) --- */
+  .ch-more-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--ch-border);
+    border-bottom: 1px solid var(--ch-border);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0;
+    color: var(--ch-link);
+    transition: color 0.2s ease;
+  }
+  .ch-more-info:hover { color: var(--ch-link-hover); }
+
+  /* --- Bottom Content: Accordions --- */
+  .ch-center-bottom { margin-top: 80px; }
+  .ch-accordions { border-top: 1px solid var(--ch-border); margin-bottom: 60px; }
+  .ch-accordion { border-bottom: 1px solid var(--ch-border); }
+  
+  .ch-accordion-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 22px 0;
+    cursor: pointer;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--ch-heading);
+    transition: opacity 0.2s ease;
+  }
+  .ch-accordion-summary:hover { opacity: 0.7; }
+  
+  .ch-icon-plus, .ch-icon-minus { font-size: 1.3rem; font-weight: 300; line-height: 1; }
+  .ch-accordion.is-open .ch-icon-plus { display: none; }
+  .ch-accordion:not(.is-open) .ch-icon-minus { display: none; }
+  
+  /* Smooth CSS Grid Animation */
+  .ch-accordion-content-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .ch-accordion.is-open .ch-accordion-content-wrap {
+    grid-template-rows: 1fr;
+  }
+  .ch-accordion-content {
+    overflow: hidden;
+  }
+  .ch-accordion-content-inner { 
+    padding-bottom: 22px; 
+    font-size: 0.95rem; 
+    line-height: 1.65; 
+    color: var(--ch-text-muted);
+  }
+
+  /* --- Upsells --- */
+  .ch-upsells-wrap { width: 100%; }
+  .ch-upsell-heading {
+    text-align: center;
+    font-size: 1.0rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    color: var(--ch-heading);
+  }
+  .ch-upsell-item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--ch-border);
+  }
+  .ch-upsell-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .ch-upsell-img {
+    width: 90px; height: 90px;
+    object-fit: contain;
+    background-color: transparent;
+    flex-shrink: 0;
+    {% if section.settings.enable_blend_mode %}mix-blend-mode: multiply;{% endif %}
+  }
+  .ch-upsell-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+  }
+  .ch-upsell-title {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ch-text);
+  }
+  .ch-upsell-price {
+    font-size: 1rem;
+    color: var(--ch-text-muted);
+  }
+
+  .ch-upsell-form { margin: 0; margin-left: auto; flex-shrink: 0; }
+
+  /* Upsell button — DESKTOP: outlined secondary style on the right */
+  .ch-upsell-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    min-height: 46px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    font-family: var(--font-body-family), sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    border-radius: var(--ch-border-radius);
+    background-color: var(--ch-secondary-btn-bg);
+    color: var(--ch-secondary-btn-text);
+    border: 1px solid var(--ch-secondary-btn-border);
+  }
+  .ch-upsell-btn:hover {
+    background-color: var(--ch-secondary-btn-bg-hover);
+    color: var(--ch-secondary-btn-text-hover);
+    border-color: var(--ch-secondary-btn-border-hover);
+  }
+
+  /* --- Premium Size Chart Modal --- */
+  .ch-modal {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Premium dark overlay */
+    backdrop-filter: blur(4px); /* Premium blur effect behind modal */
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 99999;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; 
+    transition: opacity 0.3s ease;
+  }
+  .ch-modal.is-active { opacity: 1; pointer-events: auto; }
+  
+  .ch-modal-content {
+    background: #ffffff;
+    width: 95vw; 
+    max-width: 850px; 
+    max-height: 90vh; 
+    padding: 60px 40px 40px; 
+    position: relative;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    
+    border-radius: calc(var(--ch-border-radius) + 4px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
+    
+    opacity: 0;
+    transform: scale(0.95) translateY(15px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  }
+  .ch-modal.is-active .ch-modal-content { 
+    opacity: 1;
+    transform: scale(1) translateY(0); 
+  }
+  
+  .ch-modal-close {
+    position: absolute; 
+    top: 16px; 
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.8rem; 
+    cursor: pointer; 
+    line-height: 1;
+    color: #111111;
+    transition: background 0.2s ease, transform 0.2s ease;
+    z-index: 2;
+  }
+  .ch-modal-close:hover { 
+    background: #e5e5e5; 
+    transform: scale(1.05);
+  }
+  
+  .ch-modal-img { 
+    width: 100%; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto; 
+  }
+
+  /* Mobile Tweaks for Modal */
+  @media screen and (max-width: 749px) {
+    .ch-modal-content {
+      width: 92vw;
+      padding: 55px 20px 25px; 
+    }
+    .ch-modal-close {
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      font-size: 1.6rem;
+    }
+  }
+
+  /* ============================================================
+     IMAGE ZOOM LIGHTBOX (mobile)
+     ============================================================ */
+  .ch-zoom-lightbox {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; 
+    z-index: 99999;
+    background: #ffffff;
+    color: #111111;
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .ch-zoom-lightbox.is-active {
+    display: flex;
+    opacity: 1;
+  }
+  .ch-zoom-lightbox__close {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.06);
+    border: none;
+    border-radius: 999px;
+    color: #111111;
+    cursor: pointer;
+    z-index: 2;
+    padding: 0;
+    transition: background 0.15s ease;
+  }
+  .ch-zoom-lightbox__close:hover,
+  .ch-zoom-lightbox__close:focus-visible { background: rgba(0, 0, 0, 0.12); outline: none; }
+  .ch-zoom-lightbox__close svg { width: 22px; height: 22px; display: block; }
+  .ch-zoom-lightbox__counter {
+    position: absolute;
+    top: 22px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #111111;
+    opacity: 0.55;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ch-zoom-lightbox__track {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    height: 100%;
+    scrollbar-width: none;
+  }
+  .ch-zoom-lightbox__track::-webkit-scrollbar { display: none; }
+  .ch-zoom-lightbox__slide {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 16px 32px;
+    box-sizing: border-box;
+    background: #ffffff;
+  }
+  .ch-zoom-lightbox__slide img,
+  .ch-zoom-lightbox__slide svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+  body.ch-zoom-open { overflow: hidden !important; }
+
+  /* ============================================================
+     MOBILE OPTIMIZATIONS 
+     ============================================================ */
+  @media screen and (max-width: 989px) {
+    .ch-col-left      { display: contents; }
+    .ch-gallery       { order: 1; }
+    .ch-col-info      { order: 2; }
+    .ch-center-bottom { order: 3; }
+
+    .ch-payment-security { margin-top: 24px; }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ch-grid { padding: 0 20px; gap: 30px; }
+    .ch-center-bottom { margin-top: 0px; }
+
+    .ch-title { font-size: 1.35rem; letter-spacing: 0.18em; }
+    .ch-price-row { font-size: 1.05rem; }
+    .ch-block-title { padding-bottom: 18px; margin-bottom: 22px; }
+
+    .ch-variant-group { margin-bottom: 18px; }
+    .ch-variant-label-row { font-size: 0.875rem; margin-bottom: 10px; }
+
+    /* SQUARE color swatches on mobile */
+    .ch-variant-options label.is-color-swatch {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      padding: 3px;
+      border-radius: 2px;
+      border: 1px solid var(--ch-variant-border);
+    }
+    .ch-color-inner { border-radius: 0; }
+    .ch-variant-options input[type="radio"]:checked + label.is-color-swatch {
+      border-color: var(--ch-variant-sel-border);
+      box-shadow: 0 0 0 1px var(--ch-variant-sel-border);
+    }
+
+    .ch-buttons { gap: 10px; margin-top: 24px; }
+    .ch-btn-primary,
+    .ch-btn-secondary,
+    .shopify-payment-button__button--unbranded {
+      min-height: 48px !important;
+      font-size: 0.8rem;
+    }
+
+    .ch-info-pointers {
+      flex-direction: column; 
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .ch-description { font-size: 0.95rem; }
+    .ch-notice { font-size: 0.9rem; }
+
+    .ch-accordion-summary { padding: 18px 0; font-size: 0.8rem; }
+    .ch-accordion-content { font-size: 0.9rem; padding-bottom: 20px; }
+
+    .ch-more-info { padding: 18px 0; font-size: 0.8rem; }
+
+    .ch-upsells-wrap { margin-top: 24px; }
+    .ch-upsell-heading { margin-top: 40px; margin-bottom: 48px; font-size: 1.0rem; }
+    .ch-upsell-item { flex-wrap: wrap; align-items: flex-start; gap: 12px 16px; padding-bottom: 24px; margin-bottom: 24px; }
+    .ch-upsell-img { width: 80px; height: 80px; }
+    .ch-upsell-info { gap: 4px; padding-top: 4px; }
+    .ch-upsell-title { font-size: 0.8rem; letter-spacing: 0.08em; }
+    .ch-upsell-price { font-size: 0.9rem; }
+
+    .ch-upsell-form { width: calc(100% - 96px); margin-left: 96px; margin-top: -4px; }
+    .ch-upsell-btn {
+      display: inline-flex; width: auto; min-height: 0; padding: 0; background: transparent; border: none;
+      color: var(--ch-link); text-transform: none; letter-spacing: normal; font-size: 0.9rem; font-weight: 500;
+      text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; justify-content: flex-start;
+      border-radius: 0;
+    }
+    .ch-upsell-btn:hover { background: transparent; border: none; color: var(--ch-link-hover); }
+  }
+
+  @media screen and (max-width: 400px) {
+    .ch-upsell-form { margin-left: 92px; }
+  }
+
+  .ch-wrapper .ch-upsells-wrap .ch-upsell-heading {
+    margin-bottom: 40px !important; 
+  }
+
+
+  /* ============================================================
+     STICKY ADD TO CART BAR (Desktop Top / Mobile Bottom)
+     ============================================================ */
+  .ch-sticky-bar {
+    position: fixed;
+    background: var(--ch-surface-gradient, var(--ch-surface)); 
+    z-index: 999999;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: translateY(-100%);
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--ch-border);
+  }
+  
+  .ch-sticky-bar.is-visible {
+    transform: translateY(0);
+  }
+  
+  .ch-sticky-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .ch-sticky-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+    background: var(--ch-border);
+  }
+  
+  .ch-sticky-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .ch-sticky-title {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ch-heading);
+    font-weight: 600;
+  }
+  
+  .ch-sticky-price {
+    font-size: 0.9rem;
+    color: var(--ch-text-muted);
+  }
+
+  .ch-sticky-btn {
+    background-color: var(--ch-primary-btn-bg);
+    color: var(--ch-primary-btn-text);
+    border: 1px solid var(--ch-primary-btn-border);
+    padding: 12px 30px;
+    min-height: 46px;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: var(--ch-border-radius);
+    white-space: nowrap;
+  }
+  
+  .ch-sticky-btn:hover {
+    background-color: var(--ch-primary-btn-bg-hover);
+    color: var(--ch-primary-btn-text-hover);
+    border-color: var(--ch-primary-btn-border-hover);
+  }
+
+  @media screen and (max-width: 749px) {
+    .ch-sticky-bar {
+      top: auto;
+      bottom: 0;
+      transform: translateY(100%);
+      padding: 12px 20px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      
+      background: transparent !important;
+      border: none;
+      box-shadow: none;
+      pointer-events: none; 
+    }
+    
+    .ch-sticky-left {
+      display: none; 
+    }
+    
+    .ch-sticky-btn {
+      width: 100%;
+      min-height: 50px;
+      pointer-events: auto; 
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+    }
+  }
+{%- endstyle -%}
+
+{%- comment -%}
+  Force the section to use the current template's product.
+{%- endcomment -%}
+{%- assign target_product = product -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient ch-wrapper section-{{ section.id }}-padding">
+  <div class="ch-grid">
+    
+    <!-- === LEFT COLUMN (Gallery + Bottom Blocks) === -->
+    <div class="ch-col-left">
+      <div class="ch-gallery">
+        <button type="button" class="ch-zoom-btn js-zoom-trigger" aria-label="Zoom image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20l-3.5-3.5"></path>
+            <path d="M11 8v6M8 11h6"></path>
+          </svg>
+        </button>
+
+        <div class="ch-col-thumb mobile-hide">
+          {%- if target_product.media.size > 0 -%}
+            {%- for media in target_product.media -%}
+              <button class="ch-thumb-btn {% if forloop.first %}is-active{% endif %}" data-target="media-{{ section.id }}-{{ media.id }}">
+                <img src="{{ media | image_url: width: 150 }}" alt="{{ media.alt | escape }}" loading="lazy" width="150" height="150">
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            <button class="ch-thumb-btn is-active"><div class="ch-thumb-placeholder"></div></button>
+            <button class="ch-thumb-btn"><div class="ch-thumb-placeholder ch-thumb-placeholder--alt"></div></button>
+          {%- endif -%}
+        </div>
+
+        <div class="ch-main-images" id="MainImages-{{ section.id }}">
+          {%- if target_product.media.size > 0 -%}
+            {%- for media in target_product.media -%}
+              <div class="ch-main-img-wrap" id="media-{{ section.id }}-{{ media.id }}" data-full-src="{{ media | image_url: width: 2000 }}">
+                <img src="{{ media | image_url: width: 1000 }}" alt="{{ media.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" width="{{ media.preview_image.width }}" height="{{ media.preview_image.height }}">
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+             <div class="ch-main-img-wrap">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+             <div class="ch-main-img-wrap">{{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+          {%- endif -%}
+        </div>
+
+        {%- if target_product.media.size > 1 -%}
+          <div class="ch-dots" id="Dots-{{ section.id }}" role="tablist" aria-label="Image pagination">
+            {%- for media in target_product.media -%}
+              <button
+                type="button"
+                class="ch-dot {% if forloop.first %}is-active{% endif %}"
+                data-target="media-{{ section.id }}-{{ media.id }}"
+                aria-label="Go to image {{ forloop.index }}"
+              ></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Bottom Area Left Column (Accordions, Upsells, Payments) -->
+      <div class="ch-center-bottom">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'accordions' -%}
+            <div class="ch-accordions" {{ block.shopify_attributes }}>
+              {%- for i in (1..4) -%}
+                {%- assign tab_title_key = 'tab_' | append: i | append: '_title' -%}
+                {%- assign tab_content_key = 'tab_' | append: i | append: '_content' -%}
+                {%- assign tab_title = block.settings[tab_title_key] -%}
+                {%- assign tab_content = block.settings[tab_content_key] -%}
+                {%- if tab_title != blank and tab_content != blank -%}
+                  <div class="ch-accordion js-accordion">
+                    <button type="button" class="ch-accordion-summary js-accordion-trigger">
+                      {{ tab_title }}
+                      <span class="ch-icon-plus">+</span><span class="ch-icon-minus">−</span>
+                    </button>
+                    <div class="ch-accordion-content-wrap">
+                      <div class="ch-accordion-content">
+                        <div class="ch-accordion-content-inner">{{ tab_content }}</div>
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+          {%- elsif block.type == 'combine_with' -%}
+            <div class="ch-upsells-wrap" {{ block.shopify_attributes }}>
+              <h3 class="ch-upsell-heading">{{ block.settings.heading_text }}</h3>
+              {%- for i in (1..2) -%}
+              {%- assign product_key = 'product_' | append: i -%}
+              {%- assign up_prod = block.settings[product_key] -%}
+              {%- if up_prod != blank -%}
+                  <div class="ch-upsell-item">
+                    <img src="{{ up_prod.featured_media | image_url: width: 180 }}" alt="{{ up_prod.title }}" class="ch-upsell-img" loading="lazy" width="90" height="90">
+                    <div class="ch-upsell-info">
+                      <span class="ch-upsell-title">{{ up_prod.title }}</span>
+                      <span class="ch-upsell-price">{{ up_prod.price | money }}</span>
+                    </div>
+                    {%- assign form_id = 'upsell-form-' | append: section.id | append: i -%}
+                    <form id="{{ form_id }}" class="ch-upsell-form" method="post" action="/cart/add">
+                      <input type="hidden" name="id" value="{{ up_prod.first_available_variant.id }}">
+                      <button type="submit" class="ch-upsell-btn">{{ block.settings.btn_text }}</button>
+                    </form>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+          {%- elsif block.type == 'payment_security' -%}
+            <div class="ch-payment-security" {{ block.shopify_attributes }}>
+              <h3 class="ch-payment-title">{{ block.settings.title }}</h3>
+              <div class="ch-payment-icons">
+                <span class="ch-pay-icon" aria-hidden="true">Visa</span>
+                <span class="ch-pay-icon" aria-hidden="true">MC</span>
+                <span class="ch-pay-icon" aria-hidden="true">AmEx</span>
+              </div>
+              <p class="ch-payment-text">{{ block.settings.text }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <!-- === RIGHT COLUMN (Product Info) === -->
+    <div class="ch-col-info">
+      <custom-product-form data-section="{{ section.id }}" data-url="{{ target_product.url }}">
+        {%- assign product_form_id = 'product-form-hero-' | append: section.id -%}
+        <form id="{{ product_form_id }}" class="product-form" method="post" action="/cart/add" enctype="multipart/form-data" novalidate>
+          <input type="hidden" name="id" id="MainVariantInput-{{ section.id }}" value="{{ target_product.selected_or_first_available_variant.id }}">
+          
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'title' -%}
+                <div class="ch-block ch-block-title" {{ block.shopify_attributes }}>
+                  {%- if block.settings.custom_badge != blank or block.settings.show_sale_badge -%}
+                    <div class="ch-badges">
+                      {%- if block.settings.custom_badge != blank -%}
+                        <span class="ch-badge">{{ block.settings.custom_badge }}</span>
+                      {%- endif -%}
+                      {%- if block.settings.show_sale_badge -%}
+                        <span class="ch-badge ch-badge--sale {% if target_product.selected_or_first_available_variant.compare_at_price > target_product.selected_or_first_available_variant.price %}is-active{% endif %}" id="SaleBadge-{{ section.id }}">
+                          SALE
+                        </span>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                  <h1 class="ch-title">{{ block.settings.title_override | default: target_product.title }}</h1>
+                  <div class="ch-price-row">
+                    <div class="ch-price-wrapper">
+                      <span id="Price-{{ section.id }}">{{ target_product.selected_or_first_available_variant.price | money }}</span>
+                      <s id="ComparePrice-{{ section.id }}" class="ch-price-compare" {% if target_product.selected_or_first_available_variant.compare_at_price <= target_product.selected_or_first_available_variant.price or target_product.selected_or_first_available_variant.compare_at_price == blank %}style="display: none;"{% endif %}>
+                        {{ target_product.selected_or_first_available_variant.compare_at_price | money }}
+                      </s>
+                    </div>
+                    {%- if block.settings.reviews_text != blank -%}
+                      <div class="ch-reviews">
+                        {%- for i in (1..5) -%}
+                          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        {%- endfor -%}
+                        <span>{{ block.settings.reviews_text }}</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+              {%- when 'variants' -%}
+                <div class="ch-block ch-variants-block" {{ block.shopify_attributes }}>
+                  {%- unless target_product.has_only_default_variant -%}
+                    {%- for option in target_product.options_with_values -%}
+                      <div class="ch-variant-group">
+                        <div class="ch-variant-label-row">
+                          <span>{{ option.name }}: <span id="SelectedOption-{{ section.id }}-{{ forloop.index0 }}" class="selected-value">{{ option.selected_value }}</span></span>
+                          {%- assign opt_name_down = option.name | downcase -%}
+                          {%- if opt_name_down contains 'size' -%}
+                            <button type="button" class="ch-size-chart-btn js-size-chart-trigger">{{ block.settings.size_chart_text }}</button>
+                          {%- endif -%}
+                        </div>
+                        <div class="ch-variant-options">
+                          {%- assign is_color = false -%}
+                          {%- if opt_name_down contains 'color' or opt_name_down contains 'colour' -%}
+                            {%- assign is_color = true -%}
+                          {%- endif -%}
+                          {%- for value in option.values -%}
+                            <input type="radio" id="Option-{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" class="js-variant-radio" data-position="{{ option.position }}" {% if option.selected_value == value %}checked{% endif %}>
+                            <label for="Option-{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" class="{% if is_color %}is-color-swatch{% endif %}" title="{{ value | escape }}">
+                              {%- if is_color -%}
+                                <span class="ch-color-inner" style="background-color: {{ value | split: ' ' | last | handleize }};"></span>
+                              {%- else -%}
+                                {{ value }}
+                              {%- endif -%}
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                    {%- endfor -%}
+                    <script type="application/json" id="ProductJSON-{{ section.id }}">{{ target_product.variants | json }}</script>
+                  {%- endunless -%}
+                </div>
+
+              {%- when 'description' -%}
+                <div class="ch-block ch-description" {{ block.shopify_attributes }}>
+                  {{ target_product.description | strip_html | truncatewords: 100 }}
+                </div>
+
+              {%- when 'notice' -%}
+                <div class="ch-block ch-notice" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </div>
+
+              {%- when 'buy_buttons' -%}
+                <div class="ch-block ch-buttons" {{ block.shopify_attributes }}>
+                  <button type="submit" name="add" class="ch-btn-secondary" id="AddToCart-{{ section.id }}">
+                    <span data-text="{{ block.settings.add_to_cart_text }}">{{ block.settings.add_to_cart_text }}</span>
+                  </button>
+                  <button type="button" class="ch-btn-primary" style="width:100%;margin-top:8px;">Buy it now</button>
+                </div>
+
+              {%- when 'info_pointers' -%}
+                <div class="ch-block ch-info-pointers" {{ block.shopify_attributes }}>
+                  <div class="ch-info-pointer">
+                    {%- if block.settings.icon_1 != blank -%}
+                      <div class="ch-custom-svg">{{ block.settings.icon_1 }}</div>
+                    {%- else -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                    {%- endif -%}
+                    <span>{{ block.settings.text_1 }}</span>
+                  </div>
+                  <div class="ch-info-pointer">
+                    {%- if block.settings.icon_2 != blank -%}
+                      <div class="ch-custom-svg">{{ block.settings.icon_2 }}</div>
+                    {%- else -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"></path></svg>
+                    {%- endif -%}
+                    <span>{{ block.settings.text_2 }}</span>
+                  </div>
+                </div>
+
+              {%- when 'promo_box' -%}
+                <div class="ch-block ch-promo-box js-promo-box" {{ block.shopify_attributes }}>
+                  <div class="ch-promo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                  </div>
+                  <div class="ch-promo-content">
+                    <span class="ch-promo-title">{{ block.settings.title }}</span>
+                    <div class="ch-promo-text">{{ block.settings.text }}</div>
+                  </div>
+                  <button type="button" class="ch-promo-close js-promo-close" aria-label="Close promotion">
+                    <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
+                </div>
+
+              {%- when 'share_icons' -%}
+                <div class="ch-block ch-share-icons" {{ block.shopify_attributes }}>
+                  <a href="https://www.facebook.com/sharer.php?u={{ shop.url | append: target_product.url }}" target="_blank" class="ch-share-icon" aria-label="Share on Facebook">
+                    <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                  </a>
+                  <a href="https://twitter.com/intent/tweet?url={{ shop.url | append: target_product.url }}&text={{ target_product.title | url_param_escape }}" target="_blank" class="ch-share-icon" aria-label="Share on X">
+                    <svg viewBox="0 0 24 24"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                  </a>
+                  <a href="https://api.whatsapp.com/send?text={{ target_product.title | url_param_escape }}%20{{ shop.url | append: target_product.url }}" target="_blank" class="ch-share-icon" aria-label="Share on WhatsApp">
+                    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  </a>
+                  <a href="{{ block.settings.instagram_url | default: '#' }}" target="_blank" class="ch-share-icon" aria-label="Visit on Instagram">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  </a>
+                </div>
+
+              {%- when 'more_info_link' -%}
+                <a href="{{ block.settings.link_url | default: '#' }}" class="ch-block ch-more-info" {{ block.shopify_attributes }}>
+                  <span>{{ block.settings.link_text }}</span>
+                  <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 9L5 5L1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            {%- endcase -%}
+          {%- endfor -%}
+        </form>
+      </custom-product-form>
+    </div>
+  </div>
+</div>
+
+<!-- Size Chart Modal -->
+<div id="SizeChartModal" class="ch-modal">
+  <div class="ch-modal-content">
+    <button class="ch-modal-close js-modal-close" data-modal="SizeChartModal">&times;</button>
+    {%- if section.settings.size_chart_image != blank -%}
+      <img src="{{ section.settings.size_chart_image | image_url: width: 800 }}" alt="Size Chart" class="ch-modal-img" loading="lazy">
+    {%- else -%}
+      <div style="padding: 40px; text-align: center; color: var(--ch-text-muted); font-size: 0.9rem; letter-spacing: 0.05em;">Assign an image in Section Settings → Size Chart Image</div>
+    {%- endif -%}
+  </div>
+</div>
+
+<!-- Image Zoom Lightbox -->
+<div id="ZoomLightbox-{{ section.id }}" class="ch-zoom-lightbox" aria-hidden="true" role="dialog" aria-label="Product image zoom">
+  <button type="button" class="ch-zoom-lightbox__close js-zoom-close" aria-label="Close zoom">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18"></path>
+    </svg>
+  </button>
+  <div class="ch-zoom-lightbox__counter js-zoom-counter" aria-live="polite">1 / 1</div>
+  <div class="ch-zoom-lightbox__track js-zoom-track">
+    {%- if target_product.media.size > 0 -%}
+      {%- for media in target_product.media -%}
+        <div class="ch-zoom-lightbox__slide" data-target="media-{{ section.id }}-{{ media.id }}">
+          <img src="{{ media | image_url: width: 2000 }}" alt="{{ media.alt | escape }}" loading="lazy">
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="ch-zoom-lightbox__slide">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+<!-- ================= STICKY CART BAR ================= -->
+<div class="ch-sticky-bar color-{{ section.settings.color_scheme }}" id="StickyCart-{{ section.id }}">
+  <div class="ch-sticky-left">
+    {%- if target_product.featured_media != blank -%}
+      <img src="{{ target_product.featured_media | image_url: width: 100 }}" alt="{{ target_product.title }}" class="ch-sticky-img" loading="lazy">
+    {%- endif -%}
+    <div class="ch-sticky-info">
+      <span class="ch-sticky-title">{{ target_product.title }}</span>
+      <span class="ch-sticky-price" id="StickyPrice-{{ section.id }}">{{ target_product.selected_or_first_available_variant.price | money }}</span>
+    </div>
+  </div>
+  <button type="button" class="ch-sticky-btn" onclick="document.querySelector('#AddToCart-{{ section.id }}').click();">
+    ADD TO CART
+  </button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    /* --- Smooth Accordion Toggle --- */
+    document.querySelectorAll('.js-accordion-trigger').forEach(trigger => {
+      trigger.addEventListener('click', function() {
+        const accordion = this.closest('.js-accordion');
+        accordion.classList.toggle('is-open');
+      });
+    });
+
+    /* --- Gallery: Thumbnail + Dot Pagination Scroll Sync --- */
+    const thumbnails = document.querySelectorAll('.ch-thumb-btn');
+    const dots       = document.querySelectorAll('.ch-dot');
+    const navButtons = [...thumbnails, ...dots];
+
+    if (navButtons.length > 0) {
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.dataset.target;
+          const targetEl = document.getElementById(targetId);
+          if (!targetEl) return;
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+          setActiveMedia(targetId);
+        });
+      });
+
+      const imageWraps = document.querySelectorAll('.ch-main-img-wrap');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) setActiveMedia(entry.target.id);
+        });
+      }, { threshold: 0.5 });
+      imageWraps.forEach(img => observer.observe(img));
+
+      function setActiveMedia(id) {
+        navButtons.forEach(b => b.classList.remove('is-active'));
+        document
+          .querySelectorAll(`.ch-thumb-btn[data-target="${id}"], .ch-dot[data-target="${id}"]`)
+          .forEach(b => b.classList.add('is-active'));
+      }
+    }
+
+    /* --- Promo Box Dismiss Script --- */
+    document.querySelectorAll('.js-promo-close').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const box = this.closest('.js-promo-box');
+        if (box) box.style.display = 'none';
+      });
+    });
+
+    /* --- Generic Modal Helpers --- */
+    function openModal(modal) {
+      if (!modal) return;
+      modal.classList.add('is-active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(modal) {
+      if (!modal) return;
+      modal.classList.remove('is-active');
+      document.body.style.overflow = '';
+    }
+
+    /* --- Sticky Cart Bar Visibility Logic --- */
+    const buyButton = document.getElementById(`AddToCart-{{ section.id }}`);
+    const stickyCart = document.getElementById(`StickyCart-{{ section.id }}`);
+    
+    if (buyButton && stickyCart) {
+      document.body.appendChild(stickyCart);
+      const cartObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting && entry.boundingClientRect.bottom < 0) {
+            stickyCart.classList.add('is-visible');
+          } else {
+            stickyCart.classList.remove('is-visible');
+          }
+        });
+      }, { threshold: 0, rootMargin: "0px" });
+      cartObserver.observe(buyButton);
+    }
+
+    /* Size chart trigger */
+    const sizeChartModal = document.getElementById('SizeChartModal');
+    document.querySelectorAll('.js-size-chart-trigger').forEach(t => {
+      t.addEventListener('click', () => openModal(sizeChartModal));
+    });
+
+    /* --- Image Zoom Lightbox --- */
+    const zoomLightbox = document.querySelector('[id^="ZoomLightbox-"]');
+    if (zoomLightbox) {
+      const zoomTrack   = zoomLightbox.querySelector('.js-zoom-track');
+      const zoomSlides  = zoomLightbox.querySelectorAll('.ch-zoom-lightbox__slide');
+      const zoomCounter = zoomLightbox.querySelector('.js-zoom-counter');
+      const zoomClose   = zoomLightbox.querySelector('.js-zoom-close');
+      const totalSlides = zoomSlides.length;
+
+      function updateZoomCounter(idx) {
+        if (!zoomCounter || totalSlides === 0) return;
+        const clamped = Math.max(0, Math.min(totalSlides - 1, idx));
+        zoomCounter.textContent = (clamped + 1) + ' / ' + totalSlides;
+      }
+
+      function openZoomLightbox() {
+        const activeNav = document.querySelector('.ch-dot.is-active, .ch-thumb-btn.is-active');
+        const targetId = activeNav ? activeNav.dataset.target : null;
+        let startIndex = 0;
+        if (targetId) {
+          zoomSlides.forEach((slide, idx) => {
+            if (slide.dataset.target === targetId) startIndex = idx;
+          });
+        }
+        zoomLightbox.classList.add('is-active');
+        zoomLightbox.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('ch-zoom-open');
+        updateZoomCounter(startIndex);
+        requestAnimationFrame(() => {
+          if (!zoomTrack || totalSlides === 0) return;
+          const slideWidth = zoomSlides[0].getBoundingClientRect().width || window.innerWidth;
+          zoomTrack.scrollLeft = slideWidth * startIndex;
+        });
+      }
+
+      function closeZoomLightbox() {
+        zoomLightbox.classList.remove('is-active');
+        zoomLightbox.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('ch-zoom-open');
+      }
+
+      document.querySelectorAll('.js-zoom-trigger').forEach(trigger => {
+        trigger.addEventListener('click', openZoomLightbox);
+      });
+      if (zoomClose) zoomClose.addEventListener('click', closeZoomLightbox);
+      zoomLightbox.addEventListener('click', (e) => {
+        if (e.target === zoomLightbox || e.target.classList.contains('ch-zoom-lightbox__track')) {
+          closeZoomLightbox();
+        }
+      });
+
+      if (zoomTrack && totalSlides > 0) {
+        let rafId = null;
+        zoomTrack.addEventListener('scroll', () => {
+          if (rafId) return;
+          rafId = requestAnimationFrame(() => {
+            const slideWidth = zoomSlides[0].getBoundingClientRect().width || window.innerWidth;
+            const idx = Math.round(zoomTrack.scrollLeft / slideWidth);
+            updateZoomCounter(idx);
+            rafId = null;
+          });
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && zoomLightbox.classList.contains('is-active')) {
+          closeZoomLightbox();
+        }
+      });
+    }
+
+    /* Close handlers */
+    document.querySelectorAll('.js-modal-close').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modal = btn.closest('.ch-modal');
+        closeModal(modal);
+      });
+    });
+    document.querySelectorAll('.ch-modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(modal);
+      });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.ch-modal.is-active').forEach(closeModal);
+      }
+    });
+
+    /* --- Custom Variant Logic --- */
+    class CustomProductForm extends HTMLElement {
+      constructor() {
+        super();
+        this.form = this.querySelector('form');
+        this.variantData = JSON.parse(this.querySelector(`#ProductJSON-${this.dataset.section}`)?.textContent || '[]');
+        this.radios = this.querySelectorAll('.js-variant-radio');
+        this.mainInput = this.querySelector(`#MainVariantInput-${this.dataset.section}`);
+        this.priceEl = this.querySelector(`#Price-${this.dataset.section}`);
+        this.saleBadge = this.querySelector(`#SaleBadge-${this.dataset.section}`);
+        this.comparePriceEl = this.querySelector(`#ComparePrice-${this.dataset.section}`);
+        this.submitBtn = this.querySelector(`#AddToCart-${this.dataset.section}`);
+
+        this.radios.forEach(radio => {
+          radio.addEventListener('change', this.onVariantChange.bind(this));
+        });
+      }
+
+      onVariantChange() {
+        this.options = Array.from(this.querySelectorAll('.js-variant-radio:checked')).map(r => r.value);
+        this.currentVariant = this.variantData.find(variant =>
+          !variant.options.map((opt, i) => this.options[i] === opt).includes(false)
+        );
+
+        this.options.forEach((opt, idx) => {
+          const label = this.querySelector(`#SelectedOption-${this.dataset.section}-${idx}`);
+          if (label) label.textContent = opt;
+        });
+
+        if (this.currentVariant) {
+          this.mainInput.value = this.currentVariant.id;
+          const btnSpan = this.submitBtn?.querySelector('span');
+          if (!this.currentVariant.available) {
+            if (this.submitBtn) this.submitBtn.disabled = true;
+            if (btnSpan) btnSpan.textContent = 'SOLD OUT';
+          } else {
+            if (this.submitBtn) this.submitBtn.disabled = false;
+            if (btnSpan) btnSpan.textContent = btnSpan.dataset.text || 'ADD TO CART';
+          }
+
+          if (this.dataset.url) {
+            window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
+          }
+
+          if (this.priceEl) {
+            const priceInCents = this.currentVariant.price;
+            const formatted = (priceInCents / 100).toFixed(2);
+            const symbol = this.priceEl.textContent.replace(/[\d,. ]+/, '').trim() || '$';
+            this.priceEl.textContent = `${symbol}${formatted}`;
+
+            if (this.comparePriceEl) {
+              if (this.currentVariant.compare_at_price > this.currentVariant.price) {
+                const compFormatted = (this.currentVariant.compare_at_price / 100).toFixed(2);
+                this.comparePriceEl.textContent = `${symbol}${compFormatted}`;
+                this.comparePriceEl.style.display = 'inline';
+              } else {
+                this.comparePriceEl.style.display = 'none';
+              }
+              const stickyPriceEl = document.getElementById(`StickyPrice-${this.dataset.section}`);
+              if (stickyPriceEl) {
+                const stickyFormatted = (this.currentVariant.price / 100).toFixed(2);
+                stickyPriceEl.textContent = `${symbol}${stickyFormatted}`;
+              }
+              if (this.saleBadge) {
+                if (this.currentVariant.compare_at_price > this.currentVariant.price) {
+                  this.saleBadge.classList.add('is-active');
+                } else {
+                  this.saleBadge.classList.remove('is-active');
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    customElements.define('custom-product-form', CustomProductForm);
+  });
+</script>
+

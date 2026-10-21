@@ -1,0 +1,20 @@
+{
+  "home_page": {
+    "banner_image": "16:9",
+    "banner_image_mobile": "9:16",
+    "product_story_image": "1:1",
+    "why_shop_image": "1:1",
+    "circle_feature_image": "1:1",
+    "product_image_1": "1:1",
+    "product_image_2": "1:1",
+    "product_image_3": "1:1",
+    "product_impact_image": "1:1"
+  },
+  "product_page": {
+    "product_image_1": "1:1",
+    "product_image_2": "1:1",
+    "product_image_3": "1:1",
+    "product_image_4": "1:1",
+    "product_image_5": "1:1"
+  }
+}

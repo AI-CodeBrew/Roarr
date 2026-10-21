@@ -1,0 +1,57 @@
+{% comment %}
+  Block: Frequently Bought Together
+  - Purpose: Display related products with quantity controls and add-to-cart.
+  - CSS and JS in external files: frequently-bought.css, frequently-bought.js
+{% endcomment %}
+
+{%- liquid
+  assign s = block.settings
+  assign m = product.metafields.kluck_ai
+  assign color = m.color_schema.value | default: m.color_schema | default: '#a34e4e'
+
+  assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
+  assign bg_color = s.background_color | default: '#ffffff'
+  if s.use_metafields_bg and product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  endif
+
+  assign heading_font = s.heading_font_family
+  assign body_font = s.body_font_family
+-%}
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'frequently-bought.css' | asset_url }}" media="all">
+<script src="{{ 'frequently-bought.js' | asset_url }}" defer></script>
+<div id="fbt-{{ block.id }}" class="fbt-widget-wrapper" style="--fbt-bg:#f9f9f9;--fbt-card-bg:#fff;--fbt-text:#111;--fbt-border:#e5e5e5;--fbt-btn-bg:{{ color }};--fbt-btn-text:#fff;--fbt-qty-bg:#f0f0f0;--bg-color:{{ bg_color }};--bg-opacity:{{ opacity_val }};--container-width:{{ s.container_max_width | default: 1250 }}px;--font-heading-family:{% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--font-body-family:{% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--body-size:{{ s.body_size | default: 16 }}px;--body-weight:{{ s.body_weight | default: 400 }};--h1-size:{{ s.h1_size | default: 48 }}px;--h1-weight:{{ s.h1_weight | default: 700 }};--h2-size:{{ s.h2_size | default: 36 }}px;--h2-weight:{{ s.h2_weight | default: 700 }};--h3-size:{{ s.h3_size | default: 30 }}px;--h3-weight:{{ s.h3_weight | default: 600 }};--h4-size:{{ s.h4_size | default: 24 }}px;--h4-weight:{{ s.h4_weight | default: 600 }};--h5-size:{{ s.h5_size | default: 20 }}px;--h5-weight:{{ s.h5_weight | default: 500 }};--h6-size:{{ s.h6_size | default: 16 }}px;--h6-weight:{{ s.h6_weight | default: 500 }};">
+  <div class="fbt-items-container">
+    {%- if s.heading != blank -%}<h5 class="fbt-header">{{ s.heading }}</h5>{%- endif -%}
+    <div class="fbt-cards-row layout-{{ s.layout_mode }}">
+    {%- for p in s.product_list -%}
+      {%- assign v = p.selected_or_first_available_variant -%}
+      {%- if v.available -%}
+        <div class="fbt-card" data-variant-id="{{ v.id }}">
+          <a href="{{ p.url }}" class="fbt-image-wrap">
+            <img src="{{ p.featured_image | image_url: width: 200 }}" alt="{{ p.title | escape }}" width="200" height="200" loading="lazy">
+          </a>
+          <div class="fbt-details">
+            <a href="{{ p.url }}" class="fbt-title" title="{{ p.title | escape }}">{{ p.title }}</a>
+            <div class="fbt-price">{{ v.price | money }}</div>
+            <div class="fbt-actions">
+              <div class="fbt-qty-control">
+                <button type="button" class="fbt-qty-btn minus">-</button>
+                <input type="number" class="fbt-qty-input" value="1" min="1" readonly>
+                <button type="button" class="fbt-qty-btn plus">+</button>
+              </div>
+              <button type="button" class="fbt-add-btn">
+                <span class="txt">Add</span>
+                <span class="loader" style="display:none;">...</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div style="font-size:13px;opacity:.6;">Select products in block settings.</div>
+    {%- endfor -%}
+    </div>
+  </div>
+</div>

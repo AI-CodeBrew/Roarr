@@ -1,0 +1,171 @@
+/**
+ * Kluck AI - FAQ Section
+ * Accordion-style FAQ with Kluck AI design standards.
+ */
+
+.kluck-faq-section {
+  position: relative;
+  width: 100%;
+  font-family: var(--font-body-family, inherit);
+  color: inherit;
+  overflow: hidden;
+}
+
+/* Overlay for opacity background */
+.kluck-faq-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-color, #ffffff);
+  opacity: var(--bg-opacity, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.kluck-faq-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-width, 900px);
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Header Styling */
+.faq-header {
+  text-align: var(--text-alignment, center);
+  margin-bottom: 40px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.faq-main-title {
+  font-family: var(--font-heading-family, inherit);
+  font-size: var(--h2-size, 36px);
+  font-weight: var(--h2-weight, 700);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.faq-main-subtitle {
+  font-size: var(--body-size, 16px);
+  font-weight: var(--body-weight, 400);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* FAQ List Styling */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.faq-item {
+  position: relative;
+  border-radius: var(--radius, 8px);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--item-bg, #F7F7F7);
+  opacity: var(--item-bg-opacity, 1);
+  z-index: 0;
+  pointer-events: none;
+  border-radius: var(--radius, 8px);
+}
+
+.faq-trigger {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body-family, inherit);
+  font-size: var(--body-size, 16px);
+  font-weight: 500;
+  color: inherit;
+  line-height: 1.4;
+}
+
+.faq-question-text {
+  flex: 1;
+  padding-right: 20px;
+  margin: 0;
+  display: block;
+  line-height: 1.4;
+}
+
+.faq-icon {
+  width: 32px;
+  height: 32px;
+  background-color: var(--icon-bg, #FFFFFF);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.faq-icon::before,
+.faq-icon::after {
+  content: '';
+  position: absolute;
+  background-color: var(--icon-color, #000000);
+  border-radius: 2px;
+  transition: transform 0.3s ease;
+}
+
+.faq-icon::before {
+  width: 12px;
+  height: 2px;
+}
+
+.faq-icon::after {
+  width: 2px;
+  height: 12px;
+}
+
+.faq-item.active .faq-icon::after {
+  transform: rotate(90deg) scale(0);
+}
+
+.faq-content {
+  position: relative;
+  z-index: 1;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-content-inner {
+  padding: 0 25px 25px;
+  line-height: 1.6;
+  font-size: calc(var(--body-size, 16px) * 0.95);
+}
+
+@media (max-width: 768px) {
+  .kluck-faq-inner {
+    padding: 20px 10px;
+  }
+
+  .faq-trigger {
+    padding: 15px 20px;
+  }
+
+  .faq-main-title {
+    font-size: calc(var(--h2-size, 36px) * 0.8);
+  }
+}

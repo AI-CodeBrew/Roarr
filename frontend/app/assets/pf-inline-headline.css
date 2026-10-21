@@ -1,0 +1,100 @@
+/**
+ * Inline Image Headline - Scroll Reveal Pro
+ * Logic: JavaScript splits text into individual characters.
+ * Animation: Characters light up one by one based on scroll position.
+ * Colors: Scheme-driven via --color-background, --color-foreground (from pf-color-schemes.css)
+ */
+
+/* --- SECTION (SCHEME DRIVEN) --- */
+[id^="ih-"] .ih-section {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding-top: var(--pt);
+  padding-bottom: var(--pb);
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center;
+  overflow: hidden;
+}
+
+[id^="ih-"] .ih-container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+/* --- THE HEADLINE WRAPPER --- */
+[id^="ih-"] .ih-headline {
+  display: inline;
+  font-family: var(--font-h);
+  color: var(--color-foreground-heading, var(--color-foreground));
+  font-size: var(--font-size-d);
+  line-height: var(--line-height);
+  margin: 0;
+}
+
+/* --- TEXT SEGMENTS --- */
+[id^="ih-"] .ih-text {
+  display: inline;
+  position: relative;
+}
+
+/* --- INDIVIDUAL CHARACTERS (Animation) --- */
+/* Opacity trick: adapts to whatever color scheme is chosen */
+[id^="ih-"] .ih-char {
+  color: currentColor;
+  opacity: 0.15;
+  transition: opacity 0.4s ease-out;
+}
+
+[id^="ih-"] .ih-char.is-active {
+  opacity: 1;
+}
+
+/* --- IMAGE SEGMENTS --- */
+[id^="ih-"] .ih-image-wrap {
+  display: inline-flex;
+  vertical-align: middle;
+  margin: 0 0.15em;
+  text-decoration: none;
+  position: relative;
+  height: 1.1em;
+  transform: translateY(-0.05em);
+}
+
+[id^="ih-"] .ih-img {
+  height: 100%;
+  width: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 999px;
+  transform: scale(1);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.2, 1), opacity 0.5s ease;
+  will-change: transform;
+  display: block;
+  opacity: 0.2;
+}
+
+[id^="ih-"] .ih-img.is-active {
+  opacity: 1;
+}
+
+[id^="ih-"] .ih-image-wrap:hover .ih-img {
+  transform: scale(1.12);
+  opacity: 1 !important;
+}
+
+/* --- LINE BREAK BLOCK --- */
+[id^="ih-"] .ih-break {
+  display: block;
+  height: 0;
+  width: 100%;
+  margin-bottom: 0.2em;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  [id^="ih-"] .ih-headline {
+    font-size: var(--font-size-m);
+    line-height: 1.6;
+  }
+}

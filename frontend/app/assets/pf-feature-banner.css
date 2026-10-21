@@ -1,0 +1,301 @@
+/**
+ * Feature Card Slider
+ * Desktop: Variable Width, Adjustable Padding, Smooth Infinite Loop.
+ * Mobile: Full Width (100%), Standard Padding.
+ * Colors: Scheme-driven via pf-color-schemes.css
+ */
+
+[id^="fc-"] .fc-section {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding-top: var(--pt);
+  padding-bottom: var(--pb);
+  overflow: hidden;
+}
+
+[id^="fc-"] .fc-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 20px;
+  padding-left: var(--container-pl);
+}
+
+[id^="fc-"] .fc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+[id^="fc-"] .fc-heading {
+  font-family: var(--font-h);
+  font-size: var(--h-main-size);
+  color: var(--color-foreground-heading);
+  margin: 0;
+}
+
+[id^="fc-"] .fc-nav-btns {
+  display: flex;
+  gap: 10px;
+}
+
+[id^="fc-"] .fc-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-secondary-button-border);
+  background: var(--color-secondary-button-background);
+  color: var(--color-secondary-button-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+[id^="fc-"] .fc-arrow:hover {
+  background: var(--color-secondary-button-hover-background);
+  color: var(--color-secondary-button-hover-text);
+  border-color: var(--color-secondary-button-hover-border);
+}
+
+[id^="fc-"] .fc-arrow svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+[id^="fc-"] .fc-track {
+  display: flex;
+  gap: var(--slide-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-left: var(--track-offset);
+  padding-right: var(--track-offset);
+  padding-bottom: 20px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+
+[id^="fc-"] .fc-track::-webkit-scrollbar {
+  display: none;
+}
+
+[id^="fc-"] .fc-card {
+  flex: 0 0 var(--card-width-d);
+  min-width: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: flex;
+  position: relative;
+  height: var(--slide-height);
+}
+
+[id^="fc-"] .fc-card.layout-column {
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+[id^="fc-"] .fc-card.layout-row {
+  flex-direction: row;
+  align-items: center;
+}
+
+[id^="fc-"] .fc-card.layout-row .fc-content-wrap {
+  width: 45%;
+  padding: 60px;
+}
+
+[id^="fc-"] .fc-card.layout-row .fc-img-wrap {
+  width: 55%;
+  height: 100%;
+}
+
+[id^="fc-"] .fc-content-wrap {
+  padding: 50px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+[id^="fc-"] .fc-align-center {
+  text-align: center;
+  align-items: center;
+}
+
+[id^="fc-"] .fc-align-left {
+  text-align: left;
+  align-items: flex-start;
+}
+
+[id^="fc-"] .fc-eyebrow {
+  font-family: var(--font-sub);
+  font-size: 14px;
+  margin-bottom: 10px;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+[id^="fc-"] h3 {
+  font-family: var(--font-h);
+  font-size: var(--h-size-d);
+  color: var(--color-foreground-heading);
+  line-height: 1.1;
+  margin: 0 0 20px 0;
+}
+
+[id^="fc-"] p {
+  font-family: var(--font-b);
+  font-size: var(--p-size-d);
+  color: var(--color-foreground);
+  line-height: 1.5;
+  margin: 0 0 30px 0;
+  max-width: 450px;
+  opacity: 0.9;
+}
+
+[id^="fc-"] .fc-btn {
+  display: inline-block;
+  padding: 16px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: var(--font-accent);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background-color: var(--color-primary-button-background);
+  color: var(--color-primary-button-text);
+  border: 1px solid var(--color-primary-button-border, transparent);
+}
+
+[id^="fc-"] .fc-btn:hover {
+  transform: scale(1.05);
+  background-color: var(--color-primary-button-hover-background);
+  color: var(--color-primary-button-hover-text);
+  border-color: var(--color-primary-button-hover-border);
+}
+
+[id^="fc-"] .fc-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+[id^="fc-"] .fc-card.layout-column .fc-img-wrap {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+}
+
+[id^="fc-"] .fc-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+[id^="fc-"] .fc-card:hover .fc-img {
+  transform: scale(1.05);
+}
+
+[id^="fc-"] .fc-dots-container {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+[id^="fc-"] .fc-dot {
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-foreground);
+  opacity: 0.3;
+  border-radius: 10px;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: width 0.3s ease, opacity 0.3s ease;
+}
+
+[id^="fc-"] .fc-dot.active {
+  width: 35px;
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  [id^="fc-"] .fc-header {
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  [id^="fc-"] .fc-nav-btns {
+    display: none;
+  }
+
+  [id^="fc-"] .fc-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  [id^="fc-"] .fc-track {
+    gap: 15px;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  [id^="fc-"] .fc-card,
+  [id^="fc-"] .fc-card.layout-row,
+  [id^="fc-"] .fc-card.layout-column {
+    flex: 0 0 100%;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    aspect-ratio: 9/15;
+  }
+
+  [id^="fc-"] .fc-card.layout-row .fc-content-wrap,
+  [id^="fc-"] .fc-card.layout-row .fc-img-wrap {
+    width: 100%;
+  }
+
+  [id^="fc-"] .fc-content-wrap {
+    padding: 40px 20px 20px;
+    align-items: center;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  [id^="fc-"] h3 {
+    font-size: var(--h-size-m);
+  }
+
+  [id^="fc-"] p {
+    font-size: var(--p-size-m);
+  }
+
+  [id^="fc-"] .fc-img-wrap {
+    width: 100%;
+    height: auto;
+    flex: 1;
+  }
+
+  [id^="fc-"] .fc-dots-container {
+    display: flex;
+  }
+}

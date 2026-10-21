@@ -1,0 +1,83 @@
+{
+  "sections": {
+    "kluck-ai-about-us-h1-section": {
+      "type": "kluck-ai-about-us-h1-section",
+      "name": "Kluck AI - About",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "watermark_text": "Our Story",
+        "watermark_gradient": "linear-gradient(180deg, rgba(251, 239, 234, 1), rgba(251, 239, 234, 0) 100%)",
+        "watermark_size_desktop": 24,
+        "watermark_size_mobile": 40,
+        "watermark_opacity": 80,
+        "watermark_offset_y": 35,
+        "heading": "Because you need time for yourself.",
+        "heading_size_desktop": 42,
+        "heading_size_mobile": 28,
+        "text": "<p>We build products with care — thoughtful design, honest materials, and support you can count on.</p>",
+        "text_size_desktop": 18,
+        "text_size_mobile": 16,
+        "content_max_width": 900,
+        "content_gap": 30,
+        "enable_animation": true,
+        "padding_top_desktop": 100,
+        "padding_bottom_desktop": 100,
+        "padding_top_mobile": 60,
+        "padding_bottom_mobile": 60
+      }
+    },
+    "kluck-ai-about-us-h2-section": {
+      "type": "kluck-ai-about-us-h2-section",
+      "blocks": {
+        "tab_start": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Start",
+            "subtitle": "Our Journey",
+            "heading": "Built with care from day one",
+            "text": "<p>Every detail is designed to feel premium, useful, and lasting — so shopping with us feels as good as owning the product.</p>"
+          }
+        },
+        "tab_today": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Today",
+            "subtitle": "Our Promise",
+            "heading": "Quality you can feel",
+            "text": "<p>We stand behind every order with clear support, fast shipping, and products made to earn your trust.</p>"
+          }
+        },
+        "tab_next": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "Next",
+            "subtitle": "What's Ahead",
+            "heading": "Always improving for you",
+            "text": "<p>We keep refining the experience — better products, clearer answers, and a store that feels personal.</p>"
+          }
+        }
+      },
+      "block_order": ["tab_start", "tab_today", "tab_next"],
+      "name": "Kluck AI - About Tabs",
+      "settings": {
+        "container_width": 1400,
+        "container_radius": 20,
+        "image_position": "right",
+        "section_color_scheme": "scheme-1",
+        "panel_color_scheme": "scheme-2",
+        "tab_color": "#666666",
+        "tab_active_color": "#000000",
+        "tab_size": 18,
+        "subtitle_size": 14,
+        "heading_size_desktop": 40,
+        "heading_size_mobile": 28,
+        "text_size": 16,
+        "padding_top_desktop": 60,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    }
+  },
+  "order": ["kluck-ai-about-us-h1-section", "kluck-ai-about-us-h2-section"]
+}

@@ -1,0 +1,104 @@
+{%- liquid
+  assign bs = block.settings
+  unless shop.metafields.app.block_control.value
+    break
+  endunless
+
+  assign m = product.metafields.kluck_ai
+  assign c_schema = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
+  assign us_col_bg = bs.us_column_bg | default: '#fafafa'
+  if bs.use_metafields
+    assign us_col_bg = c_schema
+  endif
+
+  assign heading_text = bs.heading
+  
+  assign sub = bs.subheading
+  if bs.use_metafields
+    assign sub = m.what_set_us_apart_subheading.value | default: bs.subheading
+  endif
+
+  assign num_rows = bs.number_of_rows | default: 3 | at_most: 5 | at_least: 1
+  assign mark_class = 'cft-mark-plain'
+  if bs.mark_circle
+    assign mark_class = 'cft-mark-circle'
+  endif
+-%}
+
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'comparison-table.css' | asset_url }}" media="all">
+
+<section
+  id="cft-{{ block.id }}"
+  class="cft cft-table-{{ bs.table_position | default: 'right' }} cft-borders-{{ bs.table_borders | default: 'full' }} cft-text-{{ bs.text_align | default: 'center' }} {{ mark_class }} app_blocks_class"
+  aria-label="Comparison table"
+  {{ block.shopify_attributes }}
+  style="display: none; --cft-us-col-bg: {{ us_col_bg }}; --cft-table-border: {{ bs.table_border_color | default: '#e5e5e5' }}; --cft-btn-radius: {{ bs.shop_button_radius | default: 8 }}px; --cft-btn-bg: {{ c_schema }}; {% if bs.us_column_text != blank %}--cft-us-col-color: {{ bs.us_column_text }};{% endif %}"
+>
+  <div class="cft__inner app_blocks_class" style="display:none">
+    <div class="cft__grid">
+      <div class="cft__left">
+        {% if heading_text != blank %}
+          <h3 class="cft__heading">{{ heading_text }}</h3>
+        {% endif %}
+        
+        {% if sub != blank %}<div class="cft__subheading rte"><p>{{ sub }}</p></div>{% endif %}
+        
+        {% if bs.show_shop_button and bs.shop_button_label != blank %}
+          <a href="{{ bs.shop_button_url | default: '/collections/all' }}" class="cft__shop-btn">{{ bs.shop_button_label }}</a>
+        {% endif %}
+      </div>
+
+      <div class="cft__right">
+        <div class="cft__table-wrap">
+          <table class="cft__table" role="table" aria-label="Feature comparison">
+            <thead role="rowgroup">
+              <tr role="row">
+                <th role="columnheader" class="cft__th cft__th--feature"><p>{{ bs.feature_col_label }}</p></th>
+                <th role="columnheader" class="cft__th cft__th--brand">
+                  <div class="cft__th-brand-inner">
+                    {% if bs.show_us_header_image and product.featured_image %}
+                      <div class="cft__th-brand-img-wrap">
+                        <img class="cft__th-brand-img" src="{{ product.featured_image | image_url: width: 240 }}" srcset="{{ product.featured_image | image_url: width: 160 }} 160w, {{ product.featured_image | image_url: width: 240 }} 240w, {{ product.featured_image | image_url: width: 320 }} 320w" sizes="(max-width: 768px) 80px, 120px" width="120" height="120" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy">
+                      </div>
+                    {% else %}
+                      <p>{{ bs.brand_label }}</p>
+                    {% endif %}
+                  </div>
+                </th>
+                <th role="columnheader" class="cft__th cft__th--others"><p>{{ bs.others_label }}</p></th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup">
+              {% for i in (1..num_rows) %}
+                {% liquid
+                  assign s_key = 'row' | append: i | append: '_feature'
+                  assign feature_text = bs[s_key]
+                  if bs.use_metafields
+                    assign m_key = 'what_sets_us_apart_feature_' | append: i
+                    assign feature_text = m[m_key].value | default: feature_text
+                  endif
+                %}
+                {% if feature_text != blank %}
+                  <tr class="cft__row" role="row">
+                    <td role="cell" class="cft__td cft__td--feature"><p>{{ feature_text }}</p></td>
+                    <td role="cell" class="cft__td cft__td--brand">
+                      <div class="cft__cellwrap"><span class="cft__mark cft__mark--yes">{{ bs.icon_yes_char | default: '✓' }}</span></div>
+                    </td>
+                    <td role="cell" class="cft__td cft__td--others">
+                      <div class="cft__cellwrap"><span class="cft__mark cft__mark--no">{{ bs.icon_no_char | default: '✕' }}</span></div>
+                    </td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{"name":"Comparison Table","target":"section","settings":[{"type":"select","id":"table_position","label":"Table position","default":"right","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}],"info":"Center shows heading and subheading above the table."},{"type":"select","id":"text_align","label":"Text side alignment","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}],"info":"Align heading, subheading and button on the text side."},{"type":"select","id":"table_borders","label":"Table border lines","default":"full","options":[{"value":"none","label":"None"},{"value":"full","label":"Full (all cells)"},{"value":"horizontal","label":"Horizontal only"},{"value":"vertical","label":"Vertical only"}]},{"type":"color","id":"table_border_color","label":"Table border color","default":"#e5e5e5"},{"type":"checkbox","id":"use_metafields","label":"Use Kluck AI metafields","default":true,"info":"When enabled, content will be pulled from product metafields created by Kluck AI."},{"type":"text","id":"heading","label":"Heading","default":"Why Choose Us?"},{"type":"richtext","id":"subheading","label":"Subheading","default":"<p>Subheading</p>"},{"type":"checkbox","id":"show_shop_button","label":"Show Shop now button","default":false},{"type":"text","id":"shop_button_label","label":"Button label","default":"Shop now"},{"type":"url","id":"shop_button_url","label":"Button link"},{"type":"range","id":"shop_button_radius","label":"Button border radius","min":0,"max":50,"step":1,"unit":"px","default":8},{"type":"text","id":"feature_col_label","label":"Feature column label","default":"Features"},{"type":"text","id":"brand_label","label":"Brand label","default":"Us"},{"type":"checkbox","id":"show_us_header_image","label":"Show product image in Us column header","default":true},{"type":"color","id":"us_column_bg","label":"Us column background color","default":"#fafafa"},{"type":"color","id":"us_column_text","label":"Us column text color","info":"Leave default for automatic"},{"type":"text","id":"others_label","label":"Others column label","default":"Others"},{"type":"text","id":"icon_yes_char","label":"Yes character","default":"✓"},{"type":"text","id":"icon_no_char","label":"No character","default":"✕"},{"type":"checkbox","id":"mark_circle","label":"Show circle around tick and cross","default":true},{"type":"range","id":"number_of_rows","label":"Number of feature rows","min":1,"max":5,"step":1,"default":3},{"type":"text","id":"row1_feature","label":"Row 1 feature","default":"Feature 1"},{"type":"text","id":"row2_feature","label":"Row 2 feature","default":"Feature 2"},{"type":"text","id":"row3_feature","label":"Row 3 feature","default":"Feature 3"},{"type":"text","id":"row4_feature","label":"Row 4 feature","default":"Feature 4"},{"type":"text","id":"row5_feature","label":"Row 5 feature","default":"Feature 5"}]}
+{% endschema %}

@@ -1,0 +1,44 @@
+
+ {
+  "sections": {
+    "kluck-ai-contact-us-section": {
+      "type": "kluck-ai-contact-us-section",
+      "name": "Kluck AI - Contact Us",
+      "settings": {
+        "container_width": 1400,
+        "section_radius": 24,
+        "image_position": "left",
+        "overlay_color": "#000000",
+        "overlay_opacity": 70,
+        "img_heading": "Enter your City",
+        "img_heading_size": 48,
+        "img_text_color": "#ffffff",
+        "address": "Enter your text",
+        "phone": "+123 (4)56 789",
+        "hours": "Mon-Sat: 10am-8pm",
+        "btn_1_label": "Get Directions",
+        "btn_1_link": "",
+        "btn_1_bg": "#ffffff",
+        "btn_1_text": "#000000",
+        "form_bg_color": "#f6f4f1",
+        "form_heading": "Get in Touch",
+        "form_heading_size": 42,
+        "form_text_color": "#000000",
+        "input_bg": "#ffffff",
+        "input_border": "rgba(0,0,0,0)",
+        "input_focus": "#000000",
+        "input_radius": 30,
+        "btn_2_label": "Submit Now",
+        "btn_2_bg": "#000000",
+        "btn_2_text": "#ffffff",
+        "padding_top_desktop": 60,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    }
+  },
+  "order": [
+    "kluck-ai-contact-us-section"
+  ]
+}

@@ -1,0 +1,229 @@
+/**
+ * FAQ & Showcase - Split Image Layout
+ * Colors: Scheme-driven via pf-color-schemes.css
+ * Section: color_scheme | FAQ items: faq_color_scheme
+ */
+
+[id^="fs-"] {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding-top: var(--pt);
+  padding-bottom: var(--pb);
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow: hidden;
+}
+
+[id^="fs-"] .fs-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* TEXT COL */
+[id^="fs-"] .fs-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+[id^="fs-"] h2 {
+  font-family: var(--font-h);
+  font-size: 42px;
+  line-height: 1.1;
+  color: var(--color-foreground-heading, var(--color-foreground));
+  margin: 0 0 25px 0;
+  font-weight: 500;
+}
+
+[id^="fs-"] p {
+  font-family: var(--font-b);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-foreground);
+  margin: 0 0 20px 0;
+  opacity: 0.9;
+}
+
+[id^="fs-"] .fs-rte {
+  font-family: var(--font-b);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-foreground);
+}
+
+[id^="fs-"] .fs-rte p:last-child {
+  margin-bottom: 0;
+}
+
+[id^="fs-"] .fs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  background-color: var(--color-primary-button-background);
+  color: var(--color-primary-button-text);
+  border: 1px solid var(--color-primary-button-border, transparent);
+  text-decoration: none;
+  border-radius: 50px;
+  font-family: var(--font-b);
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[id^="fs-"] .fs-btn:hover {
+  transform: translateY(-2px);
+  background-color: var(--color-primary-button-hover-background, var(--color-primary-button-background));
+  color: var(--color-primary-button-hover-text, var(--color-primary-button-text));
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* IMAGE COL */
+[id^="fs-"] .fs-image-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+[id^="fs-"] .fs-img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: none;
+}
+
+/* FAQ COL - Items use faq_color_scheme for active state */
+[id^="fs-"] .fs-faq-col {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+[id^="fs-"] .fs-faq-item {
+  position: relative;
+  border-radius: 16px;
+  background-color: transparent;
+  color: var(--color-foreground);
+  overflow: hidden;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smart border using pseudo-element */
+[id^="fs-"] .fs-faq-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 1px solid currentColor;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Active state - uses FAQ scheme background */
+[id^="fs-"] .fs-faq-item.active {
+  background-color: var(--color-background);
+}
+
+[id^="fs-"] .fs-faq-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 25px;
+  cursor: pointer;
+  user-select: none;
+}
+
+[id^="fs-"] .fs-faq-title {
+  font-family: var(--font-b);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-foreground-heading, var(--color-foreground));
+  margin: 0;
+}
+
+/* Smoothed Icon Animation */
+[id^="fs-"] .fs-faq-icon {
+  width: 18px;
+  height: 18px;
+  color: currentColor;
+  flex-shrink: 0;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[id^="fs-"] .fs-faq-icon .fs-vertical-line {
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+/* Turns the '+' into a '-' smoothly */
+[id^="fs-"] .fs-faq-item.active .fs-faq-icon {
+  transform: rotate(180deg);
+}
+
+[id^="fs-"] .fs-faq-item.active .fs-faq-icon .fs-vertical-line {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+
+/* Smoothed Height Animation */
+[id^="fs-"] .fs-faq-content {
+  position: relative;
+  z-index: 2;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+
+[id^="fs-"] .fs-faq-item.active .fs-faq-content {
+  opacity: 1;
+}
+
+[id^="fs-"] .fs-faq-inner {
+  padding: 0 25px 25px 25px;
+  font-family: var(--font-b);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-foreground);
+  opacity: 0.8;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  [id^="fs-"] .fs-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  [id^="fs-"] .fs-text-col {
+    align-items: center;
+    text-align: center;
+    order: 1;
+  }
+
+  [id^="fs-"] .fs-image-col {
+    order: 2;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  [id^="fs-"] .fs-faq-col {
+    order: 3;
+  }
+
+  [id^="fs-"] h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+}

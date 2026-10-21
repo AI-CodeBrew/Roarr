@@ -1,0 +1,114 @@
+{%- liquid
+  unless shop.metafields.app.block_control.value
+    break
+  endunless
+
+  assign s = block.settings
+  assign kai = product.metafields.kluck_ai
+  assign cust = product.metafields.custom
+  
+  assign color = kai.color_schema.value | default: kai.color_schema | default: '#a34e4e'
+  assign d_color = cust.discount_badge_color.value | default: cust.discount_badge_color | default: color
+  assign b_text = cust.badge_text.value | default: cust.badge_text | default: s.badge_text
+  
+  assign subtitle = product.description | strip_html
+  if s.use_metafields
+    assign subtitle = kai.product_subtitle.value | default: kai.product_subtitle | default: subtitle
+  endif
+
+  assign cur_v = product.selected_or_first_available_variant
+  assign pr = cur_v.price
+  assign cp = cur_v.compare_at_price | default: 0
+  assign save = 0
+  
+  if cp > pr
+    assign save = cp | minus: pr | times: 100.0 | divided_by: cp | round
+  endif
+-%}
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'product-details.css' | asset_url }}" media="all">
+<script src="{{ 'product-details.js' | asset_url }}" defer></script>
+
+<div class="tae-product-details tae-product-details-{{ block.id | replace: '_', '-' }} tae-product-details--badge-{{ s.badge_align | default: 'center' }} tae-product-details--badge-shape-{{ s.badge_shape | default: 'ribbon' }} tae-product-details--title-{{ s.content_align | default: 'center' }} tae-product-details--subtitle-{{ s.content_align | default: 'center' }} tae-product-details--rating-text-{{ s.rating_text_align | default: 'center' }} tae-product-details--price-{{ s.price_align | default: 'center' }} tae-product-details--variants-{{ s.variants_align | default: 'center' }} app_blocks_class" style="--product-details-max-width:600px;--product-details-gap:12px;--product-features-icon-color:{{ color }};--badge-1-text:{{ color }};--discount-badge-color:{{ d_color }};--product-details-badge-bg:#ffdb66;--variants-border-radius:{{ s.variants_border_radius | default: 8 }}px;display:none;">
+  {%- if b_text != blank -%}<div class="tae-product-details-badge"><span> {{ b_text | upcase }}</span></div>{%- endif -%}
+  {%- if product -%}<h3 class="tae-product-details-title">{{ product.title }}</h3>{%- endif -%}
+  {%- if subtitle != blank -%}<p class="tae-product-details-subtitle rte">{{ subtitle }}</p>{%- endif -%}
+  
+  {%- if s.show_rating != false -%}
+    <div class="tae-product-details-rating">
+      <div class="tae-product-details-stars"><span class="tae-product-details-star">★★★★★</span></div>
+      <span class="tae-product-details-rating-text">{{ s.rating_text | default: 'Best Quality' }}</span>
+    </div>
+  {%- endif -%}
+
+  {%- if s.show_features != false and s.features_text != blank -%}
+    <div class="tae-product-details-features-grid" data-icon-set="{{ s.icon_set | default: 'default' }}">
+      {%- assign feats = s.features_text | split: '#' -%}
+      {%- for ft in feats limit: 3 -%}
+        {%- assign ft_val = ft | strip -%}
+        {%- if ft_val != blank -%}
+          <div class="tae-product-details-feature">
+            <div class="tae-product-details-feature-icon">
+              {%- if s.icon_set != 'default' -%}
+                {%- assign icon_url = s.icon_set | append: '_' | append: forloop.index | append: '.svg' | asset_url -%}
+                <span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ icon_url }}');"></span>
+              {%- else -%}
+                {%- if forloop.index == 1 -%}<img src="{{ 'feature-1-icon.svg' | asset_url }}" width="24" height="24" alt="" loading="lazy">
+                {%- elsif forloop.index == 2 -%}<img src="{{ 'feature-2-icon.svg' | asset_url }}" width="24" height="24" alt="" loading="lazy">
+                {%- else -%}<img src="{{ 'feature-3-icon.svg' | asset_url }}" width="24" height="24" alt="" loading="lazy">{%- endif -%}
+              {%- endif -%}
+            </div>
+            <p class="tae-product-details-feature-text">{{ ft_val }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- if product and s.show_price != false -%}
+    <div class="tae-product-details-price-row" data-price-row>
+      <span class="tae-product-details-price-current" data-price-current>{{ pr | money }}</span>
+      {%- if cp > pr -%}<p class="tae-product-details-price-compare" data-price-compare>{{ cp | money }}</p>{%- endif -%}
+      {%- if save > 0 -%}<span class="tae-product-details-discount-badge" data-discount-badge><p data-discount-text>{{ save }}% off</p></span>{%- endif -%}
+    </div>
+    
+    {%- if product.variants.size > 1 -%}
+      {%- if product.options_with_values.size > 0 -%}
+        <div class="tae-product-details-variant-groups" data-variant-picker-root>
+          <script type="application/json" data-product-variants-json>
+            [{%- for v in product.variants -%}{"id":{{ v.id }},"option1":{{ v.option1 | json }},"option2":{{ v.option2 | json }},"option3":{{ v.option3 | json }},"available":{{ v.available | json }},"price":{{ v.price }},"compare_at_price":{{ v.compare_at_price | default: 0 }},"price_formatted":{{ v.price | money | json }},"compare_formatted":{% if v.compare_at_price %}{{ v.compare_at_price | money | json }}{% else %}""{% endif %}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]
+          </script>
+          {%- for option in product.options_with_values -%}
+            <div class="tae-product-details-variant-group" data-option-position="{{ option.position }}">
+              <div class="tae-product-details-variant-label">{{ option.name }}:</div>
+              <div class="tae-product-details-variants" data-option-row>
+                {%- assign opt_idx = 'option' | append: option.position -%}
+                {%- for value in option.values -%}
+                  <button type="button" class="tae-product-details-variant-btn tae-product-details-option-value-btn{% if cur_v[opt_idx] == value %} is-selected{% endif %}" data-option-position="{{ option.position }}" data-option-value="{{ value | escape }}" aria-label="{{ option.name }} {{ value | escape }}">{{ value }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="tae-product-details-variants" data-variants-container>
+          {%- for v in product.variants -%}
+            {%- if v.available -%}
+              {%- liquid
+                assign vs = 0
+                if v.compare_at_price > v.price
+                  assign vs = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round
+                endif
+              -%}
+              <button type="button" class="tae-product-details-variant-btn{% if v.id == cur_v.id %} is-selected{% endif %}" data-variant-id="{{ v.id }}" data-variant-price="{{ v.price }}" data-variant-price-formatted="{{ v.price | money }}" data-variant-compare-price="{{ v.compare_at_price | default: 0 }}" data-variant-compare-price-formatted="{{ v.compare_at_price | money }}" data-variant-discount-percentage="{{ vs }}" aria-label="{{ v.title }}">{{ v.title }}</button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{"name":"Product Details","target":"section","settings":[{"type":"checkbox","id":"use_metafields","label":"Use Kluck AI metafields","default":true},{"type":"header","content":"Badge"},{"type":"text","id":"badge_text","label":"Badge text","default":"Featured Product"},{"type":"select","id":"badge_shape","label":"Shape","default":"ribbon","options":[{"value":"rectangle","label":"Rectangle"},{"value":"ribbon","label":"Ribbon"},{"value":"rounded","label":"Rounded"},{"value":"diamond","label":"Diamond"}]},{"type":"select","id":"badge_align","label":"Alignment","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]},{"type":"header","content":"Layout"},{"type":"select","id":"content_align","label":"Text align","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]},{"type":"checkbox","id":"show_rating","label":"Show rating","default":false},{"type":"text","id":"rating_text","label":"Rating text","default":"Best Quality"},{"type":"select","id":"rating_text_align","label":"Rating align","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]},{"type":"header","content":"Price & Variants"},{"type":"checkbox","id":"show_price","label":"Show price","default":true},{"type":"select","id":"price_align","label":"Price align","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]},{"type":"select","id":"variants_align","label":"Variants align","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]},{"type":"range","id":"variants_border_radius","label":"Border radius","min":0,"max":50,"step":1,"unit":"px","default":8},{"type":"header","content":"Features"},{"type":"checkbox","id":"show_features","label":"Show features","default":true},{"type":"select","id":"icon_set","label":"Icon set","default":"default","options":[{"value":"default","label":"Default"},{"value":"kids_toys","label":"Kids and Toys"},{"value":"home_kitchen","label":"Home & Kitchen"},{"value":"car_accessories","label":"Car Accessories"},{"value":"health_beauty","label":"Health & Beauty"},{"value":"general","label":"General"}]},{"type":"text","id":"features_text","label":"Features (# separated)","default":"Feature 1#Feature 2#Feature 3"}]}
+{% endschema %}

@@ -1,0 +1,40 @@
+/**
+ * Loaded after Polaris — tighter vertical rhythm for React `<Page>` headers.
+ * Defaults: header box xs/md padding-block 400/600; content padding-top 500 @ 48em+.
+ */
+
+/* Header: first direct `.Polaris-Box` is the Page Header block */
+.Polaris-Page > .Polaris-Box:first-child {
+  padding-block-start: var(--p-space-200);
+  padding-block-end: var(--p-space-300);
+}
+
+@media (min-width: 48em) {
+  .Polaris-Page > .Polaris-Box:first-child {
+    padding-block-start: var(--p-space-300);
+    padding-block-end: var(--p-space-300);
+  }
+}
+
+/* Body under the title row */
+.Polaris-Page__Content {
+  padding-top: var(--p-space-200);
+}
+
+@media (min-width: 48em) {
+  .Polaris-Page__Content {
+    padding-top: var(--p-space-300);
+  }
+}
+
+
+.Polaris-IndexFilters.Polaris-IndexFilters__IndexFiltersSticky{
+  position: sticky !important;
+}
+
+/* Crisp launcher sits on bottom actions on phones. Desktop stays at the default corner. */
+@media (max-width: 767px) {
+  .crisp-client {
+    transform: translateY(-130px);
+  }
+}

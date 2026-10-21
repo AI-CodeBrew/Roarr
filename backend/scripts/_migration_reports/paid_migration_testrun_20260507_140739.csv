@@ -1,0 +1,2 @@
+fk_user_id,shop_url,subscription_id,plan_name,price,interval,classification,credits_to_grant,cancel_status,grant_status,ledger_entry_id,new_balance,error,dry_run
+,ruwbdp-p8.myshopify.com,50165514530,Starter 2025 Monthly,15.00,,price=15.00,500,cancelled,granted,f338332a-f5fc-4315-9e8e-be5cddfaa8d4,700,,False

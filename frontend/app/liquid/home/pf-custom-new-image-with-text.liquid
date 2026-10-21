@@ -1,0 +1,173 @@
+{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+
+{% if shop.metafields.app.block_control.value %}
+{%- comment -%}
+  Custom Image with Text - Pro Version
+  - Features: Typography Inheritance, Color Schemes, Smart Opacity text hierarchy, Stat Features.
+{%- endcomment -%}
+
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-custom-new-image-with-text.css' | asset_url }}" media="all">
+
+{%- style -%}
+  .custom-iwt--{{ section.id }} {
+    --font-h: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-b: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --padding-top-m: {{ section.settings.padding_top_mobile }}px;
+    --padding-bottom-m: {{ section.settings.padding_bottom_mobile }}px;
+    --padding-top-d: {{ section.settings.padding_top_desktop }}px;
+    --padding-bottom-d: {{ section.settings.padding_bottom_desktop }}px;
+    --heading-size-d: {{ section.settings.heading_size_desktop }}px;
+    --heading-size-m: {{ section.settings.heading_size_mobile }}px;
+    --text-size-d: {{ section.settings.text_size_desktop }}px;
+    --text-size-m: {{ section.settings.text_size_mobile }}px;
+    --feature-stat-size-d: {{ section.settings.stat_size_desktop }}px;
+    --feature-stat-size-m: {{ section.settings.stat_size_mobile }}px;
+    --feature-text-size-d: {{ section.settings.feature_text_size_desktop }}px;
+    --feature-text-size-m: {{ section.settings.feature_text_size_mobile }}px;
+    --feature-stat-color: {% if section.settings.feature_stat_color != blank %}{{ section.settings.feature_stat_color }}{% elsif section.settings.stat_color != blank %}{{ section.settings.stat_color }}{% else %}var(--color-primary-button-background){% endif %};
+    --heading-transform: {{ section.settings.heading_transform }};
+    --btn-border-radius: {{ section.settings.btn_border_radius }}px;
+    --btn-padding-y: {{ section.settings.btn_padding_y }}px;
+    --btn-padding-x: {{ section.settings.btn_padding_x }}px;
+    --btn-font-size: {{ section.settings.btn_font_size }}px;
+    --max-width: {{ section.settings.max_width }}px;
+    --desktop-gap: {{ section.settings.desktop_gap }}px;
+    --layout: {% if section.settings.layout == 'image_right' %}row{% else %}row-reverse{% endif %};
+    --image-radius: {{ section.settings.image_border_radius }}px;
+    --image-ratio: {% if section.settings.image_ratio == 'auto' %}auto{% else %}{{ section.settings.image_ratio }}{% endif %};
+  }
+{%- endstyle -%}
+
+<div class="custom-iwt custom-iwt--{{ section.id }} color-{{ section.settings.color_scheme }}">
+  <div class="custom-iwt-container custom-iwt-container--{{ section.id }}">
+    <div class="iwt-text-column">
+      {%- assign kluck_heading = store_gen.home_page.text.image_with_text_heading -%}
+      {%- assign kluck_desc_1 = store_gen.home_page.text.image_with_text_description_1 -%}
+      {%- assign kluck_desc_2 = store_gen.home_page.text.image_with_text_description_2 -%}
+      {%- assign kluck_f1_stat = store_gen.home_page.text.image_with_text_description_feature_1_stat -%}
+      {%- assign kluck_f1_text = store_gen.home_page.text.image_with_text_description_feature_1 -%}
+      {%- assign kluck_f2_stat = store_gen.home_page.text.image_with_text_description_feature_2_stat -%}
+      {%- assign kluck_f2_text = store_gen.home_page.text.image_with_text_description_feature_2 -%}
+      {%- assign kluck_f3_stat = store_gen.home_page.text.image_with_text_description_feature_3_stat -%}
+      {%- assign kluck_f3_text = store_gen.home_page.text.image_with_text_description_feature_3 -%}
+
+      {% if section.settings.use_kluck_ai_metafields %}
+        {%- if kluck_heading != blank -%}
+          <h2 class="iwt-heading">{{ kluck_heading }}</h2>
+        {%- elsif section.settings.heading != blank -%}
+          <h2 class="iwt-heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      {% else %}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="iwt-heading">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      {% endif %}
+
+      {% if section.settings.use_kluck_ai_metafields %}
+        {%- if kluck_desc_1 != blank -%}
+          <div class="iwt-text">{{ kluck_desc_1 }}</div>
+        {%- elsif section.settings.text_1 != blank -%}
+          <div class="iwt-text">{{ section.settings.text_1 }}</div>
+        {%- endif -%}
+
+        {%- if kluck_desc_2 != blank -%}
+          <div class="iwt-text">{{ kluck_desc_2 }}</div>
+        {%- elsif section.settings.text_2 != blank -%}
+          <div class="iwt-text">{{ section.settings.text_2 }}</div>
+        {%- endif -%}
+      {% else %}
+        {%- if section.settings.text_1 != blank -%}
+          <div class="iwt-text">{{ section.settings.text_1 }}</div>
+        {%- endif -%}
+        {%- if section.settings.text_2 != blank -%}
+          <div class="iwt-text">{{ section.settings.text_2 }}</div>
+        {%- endif -%}
+      {% endif %}
+
+      <div class="iwt-features">
+        {% assign f1_s = section.settings.feature_1_stat %}
+        {% assign f1_t = section.settings.feature_1_text %}
+        {% if section.settings.use_kluck_ai_metafields %}
+          {% if kluck_f1_stat != blank %}{% assign f1_s = kluck_f1_stat %}{% endif %}
+          {% if kluck_f1_text != blank %}{% assign f1_t = kluck_f1_text %}{% endif %}
+        {% endif %}
+        {% if f1_s != blank or f1_t != blank %}
+          <div class="iwt-feature-item">
+            {% if f1_s != blank %}<div class="iwt-feature-stat">{{ f1_s }}</div>{% endif %}
+            {% if f1_t != blank %}<div class="iwt-feature-text">{{ f1_t }}</div>{% endif %}
+          </div>
+        {% endif %}
+
+        {% assign f2_s = section.settings.feature_2_stat %}
+        {% assign f2_t = section.settings.feature_2_text %}
+        {% if section.settings.use_kluck_ai_metafields %}
+          {% if kluck_f2_stat != blank %}{% assign f2_s = kluck_f2_stat %}{% endif %}
+          {% if kluck_f2_text != blank %}{% assign f2_t = kluck_f2_text %}{% endif %}
+        {% endif %}
+        {% if f2_s != blank or f2_t != blank %}
+          <div class="iwt-feature-item">
+            {% if f2_s != blank %}<div class="iwt-feature-stat">{{ f2_s }}</div>{% endif %}
+            {% if f2_t != blank %}<div class="iwt-feature-text">{{ f2_t }}</div>{% endif %}
+          </div>
+        {% endif %}
+
+        {% assign f3_s = section.settings.feature_3_stat %}
+        {% assign f3_t = section.settings.feature_3_text %}
+        {% if section.settings.use_kluck_ai_metafields %}
+          {% if kluck_f3_stat != blank %}{% assign f3_s = kluck_f3_stat %}{% endif %}
+          {% if kluck_f3_text != blank %}{% assign f3_t = kluck_f3_text %}{% endif %}
+        {% endif %}
+        {% if f3_s != blank or f3_t != blank %}
+          <div class="iwt-feature-item">
+            {% if f3_s != blank %}<div class="iwt-feature-stat">{{ f3_s }}</div>{% endif %}
+            {% if f3_t != blank %}<div class="iwt-feature-text">{{ f3_t }}</div>{% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      {% if section.settings.btn_label != blank and section.settings.btn_link != blank %}
+        <a href="{{ section.settings.btn_link }}" class="kluck-button">{{ section.settings.btn_label }}</a>
+      {% endif %}
+    </div>
+
+    <div class="iwt-image-column">
+      <div class="iwt-image-grid">
+        {%- assign kluck_product_impact = shop.metafields.kluck_ai.product_impact_image.value -%}
+        {%- assign img_1 = section.settings.image_1 -%}
+        {%- assign img_1_str = img_1 | append: '' -%}
+        {%- assign kluck_impact_str = kluck_product_impact | append: '' -%}
+        {% if section.settings.use_kluck_ai_metafields %}
+          {%- if kluck_product_impact != blank -%}
+            {%- if kluck_impact_str contains '://' -%}
+              <img src="{{ kluck_product_impact }}" loading="lazy" alt="{{ kluck_heading | escape }}">
+            {%- else -%}
+              {{ kluck_product_impact | image_url: width: 800 | image_tag: loading: 'lazy', alt: kluck_heading | escape }}
+            {%- endif -%}
+          {%- elsif img_1 != blank -%}
+            {%- if img_1_str contains '://' -%}
+              <img src="{{ img_1 }}" loading="lazy" alt="{{ section.settings.heading | escape }}">
+            {%- else -%}
+              {{ img_1 | image_url: width: 800 | image_tag: loading: 'lazy', alt: img_1.alt | escape }}
+            {%- endif -%}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        {% else %}
+          {%- if img_1 != blank -%}
+            {%- if img_1_str contains '://' -%}
+              <img src="{{ img_1 }}" loading="lazy" alt="{{ section.settings.heading | escape }}">
+            {%- else -%}
+              {{ img_1 | image_url: width: 800 | image_tag: loading: 'lazy', alt: img_1.alt | escape }}
+            {%- endif -%}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

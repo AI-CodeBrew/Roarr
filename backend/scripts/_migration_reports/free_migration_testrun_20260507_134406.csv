@@ -1,0 +1,2 @@
+shop_url,fk_user_id,credits_to_grant,grant_status,ledger_entry_id,new_balance,skip_reason,dry_run
+rafay-dev-store-for-kluck.myshopify.com,,200,granted,4c1541dd-5e49-4685-aaf7-898ed8699fb5,1290,,False

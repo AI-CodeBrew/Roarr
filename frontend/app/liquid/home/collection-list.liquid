@@ -1,0 +1,80 @@
+{% comment %}
+  Collection List - Simplified for preview
+  - Supports: grid, bento layouts
+  - collection_list: array of collection handles
+  - Renders collection cards with image + title
+  - Colors: Scheme-driven via pf-color-schemes.css
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{% assign coll_list = section.settings.collection_list %}
+{% assign layout = section.settings.layout_type | default: 'grid' %}
+{% assign max_items = 8 %}
+
+{% if coll_list != blank %}
+  {% if coll_list.size %}
+    {% assign max_items = coll_list.size %}
+  {% endif %}
+{% endif %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'collection-list.css' | asset_url }}" media="all">
+
+<style>
+  #cl-{{ section.id }} {
+    --cl-gap: {{ section.settings.gap }}px;
+    --cl-cols: {{ section.settings.columns }};
+    --cl-cols-mobile: {{ section.settings.mobile_columns }};
+    --cl-col-gap: {{ section.settings.columns_gap }}px;
+    --cl-row-gap: {{ section.settings.rows_gap }}px;
+    --cl-bento-gap: {{ section.settings.bento_gap }}px;
+    --cl-pt: {{ section.settings.padding_block_start }}px;
+    --cl-pb: {{ section.settings.padding_block_end }}px;
+    --cl-width: {% if section.settings.section_width == 'full-width' %}100%{% else %}min(1400px, 100%){% endif %};
+  }
+</style>
+
+<div id="cl-{{ section.id }}" class="cl-root color-{{ section_scheme }}">
+  <div class="cl-section">
+    <div class="cl-container">
+      <div class="cl-grid cl-grid--{{ layout }}">
+        {% if coll_list != blank %}
+          {% for item in coll_list limit: max_items %}
+            {% assign coll = item %}
+            {% if item.title == blank and item != blank %}
+              {% assign coll = collections[item] %}
+            {% endif %}
+
+            <a href="{% if coll != blank %}{{ coll.url }}{% else %}#{% endif %}" class="cl-card {% if layout == 'bento' and forloop.first %}cl-card--large{% endif %}">
+              <div class="cl-card-img-wrap">
+                {% if coll != blank and coll.image != blank %}
+                  {{ coll.image | image_url: width: 600 | image_tag: 'cl-card-img', 'lazy' }}
+                {% elsif coll != blank and coll.featured_image != blank %}
+                  {{ coll.featured_image | image_url: width: 600 | image_tag: 'cl-card-img', 'lazy' }}
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag: 'cl-card-img' }}
+                {% endif %}
+              </div>
+              <div class="cl-card-title">
+                {% if coll != blank and coll.title != blank %}
+                  {{ coll.title }}
+                {% else %}
+                  {{ item | replace: '-', ' ' | capitalize }}
+                {% endif %}
+              </div>
+            </a>
+          {% endfor %}
+        {% else %}
+          {% for i in (1..4) %}
+            <a href="#" class="cl-card {% if layout == 'bento' and forloop.first %}cl-card--large{% endif %}">
+              <div class="cl-card-img-wrap">
+                {{ 'collection-1' | placeholder_svg_tag: 'cl-card-img' }}
+              </div>
+              <div class="cl-card-title">Collection {{ i }}</div>
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

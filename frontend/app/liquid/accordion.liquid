@@ -1,0 +1,60 @@
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+{%- liquid
+  assign s = block.settings
+  assign m = product.metafields.kluck_ai
+  assign limit = s.number_of_items | default: 4 | at_most: 4 | at_least: 1
+
+  assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
+  if s.show_background == false
+    assign opacity = 0
+  else
+    assign opacity = opacity_val
+  endif
+  assign bg_color = s.background_color | default: '#ffffff'
+  if s.use_metafields_bg and product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  elsif s.use_metafields and product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  endif
+
+  assign heading_font = s.heading_font_family
+  assign body_font = s.body_font_family
+-%}
+
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'accordion.css' | asset_url }}" media="all">
+
+<div class="app_blocks_class tae-accordion tae-accordion-{{ block.id | replace: '_', '-' | downcase }}{% if s.card_style %} tae-accordion--cards{% endif %}" style="display:block;--product-section-bg:{{ bg_color }};--product-section-opacity:{{ opacity }};--bg-color:{{ bg_color }};--bg-opacity:{{ opacity }};--container-width:{{ s.container_max_width | default: 1250 }}px;--font-heading-family:{% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--font-body-family:{% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--body-size:{{ s.body_size | default: 16 }}px;--body-weight:{{ s.body_weight | default: 400 }};--h1-size:{{ s.h1_size | default: 48 }}px;--h1-weight:{{ s.h1_weight | default: 700 }};--h2-size:{{ s.h2_size | default: 36 }}px;--h2-weight:{{ s.h2_weight | default: 700 }};--h3-size:{{ s.h3_size | default: 30 }}px;--h3-weight:{{ s.h3_weight | default: 600 }};--h4-size:{{ s.h4_size | default: 24 }}px;--h4-weight:{{ s.h4_weight | default: 600 }};--h5-size:{{ s.h5_size | default: 20 }}px;--h5-weight:{{ s.h5_weight | default: 500 }};--h6-size:{{ s.h6_size | default: 16 }}px;--h6-weight:{{ s.h6_weight | default: 500 }};">
+  {%- for i in (1..limit) -%}
+    {%- liquid
+      assign h_key = 'heading_' | append: i
+      assign c_key = 'content_' | append: i
+      assign h = s[h_key]
+      assign c = s[c_key]
+
+      if s.use_metafields
+        assign mh_key = 'product_question_' | append: i
+        assign mc_key = mh_key | append: '_answer'
+        assign h = m[mh_key].value | default: m[mh_key] | default: h
+        assign c = m[mc_key].value | default: m[mc_key] | default: c
+      endif
+    -%}
+
+    {%- if h != blank or c != blank -%}
+      <details class="tae-accordion-item">
+        <summary>
+          <div class="tae-accordion-header">
+            {% if s.show_tick_icon %}<span class="tae-accordion-tick-icon">{% render 'snippets/accordion-tick-icon' %}</span>{% endif %}
+            <p class="tae-accordion-heading">{{ h }}</p>
+            <span class="tae-accordion-plus-icon">{{ s.toggle_icon | default: '+' }}</span>
+          </div>
+        </summary>
+        <div class="tae-accordion-body rte">{{ c }}</div>
+      </details>
+    {%- endif -%}
+
+  {%- endfor -%}
+
+</div>
+{%- endif -%}

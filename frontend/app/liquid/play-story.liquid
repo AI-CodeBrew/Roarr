@@ -1,0 +1,46 @@
+{%- capture kl_rtl_html -%}
+{% render 'snippets/play-fonts' %}
+{%- assign m = product.metafields.kluck_ai -%}
+{%- assign i1 = m.product_highlight_1.value | default: m.product_highlight_1 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-1_bf88d73e-47ac-4511-b9b4-94fca069ec43.png?v=1726197308' -%}
+{%- assign i2 = m.product_highlight_2.value | default: m.product_highlight_2 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-2.png?v=1726197308' -%}
+{%- assign i3 = m.product_highlight_3.value | default: m.product_highlight_3 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-3.png?v=1726197308' -%}
+{%- assign i4 = m.product_highlight_4.value | default: m.product_highlight_4 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-4.png?v=1726197308' -%}
+{%- assign p1 = m.pill_1.value | default: m.pill_1 | default: '10% Giving back' -%}
+{%- assign p2 = m.pill_2.value | default: m.pill_2 | default: 'Free Shipping over $100 order' -%}
+{%- assign p3 = m.pill_3.value | default: m.pill_3 | default: '90 Days free return' -%}
+<section class="pk-story">
+  <div class="pk-mix">
+    We built <img src="{{ i1 }}" alt=""> a toy they reach for <img src="{{ i2 }}" alt=""><br>
+    <img src="{{ i3 }}" alt=""> with details that stay <img src="{{ i4 }}" alt=""> easy to see
+  </div>
+  <div class="pk-pills">
+    <span><i>✓</i> {{ p1 }}</span>
+    <span><i>✓</i> {{ p2 }}</span>
+    <span><i>✓</i> {{ p3 }}</span>
+  </div>
+</section>
+<style>
+  .pk-story { background: #FFFCF5; color: #6F2424; padding: 56px 0 28px; text-align: center; font-family: Poppins, sans-serif; }
+  .pk-mix { width: min(1100px, calc(100% - 48px)); margin: 0 auto; font-family: "Caveat Brush", cursive !important; font-size: 48px; line-height: 1.35; }
+  .pk-mix img { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; display: inline-block; vertical-align: middle; margin: 0 8px; }
+  .pk-pills { width: min(1100px, calc(100% - 48px)); margin: 28px auto 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .pk-pills span { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #6F2424; border-radius: 999px; padding: 8px 16px; font-size: 15px; font-weight: 600; }
+  .pk-pills i { width: 22px; height: 22px; border-radius: 50%; background: #FFD74F; color: #6F2424; display: grid; place-items: center; font-style: normal; font-size: 13px; }
+  @media (max-width: 800px) { .pk-mix { font-size: 32px; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--play" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: Poppins, "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Caveat Brush", "Lalezar", "Tajawal", cursive !important; line-height: 1.4 !important; font-weight: 400 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee), .kl-rtl:is(#kl-rtl, *) :is(.kluck-play-marquee, .pk-marquee) * { direction: ltr; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

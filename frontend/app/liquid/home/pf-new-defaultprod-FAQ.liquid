@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="{{ 'pf-new-defaultprod-FAQ.css' | asset_url }}" media="all">
+<script src="{{ 'pf-new-defaultprod-FAQ.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  #FaqSection-{{ section.id }} {
+    --faq-pt-mobile: {{ section.settings.padding_top_mobile }}px;
+    --faq-pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --faq-pt-desktop: {{ section.settings.padding_top_desktop }}px;
+    --faq-pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --faq-bg-color: {{ section.settings.bg_color }};
+    --faq-text-color: {{ section.settings.text_color }};
+    --faq-border-color: {{ section.settings.border_color }};
+    --faq-container-width: {{ section.settings.container_width }}px;
+    --faq-heading-alignment: {{ section.settings.heading_alignment }};
+    --faq-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+    --faq-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
+    --faq-question-size: {{ section.settings.question_size }}px;
+  }
+{%- endstyle -%}
+
+<div class="minimal-faq-section" id="FaqSection-{{ section.id }}" data-auto-close="{{ section.settings.auto_close }}">
+  <div class="minimal-faq">
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="minimal-faq__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    <div class="minimal-faq__list">
+      {%- for block in section.blocks -%}
+        <div class="minimal-faq__item {% if section.settings.open_first and forloop.first %}is-open{% endif %}" {{ block.shopify_attributes }}>
+          <button class="minimal-faq__question" aria-expanded="{% if section.settings.open_first and forloop.first %}true{% else %}false{% endif %}">
+            <span class="minimal-faq__question-text">{{ block.settings.title | escape }}</span>
+            <span class="minimal-faq__icon"></span>
+          </button>
+
+          <div class="minimal-faq__answer-wrapper">
+            <div class="minimal-faq__answer-inner">
+              {{ block.settings.answer }}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>

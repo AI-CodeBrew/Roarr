@@ -1,0 +1,537 @@
+
+ {
+  "sections": {
+    "kluck-ai-hero-section": {
+      "type": "kluck-ai-hero-section-1",
+      "blocks": {
+        "kluck_ai_product_details": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/product-details/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {
+            "use_metafields": true,
+            "badge_text": "Featured Product",
+            "badge_shape": "rectangle",
+            "badge_align": "left",
+            "content_align": "left",
+            "show_rating": true,
+            "rating_text": "Popular Pick",
+            "rating_text_align": "left",
+            "show_price": true,
+            "price_align": "left",
+            "variants_align": "left",
+            "variants_border_radius": 50,
+            "show_features": false,
+            "features_text": "Feature 1#Feature 2#Feature 3"
+          }
+        },
+        "kluck_ai_bundle": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/bundle/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {}
+        },
+        "kluck_ai_buy_now_button": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/buy-now-button/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {
+            "button_text": "Buy Now",
+            "alignment": "center",
+            "container_width": 100,
+            "button_border_radius": 0,
+            "button_height": 48,
+            "quantity_style": "option1",
+            "quantity_border_radius": 0,
+            "quantity_width": 125
+          }
+        },
+        "kluck_ai_delivery_estimator": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/delivery-estimator/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {
+            "show_delivery_estimator": true,
+            "show_simple_line": true,
+            "processing_days": 2,
+            "delivery_days_after_processing": 3,
+            "show_service_accordion": true,
+            "title_1": "Safe Purchase",
+            "content_1": "No hidden fees and full transparency at checkout. Your personal and financial details are always kept strictly confidential.",
+            "title_2": "Reliable Shipping",
+            "content_2": "We process and dispatch orders quickly to minimize your wait time. Enjoy dependable delivery options to get your items when you need them.",
+            "title_3": "Customer Care",
+            "content_3": "We believe in putting our customers first, every single time. Contact our dedicated team for hassle-free help and guidance."
+          }
+        },
+        "kluck_ai_frequently_bought": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/frequently-bought/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {
+            "heading": "Frequently Bought Together",
+            "product_list": [
+              "2-in-1-watermelon-fork-slicer-multi-purpose-stainless-steel-watermelon-slicer-cutter-kitchen-fruit-cutting-fork-fruit-divider-kitchen-gadgets",
+              "2-in-1-oil-dispenser-with-silicon-brush-bbq-oil-spray-glass-bottle-silicone-for-barbecue-cooking-seasoning-bottle-kitchen-gadgets"
+            ],
+            "layout_mode": "stack"
+          }
+        }
+      },
+      "block_order": [
+        "kluck_ai_product_details",
+        "kluck_ai_bundle",
+        "kluck_ai_buy_now_button",
+        "kluck_ai_delivery_estimator",
+        "kluck_ai_frequently_bought"
+      ],
+      "name": "Kluck AI - Hero Section",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 0,
+        "container_max_width": 1400,
+        "heading_font_family": "oswald_n4",
+        "body_font_family": "roboto_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500,
+        "pad_left_x": 20,
+        "pad_left_y": 40,
+        "pad_right_x": 20,
+        "pad_right_y": 40,
+        "show_thumbs": true,
+        "thumbs_count": 5,
+        "thumb_position": "left",
+        "gallery_width": 100,
+        "main_radius": 0,
+        "thumb_radius": 0,
+        "show_faq": true,
+        "faq_margin_top": 20,
+        "faq_bg_color": "#ffffff",
+        "faq_border_color": "#e0e0e0",
+        "faq_color_q": "#000000",
+        "faq_color_a": "#555555",
+        "faq_icon_bg": "#f0f0f0",
+        "faq_icon_color": "#333333",
+        "faq_q1": "Shipping info?",
+        "faq_a1": "Ships in 3 days.",
+        "faq_q2": "Returns?",
+        "faq_a2": "30-day returns.",
+        "faq_q3": "How to Use?",
+        "faq_a3": "Use Easily.",
+        "faq_q4": "",
+        "faq_a4": "",
+        "faq_q5": "",
+        "faq_a5": ""
+      }
+    },
+    "kluck-ai-marquee-section-1": {
+      "type": "kluck-ai-marquee-section-1",
+      "blocks": {
+        "text_hHcRTH": {
+          "type": "text",
+          "settings": {
+            "text": "Kluck AI Quality"
+          }
+        },
+        "image_QMjQyV": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_dtkJPV": {
+          "type": "text",
+          "settings": {
+            "text": "Kluck AI Quality"
+          }
+        },
+        "image_8fNrM9": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_K7Ybmz": {
+          "type": "text",
+          "settings": {
+            "text": "Kluck AI Quality"
+          }
+        },
+        "image_q8Xry6": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "text_hHcRTH",
+        "image_QMjQyV",
+        "text_dtkJPV",
+        "image_8fNrM9",
+        "text_K7Ybmz",
+        "image_q8Xry6"
+      ],
+      "name": "Kluck AI - Marquee",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 100,
+        "container_max_width": 2000,
+        "padding_v": 40,
+        "direction": "right",
+        "speed_d": 30,
+        "speed_m": 15,
+        "rotation": 0,
+        "mask_width": 50,
+        "pause_hover": false,
+        "gap_d": 60,
+        "gap_m": 30,
+        "img_height_d": 70,
+        "img_height_m": 50,
+        "img_radius": 10,
+        "heading_font_family": "oswald_n6",
+        "body_font_family": "oswald_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "kluck-ai-empty-section-1": {
+      "type": "kluck-ai-empty-section",
+      "blocks": {
+        "kluck_ai_bento_grid": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/bento-grid/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {
+            "border_radius": 0,
+            "panel_gap": 20,
+            "p2_heading": "95%",
+            "p2_text": "Complete customer satisfaction achieved through personalized solutions and proactive support.",
+            "p2_text_align": "left",
+            "p3_heading": "10+",
+            "p3_text": "Years of innovation empowering businesses to thrive in a competitive market.",
+            "p3_text_align": "left"
+          }
+        }
+      },
+      "block_order": [
+        "kluck_ai_bento_grid"
+      ],
+      "name": "Kluck AI - Bento Grid",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1400,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "oswald_n4",
+        "body_font_family": "roboto_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "kluck-ai-trust-badge-section": {
+      "type": "kluck-ai-trust-badge-section",
+      "blocks": {
+        "badge_G7yKtV": {
+          "type": "badge",
+          "settings": {
+            "text": "Top Quality"
+          }
+        },
+        "badge_d6DY4b": {
+          "type": "badge",
+          "settings": {
+            "text": "Elegance"
+          }
+        },
+        "badge_EenDwy": {
+          "type": "badge",
+          "settings": {
+            "text": "Ethically Made"
+          }
+        },
+        "badge_drcC84": {
+          "type": "badge",
+          "settings": {
+            "text": "Top Rated"
+          }
+        }
+      },
+      "block_order": [
+        "badge_G7yKtV",
+        "badge_d6DY4b",
+        "badge_EenDwy",
+        "badge_drcC84"
+      ],
+      "name": "Kluck AI - Badges",
+      "settings": {
+        "use_metafields": false,
+        "background_color": "#ffffff",
+        "background_opacity": 100,
+        "container_max_width": 1400,
+        "padding_v_d": 40,
+        "padding_v_m": 30,
+        "alignment": "center",
+        "item_bg": "rgba(0,0,0,0)",
+        "item_border": "#e5e5e5",
+        "item_text": "#000000",
+        "badge_radius": 50,
+        "gap_d": 20,
+        "gap_m": 15,
+        "icon_bg": "#1b1f52",
+        "icon_color": "#ffffff",
+        "icon_size_d": 32,
+        "icon_size_m": 28,
+        "mobile_auto_scroll": true,
+        "scroll_speed": 20,
+        "heading_font_family": "abel_n4",
+        "body_font_family": "roboto_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 64,
+        "h2_weight": 500
+      }
+    },
+    "kluck-ai-empty-section-2": {
+      "type": "kluck-ai-empty-section",
+      "blocks": {
+        "kluck_ai_image_with_text": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/image-with-text/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {
+            "use_metafields": true,
+            "image_position": "right",
+            "container_radius": 0,
+            "container_padding": 0,
+            "heading": "Enter your heading",
+            "subheading_1": "Subheading 1",
+            "subheading_1_desc": "Description for subheading 1",
+            "subheading_2": "Subheading 2",
+            "subheading_2_desc": "Description for subheading 2",
+            "subheading_3": "Subheading 3",
+            "subheading_3_desc": "Description for subheading 3",
+            "subheading_4": "Subheading 4",
+            "subheading_4_desc": "Description for subheading 4"
+          }
+        }
+      },
+      "block_order": [
+        "kluck_ai_image_with_text"
+      ],
+      "name": "Kluck AI - Image With Text",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1400,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "oswald_n4",
+        "body_font_family": "roboto_n4",
+        "body_size": 14,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 26,
+        "h3_weight": 600,
+        "h4_size": 20,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "kluck-ai-empty-section-3": {
+      "type": "kluck-ai-empty-section",
+      "blocks": {
+        "kluck_ai_circular_feature": {
+          "type": "shopify://apps/kluck-ai-store-builder/blocks/circular-feature-ring/019b183d-746c-7391-a5b6-6ac9f26fa6b4",
+          "settings": {
+            "use_metafields": true,
+            "image_position": "left",
+            "image_border_radius": 0,
+            "mobile_layout": "cards",
+            "mobile_cards_layout": "grid",
+            "heading": "Transform Your Routine",
+            "subheading": "The lamp's soft, adjustable glow creates a calming environment.",
+            "feature1_title": "Relaxation",
+            "feature1_text": "Promotes a soothing atmosphere for winding down.",
+            "feature2_title": "Versatility",
+            "feature2_text": "Adjust the light to match any mood or activity.",
+            "feature3_title": "Comfort",
+            "feature3_text": "Creates a cozy space for deeper rest and recovery.",
+            "feature4_title": "Tranquility",
+            "feature4_text": "Helps you unwind and clear your mind after a long day."
+          }
+        }
+      },
+      "block_order": [
+        "kluck_ai_circular_feature"
+      ],
+      "name": "Kluck AI - Ciruclar Feature",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1400,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "oswald_n4",
+        "body_font_family": "roboto_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "kluck-ai-pillow-banner": {
+      "type": "kluck-ai-pillow-banner-section",
+      "name": "Kluck AI - Pillow Banner",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 0,
+        "container_max_width": 1400,
+        "corner_radius": 0,
+        "button_position": "top-right",
+        "scoop_radius": 20,
+        "btn_text": "Buy Now",
+        "btn_bg": "#1b1f52",
+        "btn_text_color": "#ffffff",
+        "btn_circle_bg": "#ffffff",
+        "btn_arrow_color": "#1b1f52",
+        "heading": "Committed to sleep\nand second chance",
+        "subtext": "Rest fuels renewal, and second chances offer growth.",
+        "heading_font_family": "oswald_n4",
+        "body_font_family": "roboto_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "kluck_ai_faq_section_4VEVCF": {
+      "type": "kluck-ai-faq-section",
+      "blocks": {
+        "faq_QXUEPx": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order ship?",
+            "answer": "<p>We process orders quickly to ensure timely shipping. Once your order is dispatched, you'll receive a confirmation email with tracking details.</p>"
+          }
+        },
+        "faq_rgaC4H": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order ship?",
+            "answer": "<p>We process orders quickly to ensure timely shipping. Once your order is dispatched, you'll receive a confirmation email with tracking details.</p>"
+          }
+        },
+        "faq_THEDDt": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order ship?",
+            "answer": "<p>We process orders quickly to ensure timely shipping. Once your order is dispatched, you'll receive a confirmation email with tracking details.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_QXUEPx",
+        "faq_rgaC4H",
+        "faq_THEDDt"
+      ],
+      "name": "Kluck AI - FAQ Section",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 100,
+        "container_max_width": 900,
+        "title": "Frequently Asked Questions",
+        "subtitle": "Our support team is here to assist with any inquiries.",
+        "text_alignment": "center",
+        "item_bg": "#f3f3f3",
+        "item_radius": 0,
+        "icon_bg": "#ffffff",
+        "icon_color": "#000000",
+        "heading_font_family": "oswald_n4",
+        "body_font_family": "roboto_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    }
+  },
+  "order": [
+    "kluck-ai-hero-section",
+    "kluck-ai-marquee-section-1",
+    "kluck-ai-empty-section-1",
+    "kluck-ai-trust-badge-section",
+    "kluck-ai-empty-section-2",
+    "kluck-ai-empty-section-3",
+    "kluck-ai-pillow-banner",
+    "kluck_ai_faq_section_4VEVCF"
+  ]
+}

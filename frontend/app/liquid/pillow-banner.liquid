@@ -1,0 +1,141 @@
+{% comment %}
+  Section: Kluck AI - Pillow Banner
+  - Purpose: Sculpted banner with a static "scooped" cutout effect.
+  - Adapted for app preview: uses block instead of section, inline styles preserved.
+{% endcomment %}
+
+{%- assign heading_font = block.settings.heading_font_family -%}
+{%- assign body_font = block.settings.body_font_family -%}
+
+{% comment %} 1. LOAD FONTS {% endcomment %}
+{% if heading_font != blank or body_font != blank %}
+  <style>
+    {% if heading_font != blank %}{{ heading_font | font_face: font_display: 'swap' }}{% endif %}
+    {% if body_font != blank %}{{ body_font | font_face: font_display: 'swap' }}{% endif %}
+  </style>
+{% endif %}
+
+{% comment %} 2. MAIN CONTENT WRAPPER {% endcomment %}
+{% if shop.metafields.app.block_control.value %}
+  {%- liquid
+    assign s = block.settings
+    assign m = product.metafields.kluck_ai
+    assign use_metafields = s.use_metafields
+    assign show_background = s.show_background
+    assign hide_bg = false
+    if show_background == false or show_background == 'false'
+      assign hide_bg = true
+    endif
+
+    if hide_bg
+      assign opacity = 0
+      assign bg_color = 'transparent'
+    else
+      assign opacity_val = s.background_opacity | default: 100 | divided_by: 100.0
+      assign opacity = opacity_val
+      assign bg_color = s.background_color | default: '#ffffff'
+      assign btn_circle = s.btn_circle_bg
+      assign btn_arrow = s.btn_arrow_color
+      if s.use_metafields_bg and product != blank and m.color_schema != blank
+        assign bg_color = m.color_schema.value | default: m.color_schema
+        assign btn_circle = m.color_schema.value | default: m.color_schema
+        assign btn_arrow = '#ffffff'
+      endif
+    endif
+
+    assign color_schema = m.color_schema.value | default: m.color_schema | default: '#a34e4e'
+    if use_metafields and product != blank
+      assign btn_bg = color_schema
+      assign btn_txt = '#ffffff'
+    else
+      assign btn_bg = s.btn_bg
+      assign btn_txt = s.btn_text_color
+    endif
+
+    if use_metafields and product != blank
+      assign banner_image = m.product_image_1 | default: m.product_image_1 | default: s.image
+      assign banner_heading = m.pillow_banner_heading | default: m.pillow_banner_heading | default: s.heading
+      assign banner_subtext = m.pillow_banner_subheading | default: m.pillow_banner_subheading | default: s.subtext
+      assign btn_label = m.pillow_banner_button | default: m.pillow_banner_button | default: s.btn_text
+    else
+      assign banner_image = s.image
+      assign banner_heading = s.heading
+      assign banner_subtext = s.subtext
+      assign btn_label = s.btn_text
+    endif
+  -%}
+
+  <link rel="stylesheet" href="{{ 'pillow-banner.css' | asset_url }}" media="all">
+  <div
+    id="PillowBanner-{{ block.id }}"
+    class="kluck-pillow-banner"
+    style="
+      --bg-color: {{ bg_color }};
+      --bg-opacity: {{ opacity }};
+      --container-width: {{ s.container_max_width }}px;
+      --banner-radius: {{ s.corner_radius }}px;
+      --cutout-radius: {{ s.scoop_radius }}px;
+      --btn-bg: {{ btn_bg }};
+      --btn-txt: {{ btn_txt }};
+      --btn-circle: {{ btn_circle }};
+      --btn-arrow: {{ btn_arrow }};
+      --font-heading-family: {% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};
+      --font-body-family: {% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};
+      --h1-size: {{ s.h1_size }}px; --h1-weight: {{ s.h1_weight }};
+      --h2-size: {{ s.h2_size }}px; --h2-weight: {{ s.h2_weight }};
+      --h3-size: {{ s.h3_size }}px; --h3-weight: {{ s.h3_weight }};
+      --h4-size: {{ s.h4_size }}px; --h4-weight: {{ s.h4_weight }};
+      --h5-size: {{ s.h5_size }}px; --h5-weight: {{ s.h5_weight }};
+      --h6-size: {{ s.h6_size }}px; --h6-weight: {{ s.h6_weight }};
+      --body-size: {{ s.body_size }}px; --body-weight: {{ s.body_weight }};
+    "
+  >
+    <div class="inner-container">
+      <div class="sculpted-container">
+        {% comment %} Cutout Button Area {% endcomment %}
+        <div class="sculpted-cutout position-{{ s.button_position }}">
+          {% if btn_label != blank %}
+            <a href="#" class="sculpted-btn" onclick="event.preventDefault(); event.stopPropagation(); return false;">
+              {{ btn_label }}
+              <span class="btn-circle">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </a>
+          {% endif %}
+          <div class="fillet-corner fillet-1"></div>
+          <div class="fillet-corner fillet-2"></div>
+        </div>
+
+        {% comment %} Banner Image {% endcomment %}
+        <div class="sculpted-media">
+          {% if banner_image != blank %}
+            <img src="{{ banner_image | image_url: width: 2000 }}" class="sculpted-image" loading="lazy" alt="">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'sculpted-image placeholder' }}
+          {% endif %}
+        </div>
+
+        {% comment %} Banner Content {% endcomment %}
+        <div class="sculpted-content">
+          <div class="sculpted-text-box">
+            {% if banner_heading != blank %}
+              <h2 class="pillow-heading">{{ banner_heading | newline_to_br }}</h2>
+            {% endif %}
+            {% if banner_subtext != blank %}
+              <p class="pillow-subtext">{{ banner_subtext | newline_to_br }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}

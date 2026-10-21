@@ -1,0 +1,10 @@
+{
+  "languages": {
+    "typescript": {
+      "output_path": "posthog-typed.ts",
+      "schema_hash": "43020ffa294384c84c56d5bb35fa2505",
+      "updated_at": "2026-02-12T09:48:51.386832+00:00",
+      "event_count": 5
+    }
+  }
+}

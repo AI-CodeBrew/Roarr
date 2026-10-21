@@ -1,0 +1,142 @@
+{% comment %}
+  Tabbed Product Grid — 3 product limit
+  - Fetches collections: whats-hot, best-sellers, on-sale (3 products per tab).
+  - Auto sale badges, tag-based custom badges (badge:).
+  - Layout/CSS: pf-product-grid1x1.css; theme variables below.
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{%- assign tab_handles = 'whats-hot,best-sellers,on-sale' | split: ',' -%}
+{%- assign tab_ids = 'hot,best,sale' | split: ',' -%}
+{%- assign tab_label_1 = section.settings.tab_label_1 | default: "What's Hot" -%}
+{%- assign tab_label_2 = section.settings.tab_label_2 | default: 'Best Sellers' -%}
+{%- assign tab_label_3 = section.settings.tab_label_3 | default: 'On Sale' -%}
+{%- assign tab_labels_joined = tab_label_1 | append: '|' | append: tab_label_2 | append: '|' | append: tab_label_3 -%}
+{%- assign tab_labels = tab_labels_joined | split: '|' -%}
+{%- assign link_url = section.settings.link_url | default: '/collections/all' -%}
+{%- assign link_text_desktop = section.settings.link_text | default: 'Explore All' -%}
+{%- assign link_text_mobile = section.settings.link_text_mobile | default: 'Explore All Products' -%}
+
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-product-grid1x1.css' | asset_url }}" media="all">
+
+{% style %}
+  #tpg-{{ section.id }} {
+    --font-h: {{ settings.type_heading_font | font_family: 'sans-serif' }};
+    --font-b: {{ settings.type_body_font | font_family: 'sans-serif' }};
+    --text-sale: {{ section.settings.sale_color | default: '#cf2e2e' }};
+    --badge-sale-bg: {{ section.settings.badge_sale_bg | default: '#cf2e2e' }};
+    --badge-sale-text: {{ section.settings.badge_sale_text | default: '#ffffff' }};
+    --badge-custom-bg: {{ section.settings.badge_custom_bg | default: '#000000' }};
+    --badge-custom-text: {{ section.settings.badge_custom_text | default: '#ffffff' }};
+    --grid-gap: {{ section.settings.grid_gap | default: 30 }}px;
+    --cols-d: {{ section.settings.cols_desktop | default: 3 }};
+    --cols-m: {{ section.settings.cols_mobile | default: '1' }};
+    --radius: {{ section.settings.card_radius | default: 16 }}px;
+  }
+{% endstyle %}
+
+<div id="tpg-{{ section.id }}">
+  <div class="tpg-section color-{{ section_scheme }}">
+    <div class="tpg-container">
+
+      <div class="tpg-header">
+        <nav class="tpg-tabs-nav" role="tablist">
+          {% for handle in tab_handles %}
+            {% assign tid = tab_ids[forloop.index0] %}
+            {% assign tlabel = tab_labels[forloop.index0] %}
+            <button type="button"
+                    class="tpg-tab-btn{% if forloop.first %} active{% endif %}"
+                    data-target="{{ tid }}-{{ section.id }}"
+                    role="tab"
+                    aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+              {{ tlabel }}
+            </button>
+          {% endfor %}
+        </nav>
+
+        <a href="{{ link_url }}" class="tpg-shop-all">{{ link_text_desktop }}</a>
+      </div>
+
+      {% for handle in tab_handles %}
+        {% assign tid = tab_ids[forloop.index0] %}
+        {% assign collection = collections[handle] %}
+        {% if collection == blank or collection.products.size == 0 %}
+          {% assign collection = collections['all'] %}
+        {% endif %}
+
+        <div id="{{ tid }}-{{ section.id }}"
+             class="tpg-grid-panel{% if forloop.first %} active{% endif %}"
+             role="tabpanel">
+
+          {% if collection != blank %}
+            {% for product in collection.products limit: 3 %}
+              <div class="tpg-card">
+                <div class="tpg-img-wrap">
+                  <div class="tpg-badges">
+                    {% if product.compare_at_price > product.price %}
+                      {% assign save = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round %}
+                      <span class="tpg-badge tpg-badge-sale">-{{ save }}%</span>
+                    {% endif %}
+                    {% for tag in product.tags %}
+                      {% if tag contains 'badge:' %}
+                        <span class="tpg-badge tpg-badge-custom">{{ tag | remove: 'badge:' }}</span>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+
+                  <a href="{{ product.url }}">
+                    {% if product.featured_image != blank %}
+                      {{ product.featured_image | image_url: width: 700 | image_tag: 'tpg-img', 'lazy' }}
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'tpg-img' }}
+                    {% endif %}
+                  </a>
+
+                  <form method="post" action="/cart/add" class="tpg-form">
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                    <button type="submit" class="tpg-quick-add" aria-label="Add to cart">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    </button>
+                  </form>
+                </div>
+
+                <div class="tpg-vendor">{{ product.vendor }}</div>
+                <a href="{{ product.url }}" class="tpg-title">{{ product.title }}</a>
+                <div class="tpg-price">
+                  {% if product.compare_at_price > product.price %}
+                    <span class="tpg-price-sale">{{ product.price | money }}</span>
+                    <span class="tpg-compare">{{ product.compare_at_price | money }}</span>
+                  {% else %}
+                    {{ product.price | money }}
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            {% for i in (1..3) %}
+              <div class="tpg-card">
+                <div class="tpg-img-wrap">
+                  {{ 'product-1' | placeholder_svg_tag: 'tpg-img' }}
+                </div>
+                <div class="tpg-vendor">Brand</div>
+                <div class="tpg-title">Example Product</div>
+                <div class="tpg-price">$49.00</div>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+        </div>
+      {% endfor %}
+
+      <div class="tpg-footer-mobile">
+        <a href="{{ link_url }}" class="tpg-shop-all-mobile">{{ link_text_mobile }}</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'pf-product-grid1x1.js' | asset_url }}" defer></script>

@@ -1,0 +1,201 @@
+/**
+ * Testimonials Slider
+ * Colors: Scheme-driven via pf-color-schemes.css
+ */
+
+[id^="shopify-section-"] .ts-section {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding-top: var(--pt);
+  padding-bottom: var(--pb);
+  overflow: hidden;
+}
+
+[id^="shopify-section-"] .ts-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header Row */
+[id^="shopify-section-"] .ts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 40px;
+}
+
+[id^="shopify-section-"] .ts-heading h2,
+[id^="shopify-section-"] .ts-heading p {
+  font-size: 2.5rem;
+  line-height: 1.1;
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-foreground-heading, var(--color-foreground));
+}
+
+[id^="shopify-section-"] .ts-heading em {
+  font-family: Georgia, Baskerville, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Navigation Buttons */
+[id^="shopify-section-"] .ts-nav {
+  display: none;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  [id^="shopify-section-"] .ts-nav {
+    display: flex;
+  }
+}
+
+[id^="shopify-section-"] .ts-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-foreground);
+  opacity: 0.8;
+}
+
+[id^="shopify-section-"] .ts-btn:hover {
+  background: var(--color-foreground);
+  border-color: var(--color-foreground);
+  opacity: 1;
+}
+
+[id^="shopify-section-"] .ts-btn:hover svg {
+  fill: var(--color-background);
+}
+
+[id^="shopify-section-"] .ts-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  transition: fill 0.2s ease;
+}
+
+/* Slider Track */
+[id^="shopify-section-"] .ts-slider-wrapper {
+  margin: 0 -20px;
+  padding: 0 20px;
+}
+
+[id^="shopify-section-"] .ts-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+
+[id^="shopify-section-"] .ts-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual Card (inherits from color-{{ card_scheme }}) */
+[id^="shopify-section-"] .ts-card {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border-radius: var(--card-radius);
+  padding: 30px;
+  flex: 0 0 var(--card-width-mobile);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  [id^="shopify-section-"] .ts-slider-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+
+  [id^="shopify-section-"] .ts-card {
+    flex: 0 0 var(--card-width-desktop);
+  }
+}
+
+/* Card Content */
+[id^="shopify-section-"] .ts-author-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+[id^="shopify-section-"] .ts-author-row::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.15;
+}
+
+[id^="shopify-section-"] .ts-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: var(--img-border-width) solid currentColor;
+}
+
+[id^="shopify-section-"] .ts-avatar-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0.1;
+  flex-shrink: 0;
+}
+
+[id^="shopify-section-"] .ts-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-foreground-heading, var(--color-foreground));
+}
+
+[id^="shopify-section-"] .ts-stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 15px;
+}
+
+[id^="shopify-section-"] .ts-stars svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--star-color);
+}
+
+[id^="shopify-section-"] .ts-review {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-foreground);
+  opacity: 0.85;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  [id^="shopify-section-"] .ts-heading h2,
+  [id^="shopify-section-"] .ts-heading p {
+    font-size: 2rem;
+  }
+}

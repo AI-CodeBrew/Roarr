@@ -1,0 +1,1002 @@
+shop_url,fk_user_id,credits_to_grant,grant_status,ledger_entry_id,new_balance,skip_reason,dry_run
+iekadj-01.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+budgcd-e1.myshopify.com,,300,granted,9e12b6a2-42bc-4745-9ceb-b792e7d6e2c8,600,,False
+mdsvqs-qv.myshopify.com,,300,granted,4dfcebd9-5964-46b9-bd8a-e7cdaa2d0e70,600,,False
+bz1gjy-rk.myshopify.com,,300,granted,4bd1a347-8853-4f75-8492-c4b8808d3a63,600,,False
+q03b45-hn.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+snikes123.myshopify.com,,300,granted,af20813b-54cf-4fbe-a1ab-fc056f9a18ef,600,,False
+t0fg1p-i0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dutpjx-kb.myshopify.com,,300,granted,cfe8bee7-f176-4747-9d11-379adf0443ac,600,,False
+xkmpc5-dx.myshopify.com,,300,granted,2330191d-42e5-494a-a325-1d4d2dba0331,600,,False
+mvpeuv-v6.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+hhcayr-dn.myshopify.com,,300,granted,385bc348-8c53-414c-b100-43873f302a9e,600,,False
+pypaji-jj.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ntiqmx-na.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+eprvia-dr.myshopify.com,,300,granted,e00f3f7d-3ff7-4eab-b6ab-441b3331b934,600,,False
+s4bmrm-ic.myshopify.com,,300,granted,71705ba3-2042-4a42-b8f1-ea02b8fe0cd7,600,,False
+rzstu4-m9.myshopify.com,,300,granted,08ed4975-352a-468e-932f-8da8ee985a4e,600,,False
+wicw1e-zy.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cfjhux-fz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+f8qrsh-f1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+4s82qm-bv.myshopify.com,,300,granted,09c7f05a-817c-4d54-970c-4425b50ec8a4,600,,False
+2fewk0-sp.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+5exy1d-hg.myshopify.com,,300,granted,d0da593a-79e1-4daa-8937-05b3da959e48,600,,False
+ajspbg-kr.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+gaesjb-wk.myshopify.com,,300,granted,b6394355-fbea-4182-b0a1-03564b4b3cb1,600,,False
+jfngy3-s0.myshopify.com,,300,granted,1742e9a6-8980-4a76-b716-db9ff45285ad,600,,False
+cxmncm-7y.myshopify.com,,300,granted,deaded56-3f4b-4b52-beea-0377c13e8fe5,600,,False
+fuyqv6-ip.myshopify.com,,300,granted,7ac2186c-8b06-4bf4-b6ed-283655496926,600,,False
+xhuuq1-rz.myshopify.com,,300,granted,d8d09f33-68b1-4273-8c1a-b7311a65f0a2,600,,False
+1uxj93-1r.myshopify.com,,300,granted,eabe3a09-f031-44ee-a4b7-4a0ecb547e7c,600,,False
+vxpbwg-0e.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+prxjjs-me.myshopify.com,,300,granted,057c2440-3e5b-4b53-b6f2-c2042d941df6,600,,False
+wweirn-ad.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+9mf0pf-ny.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+uazegw-jx.myshopify.com,,300,granted,8e26ffb5-4020-4e3b-8191-49bb59b580aa,600,,False
+p1edpe-qv.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tycm0w-za.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+aan0gz-g1.myshopify.com,,300,granted,c798cbeb-39d3-4be8-9509-2fc2767bc0ca,600,,False
+v91hf9-00.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+89rvzv-ct.myshopify.com,,300,granted,371573f7-a828-4d6e-aa9c-ad836f941303,600,,False
+tm3i7x-xg.myshopify.com,,300,granted,1328326c-b5ea-4f23-88e7-bcca1a3869ae,600,,False
+h2qpi4-xf.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dt3fny-su.myshopify.com,,300,granted,2c78e092-501a-481b-b290-512ac36409b7,600,,False
+sdky9m-nb.myshopify.com,,300,granted,b4d3794f-5b80-49da-96a5-a7bf2868f74a,600,,False
+acaae4-da.myshopify.com,,300,granted,8fd6612d-455c-4908-8c33-aeed8a82751c,600,,False
+y6ijmc-1a.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+arsx0r-zd.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+8ww8j2-zd.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+7irruz-py.myshopify.com,,300,skipped,,,already received migration grant,False
+70fm1e-ut.myshopify.com,,300,granted,87618949-af66-435d-a9ea-8338a38fdbb4,600,,False
+wjf5gk-at.myshopify.com,,300,granted,39837103-7528-48d4-adee-345a139af682,600,,False
+qg7feq-1a.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1f3j1c-mr.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+3pnuzs-rq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+u1ezfa-wq.myshopify.com,,300,granted,b921e6f4-1318-4e0a-a2ee-90a474f1f9d3,600,,False
+acsxsg-y4.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+61tvrx-ub.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+8c60yr-fi.myshopify.com,,300,granted,71b2a6da-3d49-4329-a1eb-24529a6daa73,600,,False
+vfvtij-ft.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+3jmsuu-fa.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+50j0zp-3p.myshopify.com,,300,granted,24d075d5-22c7-4a32-9ba0-d7bb1c1e20ca,600,,False
+s5g7u0-0e.myshopify.com,,300,granted,c134c1a9-81f3-440f-bce5-eae12d595f20,600,,False
+ma0sia-wa.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xj2s0n-qj.myshopify.com,,300,granted,7e645d0d-2f21-4a08-afc3-f8ebda6d5335,600,,False
+0usbhp-ep.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dw7xuh-bh.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+zambeelexample.myshopify.com,,300,granted,f9d2884f-3f29-4327-b872-6451808e25b5,600,,False
+urvyt1-0s.myshopify.com,,300,granted,e8c9c9ea-5ef9-41bb-862c-656050d55f8e,600,,False
+burhan-dev.myshopify.com,,300,granted,046b08c4-6200-4a79-a6c2-8b449302f4b9,600,,False
+r6sp40-jn.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cdet7y-ix.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+u3npuu-rp.myshopify.com,,300,granted,7c13b124-1fbe-4abb-8729-02a794c62c7a,600,,False
+xyda1x-51.myshopify.com,,300,granted,24931a58-f6d6-48ca-a2ac-e59232cea0eb,600,,False
+vkj1u0-rx.myshopify.com,,300,granted,cb18360b-1206-4402-ae51-e8901b2128c7,600,,False
+qvjri3-xr.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wvq6dk-ms.myshopify.com,,300,granted,f467e64b-0719-49fb-bc0c-fedcefcfe6da,600,,False
+zwr6an-bg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+avvwdy-w2.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+kbz010-gj.myshopify.com,,300,granted,fa5391df-3252-44a6-b890-7fe53068e77b,600,,False
+cd49ef.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ewdd7z-zx.myshopify.com,,300,granted,b2fd2e3c-5fd0-4793-9b68-1532998dc162,600,,False
+1ei9pc-yr.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cgp10f-g0.myshopify.com,,300,granted,6bffb354-93d4-4460-b059-7fa9b5ec5ca1,600,,False
+6ijp1n-8n.myshopify.com,,300,granted,8de3b812-79e1-49e0-b2bd-1c7f4386f85a,600,,False
+fdwpjq-s7.myshopify.com,,300,granted,ff769a01-bfc8-439b-ae01-4d5edf454034,600,,False
+579324-2.myshopify.com,,300,granted,41125dfc-37c4-474b-8adf-7b28edc85519,600,,False
+zbxdpv-1f.myshopify.com,,300,granted,29463a65-92b5-4626-9c6f-583b0949fc09,600,,False
+b18ywi-du.myshopify.com,,300,granted,29e93478-a785-4817-bab2-1a88542bca07,600,,False
+8es1ie-5v.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+v6esku-rf.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yvis7t-mj.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+g0ecwi-d0.myshopify.com,,300,granted,31ee996b-6fef-45a1-96ee-12168db5de57,600,,False
+zgi3ww-tb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+h9wfg7-x7.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+8ubaf1-ri.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+nand1y-6u.myshopify.com,,300,granted,c3bf7667-6c60-47b7-abc0-b28277f32b3f,600,,False
+puuc6f-wf.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+qxr8eh-cz.myshopify.com,,300,granted,eb4f12c3-0e3f-44af-8de0-5352876c516e,600,,False
+w7wcak-rt.myshopify.com,,300,granted,6072b89f-9bb5-480e-b879-e4d14a2cf078,600,,False
+1xhfjx-a0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0u0wwa-6w.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ygd0it-cd.myshopify.com,,300,granted,96c902a9-3737-4284-94fd-fcc0c0cd8471,600,,False
+fdd5q5-ne.myshopify.com,,300,granted,c79a1695-c56c-47d3-90df-524c52285344,600,,False
+92suit-50.myshopify.com,,300,granted,40dfc567-ed0e-49fc-8c19-59f6225d1be9,600,,False
+1iwihk-xr.myshopify.com,,300,granted,a2808850-bcf4-4d4b-98c4-b855291ac781,600,,False
+mic07s-sn.myshopify.com,,300,granted,59d9f0d4-082d-40bb-9d2e-91894a85a670,600,,False
+v5qwab-cf.myshopify.com,,300,granted,ba7d045a-c10e-4e29-a1c7-a655f500d7af,600,,False
+yetzvs-gy.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ruwbdp-p8.myshopify.com,,300,skipped,,,already received migration grant,False
+magrii-ks.myshopify.com,,300,granted,805103c6-bacd-4a08-80c0-fe9328b61b33,600,,False
+png1yu-ug.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+t4dp1n-uv.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+aevo-final.myshopify.com,,300,granted,65d17576-4374-4ae2-9046-148614371dfd,600,,False
+tazu75-g3.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wdkazu-eq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0baanp-cf.myshopify.com,,300,granted,36561ca1-2841-4ac6-96be-c07bacd5a865,600,,False
+j10a7d-uz.myshopify.com,,300,granted,1e97db82-adc9-4244-9474-e3f185109214,600,,False
+zsrxaj-2n.myshopify.com,,300,granted,c34a33fb-c3b5-4767-8f2a-6ae543d7638c,600,,False
+7016mk-z9.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+8jn0jn-ra.myshopify.com,,300,granted,a9ce5c81-0595-41f9-b50f-01e4efd3145e,600,,False
+r6gx2m-10.myshopify.com,,300,granted,15fbc371-9e24-4150-9f0e-d155940762b5,600,,False
+4t0jey-sh.myshopify.com,,300,granted,5514dada-cda3-4a81-b114-ad8e731c6a65,600,,False
+barik-store-lahore.myshopify.com,,300,granted,30438f03-91fb-4abf-b71a-b4132ba39749,600,,False
+9krnq7-66.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cniddd-4t.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+test-nafey-klucky.myshopify.com,,300,granted,bbe71849-cbc4-4c02-b7da-ffb74ebc0c48,600,,False
+8a1ajj-jc.myshopify.com,,300,granted,16521863-4835-42a4-bb22-fe70e266ea97,600,,False
+f15y0h-mf.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tehhtx-wf.myshopify.com,,300,granted,d7a0d2b3-ffad-454d-b505-85ae168377cf,600,,False
+zi0u14-wq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+5tefh1-pd.myshopify.com,,300,granted,a0e5ee58-081d-4425-b187-4f513df438e2,600,,False
+ctzavf-17.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tqudeh-ms.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dutkie-9u.myshopify.com,,300,granted,4570ec0b-e2c3-4bc0-a817-e6176e688286,600,,False
+nanadani.myshopify.com,,300,granted,2846d4f9-5404-4faa-97fd-cba619090de7,600,,False
+2i9vtk-3k.myshopify.com,,300,granted,8712684a-3baf-4d92-a567-a6e24cf826e2,600,,False
+msftnh-a0.myshopify.com,,300,granted,47df59ca-9230-4f63-85d9-90841f9578c6,600,,False
+yv9kdi-0c.myshopify.com,,300,granted,e6193929-8aea-4209-9696-e885d869ece4,600,,False
+nuhvk1-t1.myshopify.com,,300,granted,70b69791-5aa6-4b75-a75f-035a2050a58c,600,,False
+c51f1d.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+mujeeb1098.myshopify.com,,300,granted,b69a6a9b-ed14-469a-9ccc-2bab586b98bf,600,,False
+64da80-2.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yhhezy-1m.myshopify.com,,300,granted,19209ba5-9c19-438d-bbd1-ace132bb29dd,600,,False
+snapbuyt.myshopify.com,,300,granted,1cd2e22b-072c-4d88-bd90-c27800017a77,600,,False
+xuyw41-gq.myshopify.com,,300,skipped,,,already received migration grant,False
+9pxpsa-ua.myshopify.com,,300,granted,0d619235-2a60-4096-b4bd-50a61d3e42e4,600,,False
+9800gf-u4.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ed1dpq-7w.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+vgik0h-bt.myshopify.com,,300,granted,2b1d5ed8-204a-489e-bd83-c29d5290312d,600,,False
+k04d2i-n0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ypa1gq-8v.myshopify.com,,300,skipped,,,already received migration grant,False
+ksa-zam.myshopify.com,,300,skipped,,,already received migration grant,False
+offside-casual-boutique.myshopify.com,,300,granted,e0f282b5-25b0-426d-bd43-82c5cf516ee1,600,,False
+zgtgqc-1i.myshopify.com,,300,granted,c0faa773-37c4-439b-a6f1-463a8a49efb1,600,,False
+ukuic8-yx.myshopify.com,,300,granted,794c7d74-875a-46bd-91f4-46eb2baba12d,600,,False
+brk4yd-hy.myshopify.com,,300,granted,d3dcf5ed-0c8c-4011-8d82-a1b552aa6fa7,600,,False
+10sd4k-cp.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+hxjb3z-ue.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+muaebf-ui.myshopify.com,,300,granted,7b74a94c-2a7c-4551-9ff8-d4784896fd99,600,,False
+w0ugvt-nh.myshopify.com,,300,granted,cfc3232f-e6c9-44c6-8182-65e15ae1fdd4,600,,False
+15e57b-sy.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0gcbjx-5n.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+atzn5m-6e.myshopify.com,,300,granted,d4e68cd4-2517-495b-851e-d1e5ce0480f0,600,,False
+sa3z48-zv.myshopify.com,,300,granted,9e5f4bf2-5b40-40e8-8d08-09d37ecce00c,600,,False
+7abuqk-6q.myshopify.com,,300,granted,1470ad27-a780-4ad4-b48d-60ec75086fcb,600,,False
+egi2c1-ee.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yyrue8-8g.myshopify.com,,300,granted,b11aec40-8e5c-4d33-88fe-6e8c888253d2,600,,False
+jew1tf-pu.myshopify.com,,300,granted,55916a7b-fca0-4ae0-a2d3-68e2f94e4be9,600,,False
+61etx0-b1.myshopify.com,,300,granted,3adb0c70-92ad-4463-a98f-f83383f71529,600,,False
+p060xt-k1.myshopify.com,,300,granted,8631d603-a2c7-4a95-aab6-17f49338cced,600,,False
+0wbduk-d7.myshopify.com,,300,granted,2e551c16-8f12-453c-82d4-05d29d937b0a,600,,False
+01skrx-mz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+c09uac-si.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+pvyg1h-a9.myshopify.com,,300,granted,ddb10da8-f756-476b-bfcb-b4a6752b938d,600,,False
+datzf9-iu.myshopify.com,,300,granted,0ac670f1-0019-4d04-aec3-ae388e413e52,600,,False
+qwihnt-qn.myshopify.com,,300,granted,de35a3d4-448e-450d-9d57-993f746e81e7,600,,False
+swqarw-vt.myshopify.com,,300,granted,8865cb47-5f25-46a3-93b7-15a505dc5b13,600,,False
+idiz01-p0.myshopify.com,,300,granted,0b5bb314-f9d2-453d-86c3-142a38274245,600,,False
+uk0wtf-vp.myshopify.com,,300,granted,1deb668a-c36d-4f04-a4c3-a55a4ece0ebf,600,,False
+zidpr9-im.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+gdsrb2-rc.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+4tr0ri-1a.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+a1jzdc-gp.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0wkbn4-gh.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0i3ssj-rx.myshopify.com,,300,granted,a267428e-2c2c-4895-a9d8-c573ca88ab05,600,,False
+cyuqvf-b1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+bp6xuy-r2.myshopify.com,,300,granted,a6da5708-dab5-4209-a8e2-099871541a08,600,,False
+10ua1b-wt.myshopify.com,,300,granted,9d43c47e-2aa6-4623-a16c-fb6bfb420238,600,,False
+ey0dui-c7.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+acf5ud-e5.myshopify.com,,300,granted,c38e3df7-7732-4b5b-8a63-910d98d263be,600,,False
+shah-threads.myshopify.com,,300,granted,dfbf3395-b362-4e2e-85de-cc7a8e8445a4,600,,False
+imtarm-7k.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cbtef2-ac.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+quickstart-29166a92.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ntyq0d-fh.myshopify.com,,300,granted,d317acc8-60df-483f-8fb3-81f7469498cf,600,,False
+nzhtca-sw.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+s0j7g1-8k.myshopify.com,,300,granted,021f914b-920e-49f9-9966-56fe47d45b86,600,,False
+u0pkrf-85.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+v0sfe3-ew.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+kskrht-fg.myshopify.com,,300,granted,7874a707-50e5-4fdd-b832-925fa2dc199d,600,,False
+8uurgu-06.myshopify.com,,300,granted,883b055c-59a0-4234-a5de-20ba56f0e4a9,600,,False
+fx7uhx-uz.myshopify.com,,300,granted,b1ebac5e-5696-41a8-a9c1-c1eccbd60ba8,600,,False
+7ymdas-dv.myshopify.com,,300,granted,f6cb8ba7-8719-4d25-af3a-550d19e88daa,600,,False
+06bpte-fz.myshopify.com,,300,granted,6183bf85-ca56-40fa-8864-5f54c3546628,600,,False
+ahxv6x-fb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dds86m-0j.myshopify.com,,300,granted,78c9ccfd-ae95-4878-beac-1b9555750e9b,600,,False
+tj8mn1-fm.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+sg811x-hu.myshopify.com,,300,granted,8b83e667-aedf-4f97-a440-f62658248cde,600,,False
+xjbunc-44.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cjjuht-8p.myshopify.com,,300,skipped,,,already received migration grant,False
+qemsp1-wb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+j4x009-6j.myshopify.com,,300,granted,4ddbdb1f-5ae0-470c-9447-d5e3421fe50c,600,,False
+ydaene-ny.myshopify.com,,300,granted,bd9f780a-e85c-43d6-8829-a059414c9de6,600,,False
+8b6yit-cw.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+es11yj-ba.myshopify.com,,300,skipped,,,already received migration grant,False
+ymr00y-vg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+v025e1-5a.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1vwwtc-jt.myshopify.com,,300,granted,d958093c-ef54-4ebd-9d3d-4c465ca2872d,600,,False
+mqwnwe-tz.myshopify.com,,300,granted,2dd93121-21ed-403a-8839-8b32f39ffdb7,600,,False
+yjah4f-rm.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+zhbyu5-jx.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+vu51v0-ng.myshopify.com,,300,granted,31eee138-3bd2-4b9b-88c3-cbb0d2ef5db3,600,,False
+c7rzjx-ec.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0jyms2-vt.myshopify.com,,300,granted,eee2dbf5-89da-4717-8ee2-388d9ee2b684,600,,False
+uh70qd-p0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+megdmc-0g.myshopify.com,,300,granted,59177328-fcc0-4e3b-8963-da3e03cc2ee9,600,,False
+au14fp-rv.myshopify.com,,300,granted,b739110c-88f5-4397-88f8-b0d062ac9e41,600,,False
+fsqhwz-ke.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+mzd379-aw.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+fv061x-72.myshopify.com,,300,granted,bacab898-9aeb-44ed-bf97-e7841de77808,600,,False
+g8cb1j-mr.myshopify.com,,300,granted,d833d2ce-504f-4ed7-8263-fdc6cd5a2ffe,600,,False
+h4xmcu-qw.myshopify.com,,300,granted,77a9531b-8e06-4a74-938d-0432f9905c69,600,,False
+nj5un3-4a.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+zjvm00-p1.myshopify.com,,300,granted,bceff147-1791-4a00-b05b-50c95a9c14a5,600,,False
+1yqs15-ew.myshopify.com,,300,granted,d79a9f97-6515-41bc-902e-101e5327381b,600,,False
+yqk0cu-ya.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wadnf4-g0.myshopify.com,,300,granted,b0ad7901-b448-4018-9b5c-7a10a58d2100,600,,False
+5agpfq-7m.myshopify.com,,300,granted,38945ac0-822c-4ec3-965f-efe14095d07e,600,,False
+e5pxma-qh.myshopify.com,,300,granted,eae1a0e8-0cb6-477a-a28b-e6d5342b70e0,600,,False
+u7sih9-s4.myshopify.com,,300,granted,6f939154-182b-4f4f-88ef-e6694b7db2a5,600,,False
+0erxwr-0q.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+gjr0qx-pd.myshopify.com,,300,granted,84727ecb-ab3b-4d22-b459-ce4139c66b40,600,,False
+y5tfmb-ax.myshopify.com,,300,granted,a4845c1f-69c0-4cae-a435-82397e6e4173,600,,False
+2ydvud-nz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+t8fv9d-wr.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1qz7mm-i7.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+u02kmi-q5.myshopify.com,,300,granted,d62e1a71-63d8-494b-a64f-14902bc72f2b,600,,False
+m6yufk-ws.myshopify.com,,300,granted,1373463a-2f3d-468d-b773-c97761b3f407,600,,False
+1peayg-tg.myshopify.com,,300,granted,04ed3ce4-3b34-4595-9228-4dc6ebcce07e,600,,False
+x3cs9n-wg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+igmui3-fx.myshopify.com,,300,granted,9f84e9e7-7257-429e-a4f5-f55ebf9dd7c6,600,,False
+bys-store-2881561-702414.myshopify.com,,300,granted,cf98a26a-2760-4445-bdaf-16f52345b455,600,,False
+1dznns-tm.myshopify.com,,300,granted,220753af-0bf9-4b4d-9baf-692caea2cc3d,600,,False
+gv1wkt-a6.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+upnwu6-5c.myshopify.com,,300,granted,eca5eb38-797b-45cc-b565-6beb459aafdb,600,,False
+cyseag-r6.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+a3b5a3-nu.myshopify.com,,300,granted,58a547e9-3b29-4660-a3f6-adb382bae075,600,,False
+1bxuvy-ww.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yenzp0-wb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+z687qk-ut.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+u1ikrt-99.myshopify.com,,300,granted,19919dd2-c8e5-4e71-9d08-f5d8e3f7e2ba,600,,False
+mcwcf1-yb.myshopify.com,,300,granted,51a61e3a-706a-4d9a-8465-05a32fb80203,600,,False
+vzmizv-sb.myshopify.com,,300,skipped,,,already received migration grant,False
+wnur8n-n3.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cujqyb-0y.myshopify.com,,300,granted,935a4def-4cea-41bf-9df0-5f1c2f502abc,600,,False
+hg07eb-dn.myshopify.com,,300,granted,654807bb-90c8-4d3b-a69d-b0c359ea4990,600,,False
+09fp11-af.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+kwhw70-zk.myshopify.com,,300,skipped,,,already received migration grant,False
+ketk8r-hq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+3zsar3-2j.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ugpk11-60.myshopify.com,,300,granted,6239c163-50fd-482f-824f-19acbfe34308,600,,False
+yk93it-gw.myshopify.com,,300,granted,df611fea-446f-4bd8-b7a0-7be3bc8749d3,600,,False
+jazx6e-as.myshopify.com,,300,granted,fb18aa89-922d-44c7-8f1c-2cc08663c170,600,,False
+0pgmf1-z1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+kezj1p-kb.myshopify.com,,300,granted,bc91bbe7-dcfb-484c-bfd8-d014d96de265,600,,False
+0gd0ev-az.myshopify.com,,300,granted,22e420c3-408e-48a9-a73c-fb5e275278c6,600,,False
+2pgj4d-zk.myshopify.com,,300,granted,3c6b1110-7b01-4d31-953e-cb2b8d0c3726,600,,False
+haq8g2-px.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+zypa2u-t4.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+2gdvkr-je.myshopify.com,,300,granted,22337829-2536-4eeb-a32f-31dbeb96e892,600,,False
+z1bq76-11.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+f4kk1g-gf.myshopify.com,,300,granted,890cf992-8986-4483-8f58-f6c630144156,600,,False
+wztgev-0v.myshopify.com,,300,granted,7c078351-698e-4c35-8707-b7fce1b2f9b7,600,,False
+n1yajv-1g.myshopify.com,,300,granted,b4ac003a-e8b1-4011-8dc7-249094974c46,600,,False
+bjq2ug-rj.myshopify.com,,300,granted,3a1e42b6-61ab-4363-9dc7-930c8acef5ce,600,,False
+gwe0pq-0d.myshopify.com,,300,granted,8dfe8ad6-7d4d-46b8-8cb5-fa5fd01355c3,600,,False
+ipb51x-mn.myshopify.com,,300,granted,8b81663f-b62a-448f-b0b4-0a5ec4f0136f,600,,False
+amose2.myshopify.com,,300,granted,444b7d4f-9fbd-4f21-a32c-17e599f5be3f,600,,False
+gtvbsm-b1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+c81t7p-4e.myshopify.com,,300,granted,54c655f2-a4c1-43e6-a2f6-92ec9d780c0f,600,,False
+ytwjva-8h.myshopify.com,,300,granted,9e181467-4e6e-4f6d-8bb4-06779c99937b,600,,False
+a9jcxm-cj.myshopify.com,,300,granted,262dfcd1-e7e0-426e-9143-22d162ef9751,600,,False
+b0eee8-tx.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ta0ttf-qw.myshopify.com,,300,granted,7d8d9d23-2b3c-4ac1-b9f9-be384d357958,600,,False
+c7g0uf-f3.myshopify.com,,300,granted,be735ceb-4ceb-45a3-b5c5-a5693aa47c22,600,,False
+ak73h1-cv.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+pjuihz-ds.myshopify.com,,300,granted,c8d58763-7515-4162-bfb4-ad749a674321,600,,False
+j3nnp6-m4.myshopify.com,,300,granted,bae63d7e-d183-4052-a3cd-5e783afba44c,600,,False
+ciyg0z-fq.myshopify.com,,300,granted,0a5f8533-c790-4291-9129-2502ae72d309,600,,False
+dqa86c-9v.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+eteceterainc.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dfyigi-q3.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dpyzfw-2n.myshopify.com,,300,granted,8a89efb8-3cda-45a5-b013-cee7cf0d520f,600,,False
+u8vbri-pm.myshopify.com,,300,granted,ef8d7889-a542-4d48-b6ce-b78a1f11e173,600,,False
+nusnxz-0x.myshopify.com,,300,granted,e06eb793-ee3d-4d18-9ae8-56ae83afdcaa,600,,False
+16zjbe-4r.myshopify.com,,300,granted,7d99cc7f-2c95-4ca0-a8d1-46ba1df4e127,600,,False
+h1avp9-z6.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+6bfbns-sw.myshopify.com,,300,granted,54cc1586-e27c-4623-ad8a-435d9c20689f,600,,False
+q2z1ru-11.myshopify.com,,300,granted,2a6f5f5d-7474-4b67-8d99-e8c9040b218a,600,,False
+gvucgz-4w.myshopify.com,,300,granted,ab1010fd-772c-4a20-9d3e-ddd2fdb456c3,600,,False
+ug4wsk-m0.myshopify.com,,300,granted,f7c8fd23-79be-4e5a-9b37-c246b36a6ad9,600,,False
+j5p4rg-nf.myshopify.com,,300,granted,fabca2ed-c479-4cd3-bcf4-45cea1b5090e,600,,False
+w0bkkq-v1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+4is6ai-nb.myshopify.com,,300,granted,83e86cc0-e951-4151-a382-b7ef81e34f8b,600,,False
+pikals-bundles.myshopify.com,,300,granted,4629ddba-29d7-4253-82d5-385bf060ce55,600,,False
+rpqnm6-az.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cm3ir5-81.myshopify.com,,300,granted,0ebd71e2-8281-4d95-94eb-fe5d0516a9a7,600,,False
+vutf2t-pt.myshopify.com,,300,granted,cecc5ed1-3ef3-4874-9a5b-f1efd8528965,600,,False
+4dvfa1-yc.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tdc0um-dc.myshopify.com,,300,granted,2a72b735-3cce-4e71-8e7e-7136c5b22237,600,,False
+cu7bcj-00.myshopify.com,,300,granted,c196b063-78a7-4485-a007-83286ed8aedc,600,,False
+m2gweg-ar.myshopify.com,,300,granted,c685763e-4e9c-4d46-a81d-d1f9b4921613,600,,False
+0dxvqz-kq.myshopify.com,,300,granted,0fad8b53-8fdc-4cfb-8027-12fccbef9232,600,,False
+rpryi0-6d.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1zq57x-az.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+rcy0ic-qb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dyvmrc-s5.myshopify.com,,300,granted,38261782-55a3-4e60-b92f-a9e67f269196,600,,False
+5u3jtp-5b.myshopify.com,,300,granted,9780e191-e518-48c4-a92b-03d2ed2bb222,600,,False
+8m9y3w-51.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+avalonking.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+5qxumw-3w.myshopify.com,,300,granted,42dc1293-e8d2-451d-9c7a-999f7db87f10,600,,False
+f4jka3-h1.myshopify.com,,300,granted,a74d8b80-ce02-480d-a642-b644b711fff5,600,,False
+pwpr0q-g1.myshopify.com,,300,granted,38a0c3e9-2f5b-4eb6-a73a-e8cbaf8d5845,600,,False
+4vsuyz-ze.myshopify.com,,300,granted,f65ee763-411f-491e-8ac9-e124499dcf36,600,,False
+xbts71-sv.myshopify.com,,300,granted,c960e416-39f6-469c-b908-eaabda2c62dd,600,,False
+ijhpip-6c.myshopify.com,,300,granted,de5abb81-b6e2-461e-832e-16f07782004c,600,,False
+08kgs8-as.myshopify.com,,300,granted,d8fd09e1-9ac6-4fbc-a753-b3f63cf3177e,600,,False
+1b7bae-18.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+r266ba-01.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+y6b9ty-6w.myshopify.com,,300,granted,740bd3f1-7d3c-47bf-a8be-7dfac3c33ac5,600,,False
+layla-notfound.myshopify.com,,300,granted,56d0d7e9-bd61-4e55-9a90-08caea463bb8,600,,False
+kbbyi0-8x.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+uaqbjw-w5.myshopify.com,,300,granted,ad4bdf43-7530-475b-a824-750cdb83e36b,600,,False
+mq78xq-ui.myshopify.com,,300,granted,ed65e7e4-6438-446a-9431-1311303cca47,600,,False
+2wqabe-va.myshopify.com,,300,skipped,,,already received migration grant,False
+9fhjqq-4n.myshopify.com,,300,granted,b97e5a4e-67de-4c7c-9439-31df93c2003b,600,,False
+mmk45q-yd.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ay4vsd-ey.myshopify.com,,300,granted,f1ff6ea5-7a96-495b-8ed0-84869ae88162,600,,False
+jrhuaz-ds.myshopify.com,,300,granted,821afafe-10d8-4d58-85f3-dd6662978fdf,600,,False
+quickstart-0415de3c.myshopify.com,,300,granted,13810fbc-7d6b-4874-9d46-37d64dd64a33,600,,False
+aab8nv-n4.myshopify.com,,300,granted,377d44c6-a188-45e1-aa9c-7fb482f170b9,600,,False
+cjcx1d-kf.myshopify.com,,300,granted,835f18e4-1b98-4889-8e3c-9b4cb2acc52d,600,,False
+ubfhpv-0g.myshopify.com,,300,granted,d6b8f3df-bf7e-4fa1-a505-a7798252e1b0,600,,False
+vddsdsfsd.myshopify.com,,300,granted,6aab9d70-ff5f-4e0e-9462-c5fec0b82ab6,600,,False
+1xcvmt-st.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+klucky-2.myshopify.com,,300,granted,ad54b891-187c-4399-adc7-321eb479c1a1,600,,False
+i4epce-tk.myshopify.com,,300,granted,22b51c65-a1bc-46a8-9a4e-721c969a1aff,600,,False
+2cc1md-2m.myshopify.com,,300,granted,84c12bd2-2942-464e-bdcd-0e7dce09c64f,600,,False
+ridu00-bg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+mk3c0e-qk.myshopify.com,,300,granted,3084dc83-f7a4-455f-977a-bacddbde1b9f,600,,False
+z3b2py-k4.myshopify.com,,300,granted,fbad79c3-5af3-4283-9e44-9ff3e68e05b2,600,,False
+hy96rn-bw.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+10kd2i-nb.myshopify.com,,300,granted,c8465bd6-b66b-4ec2-9b68-661b516eab9a,600,,False
+1fxqj1-31.myshopify.com,,300,granted,fc692a19-7226-47f9-80fa-aaeff51a6cee,600,,False
+ejsccu-1z.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+nbz-test-dev.myshopify.com,,300,granted,67c032f7-6458-4318-b611-fdb19919e9a2,600,,False
+yfp4f3-h7.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wd17sg-be.myshopify.com,,300,granted,4991a60c-2272-4601-8eed-3d25eb447aae,600,,False
+nqm1kj-eg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1zenzt-zr.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+12hw0a-7d.myshopify.com,,300,granted,bd462f0a-4001-43bc-90e2-611699ed8151,600,,False
+ftrdhg-in.myshopify.com,,300,granted,cc27a88f-04dd-4272-92ab-3a4bd73258b9,600,,False
+zmb0gs-aj.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0bka5s-e9.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+04dht1-0j.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+10ziwt-u8.myshopify.com,,300,granted,83a00e00-bb66-4d53-ba52-fc82ce98009c,600,,False
+cabatk-km.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wzdq3a-wq.myshopify.com,,300,granted,8d576cbb-1597-4a43-a675-f0fc201edc3d,600,,False
+zeug57-sm.myshopify.com,,300,granted,f7c523be-2f9e-4f66-9f93-cb50e0f40088,600,,False
+edxpny-fb.myshopify.com,,300,granted,1512d953-68d1-4f41-938a-d5d1f5b45505,600,,False
+01e90d-tx.myshopify.com,,300,granted,e0149c9f-8aa3-4b7b-88c9-9a4403b26ab1,600,,False
+2h0rk1-cf.myshopify.com,,300,skipped,,,already received migration grant,False
+pnjqtd-cm.myshopify.com,,300,granted,0b150461-0320-416f-9c99-4b814f82baa1,600,,False
+ct2emg-gv.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0m12bq-d4.myshopify.com,,300,granted,d09b9216-4339-450d-8446-dec03e302819,600,,False
+trendselo.myshopify.com,,300,granted,dacf1f23-6ce4-416d-8db5-3b56a47b8a6c,600,,False
+t3swjb-8a.myshopify.com,,300,granted,62f9dd05-87ce-42a3-8a54-b592734f9ef5,600,,False
+a18f1d-zh.myshopify.com,,300,granted,489c3782-cae3-4bda-9693-ed08a6cf68d4,600,,False
+yr6jhd-n7.myshopify.com,,300,granted,0d3dbeb7-aa48-4324-9445-3c90ae610d6a,600,,False
+func1y-eu.myshopify.com,,300,granted,5980aa6e-4b23-4068-9d9f-86d908ac3584,600,,False
+fadkxc-09.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ts1jev-ye.myshopify.com,,300,granted,5e448158-fe6e-4506-8750-3c56bb0518cf,600,,False
+z21m9q-6y.myshopify.com,,300,granted,e61f159e-777d-4826-9fc9-50954405a058,600,,False
+25t1qc-yk.myshopify.com,,300,granted,cbbcfcc6-ca41-4ee2-96d0-d17a33101a1f,600,,False
+fw4vgg-2p.myshopify.com,,300,granted,ebc0ac3b-b76a-45d5-a0ab-256940e29d25,600,,False
+ekxjht-ny.myshopify.com,,300,granted,acefc183-9440-4fbe-95ec-e489e07be0cb,600,,False
+ecmpfd-0n.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+v8ej9i-p1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yzcpmn-10.myshopify.com,,300,granted,8306cd3c-5469-494d-a2f9-2018b8c02dbb,600,,False
+trgwgb-ru.myshopify.com,,300,granted,4dc832be-b21c-4e08-8651-25992e9ef02a,600,,False
+chipsbyus-v2.myshopify.com,,300,granted,cfe899cf-58a1-43cc-9504-9c45d323ea54,600,,False
+chic-boutique-builder-yjukb.myshopify.com,,300,granted,aa28c380-3a9b-47f5-a06d-e57e0c25f2bd,600,,False
+0w3rcv-pp.myshopify.com,,300,granted,1ed9dc88-5117-4ddb-830c-bbd8c0fab06b,600,,False
+mre4zn-uh.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0th1in-p0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+v11qua-7m.myshopify.com,,300,granted,541407a3-5136-4396-8ece-14a9909f8bd0,600,,False
+mtd1kx-bm.myshopify.com,,300,granted,6bb28fc3-bb51-4001-96f0-0967cc9ea847,600,,False
+jngg2k-vi.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+dyenzz-rm.myshopify.com,,300,granted,a20caf9f-dc02-4e0c-a6a1-713fc48313d5,600,,False
+5rdwdk-j1.myshopify.com,,300,granted,23e7ad01-7fff-4d2b-b865-7d5d63fded63,600,,False
+t150bf-9u.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+a9hc3f-tu.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yjmqbu-hj.myshopify.com,,300,granted,82d4535c-0272-4c2c-b6a7-6835886e94fa,600,,False
+r1rs9x-3s.myshopify.com,,300,granted,f662d544-4806-41cf-a608-11ab3a18ac56,600,,False
+kwyzsn-t1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ki89qk-ym.myshopify.com,,300,granted,f36cc9ff-881b-4c8e-8db6-ebae3e707250,600,,False
+sabkuch-aura.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+n8ym6s-y0.myshopify.com,,300,granted,dcb6dbde-aafb-4084-aed1-ed65798d8681,600,,False
+f0k10f-84.myshopify.com,,300,granted,723627f6-b81d-498b-ab93-8996ec74112f,600,,False
+nqmixr-hj.myshopify.com,,300,granted,9d9eaf9e-c608-47d5-89fc-56df5db7804d,600,,False
+wellsox.myshopify.com,,300,granted,4306a588-f6ec-47d6-bb1a-6e81c63701fd,600,,False
+yuq1rg-f7.myshopify.com,,300,granted,83c21378-a790-48c6-9ec5-191ed5469faf,600,,False
+ihgtvs-1f.myshopify.com,,300,granted,5f0fe2ca-5554-488e-b1c6-5727631023fd,600,,False
+6vr6qr-ie.myshopify.com,,300,granted,09aa05f7-ba9e-49c1-87c6-c203fdf2ed5a,600,,False
+hmdz0b-eq.myshopify.com,,300,skipped,,,already received migration grant,False
+tuyhqd-4b.myshopify.com,,300,granted,28608a97-2da5-49e4-ae03-4924e31bb97f,600,,False
+7qss3z-t7.myshopify.com,,300,granted,95ee3916-7d09-438b-b3a1-1f3d0f1bdbfe,600,,False
+1n7k23-1x.myshopify.com,,300,granted,57afd6f3-0e7d-4a05-96df-de13599cda7c,600,,False
+0igniq-cx.myshopify.com,,300,granted,857fc514-6d78-4711-b266-ec9949eb8134,600,,False
+ustbkc-yy.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ysv0w5-eb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+8jsuhz-b3.myshopify.com,,300,granted,9d9d5ecd-5338-4e82-a6fb-9a72f4370e3b,600,,False
+z7mht7-gr.myshopify.com,,300,granted,c9a56be3-3e3f-457e-9242-806b78256329,600,,False
+bb5nri-80.myshopify.com,,300,granted,f1580600-d9ce-4235-9c26-4a86b0a4ac7f,600,,False
+i30nyj-r0.myshopify.com,,300,granted,fada7afa-e868-47c7-8637-44b7fb239543,600,,False
+j5qecv-wk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+hu5rb6-n1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tchynx-zk.myshopify.com,,300,granted,68772732-2ebf-4d6e-b532-da7eb3d09362,600,,False
+bqjkhs-94.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+9039b4.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+47cyzy-gk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+mkbn14-ke.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+jnefm2-vi.myshopify.com,,300,granted,f7a76c04-140e-490a-8854-1b7d6016f814,600,,False
+x0awep-mx.myshopify.com,,300,granted,e698c987-b072-4ce3-9caa-87784b5fe635,600,,False
+y13j6v-q8.myshopify.com,,300,granted,b1044340-9b9b-498a-b44c-f4c8e2475896,600,,False
+mfvk0u-ig.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1qi8m1-r0.myshopify.com,,300,granted,929ace0e-0958-4bad-bd54-6f7c0e85e238,600,,False
+1pzxwk-vi.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tr2d3q-bu.myshopify.com,,300,granted,a1e5996e-74b5-4779-b2a3-c84657968463,600,,False
+aanuwf-v0.myshopify.com,,300,granted,6dff7290-2f83-41ea-97db-07d46058df33,600,,False
+w7ufdh-uq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+8zwhwg-i2.myshopify.com,,300,granted,3a36c335-7577-4bcd-9c97-aa9817ad8a92,600,,False
+1bsh33-tx.myshopify.com,,300,granted,26536d59-bb4b-4656-aa26-100f14a78a46,600,,False
+eqrnaw-mj.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+2gqk4a-sz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ht8t9x-q1.myshopify.com,,300,granted,40d60c4c-f448-4815-a3f0-24af1b85d946,600,,False
+1hbmcx-7p.myshopify.com,,300,granted,e6492493-3c0b-4d6b-b7bf-cc0eb2ceddfa,600,,False
+jqw43v-rk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+toys-zambeel.myshopify.com,,300,granted,03acad30-fd2f-452f-bc9d-69b9a51d7dbd,600,,False
+gz9xqs-r1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+31uxi0-0u.myshopify.com,,300,granted,d8111942-9f9a-42b3-b64f-4c6a83265879,600,,False
+8k0ga5-3e.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ssducv-7k.myshopify.com,,300,granted,ea1ec3f6-04a3-4b59-8e88-5ceb43979a1a,600,,False
+fwrh1x-5y.myshopify.com,,300,granted,8e0c268a-2b7a-4451-b82e-c287ec04006b,600,,False
+gcp7kx-b9.myshopify.com,,300,granted,369f719e-59d4-4e3a-8249-7e03da9c1aa4,600,,False
+3w1pgn-1g.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tv0sqh-r6.myshopify.com,,300,granted,0336869a-ba44-4b5f-a15b-3a9ac472bc81,600,,False
+1azpfz-vi.myshopify.com,,300,granted,c217c8d3-c8f8-4dda-bb68-450c72e51ff9,600,,False
+c10fd6.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+myshopideas.myshopify.com,,300,granted,0c6942dc-944e-4ba6-8f4f-132b485949bf,600,,False
+ujvrrb-v8.myshopify.com,,300,granted,b66e441a-c87a-423b-967b-56da7e199530,600,,False
+0igpr1-c1.myshopify.com,,300,granted,19f70c9c-ef1d-4444-a509-f4e12212e7d9,600,,False
+r9f0nb-h0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+gazcc1-d7.myshopify.com,,300,granted,4eacad3b-b8e0-484e-8692-f252da48cf95,600,,False
+anivhg-6x.myshopify.com,,300,skipped,,,already received migration grant,False
+1gbikf-ej.myshopify.com,,300,granted,550639d9-cc45-4123-bba7-8c6a31661d68,600,,False
+7dqt8a-eb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+waleedspeaks.myshopify.com,,300,granted,bd557c8f-8e27-4d1b-8631-09d4ad0d7043,600,,False
+z5nmw0-mu.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ieuet1-ea.myshopify.com,,300,granted,1bad7696-2b00-4f71-b4b5-fb4fe158b710,600,,False
+a17fg4-hc.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0dw0h1-sj.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+epqjd2-gk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+riq0a6-xb.myshopify.com,,300,granted,04ffb9c6-273a-4745-8aae-b2985bf3e6a5,600,,False
+4a7nd1-mq.myshopify.com,,300,skipped,,,already received migration grant,False
+virelle-cockware.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yxv1qq-et.myshopify.com,,300,granted,a8ddfbc1-e858-4493-b3e1-71ce0d586b0b,600,,False
+yuabja-he.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+y13dtb-nm.myshopify.com,,300,granted,3d0a4054-f6f7-43e5-a543-47372a2a6840,600,,False
+sak0tb-1w.myshopify.com,,300,granted,a11ef10a-208d-493d-8eeb-ef6366a62eee,600,,False
+50c0uc-8x.myshopify.com,,300,granted,f8a9e939-5dce-4979-bdec-4af5e5b360b4,600,,False
+vfixaf-b4.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+at-lowest-2.myshopify.com,,300,granted,d5711b86-c1d2-4a8f-8b03-4f210920a7a3,600,,False
+uzu4ne-4d.myshopify.com,,300,granted,239eb6d7-d9e1-434f-9487-4a989905510c,600,,False
+dubaisell-2.myshopify.com,,300,granted,068186b9-b275-48f2-a96d-6962dbb52185,600,,False
+e2brkr-1w.myshopify.com,,300,granted,a13e5c3e-e5d4-411b-a52d-25219e8226ea,600,,False
+cosmic-tablet.myshopify.com,,300,granted,e9345082-6215-484b-94b5-affcd48ed67e,600,,False
+mdmw1m-0g.myshopify.com,,300,granted,23c8d50e-b723-4db4-8de2-a137b8a66b29,600,,False
+dcc9yi-w1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+2a8f8g-in.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ecokidsbay.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+kyei02-fx.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+shsfxj-eh.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+c4hkzp-hn.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+c6a007-2.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+q6apjk-rg.myshopify.com,,300,granted,92848bd3-b7bb-4b44-90cb-f883902e456a,600,,False
+mnchi4-2p.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ddh52h-1k.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xmbpbm-v0.myshopify.com,,300,granted,516fbfb6-d408-4a22-93e8-27e842f9414e,600,,False
+hz0pfs-0j.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+khhwbd-kg.myshopify.com,,300,skipped,,,already received migration grant,False
+zetvxp-h0.myshopify.com,,300,granted,6bb6b565-af5b-45fe-beaf-e619911a140a,600,,False
+qnstrn-nf.myshopify.com,,300,granted,1b39cd5c-0b67-48fd-baf3-753425309598,600,,False
+3incy9-w8.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tyujat-c1.myshopify.com,,300,granted,9c8ef4f1-52de-450f-866d-d4257d83214d,600,,False
+bc00t9-xt.myshopify.com,,300,skipped,,,already received migration grant,False
+raun8v-1k.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xfs1hm-gv.myshopify.com,,300,skipped,,,already received migration grant,False
+ne9ne7-gj.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xrptzd-3y.myshopify.com,,300,granted,45ad9a73-5ad0-4d97-9ac7-b47fd4fd81ff,600,,False
+ahz7ss-qz.myshopify.com,,300,granted,c84e4d38-c8e7-4a25-abbc-505214914a67,600,,False
+0j1sr6-jg.myshopify.com,,300,granted,d53dfe10-662a-42d6-be74-ccca597bcc00,600,,False
+b1a280-2.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+zxj8e8-qy.myshopify.com,,300,granted,1db82c85-0dfd-4bd6-8e79-2737b1ba3c3f,600,,False
+50fycm-fx.myshopify.com,,300,granted,8fb6b725-fb4b-4d90-8c29-b1db19bbbe49,600,,False
+7gmqmc-2p.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+utpmed-f7.myshopify.com,,300,granted,35b557d1-9f97-4124-824d-3e4ce2bf15e5,600,,False
+1mn3fa-gi.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+n0b8zp-rk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wx3ypm-ks.myshopify.com,,300,granted,f9f08d99-6c15-4c38-a482-a10bb2f7139a,600,,False
+sproutbrite.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+3umqqa-tt.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+icdf4z-0e.myshopify.com,,300,skipped,,,already received migration grant,False
+vj0rrz-ke.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+nafey-testing-ai.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+aux1dn-x3.myshopify.com,,300,granted,d00b9a01-ef14-40f8-8fa7-519c6311a1dd,600,,False
+pricepulse-test-store-6.myshopify.com,,300,granted,174bd7a0-0e06-457d-9351-5e118a60a061,600,,False
+pmftpq-fq.myshopify.com,,300,granted,9f88e1a0-48c4-4d65-a824-bca1d1e06fbb,600,,False
+ba5fgz-ma.myshopify.com,,300,granted,7a657a52-c9e7-4bd8-a1a5-2d7e0e392d0a,600,,False
+cmu58t-1q.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xp1yz2-c5.myshopify.com,,300,granted,547ac146-59be-436e-abd3-412dc02593cb,600,,False
+dibutj-ep.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+r0p4mq-n0.myshopify.com,,300,granted,9f101a8f-a9eb-4f7e-83e7-c2b90d2d5feb,600,,False
+aeakyr-zz.myshopify.com,,300,granted,91d60d83-b16b-4be6-a645-019fef61ee44,600,,False
+haris-dev-store-123.myshopify.com,,300,granted,c74f4eb9-d80e-492c-a899-fd745833f2ee,600,,False
+r5qn0y-wg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+nxaynr-a4.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tzt11m-mr.myshopify.com,,300,granted,b25b8db9-4801-45fb-ac34-92d6708a4006,600,,False
+bc61u1-1p.myshopify.com,,300,granted,38106725-8a2e-4c43-b0e4-d2f892d7ba45,600,,False
+ke6zhu-up.myshopify.com,,300,granted,7393936c-287b-4c45-a36f-cdb86f660a80,600,,False
+qprr9v-2t.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+u0kqmx-30.myshopify.com,,300,granted,c55fc2ba-4630-4fa5-a0c5-095e83f8658c,600,,False
+s1c306-ax.myshopify.com,,300,granted,f8020b7d-e4dd-47ce-8ef7-563298f11df8,600,,False
+63s08e-m2.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+15jyv0-w2.myshopify.com,,300,granted,dba8685b-3e74-428c-9dfc-67f31ee991a3,600,,False
+ubsdji-8r.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cqgukz-ve.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+eybfeq-27.myshopify.com,,300,granted,6a4633a3-bf54-44c2-bcc9-2ad2a5218ed3,600,,False
+f4ygm0-uq.myshopify.com,,300,granted,61f693c7-3db3-4f1c-a830-1634baa4fa30,600,,False
+5dky10-fm.myshopify.com,,300,granted,1abe5e94-a25b-470c-add6-60e91ebc2cb8,600,,False
+rax53a-d2.myshopify.com,,300,granted,dbeac448-c45f-4e5c-b709-a1e0cc23fe6c,600,,False
+c4f1zr-fu.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+mefmb6-tq.myshopify.com,,300,granted,d88249b7-99b1-43d2-8795-ce63868d92d8,600,,False
+xavnfb-gj.myshopify.com,,300,granted,235ee55c-b093-47bf-a676-f68d668acf53,600,,False
+4bzskt-n3.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+mtr9nn-fn.myshopify.com,,300,granted,5d4b278a-1462-4f9d-a46d-25e0d5bcd7b6,600,,False
+kluckaizam.myshopify.com,,300,granted,9c917713-ab0f-4a37-8a29-5b10430b3ccd,600,,False
+at1wsg-1z.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+srwdhc-p0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+03gdfi-kd.myshopify.com,,300,granted,f71317a4-efbf-4815-81fa-d3bd37a35db8,600,,False
+taqyyx-6b.myshopify.com,,300,granted,017c11ca-82c1-4083-8aab-edfc509efaec,600,,False
+gtnbmk-81.myshopify.com,,300,granted,34a4deb1-04ba-4753-9e05-860691f196ec,600,,False
+q301ag-09.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+4t2mft-9d.myshopify.com,,300,granted,e2da8029-5a09-4705-95ff-0f76f84ec39b,600,,False
+c6vr1j-fg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+pm9zqj-hh.myshopify.com,,300,skipped,,,already received migration grant,False
+1zestq-ff.myshopify.com,,300,granted,980c4dc8-b607-4164-ab5b-9f3d32d52229,600,,False
+horizon-asd.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+vuxs3b-v6.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+81anpe-dx.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+5a0ieh-c0.myshopify.com,,300,granted,2697a413-5535-440e-9124-9346e6e27c0b,600,,False
+p4h7ma-08.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+f5vabz-t7.myshopify.com,,300,granted,4b1d2b31-99cc-47af-922d-ee47d69102de,600,,False
+2wycns-fw.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0g93hy-vs.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+geseec-8z.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+syy30h-hc.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+8te8it-pa.myshopify.com,,300,granted,b5887b95-7b90-4388-b38d-60349fe75e8c,600,,False
+d3fkkq-ed.myshopify.com,,300,granted,de576ba3-6627-4e4c-9f51-4fc3c02c366f,600,,False
+1y1bmp-yd.myshopify.com,,300,granted,c572c718-7af6-4038-8752-92a9d22a9e66,600,,False
+pwcmqs-ij.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+u5wvww-nu.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+v1yict-v1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+primehub123.myshopify.com,,300,granted,5726dc9e-11cd-42aa-bf5c-b0341d4c43d7,600,,False
+f11f78.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+6cb11m-sb.myshopify.com,,300,granted,368f4b17-e140-46b3-b5ad-29b07a23c481,600,,False
+bb7di4-0f.myshopify.com,,300,granted,d10bf416-ed28-4cac-bfd5-b0e905b0db32,600,,False
+u3zxhj-3w.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+12sa0b-d0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0d94eb-e8.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+qxmiyz-pc.myshopify.com,,300,granted,5f69b18f-341c-4ade-850d-ba52b479834f,600,,False
+b5c2sv-wt.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+4uj6fd-3s.myshopify.com,,300,granted,0026a361-f9b5-4027-8429-f55672c7bc3d,600,,False
+dhdtwu-3d.myshopify.com,,300,granted,cd6ab045-5320-4184-8de0-b6c2eda4a60d,600,,False
+igj6az-1a.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+emiratesclick-com.myshopify.com,,300,granted,46c6411c-3e1c-43de-8dcb-24973fb62f5e,600,,False
+luxora-watches.myshopify.com,,300,granted,514b153d-fbdf-4164-a55b-7bea87ca42af,600,,False
+2ygdxk-dy.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ehtpgj-1x.myshopify.com,,300,granted,c46ddd6b-ba2e-4abf-bcc5-02a705c445f9,600,,False
+h1m8tk-wg.myshopify.com,,300,granted,a9ecdb28-a96c-4bb9-be08-23cee0a11ccc,600,,False
+bodyfit-w9c7lmnf.myshopify.com,,300,granted,f73fea31-fb49-4e88-b9d8-505c6c02ae39,600,,False
+ik48xd-1g.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+2t3htb-qe.myshopify.com,,300,granted,df2d3290-821a-4bc7-a21d-790ee4862f28,600,,False
+store-launch-2-2.myshopify.com,,300,granted,3cc379a2-03d8-4852-bfc8-ea0cabff8056,600,,False
+12vqty-jk.myshopify.com,,300,granted,489d5e33-db58-4009-a228-a62a05470c6c,600,,False
+m5j8a0-s5.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+j5z7kw-8h.myshopify.com,,300,granted,e961e3e0-2f1b-427c-891e-488630179b95,600,,False
+bfm11a-wz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+qunhgi-i2.myshopify.com,,300,granted,7d492531-a57b-49ef-b9eb-03acacd76ffa,600,,False
+c0iv6m-sk.myshopify.com,,300,granted,574a857f-09a7-481c-8a3f-795821c6d4c3,600,,False
+9a7hqf-08.myshopify.com,,300,granted,e4614af0-7c28-4184-abab-9b5236dafb94,600,,False
+jih322-nr.myshopify.com,,300,granted,60d44579-64aa-4324-bc60-0a977c06a731,600,,False
+m6rppb-am.myshopify.com,,300,granted,ba75e147-583a-45ef-b289-7174068b23b5,600,,False
+cnqbrd-hj.myshopify.com,,300,granted,bf4dce05-b95d-40ad-b017-3e37ffa52d19,600,,False
+dfdzbz-v2.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xt11gd-rt.myshopify.com,,300,granted,e5f5f91d-49a9-4d63-9adb-99f89e8408db,600,,False
+sywdnq-ru.myshopify.com,,300,granted,2fe42060-542d-49b5-8d65-9b5303ef6342,600,,False
+s2ctwg-wt.myshopify.com,,300,granted,403ed7aa-15f9-4931-815e-ab96f9a20896,600,,False
+jsti7f-tw.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+idteks-0k.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+apdv1g-mk.myshopify.com,,300,granted,fa2657dd-ebef-4147-bbe1-c7906345511e,600,,False
+0w0sae-rz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+slate-silk.myshopify.com,,300,granted,e798547c-8258-4472-b1f0-74d95a748e9b,600,,False
+2iai2b-dz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0n4bjq-58.myshopify.com,,300,granted,d076ac08-5b54-4f82-8b53-7cb7941da048,600,,False
+gvgcs5-sr.myshopify.com,,300,granted,40b69e26-2eea-48ee-9144-28e048f5ef37,600,,False
+eyx5th-1f.myshopify.com,,300,granted,0e0ecc8f-5090-493e-b547-fe4c5e5c268b,600,,False
+6kbxcb-xq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+demo-hair-remover-store.myshopify.com,,300,granted,3b8572b8-5764-40a3-906d-6c360e822b19,600,,False
+muw6zm-5v.myshopify.com,,300,granted,9929648c-e55c-47bd-8cf0-bc97e0ab1d5e,600,,False
+u3ghr3-qq.myshopify.com,,300,granted,d4957c12-ded8-4d28-86fc-70b03dc96b06,600,,False
+8dczt6-2j.myshopify.com,,300,granted,e1a7757f-3b14-4820-81e1-9a7af2b82312,600,,False
+t14wxq-v9.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+pyralit.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+vics40-0p.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+hfdejy-br.myshopify.com,,300,granted,9a0ecfa3-edcd-47f1-ba1d-6e9fb5a3155d,600,,False
+urwaxx-xa.myshopify.com,,300,granted,e41fc4d5-d009-448c-9b1f-cd41a024031c,600,,False
+1k1m1z-qc.myshopify.com,,300,granted,d7125898-7d68-461d-b799-bee86c51c9e3,600,,False
+propermellow.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ma1ath-bw.myshopify.com,,300,granted,f8a2c4b1-ab18-4b18-8b90-199ddfbee4e8,600,,False
+is3i8p-ej.myshopify.com,,300,granted,df396704-90ec-4356-b1ef-4524feaf4805,600,,False
+mbcmyt-i9.myshopify.com,,300,granted,af296c77-9ff6-455c-9543-45843de2476e,600,,False
+201s68-pm.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+d706xy-1e.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+cqvqjd-iw.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+kluckai.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+a2uw1y-1e.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wzrayq-is.myshopify.com,,300,granted,166f87fe-f393-427b-995f-3ee58257119a,600,,False
+hd4ian-5b.myshopify.com,,300,granted,118d2163-7728-452d-a245-6ebd2c54de35,600,,False
+d0qvy0-id.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+y0qarx-tv.myshopify.com,,300,granted,6c23d189-de54-4aeb-9ae0-ccaff91b9725,600,,False
+aawihs-2b.myshopify.com,,300,granted,33c131cd-1ed0-449f-98cc-18509d8e3bc6,600,,False
+17r8hz-kt.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+376bcb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+a75awu-17.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+j5dk8t-2s.myshopify.com,,300,granted,1eeacbde-7820-4c12-869f-8b092fd08431,600,,False
+zjrfqu-d9.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+2paqia-ss.myshopify.com,,300,granted,2a71ea5f-5cff-4874-bbdf-d44bab642392,600,,False
+krt7qa-c1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1y8ncw-su.myshopify.com,,300,granted,6ccae1d8-eeed-4fa0-8671-aa6ae5e3271b,600,,False
+7qkqac-ip.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+lifestylebyhn.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+nn4gii-yu.myshopify.com,,300,granted,ec66128a-efd6-4756-8974-69c194f06b90,600,,False
+svq50b-fc.myshopify.com,,300,granted,f5cc26d7-7fed-4247-8b00-256463be897b,600,,False
+x7uhnr-6x.myshopify.com,,300,granted,4a1be9bb-cf0f-45da-a3e8-987ce8f21111,600,,False
+kdgv1u-cy.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+phvxs8-zm.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+bb4bv1-tm.myshopify.com,,300,granted,606e534d-f54b-48dc-b98b-dcef8a8ad9f3,600,,False
+j5i3nd-7p.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+uytnpx-ei.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ej2371-a0.myshopify.com,,300,skipped,,,already received migration grant,False
+zr9nj9-7c.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+scd1rz-pm.myshopify.com,,300,granted,6f6213b7-a940-4878-9bf1-842b0efb98a1,600,,False
+8bsngv-1j.myshopify.com,,300,granted,7978e102-fc0d-4864-9bb2-f2da52946e39,600,,False
+rxdsnu-iu.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+p53kkk-s1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+de1zut-ff.myshopify.com,,300,granted,dd0dcfba-f0e0-4933-9018-b18552210f28,600,,False
+9pvjuq-fb.myshopify.com,,300,granted,53661d35-faf7-44f9-ad44-b04af722dd9f,600,,False
+shabab-experiment.myshopify.com,,300,granted,4110d244-57dc-48e9-96a5-5c8d9cfd1709,600,,False
+urban-store-123.myshopify.com,,300,granted,9baacccf-d4ad-438e-886f-2257e91a91cb,600,,False
+zjin1n-ex.myshopify.com,,300,granted,7402282e-242d-436d-93a0-7524fd8725d4,600,,False
+local-bazar-pk.myshopify.com,,300,granted,458c75d1-a8ac-4131-8c5f-06f8e4dafe48,600,,False
+wrm6z8-qf.myshopify.com,,300,granted,4eed52eb-00e2-4234-8978-d38bada5598b,600,,False
+w1snjg-kj.myshopify.com,,300,skipped,,,already received migration grant,False
+ri7m4e-0a.myshopify.com,,300,granted,74fd4b5b-0123-43c4-af3a-ff20de14e954,600,,False
+1rrmc5-pi.myshopify.com,,300,granted,8d56bf5d-5edf-451f-ad77-44be218db46d,600,,False
+30zpmg-p0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+nk0wqh-83.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wfahnm-hi.myshopify.com,,300,granted,97f4f0aa-9fac-426b-85dc-866c004fa9b1,600,,False
+zr3rnm-jz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+relaxaura-co.myshopify.com,,300,granted,67467e38-7731-4040-8580-d07fa754a8cb,600,,False
+sv1pr3-fm.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tame-the-beast-comb-qo8sd.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+jze3v1-df.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+6c546e.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1cegvq-6j.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+q0q9zf-d7.myshopify.com,,300,granted,ea90369f-10b8-43af-a32e-af02c9befe71,600,,False
+rkti0x-yf.myshopify.com,,300,skipped,,,already received migration grant,False
+u8tkvr-c1.myshopify.com,,300,granted,39aebd51-85df-4c4c-bf79-4f46174d950c,600,,False
+yspsut-du.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xp1t01-yt.myshopify.com,,300,granted,8087f84f-c4c7-4a86-9557-67ea1e7e07ca,600,,False
+1yzrx0-0i.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0kjjpk-y0.myshopify.com,,300,granted,aee7e99a-cf70-4086-98d4-5a68177eace9,600,,False
+9c4fka-ut.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0prv8z-ij.myshopify.com,,300,granted,d48dc522-52fe-4d22-9be4-eb994bb77ce6,600,,False
+1ad3n5-si.myshopify.com,,300,granted,5051a40a-72c6-4e03-a970-f86770e45248,600,,False
+y1mg5x-bc.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wqqdee-un.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0gzzid-sz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ncwzdr-wd.myshopify.com,,300,granted,cbc0d30e-39a7-4b2e-a4a5-26ccefabf980,600,,False
+1ezdzd-it.myshopify.com,,300,granted,8caa4e91-6c35-4d16-b44f-59e3b7e176fa,600,,False
+uetjf7-hj.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ju8vhv-gp.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+spc1c7-yp.myshopify.com,,300,granted,065f00a2-f89e-4923-9221-a674be0bc950,600,,False
+cxnf0x-3y.myshopify.com,,300,granted,bffee0ca-0e50-4797-b3eb-60d57bc7bf5a,600,,False
+17xf1e-nr.myshopify.com,,300,granted,d17db810-4603-42ce-affa-08d628f01930,600,,False
+fv3pjw-wi.myshopify.com,,300,granted,9a1b92dd-358e-40ed-bdbe-f756859daa39,600,,False
+aiiauz-qa.myshopify.com,,300,granted,ea862cea-c74a-4536-91c8-d50ee4d35702,600,,False
+rgdjy4-ph.myshopify.com,,300,granted,4ec528e4-9d3d-4abb-b2d4-239f1a6be4ea,600,,False
+bogeygolferuk.myshopify.com,,300,granted,203c879d-c585-4160-80be-00f766f50b39,600,,False
+r4v7z6-kk.myshopify.com,,300,granted,fcf9ff14-a0cf-444f-b39e-e54cab05ea77,600,,False
+skezkp-h0.myshopify.com,,300,granted,36fe4b64-5083-41ba-915c-5847f90873e3,600,,False
+it3rkw-15.myshopify.com,,300,granted,e0674bcc-55e2-492e-82ec-88d4135044e2,600,,False
+cm0n1g-kf.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+5d6wn5-id.myshopify.com,,300,granted,55d10fdc-a33f-44d3-b2d5-fafcd29a6064,600,,False
+027aa2-1t.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0dj1ig-1b.myshopify.com,,300,granted,f9ec46c1-b830-487e-ad2d-a5673010f577,600,,False
+vkisds-f3.myshopify.com,,300,granted,55081e7a-74a8-4347-bdc4-7bad30d08f37,600,,False
+rk1grg-ng.myshopify.com,,300,granted,c3d792e4-8978-46ed-9000-d46c1aec8319,600,,False
+nr8wnc-mx.myshopify.com,,300,granted,c3e7e362-ebe0-4a20-a400-055d64e91576,600,,False
+uadiww-7j.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+18t7pw-u1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xyqi4k-kp.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+17ucu5-ig.myshopify.com,,300,granted,a77ba8f1-2971-4ea2-90e6-d7f5632d0bc6,600,,False
+km0kkt-rv.myshopify.com,,300,granted,09e0b3f5-830d-4f19-a357-4d10fda9f05e,600,,False
+xymf1s-zd.myshopify.com,,300,granted,ca71fa2c-3b57-4666-8419-5a9d43d2a8e5,600,,False
+0ae0wf-a5.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+t1rsbr-rc.myshopify.com,,300,granted,c40e42b3-ed71-4549-9059-e945e3f0c4fb,600,,False
+4mvt8f-c9.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+vamh3i-gg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yqic1n-ek.myshopify.com,,300,granted,16a54d9c-4c3f-4762-bac5-77201dd52a92,600,,False
+6ysx8e-wk.myshopify.com,,300,granted,981b7765-298f-4e8a-abdd-7e28895ac0e3,600,,False
+cbcmky-0k.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+daupzr-mk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+bviq2e-dd.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+gwruzk-ar.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+g1djkt-rt.myshopify.com,,300,granted,e2189246-448c-4987-ba59-40467e55be9a,600,,False
+wegfim-ks.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+3vvdt4-5a.myshopify.com,,300,skipped,,,already received migration grant,False
+km1ttf-gp.myshopify.com,,300,granted,0d983168-7198-4ecd-8488-69ea90abae77,600,,False
+sv1buz-nf.myshopify.com,,300,granted,65cd7ee7-661d-46fd-96bd-9fbf64c22a70,600,,False
+ixc1px-61.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+hsv10c-cf.myshopify.com,,300,granted,e472fba8-157c-48fd-b19f-19dfd98b3a48,600,,False
+iig9sp-qk.myshopify.com,,300,granted,94f93b6e-42b3-4c77-b164-426e998fe855,600,,False
+hnhekg-4j.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+fhejsz-w0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+e0ffia-3i.myshopify.com,,300,granted,8cd94274-3ba5-4b4e-b5a9-079f219b045c,600,,False
+7ap5f8-1s.myshopify.com,,300,granted,2b9144fa-1524-4c6f-b196-9e3df15fe989,600,,False
+6btj1a-wg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+zjqgk5-4k.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+u0ijze-qt.myshopify.com,,300,granted,4639712e-d456-4224-b9d8-2a8a92bccbf3,600,,False
+mp3q0y-hy.myshopify.com,,300,granted,1f31a3ec-96ae-4548-a551-81e7f179192b,600,,False
+wqtu0x-t2.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wp0yeg-z5.myshopify.com,,300,granted,786ee61d-63a9-4041-b679-41188bdc1114,600,,False
+wpatnn-0w.myshopify.com,,300,granted,18cafa28-7714-4c50-9102-32ef48376a3c,600,,False
+tp35nc-hw.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xehdq6-ut.myshopify.com,,300,skipped,,,already received migration grant,False
+ivbrnd-4t.myshopify.com,,300,granted,bb273021-d1e6-4c3e-a6c0-03f7bdce813e,600,,False
+8uwz6h-qg.myshopify.com,,300,granted,35e25a4b-e833-4f46-be60-d4d58c72bec3,600,,False
+v0zdaw-z2.myshopify.com,,300,granted,e07b616f-a10d-446c-950d-9d1487d7a20b,600,,False
+quickstart-a123.myshopify.com,,300,granted,e07bbfb7-6cba-437e-8f66-b9c515d999a4,600,,False
+xyra8i-kp.myshopify.com,,300,granted,7d1c7d61-c392-4a01-88b6-802ed5fb411a,600,,False
+teazmh-qh.myshopify.com,,300,granted,b0d83dd4-983d-4af2-8645-b5302e20848a,600,,False
+7r8d5q-dh.myshopify.com,,300,granted,dec641d6-6467-42e9-b74d-63464f95b594,600,,False
+xpejdd-cq.myshopify.com,,300,granted,9a46021e-78be-4350-ab0c-a033dad12bf0,600,,False
+wjk9nk-zq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+james-wrist-watch.myshopify.com,,300,granted,66a7db83-ba9b-43fa-82a2-2fbd6e31db9f,600,,False
+jitu5f-q2.myshopify.com,,300,granted,4aaa64dc-4f20-4d21-97c5-d94469bd23df,600,,False
+k5mthz-be.myshopify.com,,300,granted,a0840092-74bb-4660-aad0-1e3e308cb198,600,,False
+smych0-vi.myshopify.com,,300,granted,359b13dc-d59b-4444-98dd-171975a91fc0,600,,False
+mk04qw-z7.myshopify.com,,300,granted,1a1a774a-595a-4073-908c-d267c2d6013c,600,,False
+25dh0u-9m.myshopify.com,,300,granted,a701e9db-357f-4045-b09a-431be488a113,600,,False
+joyoffical.myshopify.com,,300,granted,5813ff12-ac1d-4a2c-b524-286e45fdc03a,600,,False
+ew339w-0b.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+zjqqb0-30.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+gtu1r0-1x.myshopify.com,,300,granted,f7c403b2-5605-4d1b-b6cb-101a599a7097,600,,False
+acqi8k-dq.myshopify.com,,300,granted,bc18760c-5659-46da-86af-59eec08b8c22,600,,False
+b0qk4j-zk.myshopify.com,,300,granted,578cd029-de94-4686-8e10-6abe09ca2a1b,600,,False
+cfs01q-kv.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+thelegacy-design.myshopify.com,,300,granted,ea3e0734-dc76-48ab-ba8e-70a88f559fc5,600,,False
+uqmi00-v0.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tj1aix-y7.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wi1jvz-cq.myshopify.com,,300,granted,1cbe6472-ecb0-40d1-a4b2-bee861ed3af8,600,,False
+as11rh-9u.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+heavy-testing.myshopify.com,,300,granted,099b33c4-675b-4086-9d8d-ab963dc503d6,600,,False
+0wuxg2-ks.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+acgf31-nf.myshopify.com,,300,granted,4beea11d-37ee-4612-a7bc-7d5efd478df6,600,,False
+igvbr8-qg.myshopify.com,,300,granted,b0e7edd2-8f6a-48ef-abf7-c953a16fb331,600,,False
+zi9gej-1r.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+fm4iph-0z.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wey7vb-1b.myshopify.com,,300,granted,7532395f-9430-4ab4-b998-e42cf6e8f04f,600,,False
+f1bf8m-17.myshopify.com,,300,granted,7cd98ff9-28cc-4e5f-99a2-b7230fa9d6c4,600,,False
+kyx0bi-re.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+g49snz-nm.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+iv1tjx-fi.myshopify.com,,300,granted,c8836bcf-27f7-44e1-9363-7fa4665e8e95,600,,False
+sytykw-iz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+skwprh-0w.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+pwj3wd-az.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wm137z-gt.myshopify.com,,300,granted,56257714-9645-4e0a-8a69-cae21d27a2a6,600,,False
+cjqefq-k1.myshopify.com,,300,granted,cce98b02-3690-4134-b689-241ebc186919,600,,False
+w0mdak-1z.myshopify.com,,300,skipped,,,already received migration grant,False
+jiveh6-ad.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1rse9r-13.myshopify.com,,300,granted,50207a77-04f2-43b9-a4dc-1b6e29bce3bc,600,,False
+asz14b-ft.myshopify.com,,300,granted,37d2cd1f-2db0-48de-a23f-955a5eedf5e7,600,,False
+novva-living.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+1ffnhk-gn.myshopify.com,,300,granted,0cf535b5-6118-4e93-83a0-2625018b0de5,600,,False
+zh01mz-nx.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+g11z2u-wv.myshopify.com,,300,granted,3f482897-9fb6-4594-a1fb-f6adcf43ae0c,600,,False
+zkagkz-3e.myshopify.com,,300,granted,ddc8fca7-a056-4cfc-9692-dfd4211a51a5,600,,False
+7sph1x-ng.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+spihbj-a5.myshopify.com,,300,granted,88aa6889-1585-4de4-baa0-a219a5e73900,600,,False
+rcukh6-ck.myshopify.com,,300,skipped,,,already received migration grant,False
+i0i00z-jg.myshopify.com,,300,granted,03f24941-9f16-4902-9672-3cb01dc13600,600,,False
+dpmzyc-5z.myshopify.com,,300,granted,bd5106f4-7e77-4d57-92f4-44cad38fa746,600,,False
+b8xnbe-3n.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+u5a74j-b2.myshopify.com,,300,granted,161281ec-7288-4815-90f5-8563c660aa22,600,,False
+skyhi-gadgets.myshopify.com,,300,granted,b8de3e21-1702-412d-b365-1f9c155dd614,600,,False
+enzejs-ft.myshopify.com,,300,granted,689422b1-6e7d-42ab-94b6-26cd9b9d109f,600,,False
+hgyurf-ts.myshopify.com,,300,granted,622ee47d-f0aa-4596-a87c-1a61b4992b15,600,,False
+6a47d6-e3.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+s1mz1r-hc.myshopify.com,,300,granted,c12cb8bf-5d15-41f2-b257-23d70f915526,600,,False
+ehhwid-bx.myshopify.com,,300,granted,cc744410-d092-45d0-bad9-bd62c1793b9b,600,,False
+udqrsh-jk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+xb0vgx-7t.myshopify.com,,300,granted,7bc3f555-3607-4007-8006-18e1989f84db,600,,False
+xsg7ma-b5.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+jec9bi-uj.myshopify.com,,300,granted,243e7b65-22e4-4b8f-b315-dc91a21e4046,600,,False
+wcnmrx-ii.myshopify.com,,300,granted,818fec45-c830-4342-921b-787ae9c2dd22,600,,False
+qssu1s-we.myshopify.com,,300,granted,69aceaed-ec5a-4866-9d84-762bc93ee8b3,600,,False
+m98d20-rg.myshopify.com,,300,skipped,,,already received migration grant,False
+c7yjmh-jw.myshopify.com,,300,granted,4343a558-7c98-4797-9949-911bcb621456,600,,False
+eewrs1-3f.myshopify.com,,300,granted,312832fd-dfd2-4e4f-9113-2fc10bcd1d76,600,,False
+96n8qz-1t.myshopify.com,,300,granted,915fe8a0-a973-455a-a2e2-e325d37b70c7,600,,False
+41idfe-jj.myshopify.com,,300,granted,daaecbae-c7b4-488e-982e-13b32e99d244,600,,False
+nauue0-wc.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+x8vhhd-mr.myshopify.com,,300,granted,c54660a9-d958-4d38-849c-84848e24d3c9,600,,False
+ssvhj0-me.myshopify.com,,300,granted,3ffe4b3d-488f-4332-a9ec-9e1b87531c6c,600,,False
+stjkj0-hy.myshopify.com,,300,granted,60abd3f8-0d91-497b-84d2-2634e768dde9,600,,False
+8pwie0-rf.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+fz40ii-vn.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+131a80-qk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+p4vmz6-gu.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0uve3i-5w.myshopify.com,,300,skipped,,,already received migration grant,False
+w1tuqb-mt.myshopify.com,,300,granted,44931614-14ef-49c4-96df-d641295008fd,600,,False
+kluck-ai-testing-rafay.myshopify.com,,300,granted,121e8f57-675a-4f43-9457-b258daa7aa31,600,,False
+qdgaj0-hx.myshopify.com,,300,granted,7f4a322a-caa5-4253-ac52-4997963d263e,600,,False
+ryh7s6-r1.myshopify.com,,300,granted,c642d461-9065-403e-9363-db36b5411bd0,600,,False
+pa82nm-9i.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+upfynn-ys.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+5butyr-qj.myshopify.com,,300,granted,265a4ff9-f59c-4a05-bfde-60094634b2b2,600,,False
+4qhzfj-gp.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+y16p6v-mm.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+c2zcvf-m5.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+kairpd-9b.myshopify.com,,300,granted,65466020-959c-45e7-87b8-db69aa9e45d5,600,,False
+y17t4w-kx.myshopify.com,,300,granted,4d06e13d-3496-4d56-b540-ad27c4a3560b,600,,False
+hijy6j-cz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ds5t1m-pk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+bvnmn8-b0.myshopify.com,,300,granted,04c0b569-7b54-4033-a579-44ed1346c154,600,,False
+hcuv9a-dj.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+pd0ybz-zb.myshopify.com,,300,granted,ef9eeec0-989e-4a5e-afe1-b012ce655fc1,600,,False
+cuunnk-n1.myshopify.com,,300,granted,2dfdbb41-faf9-4114-97d3-b0d575a5c1f9,600,,False
+05dtj1-nd.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+4bc2ms-rh.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+2chrs0-nn.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ic00q0-cf.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+zjjzx3-we.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tibabn-q5.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+fzegvj-ff.myshopify.com,,300,granted,336b2ebe-6377-4e41-a9b2-bcaaa2950089,600,,False
+nmpyfv-j9.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+aj65xk-dn.myshopify.com,,300,granted,ac67d220-e3f9-44e5-987e-72ab379037f1,600,,False
+8fwznz-zh.myshopify.com,,300,granted,bb2082b8-82d0-476e-8b17-f0a9afd79dff,600,,False
+aexis-final.myshopify.com,,300,granted,4c0cf14c-a0c4-4a3d-aa63-2a0e7ddedcf1,600,,False
+ctchay-dz.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+uxhsa1-d9.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wdhyug-d1.myshopify.com,,300,granted,c98b462c-9ee9-48de-9a67-d6da640b8791,600,,False
+w173d0-eh.myshopify.com,,300,granted,a8e7feae-9b23-4ef1-b3fd-833e706a79d7,600,,False
+kpc528-zs.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+9zqnsq-41.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+645bd2.myshopify.com,,300,granted,f0a42cac-7a85-4646-9225-dadd74e59b4c,600,,False
+q1h70m-0i.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+3zntkq-cq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+4hu2gk-8h.myshopify.com,,300,granted,096f1a10-d740-4384-8493-a5c79628726f,600,,False
+1wahxi-ek.myshopify.com,,300,granted,37491dc5-3f4a-45df-8e88-5be53adf2096,600,,False
+uvzhrr-zd.myshopify.com,,300,granted,56cd7782-6970-4cf9-8a54-7354ad13b4e4,600,,False
+p1gsyu-wh.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+y01n17-11.myshopify.com,,300,granted,d3bd6c90-483c-4a94-a656-63f6908fbdc0,600,,False
+k6zj9n-8u.myshopify.com,,300,granted,492b244c-3709-4a96-9493-201764bfce70,600,,False
+htdc8q-vq.myshopify.com,,300,granted,0a31ae7a-bc82-40c4-8e02-2f1238fcfe48,600,,False
+16pp9c-9n.myshopify.com,,300,granted,bb1d7fad-c740-49b0-b5bb-e797b730cf09,600,,False
+m5ckpv-w8.myshopify.com,,300,skipped,,,already received migration grant,False
+ysn2ne-k4.myshopify.com,,300,granted,cc4ffa9d-6222-4184-8594-74a9b5a6ab61,600,,False
+rfh5up-1n.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+i016wx-b3.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+f1yr7b-tk.myshopify.com,,300,granted,52c63c15-32a8-49f6-8e6e-7d4cf5ed568c,600,,False
+hpn0ab-ku.myshopify.com,,300,granted,c012c4a2-a749-4452-8602-60fb2db9aadb,600,,False
+jnkc6s-ke.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+c1mdu1-um.myshopify.com,,300,granted,f41a32e5-aefa-417a-85e3-88aae0efb7a6,600,,False
+wqve0q-ck.myshopify.com,,300,granted,d4808777-39d0-4d20-863a-49fbaa61cc8a,600,,False
+01ubsj-yk.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+vj20xq-8d.myshopify.com,,300,granted,77773f08-151c-4bb7-984f-30baeeacfd60,600,,False
+dkk3kx-36.myshopify.com,,300,granted,60eaf7f4-1981-407b-8373-cea41daa1777,600,,False
+ungu1x-h0.myshopify.com,,300,granted,c377cf4b-c7c1-4279-a73d-69208f9534b6,600,,False
+dqkpzq-qg.myshopify.com,,300,granted,dcb85e5f-0843-44a9-8222-c3f2e8c1e43d,600,,False
+xdpg7i-ns.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+rxtkcb-tm.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+acctq2-9j.myshopify.com,,300,granted,fdf108ee-a3c8-4a5d-b303-1af29699bab7,600,,False
+q7x5zz-ia.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+nme1cm-sr.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+0rhy7n-je.myshopify.com,,300,granted,edee81e1-30a3-4362-8e0a-29820b4ed663,600,,False
+1p0uqi-uf.myshopify.com,,300,granted,3fb3d22d-b245-4045-aaa3-6a3d94847170,600,,False
+vqf0c1-00.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+tcqbjn-dr.myshopify.com,,300,granted,06a6c037-d9f0-4342-9571-9a23fe13956f,600,,False
+1de3fv-t0.myshopify.com,,300,granted,9b41e573-3336-4a9a-b47a-3a1fa5959266,600,,False
+ikqh68-ya.myshopify.com,,300,granted,fd57110c-9b47-4276-93dd-ad273ec9df45,600,,False
+z5kbkc-yt.myshopify.com,,300,granted,fe633778-c3e4-4139-a96a-3cf0dee08705,600,,False
+qmvyy2-9b.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+qms181-i0.myshopify.com,,300,granted,0f154d58-4b44-4050-ba8e-b9fdc49225a7,600,,False
+uq8srt-qf.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+3ia20g-4i.myshopify.com,,300,granted,dcac82ac-b948-4f7f-9e63-b8566eb7d712,600,,False
+evekcp-vb.myshopify.com,,300,granted,0e86dc99-f6f4-49ac-b841-4425737eda50,600,,False
+mhv2ix-ck.myshopify.com,,300,granted,1d416883-4d50-4c11-84cf-90c78501688b,600,,False
+n8j4bp-09.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+nfbw6a-eb.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+weq60g-ze.myshopify.com,,300,granted,a6b0ad87-5a15-4258-b4b3-8a8f7ac06550,600,,False
+dhyqfj-td.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+72ifzx-w4.myshopify.com,,300,granted,c80582b0-4923-49e2-992a-1d4bd129561e,600,,False
+3wmwm4-ma.myshopify.com,,300,granted,8013e5cd-52af-4aa0-9974-0429218a454a,600,,False
+wrzv56-ed.myshopify.com,,300,skipped,,,already received migration grant,False
+nyph11-c7.myshopify.com,,300,granted,8f0ad51a-67cd-48d0-bddf-92c689542a63,600,,False
+fxmx10-ka.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+00qip0-nn.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+eedaxj-dv.myshopify.com,,300,granted,6fdd0a26-3bd0-47da-ba51-57299b3fb514,600,,False
+1um0hr-qq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+s18vgh-jf.myshopify.com,,300,granted,ad59e382-5c3b-416d-a602-0b1f85d828ba,600,,False
+1wrkpv-z1.myshopify.com,,300,granted,a638a4f5-319c-4635-bc1e-8575c6c8ce6c,600,,False
+ds0eiv-5k.myshopify.com,,300,granted,cebbc8aa-9fa7-40aa-9203-4190c1282880,600,,False
+a8e40e-4.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+ymhd5v-sk.myshopify.com,,300,granted,9c34d84b-72e8-48a1-8741-e2db735df859,600,,False
+c89cgt-gc.myshopify.com,,300,granted,a9385f9a-0268-4010-a218-060c48d25e72,600,,False
+s1pyef-sn.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+e9khae-vm.myshopify.com,,300,skipped,,,already received migration grant,False
+6f0kte-87.myshopify.com,,300,granted,0f1ca861-57dd-4162-b51b-00364916d8cb,600,,False
+vf1cbe-wg.myshopify.com,,300,granted,320d0f01-9b0f-4007-87e0-baee271e9019,600,,False
+nj5eb2-q7.myshopify.com,,300,granted,9e9ce89c-a45a-468b-a8b3-6269e57846f4,600,,False
+1g1sqp-61.myshopify.com,,300,granted,4d0e3c29-2500-42fd-be40-67c715cdb2b5,600,,False
+wuukdz-mr.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+yugatlowest.myshopify.com,,300,granted,8636ceb4-f49f-45af-a6bc-2bc424b8793e,600,,False
+jxc01x-zq.myshopify.com,,300,granted,70fa65cf-625b-45c5-b881-e513842b6b14,600,,False
+u86gnp-y8.myshopify.com,,300,skipped,,,already received migration grant,False
+yckxqb-4v.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+wtawzg-z6.myshopify.com,,300,granted,34ae0bc1-e128-491a-bab9-5cf9c3f74382,600,,False
+mhycjm-h1.myshopify.com,,300,granted,0ebf4af8-e15a-4034-a1d4-ac3a331a7f71,600,,False
+einfwi-8z.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+j4r5zt-in.myshopify.com,,300,skipped,,,already received migration grant,False
+u3w9fx-e6.myshopify.com,,300,granted,2fa4aa26-7ece-4635-9482-d632ff27cd8f,600,,False
+rafay-dev-store-for-kluck.myshopify.com,,300,granted,7790cb5c-26a4-4492-8ed4-1b215da9cc16,600,,False
+njzy0n-49.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+kluck-ai-testing.myshopify.com,,300,granted,ab2e9e45-b390-4ba0-8071-ac909893a0a5,600,,False
+i6pyc1-ge.myshopify.com,,300,granted,3a2160da-eb9f-4f76-bf64-fb1928b46a55,600,,False
+mktwsr-jq.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+iy1e2p-1g.myshopify.com,,300,granted,a28cb8f1-889c-4414-a188-c9a882ae1e7a,600,,False
+4d433d-da.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+djhaba-tp.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+avqayh-qa.myshopify.com,,300,granted,9fd2578d-c0be-46c5-a4fd-e014f46ad9bb,600,,False
+bhty6t-vg.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+hellowelnes-com.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+5xhrx8-6f.myshopify.com,,300,granted,f7fd641f-85b2-438d-82db-17116e8d7181,600,,False
+g9mn9q-jy.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+s6ck1n-sc.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+haloknot.myshopify.com,,300,granted,97f4885d-6ca2-4c32-bc02-def73de16db7,600,,False
+bhj59f-tt.myshopify.com,,300,granted,0aa51cfb-737b-46e6-b5fe-c555e1f24d07,600,,False
+sxstua-n0.myshopify.com,,300,granted,13f04f38-ab1a-4439-be20-1e23b6b2e350,600,,False
+hp9cvh-2e.myshopify.com,,300,granted,a4339a72-380e-4ce4-a640-857771e91051,600,,False
+s7vw5y-wq.myshopify.com,,300,granted,e6856d17-85bc-405c-b79e-5f4d6452f56c,600,,False
+i49xew-vc.myshopify.com,,300,granted,77fbd4f0-c992-45a4-966c-ce04deb8674f,600,,False
+pivot-themes.myshopify.com,,300,granted,e86f6505-a4ac-49b9-b59d-65a97d317d9f,600,,False
+zmu0hr-k1.myshopify.com,,300,skipped,,,no access_token (app uninstalled),False
+z08kus-ae.myshopify.com,,300,granted,c519bc90-0abd-4558-84bc-096010ea6e53,600,,False
+9cdrnt-r5.myshopify.com,,300,granted,9a599319-321e-42c6-9883-334d5021b1a9,600,,False
+bfs190-a1.myshopify.com,,300,granted,80ce8023-334c-4f48-99e4-570eab96e098,600,,False
+ftje2f-e5.myshopify.com,,300,granted,0f601749-74a2-4968-89e7-ce0fb23368c2,600,,False
+6ydv3c-d0.myshopify.com,,300,granted,389cf7ee-278d-4741-8b06-a1be43a44813,600,,False
+vka1f3-v9.myshopify.com,,300,granted,49d8baa3-86c6-41d4-b685-e7ee6e02f9cf,600,,False

@@ -1,0 +1,81 @@
+{% comment %}
+  Testimonials Slider
+  - Desktop: Horizontal slider with navigation buttons
+  - Mobile: Horizontal scroll with snap points
+  - Colors: Scheme-driven via pf-color-schemes.css
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{%- assign card_scheme = section.settings.card_color_scheme | default: 'scheme-2' -%}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-testimonials01.css' | asset_url }}" media="all">
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --card-width-desktop: {{ section.settings.card_width_desktop }}px;
+    --card-width-mobile: {{ section.settings.card_width_mobile }}px;
+    --card-radius: {{ section.settings.card_radius }}px;
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+    --img-border-width: {{ section.settings.image_border_width }}px;
+    --star-color: {{ section.settings.star_color | default: '#D4AF37' }};
+    --max-width: {% if section.settings.section_full_width %}100%{% else %}{{ section.settings.section_max_width }}px{% endif %};
+  }
+</style>
+
+<div id="shopify-section-{{ section.id }}" class="ts-section color-{{ section_scheme }}" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="ts-container">
+
+    <!-- Header -->
+    <div class="ts-header">
+      <div class="ts-heading">
+        {{ section.settings.heading }}
+      </div>
+
+      <!-- Nav Buttons (Desktop Only) -->
+      <div class="ts-nav">
+        <button class="ts-btn" id="prev-{{ section.id }}" aria-label="Previous">
+          <svg viewBox="0 0 16 16"><path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
+        </button>
+        <button class="ts-btn" id="next-{{ section.id }}" aria-label="Next">
+          <svg viewBox="0 0 16 16"><path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Slider -->
+    <div class="ts-slider-wrapper">
+      <div class="ts-slider" id="slider-{{ section.id }}">
+        {% for block in section.blocks %}
+          <div class="ts-card color-{{ card_scheme }}" {{ block.shopify_attributes }}>
+
+            <!-- Author -->
+            <div class="ts-author-row">
+              {% if block.settings.author_image != blank %}
+                {{ block.settings.author_image | image_url: width: 120 | image_tag: 'ts-avatar', 'lazy' }}
+              {% else %}
+                <div class="ts-avatar-placeholder"></div>
+              {% endif %}
+              <div class="ts-name">{{ block.settings.author_name }}</div>
+            </div>
+
+            <!-- Stars -->
+            <div class="ts-stars">
+              {% for i in (1..block.settings.stars) %}
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              {% endfor %}
+            </div>
+
+            <!-- Review Text -->
+            <p class="ts-review">{{ block.settings.review_text }}</p>
+
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="{{ 'pf-testimonials01.js' | asset_url }}" defer></script>

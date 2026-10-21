@@ -1,0 +1,235 @@
+{% comment %}
+  Features Center Image - Pro Version
+  - Optional Kluck heading, feature_name_n / feature_desc_n, feature_image metafield
+  - Layout: pf-new-features-center-image.css | Scroll animation: pf-new-features-center-image.js
+{% endcomment %}
+
+{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign section_scheme = section.settings.section_color_scheme | default: 'scheme-1' -%}
+{%- assign card_scheme = section.settings.card_color_scheme | default: 'scheme-2' -%}
+{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+{%- assign kluck_feature_image = shop.metafields.kluck_ai.feature_image.value -%}
+
+{%- assign kluck_section_heading = blank -%}
+{%- if store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+  {%- assign kluck_section_heading = store_gen.home_page.text.feature_section_heading -%}
+{%- endif -%}
+
+{% if shop.metafields.app.block_control.value %}
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-new-features-center-image.css' | asset_url }}" media="all">
+
+{% style %}
+  .fci-section--{{ section.id }} {
+    --font-h: {{ settings.type_heading_font | font_family: 'sans-serif' }};
+    --font-b: {{ settings.type_body_font | font_family: 'sans-serif' }};
+    --padding-top-m: {{ section.settings.padding_top_mobile }}px;
+    --padding-bottom-m: {{ section.settings.padding_bottom_mobile }}px;
+    --padding-top-d: {{ section.settings.padding_top_desktop }}px;
+    --padding-bottom-d: {{ section.settings.padding_bottom_desktop }}px;
+    --heading-weight: 400;
+    --heading-style: normal;
+    --heading-size-d: {{ section.settings.heading_size_desktop }}px;
+    --heading-size-m: {{ section.settings.heading_size_mobile }}px;
+    --heading-spacing: {{ section.settings.heading_spacing }}px;
+    --block-title-size: {{ section.settings.block_title_size }}px;
+    --block-text-size: {{ section.settings.block_text_size }}px;
+    --max-width: {{ section.settings.max_width }}px;
+    --desktop-column-gap: {{ section.settings.desktop_column_gap }}px;
+    --vertical-gap: {{ section.settings.vertical_gap }}px;
+    --icon-size: {{ section.settings.icon_size }}px;
+    --center-image-width-d: {{ section.settings.center_image_width_desktop }}px;
+    --center-image-width-m: {{ section.settings.center_image_width_mobile }}px;
+    --center-image-radius: {{ section.settings.center_image_radius | default: 0 }}px;
+    --card-padding: {{ section.settings.card_padding }}px;
+    --card-border-width: {{ section.settings.card_border_width }}px;
+    --card-border-radius: {{ section.settings.card_border_radius }}px;
+    --card-shadow-opacity: {{ section.settings.card_shadow_opacity | divided_by: 100.0 }};
+    {%- if section.settings.card_border_color != blank -%}
+         --card-border-color: {{ section.settings.card_border_color }};
+    {%- endif -%}
+  }
+{% endstyle %}
+
+<div id="shopify-section-{{ section.id }}"
+     class="fci-section fci-section-wrapper fci-section--{{ section.id }} color-{{ section_scheme }}">
+
+  <div class="fci-wrapper fci-wrapper--{{ section.id }}">
+
+    {% if use_kluck_ai %}
+      {% assign hs = kluck_section_heading | strip %}
+      {% if hs != blank %}
+        <h2 class="fci-heading fci-heading--{{ section.id }}">{{ kluck_section_heading | strip }}</h2>
+      {% elsif section.settings.heading != blank %}
+        <h2 class="fci-heading fci-heading--{{ section.id }}">{{ section.settings.heading }}</h2>
+      {% endif %}
+    {% else %}
+      {% if section.settings.heading != blank %}
+        <h2 class="fci-heading fci-heading--{{ section.id }}">{{ section.settings.heading }}</h2>
+      {% endif %}
+    {% endif %}
+
+    <div class="fci-grid fci-grid--{{ section.id }}">
+
+      <div class="fci-column fci-column-left">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.position == 'left' -%}
+            {%- assign kname = blank -%}
+            {%- assign kdesc = blank -%}
+            {%- if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+              {%- assign _t = store_gen.home_page.text -%}
+              {%- case forloop.index -%}
+                {%- when 1 -%}
+                  {%- assign kname = _t.feature_name_1 -%}{%- assign kdesc = _t.feature_desc_1 -%}
+                {%- when 2 -%}
+                  {%- assign kname = _t.feature_name_2 -%}{%- assign kdesc = _t.feature_desc_2 -%}
+                {%- when 3 -%}
+                  {%- assign kname = _t.feature_name_3 -%}{%- assign kdesc = _t.feature_desc_3 -%}
+                {%- when 4 -%}
+                  {%- assign kname = _t.feature_name_4 -%}{%- assign kdesc = _t.feature_desc_4 -%}
+                {%- when 5 -%}
+                  {%- assign kname = _t.feature_name_5 -%}{%- assign kdesc = _t.feature_desc_5 -%}
+                {%- when 6 -%}
+                  {%- assign kname = _t.feature_name_6 -%}{%- assign kdesc = _t.feature_desc_6 -%}
+              {%- endcase -%}
+            {%- endif -%}
+            <div class="fci-item fci-item--{{ block.id }} {% if section.settings.enable_card_format %}is-card color-{{ card_scheme }}{% endif %}"
+                 style="
+                   --text-align: {{ block.settings.text_align }};
+                   --offset: {{ block.settings.horizontal_offset }}px;
+                 "
+                 {{ block.shopify_attributes }}>
+
+              {%- if block.settings.raw_svg != blank or block.settings.icon_image != blank -%}
+                <div class="fci-icon-wrapper">
+                  {%- if block.settings.raw_svg != blank -%}
+                    {{ block.settings.raw_svg }}
+                  {%- else -%}
+                    {{ block.settings.icon_image | image_url: width: 200 | image_tag: 'fci-icon', 'lazy' }}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              {%- if use_kluck_ai -%}
+                {%- assign ns = kname | strip -%}
+                {%- if ns != blank -%}
+                  <h4 class="fci-item-title">{{ kname | strip }}</h4>
+                {%- elsif block.settings.title != blank -%}
+                  <h4 class="fci-item-title">{{ block.settings.title }}</h4>
+                {%- endif -%}
+              {%- else -%}
+                {%- if block.settings.title != blank -%}
+                  <h4 class="fci-item-title">{{ block.settings.title }}</h4>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- if use_kluck_ai -%}
+                {%- assign ds = kdesc | strip -%}
+                {%- if ds != blank -%}
+                  <div class="fci-item-text">{{ kdesc }}</div>
+                {%- elsif block.settings.text != blank -%}
+                  <div class="fci-item-text">{{ block.settings.text }}</div>
+                {%- endif -%}
+              {%- else -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="fci-item-text">{{ block.settings.text }}</div>
+                {%- endif -%}
+              {%- endif -%}
+
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="fci-center-image">
+        {%- if use_kluck_ai and kluck_feature_image != blank -%}
+          {{ kluck_feature_image | image_url: width: 800 | image_tag: 'fci-center-img', 'lazy' }}
+        {%- elsif use_kluck_ai and section.settings.center_image != blank -%}
+          {{ section.settings.center_image | image_url: width: 800 | image_tag: 'fci-center-img', 'lazy' }}
+        {%- elsif use_kluck_ai -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- elsif section.settings.center_image != blank -%}
+          {{ section.settings.center_image | image_url: width: 800 | image_tag: 'fci-center-img', 'lazy' }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      <div class="fci-column fci-column-right">
+        {%- for block in section.blocks -%}
+          {%- if block.settings.position == 'right' -%}
+            {%- assign kname = blank -%}
+            {%- assign kdesc = blank -%}
+            {%- if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+              {%- assign _t = store_gen.home_page.text -%}
+              {%- case forloop.index -%}
+                {%- when 1 -%}
+                  {%- assign kname = _t.feature_name_1 -%}{%- assign kdesc = _t.feature_desc_1 -%}
+                {%- when 2 -%}
+                  {%- assign kname = _t.feature_name_2 -%}{%- assign kdesc = _t.feature_desc_2 -%}
+                {%- when 3 -%}
+                  {%- assign kname = _t.feature_name_3 -%}{%- assign kdesc = _t.feature_desc_3 -%}
+                {%- when 4 -%}
+                  {%- assign kname = _t.feature_name_4 -%}{%- assign kdesc = _t.feature_desc_4 -%}
+                {%- when 5 -%}
+                  {%- assign kname = _t.feature_name_5 -%}{%- assign kdesc = _t.feature_desc_5 -%}
+                {%- when 6 -%}
+                  {%- assign kname = _t.feature_name_6 -%}{%- assign kdesc = _t.feature_desc_6 -%}
+              {%- endcase -%}
+            {%- endif -%}
+            <div class="fci-item fci-item--{{ block.id }} {% if section.settings.enable_card_format %}is-card color-{{ card_scheme }}{% endif %}"
+                 style="
+                   --text-align: {{ block.settings.text_align }};
+                   --offset: {{ block.settings.horizontal_offset }}px;
+                 "
+                 {{ block.shopify_attributes }}>
+
+              {%- if block.settings.raw_svg != blank or block.settings.icon_image != blank -%}
+                <div class="fci-icon-wrapper">
+                  {%- if block.settings.raw_svg != blank -%}
+                    {{ block.settings.raw_svg }}
+                  {%- else -%}
+                    {{ block.settings.icon_image | image_url: width: 200 | image_tag: 'fci-icon', 'lazy' }}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              {%- if use_kluck_ai -%}
+                {%- assign ns = kname | strip -%}
+                {%- if ns != blank -%}
+                  <h4 class="fci-item-title">{{ kname | strip }}</h4>
+                {%- elsif block.settings.title != blank -%}
+                  <h4 class="fci-item-title">{{ block.settings.title }}</h4>
+                {%- endif -%}
+              {%- else -%}
+                {%- if block.settings.title != blank -%}
+                  <h4 class="fci-item-title">{{ block.settings.title }}</h4>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- if use_kluck_ai -%}
+                {%- assign ds = kdesc | strip -%}
+                {%- if ds != blank -%}
+                  <div class="fci-item-text">{{ kdesc }}</div>
+                {%- elsif block.settings.text != blank -%}
+                  <div class="fci-item-text">{{ block.settings.text }}</div>
+                {%- endif -%}
+              {%- else -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="fci-item-text">{{ block.settings.text }}</div>
+                {%- endif -%}
+              {%- endif -%}
+
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'pf-new-features-center-image.js' | asset_url }}" defer></script>
+{% endif %}

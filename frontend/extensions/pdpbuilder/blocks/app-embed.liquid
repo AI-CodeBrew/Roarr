@@ -1,0 +1,52 @@
+{%- comment -%}
+This file has NO custom settings.
+It only relies on the built-in App embeds toggle.
+When the embed is ON, this script runs.
+When the embed is OFF, this entire file is not rendered.
+{%- endcomment -%}
+
+<script>
+  // Function to show all app blocks
+  function showAppBlocks() {
+    var blocks = document.querySelectorAll('.app_blocks_class');
+    blocks.forEach(function (el) {
+      // Remove the inline display:none we set in the block markup
+      el.style.display = '';
+    });
+  }
+
+  // Run immediately if DOM is already loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', showAppBlocks);
+  } else {
+    // DOM is already loaded, run immediately
+    showAppBlocks();
+  }
+
+  // Watch for new blocks being added dynamically
+  var observer = new MutationObserver(function(mutations) {
+    showAppBlocks();
+  });
+
+  // Start observing when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    });
+  } else {
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Kluck AI Theme Extension",
+  "target": "body"
+}
+{% endschema %}

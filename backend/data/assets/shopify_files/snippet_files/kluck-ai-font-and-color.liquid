@@ -1,0 +1,124 @@
+{% liquid
+  assign heading_font = settings.kluck_heading_font
+  assign body_font = settings.kluck_body_font
+  assign kluck_accent = settings.color_scheme | default: '#bca38f'
+  assign section_opacity = settings.section_opacity | default: 0.3
+  assign button_opacity = settings.button_opacity | default: 0.8
+  assign scheme2_bg = kluck_accent | color_modify: 'alpha', section_opacity
+  assign scheme2_btn = kluck_accent | color_modify: 'alpha', button_opacity
+%}
+
+{% style %}
+  {{ heading_font | font_face }}
+  {{ body_font | font_face }}
+
+  :root {
+    {% if heading_font != blank %}
+      --kluck-font-heading-family: {{ heading_font.family  }};
+      --kluck-font-heading-style: {{ heading_font.style }};
+      --kluck-font-heading-weight: {{ heading_font.weight }};
+    {% endif %}
+
+    {% if body_font != blank %}
+      --kluck-font-body-family: {{ body_font.family }};
+      --kluck-font-body-style: {{ body_font.style }};
+      --kluck-font-body-weight: {{ body_font.weight }};
+    {% endif %}
+  }
+
+  html body,
+  html span,
+  html a {
+    font-family: var(
+      --kluck-font-body-family,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif
+    ) !important;
+    font-style: var(--kluck-font-body-style, normal);
+    font-weight: var(--kluck-font-body-weight, 400);
+  }
+
+  html body h1,
+  html body h2,
+  html body h3,
+  html body h4,
+  html body h5,
+  html body h6 {
+    font-family: var(
+      --kluck-font-heading-family,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif
+    ) !important;
+    font-style: var(--kluck-font-heading-style, inherit);
+    font-weight: var(--kluck-font-heading-weight, 700);
+  }
+{% endstyle %}
+
+{% comment %}
+  Kluck sections read --color-background / --color-primary-button-background / --color-accent.
+  Dawn often does not emit those vars for color_scheme_group entries, and previously this
+  snippet only styled scheme-1 and scheme-2 — so scheme-kluck-* (per-section colors)
+  rendered with generation defaults. Emit the same vars for every scheme in settings.
+{% endcomment %}
+<style>
+.color-scheme-1,
+.color-background-1 {
+  --color-background: #ffffff;
+  --color-foreground: #121212;
+  --color-foreground-heading: #121212;
+  --color-primary-button-background: {{ scheme2_btn }};
+  --color-primary-button-text: #ffffff;
+  --color-accent: {{ scheme2_btn }};
+  --color-accent-soft: #ffffff;
+  --color-on-accent: #ffffff;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.color-scheme-2,
+.color-background-2 {
+  --color-background: {{ scheme2_bg }};
+  --color-foreground: #121212;
+  --color-foreground-heading: #121212;
+  --color-primary-button-background: {{ scheme2_btn }};
+  --color-primary-button-text: #ffffff;
+  --color-accent: {{ scheme2_btn }};
+  --color-accent-soft: {{ scheme2_bg }};
+  --color-on-accent: #ffffff;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+{% for scheme in settings.color_schemes %}
+  .color-{{ scheme.id }},
+  .color-{{ scheme.id }}.gradient {
+    --color-background: {{ scheme.settings.background }};
+    --gradient-background: {{ scheme.settings.background }};
+    --color-foreground: {{ scheme.settings.text }};
+    --color-foreground-heading: {{ scheme.settings.text }};
+    --color-foreground-muted: {{ scheme.settings.text }};
+    --color-primary-button-background: {{ scheme.settings.button }};
+    --color-primary-button-text: {{ scheme.settings.button_label }};
+    --color-primary-button-hover-background: {{ scheme.settings.button }};
+    --color-primary-button-hover-text: {{ scheme.settings.button_label }};
+    --color-secondary-button-text: {{ scheme.settings.secondary_button_label }};
+    --color-accent: {{ scheme.settings.button }};
+    --color-accent-soft: {{ scheme.settings.background }};
+    --color-on-accent: {{ scheme.settings.button_label }};
+    background: {{ scheme.settings.background }};
+    background-color: {{ scheme.settings.background }};
+    color: {{ scheme.settings.text }};
+  }
+{% endfor %}
+
+.kluck-button {
+  background-color: var(--color-primary-button-background, {{ scheme2_btn }});
+  color: var(--color-primary-button-text, #ffffff);
+}
+</style>

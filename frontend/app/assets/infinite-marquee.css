@@ -1,0 +1,58 @@
+/**
+ * Infinite Marquee
+ * CSS animation for continuous horizontal scroll
+ * Two groups of repeated items, -50% translate for seamless loop
+ */
+
+.marquee-wrapper {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding: var(--padding-y) 0;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.marquee-track {
+  display: flex;
+  width: fit-content;
+  animation: marquee-slide var(--speed) linear infinite;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.marquee-item {
+  display: flex;
+  align-items: center;
+  padding-right: var(--gap);
+  font-size: 1.1rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.marquee-icon {
+  display: block;
+  width: var(--icon-width);
+  height: auto;
+  margin-right: 10px;
+  object-fit: contain;
+}
+
+@keyframes marquee-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause on hover when enabled */
+.marquee-wrapper.marquee-pause-on-hover:hover .marquee-track {
+  animation-play-state: paused;
+}

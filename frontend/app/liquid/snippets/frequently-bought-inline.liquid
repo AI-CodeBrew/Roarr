@@ -1,0 +1,37 @@
+{% comment %}
+  Inline FBT for hero section. Expects: product_list, heading, layout_mode, color_schema, block_id
+{% endcomment %}
+<div id="fbt-{{ block_id | default: 'hero-fbt' }}" class="fbt-widget-wrapper fbt-inline" style="--fbt-bg:#f9f9f9;--fbt-card-bg:#fff;--fbt-text:#111;--fbt-border:#e5e5e5;--fbt-btn-bg:{{ color_schema | default: '#a34e4e' }};--fbt-btn-text:#fff;--fbt-qty-bg:#f0f0f0;">
+  <div class="fbt-items-container">
+    {%- if heading != blank -%}<h5 class="fbt-header">{{ heading }}</h5>{%- endif -%}
+    <div class="fbt-cards-row layout-{{ layout_mode | default: 'slider' }}">
+    {%- for p in product_list -%}
+      {%- assign v = p.selected_or_first_available_variant -%}
+      {%- if v and v.available -%}
+        <div class="fbt-card" data-variant-id="{{ v.id }}">
+          <a href="{{ p.url | default: '#' }}" class="fbt-image-wrap">
+            <img src="{{ p.featured_image | image_url: width: 200 }}" alt="{{ p.title | escape }}" width="200" height="200" loading="lazy">
+          </a>
+          <div class="fbt-details">
+            <a href="{{ p.url | default: '#' }}" class="fbt-title" title="{{ p.title | escape }}">{{ p.title }}</a>
+            <div class="fbt-price">{{ v.price | money }}</div>
+            <div class="fbt-actions">
+              <div class="fbt-qty-control">
+                <button type="button" class="fbt-qty-btn minus">-</button>
+                <input type="number" class="fbt-qty-input" value="1" min="1" readonly>
+                <button type="button" class="fbt-qty-btn plus">+</button>
+              </div>
+              <button type="button" class="fbt-add-btn">
+                <span class="txt">Add</span>
+                <span class="loader" style="display:none;">...</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <div style="font-size:13px;opacity:.6;">Related products will appear here.</div>
+    {%- endfor -%}
+    </div>
+  </div>
+</div>

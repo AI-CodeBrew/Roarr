@@ -1,0 +1,177 @@
+{%- comment -%}
+  Collection grid (manual blocks)
+  — Responsive grid: configurable desktop/mobile columns, image + label + link per block.
+  — Section title uses theme Heading 2 scale (--font-h2--*) + pf-color-schemes.
+{%- endcomment -%}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+
+{%- style -%}
+  #CollGrid2-{{ section.id }} {
+    --font-h: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-b: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-sub: {{ settings.type_subheading_font.family | default: settings.type_heading_font.family }}, sans-serif;
+    --font-btn: {{ settings.type_accent_font.family | default: settings.type_body_font.family }}, sans-serif;
+
+    --c2-pt-mobile: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    --c2-pb-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    --c2-pt-desk: {{ section.settings.padding_top }}px;
+    --c2-pb-desk: {{ section.settings.padding_bottom }}px;
+    --c2-max-width: {{ section.settings.max_width }}px;
+    --c2-grid-gap: {{ section.settings.grid_gap }}px;
+    --c2-columns-desktop: {{ section.settings.columns_desktop }};
+    --c2-columns-mobile: {{ section.settings.columns_mobile }};
+    --c2-image-ratio: {{ section.settings.image_ratio }};
+    --c2-radius: {{ section.settings.image_border_radius }}px;
+    --c2-label-size: {{ section.settings.label_size }}px;
+    --c2-heading-color: {{ section.settings.heading_color }};
+    --c2-label-color: {{ section.settings.label_color }};
+    --c2-bg: {{ section.settings.section_background }};
+    --c2-divider-color: {{ section.settings.heading_divider_color | default: '#e5e5e5' }};
+    --c2-divider-height: {{ section.settings.heading_divider_thickness | default: 1 }}px;
+    --c2-gap-heading-to-divider: {{ section.settings.heading_to_divider_gap | default: 74 }}px;
+    --c2-gap-divider-to-grid: {{ section.settings.divider_to_grid_gap | default: 48 }}px;
+  }
+{%- endstyle -%}
+
+<div
+  id="CollGrid2-{{ section.id }}"
+  class="c2-collection-grid color-{{ section_scheme }}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="c2-inner">
+    {%- if section.settings.heading != blank -%}
+      <div
+        class="c2-heading-block{% if section.settings.show_heading_divider == false %} c2-heading-block--no-divider{% endif %}"
+      >
+        <h2 class="c2-heading h2">{{ section.settings.heading | escape }}</h2>
+        {%- unless section.settings.show_heading_divider == false -%}
+          <div class="c2-heading-divider" aria-hidden="true"></div>
+        {%- endunless -%}
+      </div>
+    {%- endif -%}
+
+    <div class="c2-grid" role="list">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'collection_item' -%}
+            {%- assign _href = block.settings.link | default: '' | strip -%}
+            {%- if _href == blank -%}
+              {%- assign _href = '#' -%}
+            {%- endif -%}
+            <article class="c2-card" role="listitem" {{ block.shopify_attributes }}>
+              <a href="{{ _href }}" class="c2-card__link">
+                <div class="c2-card__media">
+                  {%- if block.settings.image != blank -%}
+                    <img
+                      src="{{ block.settings.image | image_url: width: 1000 }}"
+                      alt="{{ block.settings.title | escape }}"
+                      class="c2-card__img"
+                      loading="lazy"
+                      width="1000"
+                      height="1000"
+                    >
+                  {%- else -%}
+                    {{ 'collection-1' | placeholder_svg_tag: 'c2-card__img c2-card__img--ph' }}
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.title != blank -%}
+                  <p class="c2-card__label">{{ block.settings.title | escape }}</p>
+                {%- endif -%}
+              </a>
+            </article>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{%- style -%}
+  #CollGrid2-{{ section.id }}.c2-collection-grid {
+    background: var(--c2-bg);
+    padding: var(--c2-pt-mobile) 1.25rem var(--c2-pb-mobile);
+  }
+  @media screen and (min-width: 750px) {
+    #CollGrid2-{{ section.id }}.c2-collection-grid {
+      padding: var(--c2-pt-desk) 2rem var(--c2-pb-desk);
+    }
+  }
+  #CollGrid2-{{ section.id }} .c2-inner {
+    max-width: var(--c2-max-width);
+    margin: 0 auto;
+  }
+  #CollGrid2-{{ section.id }} .c2-heading-block {
+    margin-bottom: var(--c2-gap-divider-to-grid);
+  }
+  #CollGrid2-{{ section.id }} .c2-heading-block--no-divider {
+    margin-bottom: 0;
+  }
+  #CollGrid2-{{ section.id }} .c2-heading {
+    margin: 0 0 var(--c2-gap-heading-to-divider);
+    font-family: var(--font-h2--family, var(--font-h));
+    font-style: var(--font-h2--style, normal);
+    font-weight: var(--font-h2--weight);
+    font-size: var(--font-h2--size);
+    line-height: var(--font-h2--line-height);
+    letter-spacing: var(--font-h2--letter-spacing);
+    text-transform: var(--font-h2--case);
+    color: var(--c2-heading-color);
+  }
+  #CollGrid2-{{ section.id }} .c2-heading-block--no-divider .c2-heading {
+    margin-bottom: var(--c2-gap-divider-to-grid);
+  }
+  #CollGrid2-{{ section.id }} .c2-heading-divider {
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-top: var(--c2-divider-height) solid var(--c2-divider-color);
+  }
+  #CollGrid2-{{ section.id }} .c2-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--c2-columns-mobile), minmax(0, 1fr));
+    gap: var(--c2-grid-gap);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  @media screen and (min-width: 750px) {
+    #CollGrid2-{{ section.id }} .c2-grid {
+      grid-template-columns: repeat(var(--c2-columns-desktop), minmax(0, 1fr));
+    }
+  }
+  #CollGrid2-{{ section.id }} .c2-card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  #CollGrid2-{{ section.id }} .c2-card__media {
+    border-radius: var(--c2-radius);
+    overflow: hidden;
+    aspect-ratio: var(--c2-image-ratio);
+    background: rgba(0, 0, 0, 0.04);
+  }
+  #CollGrid2-{{ section.id }} .c2-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    vertical-align: middle;
+  }
+  #CollGrid2-{{ section.id }} .c2-card__img--ph {
+    object-fit: contain;
+    padding: 12%;
+    background: #f4f4f4;
+  }
+  #CollGrid2-{{ section.id }} .c2-card__label {
+    margin: 0.65rem 0 0;
+    font-family: var(--font-b);
+    font-size: var(--c2-label-size);
+    line-height: 1.35;
+    color: var(--c2-label-color);
+    text-align: left;
+    font-weight: 400;
+  }
+{%- endstyle -%}

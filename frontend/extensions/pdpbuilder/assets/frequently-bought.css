@@ -1,0 +1,205 @@
+.fbt-widget-wrapper {
+  display: block;
+  overflow: hidden;
+  padding: 0 15px;
+  margin-top: 10px;
+}
+
+.fbt-header {
+  color: var(--fbt-text);
+  margin: 0px;
+}
+.fbt-items-container {
+  background-color: var(--fbt-bg);
+  border-radius: 12px;
+  padding: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fbt-cards-row.layout-slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fbt-border) transparent;
+}
+
+.fbt-cards-row.layout-slider::-webkit-scrollbar {
+  height: 4px;
+}
+
+.fbt-cards-row.layout-slider::-webkit-scrollbar-thumb {
+  background: var(--fbt-border);
+  border-radius: 4px;
+}
+
+.fbt-cards-row.layout-slider .fbt-card {
+  flex: 0 0 160px;
+  min-width: 160px;
+}
+
+.fbt-cards-row.layout-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fbt-border) transparent;
+}
+
+.fbt-cards-row.layout-stack::-webkit-scrollbar {
+  width: 4px;
+}
+
+.fbt-cards-row.layout-stack::-webkit-scrollbar-thumb {
+  background: var(--fbt-border);
+  border-radius: 4px;
+}
+
+.fbt-cards-row.layout-stack .fbt-card {
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+}
+
+.fbt-cards-row.layout-stack .fbt-image-wrap {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0;
+  margin-right: 12px;
+}
+
+.fbt-card {
+  background-color: var(--fbt-card-bg);
+  border: 1px solid var(--fbt-border);
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fbt-image-wrap {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f4f4f4;
+  margin-bottom: 8px;
+}
+
+.fbt-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fbt-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+}
+
+.fbt-title {
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.fbt-price {
+  font-size: 12px;
+  opacity: 0.8;
+  color: var(--fbt-text);
+  margin-bottom: 8px;
+}
+
+.fbt-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+  height: 28px;
+}
+
+.fbt-qty-control {
+  display: flex;
+  align-items: center;
+  background: var(--fbt-qty-bg);
+  border-radius: 4px;
+  width: 60px;
+}
+
+.fbt-qty-btn {
+  width: 20px;
+  height: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--fbt-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 14px;
+}
+
+.fbt-qty-input {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-size: 11px;
+  padding: 0;
+  color: var(--fbt-text);
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.fbt-qty-input::-webkit-outer-spin-button,
+.fbt-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.fbt-add-btn {
+  flex: 1;
+  border: none;
+  background: var(--fbt-btn-bg);
+  color: var(--fbt-btn-text);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  padding: 0 8px;
+}
+
+.fbt-add-btn:hover {
+  opacity: 0.8;
+}
+
+
+@media (max-width: 749px) {
+  .fbt-widget-wrapper{
+    padding: 0;
+  }
+
+  .fbt-cards-row.layout-stack {
+    max-height: 340px;
+  }
+}

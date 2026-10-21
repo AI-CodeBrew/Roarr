@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "kluck-ai-404-section": {
+      "type": "kluck-ai-404-section",
+      "name": "Kluck AI - 404",
+      "settings": {
+        "container_width": 1400,
+        "image_position": "right",
+        "color_scheme": "scheme-1",
+        "watermark_text": "404",
+        "watermark_gradient": "linear-gradient(180deg, rgba(251, 239, 234, 1), rgba(251, 239, 234, 0) 100%)",
+        "watermark_size_desktop": 24,
+        "watermark_size_mobile": 48,
+        "watermark_opacity": 80,
+        "subtitle": "Error 404",
+        "heading": "Looks like you strayed off the path.",
+        "heading_size_desktop": 56,
+        "heading_size_mobile": 40,
+        "text": "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.",
+        "text_size_desktop": 18,
+        "text_size_mobile": 16,
+        "btn_1_label": "Back to Home",
+        "btn_1_link": "",
+        "btn_1_bg": "#000000",
+        "btn_1_text": "#ffffff",
+        "btn_2_label": "Shop Best Sellers",
+        "btn_2_link": "",
+        "btn_2_bg": "transparent",
+        "btn_2_text": "#000000",
+        "btn_2_border": "#000000",
+        "image_radius": 24,
+        "padding_top_desktop": 60,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    }
+  },
+  "order": ["kluck-ai-404-section"]
+}

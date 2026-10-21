@@ -1,0 +1,581 @@
+{% comment %}
+  Kluck AI - Hero Section (Product Split)
+  Left: Gallery + FAQ | Right: Product details, Buy Now, Delivery Estimator
+  Context: block, product, shop
+{% endcomment %}
+
+{%- assign thumb_count = block.settings.thumbs_count | default: 3 -%}
+{%- assign show_thumbs = block.settings.show_thumbs -%}
+{%- assign heading_font = block.settings.heading_font_family -%}
+{%- assign body_font = block.settings.body_font_family -%}
+
+{% if heading_font != blank or body_font != blank %}
+  <style>
+    {% if heading_font != blank %}{{ heading_font | font_face: font_display: 'swap' }}{% endif %}
+    {% if body_font != blank %}{{ body_font | font_face: font_display: 'swap' }}{% endif %}
+  </style>
+{% endif %}
+
+{% if shop.metafields.app.block_control.value %}
+  {%- liquid
+    assign s = block.settings
+    assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
+    assign bg_color = s.background_color | default: '#ffffff'
+    assign m_color = product.metafields.kluck_ai.color_schema
+    if s.use_metafields_bg and product != blank and m_color != blank
+      assign bg_color = m_color.value | default: m_color
+    endif
+
+    assign color_schema = m_color.value | default: m_color | default: '#a34e4e'
+    assign instance_id = block.id | replace: '_', '-' | replace: ' ', '-'
+    assign de_id = block.id | replace: '_', '' | replace: ' ', '' | downcase
+
+    assign badge_text = s.badge_text
+    if s.use_metafields and product != blank
+      assign meta = product.metafields.kluck_ai.product_subtitle
+      assign subtitle_content = meta.value | default: meta | default: s.subtitle
+    else
+      assign subtitle_content = s.subtitle
+    endif
+
+    if product
+      assign selected_variant = product.selected_or_first_available_variant | default: product.variants.first
+      assign variant = selected_variant
+      if variant
+        assign current_price = variant.price | default: 100
+        assign cutoff_price = variant.compare_at_price | default: current_price
+        if cutoff_price != blank and cutoff_price > current_price
+          assign discount_amount = cutoff_price | minus: current_price
+          assign discount_percentage = discount_amount | times: 100.0 | divided_by: cutoff_price | round
+        else
+          assign discount_percentage = 0
+        endif
+      else
+        assign current_price = 100
+        assign cutoff_price = 150
+        assign discount_percentage = 33
+        assign variant = null
+      endif
+    else
+      assign variant = null
+      assign current_price = null
+      assign cutoff_price = null
+      assign discount_percentage = 0
+    endif
+
+    assign discount_badge_color = color_schema
+    assign processing_days = s.processing_days | default: 2 | plus: 0
+    assign delivery_days_after_processing = s.delivery_days_after_processing | default: 3 | plus: 0
+    assign total_delivered_days = processing_days | plus: delivery_days_after_processing
+    assign show_delivery_estimator = true
+    if s.show_delivery_estimator == false or s.show_delivery_estimator == 'false'
+      assign show_delivery_estimator = false
+    endif
+    assign show_simple_line = s.show_simple_line
+    assign show_service_accordion = s.show_service_accordion
+    assign show_frequently_bought = s.show_frequently_bought
+    if s.show_frequently_bought == false or s.show_frequently_bought == 'false'
+      assign show_frequently_bought = false
+    endif
+    assign show_accordion = s.show_accordion
+    if s.show_accordion == false or s.show_accordion == 'false'
+      assign show_accordion = false
+    endif
+    assign accordion_limit = s.accordion_number_of_items | default: 4 | at_most: 4 | at_least: 1
+  -%}
+
+  <link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'hero-section.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'product-details.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'delivery-estimator.css' | asset_url }}" media="all">
+  <script src="{{ 'delivery-estimator.js' | asset_url }}" defer></script>
+  {%- if show_frequently_bought -%}
+    <link rel="stylesheet" href="{{ 'frequently-bought.css' | asset_url }}" media="all">
+  {%- endif -%}
+  {%- if show_accordion -%}<link rel="stylesheet" href="{{ 'accordion.css' | asset_url }}" media="all">{%- endif -%}
+
+  <div
+    class="product-split product-split--{{ block.id | replace: '_', '-' }}"
+    data-section-id="{{ block.id }}"
+    style="
+      --bg-color: {{ bg_color }};
+      --bg-opacity: {{ opacity_val }};
+      --main-radius: {{ s.main_radius }}px;
+      --thumb-radius: {{ s.thumb_radius }}px;
+      --gallery-width: {{ s.gallery_width }}%;
+      --left-pd-x: {{ s.pad_left_x }}px;
+      --left-pd-y: {{ s.pad_left_y }}px;
+      --right-pd-x: {{ s.pad_right_x }}px;
+      --right-pd-y: {{ s.pad_right_y }}px;
+      --n: {{ thumb_count }};
+      --gap: 12px;
+      --thumb-w: calc((100% - (var(--gap) * var(--n))) / (var(--n) + 1));
+      --main-w: calc(100% - var(--thumb-w) - var(--gap));
+      --container-max-width: {{ s.container_max_width }}px;
+      --font-heading-family: {% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};
+      --font-body-family: {% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};
+      --body-size: {{ s.body_size | default: 16 }}px;
+      --body-weight: {{ s.body_weight | default: 400 }};
+      --h1-size: {{ s.h1_size | default: 48 }}px;
+      --h1-weight: {{ s.h1_weight | default: 700 }};
+      --h2-size: {{ s.h2_size | default: 36 }}px;
+      --h2-weight: {{ s.h2_weight | default: 700 }};
+      --h3-size: {{ s.h3_size | default: 30 }}px;
+      --h3-weight: {{ s.h3_weight | default: 600 }};
+      --h4-size: {{ s.h4_size | default: 24 }}px;
+      --h4-weight: {{ s.h4_weight | default: 600 }};
+      --h5-size: {{ s.h5_size | default: 20 }}px;
+      --h5-weight: {{ s.h5_weight | default: 500 }};
+      --h6-size: {{ s.h6_size | default: 16 }}px;
+      --h6-weight: {{ s.h6_weight | default: 500 }};
+      --faq-bg: {{ s.faq_bg_color }};
+      --faq-border: {{ s.faq_border_color }};
+      --faq-margin: {{ s.faq_margin_top }}px;
+      --faq-q-font: var(--font-body-family);
+      --faq-q-size: {{ s.body_size }}px;
+      --faq-q-color: {{ s.faq_color_q }};
+      --faq-a-font: var(--font-body-family);
+      --faq-a-size: {{ s.body_size }}px;
+      --faq-a-color: {{ s.faq_color_a }};
+      --faq-icon-bg: {{ s.faq_icon_bg }};
+      --faq-icon-color: {{ s.faq_icon_color }};
+      --product-features-icon-color: {{ color_schema }};
+      --badge-1-text: {{ color_schema }};
+      --discount-badge-color: {{ discount_badge_color }};
+      --product-details-max-width: 100%;
+      --product-details-gap: 4px;
+      --button-width:{% assign bw = s.button_width | default: 100 %}{% if bw > 100 %}{{ bw }}px{% else %}{{ bw }}%{% endif %};
+      --button-border-radius:{{ s.button_border_radius | default: 12 }}px;
+      --button-height:{{ s.button_height | default: 48 }}px;
+      --quantity-border-radius:{{ s.quantity_border_radius | default: 12 }}px;
+      --quantity-width:{{ s.quantity_width | default: 150 }}px;
+      --variants-border-radius:{{ s.variants_border_radius | default: 8 }}px;
+    "
+  >
+    <div class="product-split__container product-split--badge-{{ s.badge_align | default: 'center' }} product-split--badge-shape-{{ s.badge_shape | default: 'ribbon' }} product-split--content-{{ s.content_align | default: 'left' }}">
+      <div class="product-split__left-side">
+        <div class="product-split__panel product-split__panel--media">
+          <div class="ps-gallery-wrapper ps-gallery--{{ s.thumb_position }}">
+            <div class="ps-main-col">
+              <div class="ps-main-item" id="PS-MainWrapper-{{ block.id }}">
+                <div class="ps-main-track" id="PS-Track-{{ block.id }}">
+                  {% if product.media.size > 0 %}
+                    {% for media in product.media limit: thumb_count %}
+                      {% assign img_src = media.preview_image | default: media %}
+                      <img
+                        src="{{ img_src | image_url: width: 1000 }}"
+                        class="ps-main-img"
+                        alt="{{ media.alt | default: product.title | escape }}"
+                        draggable="false"
+                      >
+                    {% endfor %}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'ps-main-img' }}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            {% if show_thumbs and product.media.size > 1 %}
+              <div class="ps-thumbs-col">
+                {% for media in product.media limit: thumb_count %}
+                  {% assign img_src = media.preview_image | default: media %}
+                  <div
+                    class="ps-thumb {% if forloop.first %}is-active{% endif %}"
+                    data-ps-thumb
+                    data-index="{{ forloop.index0 }}"
+                  >
+                    <img src="{{ img_src | image_url: width: 400 }}" alt="{{ media.alt | escape }}" draggable="false">
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if s.show_faq %}
+          <div class="product-split__faq-wrapper">
+            <div class="ps-faq-container">
+              {% for i in (1..5) %}
+                {%- liquid
+                  assign q_key = 'faq_q' | append: i
+                  assign a_key = 'faq_a' | append: i
+                  if s.use_metafields and product != blank
+                    assign q_meta_key = 'product_question_' | append: i
+                    assign a_meta_key = 'product_question_' | append: i | append: '_answer'
+                    assign question = product.metafields.kluck_ai[q_meta_key] | default: product.metafields.kluck_ai[q_meta_key] | default: s[q_key]
+                    assign answer = product.metafields.kluck_ai[a_meta_key] | default: product.metafields.kluck_ai[a_meta_key] | default: s[a_key]
+                  else
+                    assign question = s[q_key]
+                    assign answer = s[a_key]
+                  endif
+                -%}
+                {% if question != blank %}
+                  <div class="pf-faq-item">
+                    <div class="pf-faq-header" data-pf-toggle>
+                      <h3 class="pf-faq-title">{{ question }}</h3>
+                      <div class="pf-faq-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                          <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="pf-faq-content">
+                      <div class="pf-faq-inner">{{ answer }}</div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product-split__panel product-split__panel--details">
+        <div class="product-split__right-inner">
+          <div class="tae-product-details tae-product-details--badge-{{ s.badge_align | default: 'center' }} tae-product-details--badge-shape-{{ s.badge_shape | default: 'ribbon' }} tae-product-details--title-{{ s.content_align | default: 'left' }} tae-product-details--subtitle-{{ s.content_align | default: 'left' }} tae-product-details--rating-text-{{ s.rating_text_align | default: 'left' }} tae-product-details--price-{{ s.price_align | default: 'left' }} tae-product-details--variants-{{ s.variants_align | default: 'left' }}">
+            {%- if badge_text != blank -%}
+              <div class="tae-product-details-badge">
+                <span>{{ badge_text | upcase }}</span>
+              </div>
+            {%- endif -%}
+            {%- if product -%}
+              <h3 class="tae-product-details-title">{{ product.title }}</h3>
+            {%- endif -%}
+            {% if subtitle_content != blank %}
+              <p class="tae-product-details-subtitle rte">{{ subtitle_content }}</p>
+            {% endif %}
+            {%- if s.show_rating != false -%}
+              <div class="tae-product-details-rating">
+                <div class="tae-product-details-stars"><span class="tae-product-details-star">★★★★★</span></div>
+                <span class="tae-product-details-rating-text">{{ s.rating_text | default: 'Best Quality' }}</span>
+              </div>
+            {%- endif -%}
+
+            {%- liquid
+              assign has_features = false
+              if s.features_text != blank
+                assign has_features = true
+              elsif s.use_metafields and product != blank
+                assign kai = product.metafields.kluck_ai
+                for i in (1..3)
+                  assign m_key = 'feature_' | append: i | append: '_text'
+                  assign mt = kai[m_key].value | default: kai[m_key]
+                  if mt != blank
+                    assign has_features = true
+                    break
+                  endif
+                endfor
+              else
+                for i in (1..3)
+                  assign ft_key = 'feature_' | append: i | append: '_text'
+                  assign ft = s[ft_key]
+                  if ft != blank
+                    assign has_features = true
+                    break
+                  endif
+                endfor
+              endif
+            -%}
+
+            {%- if has_features and s.show_features != false -%}
+              <div class="tae-product-details-features-grid" data-icon-set="{{ s.icon_set | default: 'default' }}">
+                {%- assign feats = s.features_text | split: '#' -%}
+                {%- assign kai = product.metafields.kluck_ai -%}
+                {%- for i in (1..3) -%}
+                  {%- liquid
+                    assign m_key = 'feature_' | append: i | append: '_text'
+                    assign mt = kai[m_key].value | default: kai[m_key]
+                    assign fallback = feats[forloop.index0] | strip
+                    if s.use_metafields
+                      assign ft = mt | default: fallback
+                    else
+                      assign ft = fallback
+                    endif
+                  -%}
+                  {%- if ft != blank -%}
+                    <div class="tae-product-details-feature">
+                      <div class="tae-product-details-feature-icon">
+                        {%- liquid
+                          assign icon_key = 'feature_' | append: i | append: '_icon'
+                          assign icon_setting = s[icon_key]
+                        -%}
+                        {%- if icon_setting != blank -%}
+                          <img src="{{ icon_setting | image_url: width: 48 }}" alt="" width="48" height="48" loading="lazy" class="tae-product-details-feature-icon-img">
+                        {%- elsif s.icon_set == 'kids_toys' -%}
+                          {%- if i == 1 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'kids_toys_1.svg' | asset_url }}');"></span>
+                          {%- elsif i == 2 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'kids_toys_2.svg' | asset_url }}');"></span>
+                          {%- else -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'kids_toys_3.svg' | asset_url }}');"></span>{%- endif -%}
+                        {%- elsif s.icon_set == 'home_kitchen' -%}
+                          {%- if i == 1 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'home_kitchen_1.svg' | asset_url }}');"></span>
+                          {%- elsif i == 2 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'home_kitchen_2.svg' | asset_url }}');"></span>
+                          {%- else -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'home_kitchen_3.svg' | asset_url }}');"></span>{%- endif -%}
+                        {%- elsif s.icon_set == 'car_accessories' -%}
+                          {%- if i == 1 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'car_accessories_1.svg' | asset_url }}');"></span>
+                          {%- elsif i == 2 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'car_accessories_2.svg' | asset_url }}');"></span>
+                          {%- else -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'car_accessories_3.svg' | asset_url }}');"></span>{%- endif -%}
+                        {%- elsif s.icon_set == 'health_beauty' -%}
+                          {%- if i == 1 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'health_beauty_1.svg' | asset_url }}');"></span>
+                          {%- elsif i == 2 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'health_beauty_2.svg' | asset_url }}');"></span>
+                          {%- else -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'health_beauty_3.svg' | asset_url }}');"></span>{%- endif -%}
+                        {%- elsif s.icon_set == 'general' -%}
+                          {%- if i == 1 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'general_1.svg' | asset_url }}');"></span>
+                          {%- elsif i == 2 -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'general_2.svg' | asset_url }}');"></span>
+                          {%- else -%}<span class="tae-product-details-feature-icon-mask" style="--icon-mask-url: url('{{ 'general_3.svg' | asset_url }}');"></span>{%- endif -%}
+                        {%- else -%}
+                          {%- if i == 1 -%}{% render 'snippets/feature-1-icon' %}
+                          {%- elsif i == 2 -%}{% render 'snippets/feature-2-icon' %}
+                          {%- else -%}{% render 'snippets/feature-3-icon' %}{%- endif -%}
+                        {%- endif -%}
+                      </div>
+                      <p class="tae-product-details-feature-text">{{ ft }}</p>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            {%- if product and s.show_price != false -%}
+              <div class="tae-product-details-price-row" data-price-row>
+                <h4 class="tae-product-details-price-current" data-price-current>
+                  {% if current_price %}{{ current_price | money }}{% else %}$0.00{% endif %}
+                </h4>
+                {%- if cutoff_price != blank and current_price != blank and cutoff_price > current_price -%}
+                  <p class="tae-product-details-price-compare" data-price-compare>{{ cutoff_price | money }}</p>
+                {%- endif -%}
+                {%- if discount_percentage > 0 -%}
+                  <span class="tae-product-details-discount-badge" data-discount-badge>
+                    <p data-discount-text>{{ discount_percentage }}% off</p>
+                  </span>
+                {%- endif -%}
+              </div>
+
+              {%- if product.variants != blank and product.variants.size > 1 -%}
+                <div class="tae-product-details-variants" data-variants-container>
+                  {%- for v in product.variants -%}
+                    {%- if v.available -%}
+                      {%- assign v_discount = 0 -%}
+                      {%- if v.compare_at_price and v.compare_at_price > v.price -%}
+                        {%- assign v_disc_amt = v.compare_at_price | minus: v.price -%}
+                        {%- assign v_discount = v_disc_amt | times: 100.0 | divided_by: v.compare_at_price | round -%}
+                      {%- endif -%}
+                      <button
+                        type="button"
+                        class="tae-product-details-variant-btn {% if selected_variant and v.id == selected_variant.id %}is-selected{% endif %}"
+                        data-variant-id="{{ v.id }}"
+                        data-variant-price="{{ v.price }}"
+                        data-variant-price-formatted="{{ v.price | money }}"
+                        data-variant-compare-price="{{ v.compare_at_price | default: 0 }}"
+                        data-variant-compare-price-formatted="{{ v.compare_at_price | money }}"
+                        data-variant-discount-percentage="{{ v_discount }}"
+                        aria-label="Select {{ v.title }}"
+                      >
+                        {{ v.title }}
+                      </button>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+
+          {%- comment -%}
+            Live premium PDPs place the Bundle app block after product details and before Buy Now.
+            Preview stand-in mirrors that placement (see app/liquid/bundle.liquid).
+          {%- endcomment -%}
+          {% render 'bundle', product: product %}
+
+          {%- assign qty_style = s.quantity_style | default: 'option1' -%}
+          {%- assign btn_width = s.button_width | default: 100 -%}
+          {%- assign alignment = s.alignment | default: 'center' -%}
+          {%- assign container_max_width = s.container_max_width | default: 1250 -%}
+          {%- assign container_width = btn_width -%}
+          {%- if btn_width > 100 -%}
+            {%- assign container_width = 100 -%}
+          {%- endif -%}
+          {%- liquid
+            assign qty_border_radius = s.quantity_border_radius
+            if qty_border_radius == blank
+              assign qty_border_radius = 12
+            endif
+          -%}
+          <div
+            class="tae-buy-now-button tae-buy-now-button--align-{{ alignment }} tae-buy-now-quantity-style-{{ qty_style }}"
+            style="--buy-now-button-max-width: {{ container_max_width }}px; --buy-now-button-width: {{ container_width }}%; --quantity-border-radius: {{ qty_border_radius }}px;"
+          >
+            <div class="tae-buy-now-button-wrapper">
+              {%- if product and variant -%}
+                <div class="tae-buy-now-button-container">
+                  <div class="tae-buy-now-quantity-selector tae-buy-now-quantity-selector--style-{% if qty_style == 'option2' %}2{% elsif qty_style == 'option3' %}3{% else %}1{% endif %}">
+                    <button
+                      type="button"
+                      class="tae-buy-now-quantity-btn tae-buy-now-quantity-minus"
+                      aria-label="Decrease"
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      class="tae-buy-now-quantity-input"
+                      value="1"
+                      min="1"
+                      data-quantity-input="{{ instance_id }}"
+                    >
+                    <button
+                      type="button"
+                      class="tae-buy-now-quantity-btn tae-buy-now-quantity-plus"
+                      aria-label="Increase"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    class="tae-buy-now-button-btn"
+                    style="background-color: {{ color_schema }};"
+                    data-variant-id="{{ variant.id }}"
+                    data-instance="{{ instance_id }}"
+                  >
+                    {{ s.button_text | default: 'Buy Now' }}
+                  </button>
+                </div>
+              {%- else -%}
+                <a class="tae-buy-now-button-btn" href="#" style="background-color: {{ color_schema }}; color: #fff;">
+                  {{- s.button_text | default: 'Buy Now' -}}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- if show_delivery_estimator -%}
+            <delivery-estimator-{{ de_id }}
+              class="de-fe{% if show_simple_line %} de-fe--simple-line{% endif %}"
+              style="--icon-color: {{ color_schema }}; --line: #e0e0e0;"
+              data-processing-days="{{ processing_days }}"
+              data-delivery-days-after="{{ delivery_days_after_processing }}"
+            >
+              <div class="de-fe__container">
+                {%- if show_simple_line -%}
+                  <div class="de-fe__simple-line">
+                    Order placed on <span data-date-today></span> will be processed until
+                    <span data-date-processing></span> and will be delivered on <span data-date-delivered></span>
+                  </div>
+                {%- else -%}
+                  <div class="de-fe__steps">
+                    <div class="de-fe__line"></div>
+                    <div class="de-fe__step" data-step="1" data-days="0">
+                      <div class="de-fe__iconWrap is-circle">
+                        <div class="de-fe__iconSvg">{% render 'snippets/order-placed' %}</div>
+                      </div>
+                      <div class="de-fe__content">
+                        <p>Order placed</p>
+                        <div class="de-fe__date" data-date-target></div>
+                      </div>
+                    </div>
+                    <div class="de-fe__step" data-step="2" data-days="{{ processing_days }}">
+                      <div class="de-fe__iconWrap is-circle">
+                        <div class="de-fe__iconSvg">{% render 'snippets/processing' %}</div>
+                      </div>
+                      <div class="de-fe__content">
+                        <p>Processing</p>
+                        <div class="de-fe__date" data-date-target></div>
+                      </div>
+                    </div>
+                    <div class="de-fe__step" data-step="3" data-days="{{ total_delivered_days }}">
+                      <div class="de-fe__iconWrap is-circle">
+                        <div class="de-fe__iconSvg">{% render 'snippets/delivered' %}</div>
+                      </div>
+                      <div class="de-fe__content">
+                        <p>Delivered</p>
+                        <div class="de-fe__date" data-date-target></div>
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if show_service_accordion -%}
+                  <div class="de-fe__service-container" data-service-accordion>
+                    <div class="de-fe__service-bar">
+                      <button type="button" class="de-fe__service-item" data-service-toggle="s1" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <p>{{ s.title_1 }}</p>
+                      </button>
+                      <button type="button" class="de-fe__service-item" data-service-toggle="s2" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><line x1="16" y1="8" x2="20" y2="8"/><line x1="16" y1="16" x2="23" y2="16"/><path d="M16 12h7"/>
+                        </svg>
+                        <p>{{ s.title_2 }}</p>
+                      </button>
+                      <button type="button" class="de-fe__service-item" data-service-toggle="s3" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                          <path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                        </svg>
+                        <p>{{ s.title_3 }}</p>
+                      </button>
+                    </div>
+                    <div class="de-fe__service-content" data-service-content="s1">{{ s.content_1 }}</div>
+                    <div class="de-fe__service-content" data-service-content="s2">{{ s.content_2 }}</div>
+                    <div class="de-fe__service-content" data-service-content="s3">{{ s.content_3 }}</div>
+                  </div>
+                {%- endif -%}
+              </div>
+            </delivery-estimator-{{ de_id }}>
+          {%- endif -%}
+
+          {%- if show_frequently_bought -%}
+            <div class="hero-fbt-wrapper" style="margin-top: 20px;">
+              {% render 'snippets/frequently-bought-inline',
+                product_list: s.product_list,
+                heading: s.fbt_heading,
+                layout_mode: s.fbt_layout_mode,
+                color_schema: color_schema,
+                block_id: block.id
+              %}
+            </div>
+          {%- endif -%}
+
+          {%- if show_accordion -%}
+            <div
+              class="hero-accordion-wrapper tae-accordion tae-accordion-inline tae-accordion-hero{% if s.accordion_card_style %} tae-accordion--cards{% endif %}"
+              style="margin-top: 20px;"
+            >
+              {%- for i in (1..accordion_limit) -%}
+                {%- liquid
+                  assign ah_key = 'accordion_heading_' | append: i
+                  assign ac_key = 'accordion_content_' | append: i
+                  assign h = s[ah_key]
+                  assign c = s[ac_key]
+                  if s.accordion_use_metafields and product != blank
+                    assign m = product.metafields.kluck_ai
+                    assign mh_key = 'product_question_' | append: i
+                    assign mc_key = mh_key | append: '_answer'
+                    assign h = m[mh_key].value | default: m[mh_key] | default: h
+                    assign c = m[mc_key].value | default: m[mc_key] | default: c
+                  endif
+                -%}
+                {%- if h != blank or c != blank -%}
+                  <details class="tae-accordion-item">
+                    <summary>
+                      <div class="tae-accordion-header">
+                        {% if s.accordion_show_tick_icon -%}
+                          <span class="tae-accordion-tick-icon">{% render 'snippets/accordion-tick-icon' %}</span>
+                        {%- endif %}
+                        <p class="tae-accordion-heading">{{ h }}</p>
+                        <span class="tae-accordion-plus-icon">{{ s.accordion_toggle_icon | default: '+' }}</span>
+                      </div>
+                    </summary>
+                    <div class="tae-accordion-body rte">{{ c }}</div>
+                  </details>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ 'hero-section.js' | asset_url }}" defer></script>
+  {%- if show_frequently_bought -%}<script src="{{ 'frequently-bought.js' | asset_url }}" defer></script>{%- endif -%}
+{% endif %}

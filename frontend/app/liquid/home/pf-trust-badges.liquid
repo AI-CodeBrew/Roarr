@@ -1,0 +1,85 @@
+{% comment %}
+  Trust Badges / Guarantee Bar - Pro Version
+  - Desktop: Standard Grid/Flex Layout.
+  - Mobile: Optional Infinite Marquee Scroll.
+  - Features: Typography Inheritance, Color Schemes, Smart Hover/Borders.
+  - Layout/CSS lives in pf-trust-badges.css; only theme variables are inlined below.
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{%- assign badge_scheme = section.settings.badge_color_scheme | default: 'scheme-2' -%}
+{%- assign font_family = section.settings.font_family | default: 'body' -%}
+
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-trust-badges.css' | asset_url }}" media="all">
+
+{% style %}
+  #tb-{{ section.id }} {
+    --font-h: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-b: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-a: {{ settings.type_accent_font.family | default: settings.type_heading_font.family }}, sans-serif;
+    --font-weight: {{ section.settings.font_weight }};
+    --pt-d: {{ section.settings.pt_d }}px;
+    --pb-d: {{ section.settings.pb_d }}px;
+    --gap-d: {{ section.settings.gap_d }}px;
+    --font-size-d: {{ section.settings.font_size_d }}px;
+    --item-pad-y-d: {{ section.settings.item_pad_y_d }}px;
+    --item-pad-x-d: {{ section.settings.item_pad_x_d }}px;
+    --icon-size-d: {{ section.settings.icon_size_d }}px;
+    --pt-m: {{ section.settings.pt_m }}px;
+    --pb-m: {{ section.settings.pb_m }}px;
+    --gap-m: {{ section.settings.gap_m }}px;
+    --font-size-m: {{ section.settings.font_size_m }}px;
+    --item-pad-y-m: {{ section.settings.item_pad_y_m }}px;
+    --item-pad-x-m: {{ section.settings.item_pad_x_m }}px;
+    --icon-size-m: {{ section.settings.icon_size_m }}px;
+    --radius: {{ section.settings.border_radius }}px;
+    --border-width: {{ section.settings.border_width }}px;
+    --scroll-speed: {{ section.settings.scroll_speed }}s;
+    --max-width: {{ section.settings.max_width }}px;
+    --alignment: {{ section.settings.alignment }};
+  }
+{% endstyle %}
+
+<div id="tb-{{ section.id }}"
+     class="color-{{ section_scheme }} tb-font-{{ font_family }}{% if section.settings.mobile_auto_scroll %} tb-mobile-scroll{% endif %}">
+  <div class="tb-section">
+    <div class="tb-container">
+      <div class="tb-track">
+
+        {% comment %} --- SET 1: Always Visible --- {% endcomment %}
+        {% for block in section.blocks %}
+          <div class="tb-item color-{{ badge_scheme }}" {{ block.shopify_attributes }}>
+            <div class="tb-icon-wrap">
+              {% if block.settings.custom_icon != blank %}
+                {{ block.settings.custom_icon | image_url: width: 60 | image_tag: 'tb-custom-img', 'lazy' }}
+              {% else %}
+                <svg class="tb-icon-svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>
+              {% endif %}
+            </div>
+            <span class="tb-text">{{ block.settings.text }}</span>
+          </div>
+        {% endfor %}
+
+        {% comment %} --- SET 2: CLONED (Hidden on Desktop, Visible on Mobile via CSS) --- {% endcomment %}
+        {% if section.settings.mobile_auto_scroll %}
+          {% for block in section.blocks %}
+            <div class="tb-item tb-cloned color-{{ badge_scheme }}" aria-hidden="true">
+              <div class="tb-icon-wrap">
+                {% if block.settings.custom_icon != blank %}
+                  {{ block.settings.custom_icon | image_url: width: 60 | image_tag: 'tb-custom-img', 'lazy' }}
+                {% else %}
+                  <svg class="tb-icon-svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>
+                {% endif %}
+              </div>
+              <span class="tb-text">{{ block.settings.text }}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>

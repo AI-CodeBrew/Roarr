@@ -1,0 +1,169 @@
+/**
+ * About Us — Modern Rich Text (watermark + heading + richtext).
+ * Dynamic tokens on [id^="ModernRichText-"] (see liquid {% style %}).
+ */
+
+[id^="ModernRichText-"].about-rich-text {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding-top: var(--mrt-pt-mobile);
+  padding-bottom: var(--mrt-pb-mobile);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  /* Clip horizontal bleed from watermark only; main text should wrap (see below) */
+  overflow-x: hidden;
+}
+
+@media screen and (min-width: 769px) {
+  [id^="ModernRichText-"].about-rich-text {
+    padding-top: var(--mrt-pt-desk);
+    padding-bottom: var(--mrt-pb-desk);
+  }
+}
+
+[id^="ModernRichText-"] .modern-rich-text-root {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+[id^="ModernRichText-"] .modern-rich-text__watermark {
+  position: absolute;
+  top: var(--mrt-watermark-offset-y);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  font-size: var(--mrt-wm-size-mobile);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: var(--mrt-watermark-opacity);
+  background: var(--mrt-watermark-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  /* Prevent huge vw text from expanding layout past the section */
+  overflow: hidden;
+}
+
+@media screen and (min-width: 769px) {
+  [id^="ModernRichText-"] .modern-rich-text__watermark {
+    font-size: var(--mrt-wm-size-desk);
+  }
+}
+
+[id^="ModernRichText-"] .modern-rich-text__content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(100%, var(--mrt-content-max-width));
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--mrt-content-gap);
+}
+
+[id^="ModernRichText-"] .modern-rich-text__heading {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-size: var(--mrt-heading-mobile);
+  color: var(--color-foreground-heading);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+[id^="ModernRichText-"] .modern-rich-text__text {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  font-size: var(--mrt-text-mobile);
+  color: var(--color-foreground);
+  line-height: 1.6;
+  font-weight: 400;
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+[id^="ModernRichText-"] .modern-rich-text__text p {
+  margin: 0 0 0.75em;
+  max-width: 100%;
+}
+
+[id^="ModernRichText-"] .modern-rich-text__text p:last-child {
+  margin-bottom: 0;
+}
+
+[id^="ModernRichText-"] .modern-rich-text__text img,
+[id^="ModernRichText-"] .modern-rich-text__text video,
+[id^="ModernRichText-"] .modern-rich-text__text iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+@media screen and (min-width: 769px) {
+  [id^="ModernRichText-"] .modern-rich-text__heading {
+    font-size: var(--mrt-heading-desk);
+  }
+
+  [id^="ModernRichText-"] .modern-rich-text__text {
+    font-size: var(--mrt-text-desk);
+  }
+}
+
+/* Scroll reveal (when .modern-rich-text--animated is on .modern-rich-text-root) */
+[id^="ModernRichText-"] .modern-rich-text-root.modern-rich-text--animated .animate-el {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+[id^="ModernRichText-"] .modern-rich-text-root.modern-rich-text--animated.is-visible .animate-el {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[id^="ModernRichText-"] .modern-rich-text-root.modern-rich-text--animated .delay-1 {
+  transition-delay: 0.1s;
+}
+
+[id^="ModernRichText-"] .modern-rich-text-root.modern-rich-text--animated .delay-2 {
+  transition-delay: 0.3s;
+}
+
+[id^="ModernRichText-"] .modern-rich-text-root.modern-rich-text--animated .delay-3 {
+  transition-delay: 0.5s;
+}
+
+[id^="ModernRichText-"] .modern-rich-text-root.modern-rich-text--animated .modern-rich-text__watermark {
+  opacity: 0;
+  transition: opacity 1.5s ease 0.2s;
+}
+
+[id^="ModernRichText-"] .modern-rich-text-root.modern-rich-text--animated.is-visible .modern-rich-text__watermark {
+  opacity: var(--mrt-watermark-opacity);
+}

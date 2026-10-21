@@ -1,0 +1,115 @@
+{%- liquid
+  assign s = block.settings
+  unless shop.metafields.app.block_control.value
+    break
+  endunless
+
+  assign m = product.metafields.kluck_ai
+  assign c = m.color_schema.value | default: m.color_schema | default: '#111'
+  assign img = s.image | default: m.feature_image.value | default: m.feature_image
+  
+  assign h = s.heading
+  assign sh = s.subheading
+  if s.use_metafields
+    assign h = m.circular_features_heading.value | default: m.circular_features_heading | default: h
+    assign sh = m.circular_features_subheading.value | default: m.circular_features_subheading | default: sh
+  endif
+
+  assign group_a = ''
+  assign group_b = ''
+  assign timeline_html = ''
+
+  for i in (1..4)
+    assign t_key = 'feature' | append: i | append: '_title'
+    assign d_key = 'feature' | append: i | append: '_text'
+    assign t = s[t_key]
+    assign d = s[d_key]
+
+    if s.use_metafields
+      assign mf_t = 'circular_feature_' | append: i | append: '_name'
+      assign mf_d = 'circular_feature_' | append: i | append: '_desc'
+      assign t = m[mf_t].value | default: m[mf_t] | default: t
+      assign d = m[mf_d].value | default: m[mf_d] | default: d
+    endif
+
+    if t != blank or d != blank
+      capture item_html
+        echo '<div class="cfr-item">'
+        if t != blank
+          echo '<h4 class="cfr-item-title">' | append: t | append: '</h4>'
+        endif
+        if d != blank
+          echo '<p class="cfr-item-desc">' | append: d | append: '</p>'
+        endif
+        echo '</div>'
+      endcapture
+
+      capture timeline_item
+        echo '<div class="cfr-mobile-item"><div class="cfr-mobile-item-content">'
+        if t != blank
+          echo '<h4 class="cfr-mobile-item-title">' | append: t | append: '</h4>'
+        endif
+        if d != blank
+          echo '<p class="cfr-mobile-item-desc">' | append: d | append: '</p>'
+        endif
+        echo '</div></div>'
+      endcapture
+
+      assign timeline_html = timeline_html | append: timeline_item
+      if i <= 2
+        assign group_a = group_a | append: item_html
+      else
+        assign group_b = group_b | append: item_html
+      endif
+    endif
+  endfor
+  
+  assign all_cards = group_a | append: group_b
+  assign pos = s.image_position | default: 'center'
+-%}
+
+<link rel="stylesheet" href="{{ 'circular-feature-ring.css' | asset_url }}" media="all">
+
+<div class="cfr-wrapper tae-circular-feature-ring cfr-image-{{ pos }} cfr-mobile-layout-{{ s.mobile_layout | default: 'timeline' }} cfr-mobile-cards-{{ s.mobile_cards_layout | default: 'stacked' }} tae-circular-feature-ring-{{ block.id | replace: '_', '-' | downcase }} app_blocks_class" style="display: none; --cfr-heading-color: {{ c }}; --cfr-timeline-color: {{ c }}; --cfr-image-radius: {{ s.image_border_radius | default: 50 }}%;">
+  <div class="cfr-container">
+    <div class="cfr-header">
+      {% if h != blank %}<h3>{{ h }}</h3>{% endif %}
+      {% if sh != blank %}<p class="cfr-subheading">{{ sh }}</p>{% endif %}
+    </div>
+
+    <div class="cfr-grid">
+      {%- if pos == 'right' -%}
+        <div class="cfr-col cfr-col-cards">{{ all_cards }}</div>
+      {%- endif -%}
+
+      {%- if pos == 'center' -%}
+        <div class="cfr-col cfr-col-side">{{ group_a }}</div>
+      {%- endif -%}
+
+      <div class="cfr-col cfr-col-center">
+        <div class="cfr-main-image-wrap">
+          {% if img != blank %}
+            <img src="{{ img | image_url: width: 800 }}" srcset="{{ img | image_url: width: 400 }} 400w, {{ img | image_url: width: 800 }} 800w, {{ img | image_url: width: 1200 }} 1200w" sizes="(max-width: 900px) 280px, 400px" alt="{{ img.alt | default: h }}" loading="lazy" width="800" height="800">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'cfr-placeholder-svg' }}
+          {% endif %}
+        </div>
+      </div>
+
+      {%- if pos == 'center' -%}
+        <div class="cfr-col cfr-col-side">{{ group_b }}</div>
+      {%- endif -%}
+
+      {%- if pos == 'left' -%}
+        <div class="cfr-col cfr-col-cards">{{ all_cards }}</div>
+      {%- endif -%}
+    </div>
+    
+    <div class="cfr-mobile-timeline">{{ timeline_html }}</div>
+    <div class="cfr-mobile-cards-wrap">{{ all_cards }}</div>
+  </div>
+</div>
+
+{% schema %}
+{"name":"Circular Feature Ring","target":"section","enabled_on":{"templates":["product","index"]},"settings":[{"type":"checkbox","id":"use_metafields","label":"Use Kluck AI metafields","default":true},{"type":"header","content":"Content"},{"type":"image_picker","id":"image","label":"Circular Image"},{"type":"select","id":"image_position","label":"Image position","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]},{"type":"range","id":"image_border_radius","label":"Image border radius","min":0,"max":50,"step":1,"unit":"%","default":50},{"type":"select","id":"mobile_layout","label":"Mobile layout","default":"timeline","options":[{"value":"timeline","label":"Timeline"},{"value":"cards","label":"Cards"}]},{"type":"select","id":"mobile_cards_layout","label":"Mobile cards layout","default":"stacked","options":[{"value":"stacked","label":"Stacked (1 column)"},{"value":"grid","label":"2x2 grid"}]},{"type":"text","id":"heading","label":"Heading","default":"Transform Your Routine"},{"type":"textarea","id":"subheading","label":"Subheading","default":"The lamp's soft, adjustable glow creates a calming environment."},{"type":"header","content":"Features"},{"type":"text","id":"feature1_title","label":"Feature 1 Title","default":"Relaxation"},{"type":"textarea","id":"feature1_text","label":"Feature 1 Description","default":"Promotes a soothing atmosphere for winding down."},{"type":"text","id":"feature2_title","label":"Feature 2 Title","default":"Versatility"},{"type":"textarea","id":"feature2_text","label":"Feature 2 Description","default":"Adjust the light to match any mood or activity."},{"type":"text","id":"feature3_title","label":"Feature 3 Title","default":"Comfort"},{"type":"textarea","id":"feature3_text","label":"Feature 3 Description","default":"Creates a cozy space for deeper rest and recovery."},{"type":"text","id":"feature4_title","label":"Feature 4 Title","default":"Tranquility"},{"type":"textarea","id":"feature4_text","label":"Feature 4 Description","default":"Helps you unwind and clear your mind after a long day."}]}
+{% endschema %}

@@ -1,0 +1,146 @@
+{%- comment -%}
+  Locale-aware UI chrome for Kluck sections.
+  Uses the storefront language (Shopify localization / request.locale).
+  Usage: {% render 'snippets/kluck-ui-string', key: 'add_to_cart' %}
+{%- endcomment -%}
+{%- liquid
+  assign _lang = localization.language.iso_code | default: request.locale.iso_code | default: 'en' | downcase
+  assign _base = _lang | split: '-' | first
+  assign _out = ''
+
+  case key
+    when 'add_to_cart'
+      case _base
+        when 'pt'
+          assign _out = 'Adicionar ao carrinho'
+        when 'es'
+          assign _out = 'Añadir al carrito'
+        when 'fr'
+          assign _out = 'Ajouter au panier'
+        when 'de'
+          assign _out = 'In den Warenkorb'
+        when 'it'
+          assign _out = 'Aggiungi al carrello'
+        when 'ar'
+          assign _out = 'أضف إلى السلة'
+        when 'hi'
+          assign _out = 'कार्ट में जोड़ें'
+        when 'zh'
+          assign _out = '加入购物车'
+        when 'ja'
+          assign _out = 'カートに追加'
+        when 'ko'
+          assign _out = '장바구니에 추가'
+        when 'ru'
+          assign _out = 'В корзину'
+        when 'tr'
+          assign _out = 'Sepete ekle'
+        when 'id'
+          assign _out = 'Tambah ke keranjang'
+        when 'vi'
+          assign _out = 'Thêm vào giỏ'
+        when 'th'
+          assign _out = 'เพิ่มลงตะกร้า'
+        else
+          assign _out = 'Add to cart'
+      endcase
+    when 'shop_now'
+      case _base
+        when 'pt'
+          assign _out = 'Comprar agora'
+        when 'es'
+          assign _out = 'Comprar ahora'
+        when 'fr'
+          assign _out = 'Acheter'
+        when 'de'
+          assign _out = 'Jetzt kaufen'
+        when 'it'
+          assign _out = 'Acquista ora'
+        when 'ar'
+          assign _out = 'تسوق الآن'
+        when 'hi'
+          assign _out = 'अभी खरीदें'
+        when 'zh'
+          assign _out = '立即购买'
+        when 'ja'
+          assign _out = '今すぐ購入'
+        when 'ko'
+          assign _out = '지금 구매'
+        when 'ru'
+          assign _out = 'Купить сейчас'
+        when 'tr'
+          assign _out = 'Şimdi satın al'
+        when 'id'
+          assign _out = 'Beli sekarang'
+        when 'vi'
+          assign _out = 'Mua ngay'
+        when 'th'
+          assign _out = 'ซื้อเลย'
+        else
+          assign _out = 'Shop now'
+      endcase
+    when 'review_title'
+      case _base
+        when 'pt'
+          assign _out = 'Digite seu texto'
+        when 'es'
+          assign _out = 'Escribe tu texto'
+        when 'fr'
+          assign _out = 'Saisissez votre texte'
+        when 'de'
+          assign _out = 'Text eingeben'
+        when 'it'
+          assign _out = 'Inserisci il testo'
+        else
+          assign _out = 'Enter Your Text'
+      endcase
+    when 'review_body'
+      case _base
+        when 'pt'
+          assign _out = 'Digite a avaliação do cliente aqui'
+        when 'es'
+          assign _out = 'Escribe la reseña del cliente aquí'
+        when 'fr'
+          assign _out = "Saisissez l'avis client ici"
+        when 'de'
+          assign _out = 'Kundenbewertung hier eingeben'
+        when 'it'
+          assign _out = 'Inserisci la recensione del cliente qui'
+        else
+          assign _out = 'Enter customer review over here'
+      endcase
+    when 'reviewer_name'
+      case _base
+        when 'pt'
+          assign _out = 'Nome do avaliador'
+        when 'es'
+          assign _out = 'Nombre del reseñador'
+        when 'fr'
+          assign _out = "Nom de l'évaluateur"
+        when 'de'
+          assign _out = 'Name des Bewerters'
+        when 'it'
+          assign _out = 'Nome recensore'
+        else
+          assign _out = 'Reviewer Name'
+      endcase
+    when 'sold_out'
+      case _base
+        when 'pt'
+          assign _out = 'Esgotado'
+        when 'es'
+          assign _out = 'Agotado'
+        when 'fr'
+          assign _out = 'Épuisé'
+        when 'de'
+          assign _out = 'Ausverkauft'
+        when 'it'
+          assign _out = 'Esaurito'
+        else
+          assign _out = 'Sold out'
+      endcase
+    else
+      assign _out = key
+  endcase
+-%}
+{{- _out -}}

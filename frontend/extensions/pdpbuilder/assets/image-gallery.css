@@ -1,0 +1,147 @@
+.tae-image-gallery {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.tae-image-gallery-heading {
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+.tae-image-gallery-heading h2 {
+  margin: 0;
+  text-align: center;
+  color: #111;
+}
+
+.tae-image-gallery-subheading {
+  text-align: center;
+  color: #666;
+  max-width: 800px;
+  margin: 0 auto 30px auto;
+}
+
+.tae-image-gallery-subheading p {
+  margin: 0 0 15px 0;
+}
+
+.tae-image-gallery-subheading p:last-child {
+  margin-bottom: 0;
+}
+
+.tae-image-gallery-subheading a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.tae-image-gallery-container {
+  width: 100%;
+  position: relative;
+}
+
+.tae-image-gallery-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.tae-image-gallery-track {
+  display: flex;
+  transition: transform 0.4s ease;
+  gap: 20px;
+  justify-content: center;
+}
+
+.tae-image-gallery-slide {
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tae-image-gallery-slide img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Desktop and Tablet: Center aligned with natural sizes */
+@media (min-width: 768px) {
+  .tae-image-gallery-track {
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .tae-image-gallery-slide {
+    flex: 0 0 auto;
+    max-width: 30%;
+  }
+  
+  /* When 1 image: centered */
+  .tae-image-gallery-track[data-image-count="1"] {
+    justify-content: center;
+  }
+  
+  /* When 2 images: centered */
+  .tae-image-gallery-track[data-image-count="2"] {
+    justify-content: center;
+  }
+  
+  /* When 3 images: centered with equal spacing */
+  .tae-image-gallery-track[data-image-count="3"] {
+    justify-content: center;
+  }
+}
+
+/* Mobile: Show 1 image (carousel) */
+@media (max-width: 767px) {
+  .tae-image-gallery-slide {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+  
+  .tae-image-gallery-track {
+    gap: 0;
+    justify-content: flex-start;
+  }
+}
+
+/* Dots indicator */
+.tae-image-gallery-dots {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.tae-image-gallery-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: #d6d6d6;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+
+.tae-image-gallery-dot.is-active {
+  background: #000000;
+}
+
+.tae-image-gallery-dot:hover {
+  background: #999;
+}
+
+/* Hide dots on tablet and desktop when all images are visible */
+@media (min-width: 768px) {
+  .tae-image-gallery-dots {
+    display: none;
+  }
+}
+

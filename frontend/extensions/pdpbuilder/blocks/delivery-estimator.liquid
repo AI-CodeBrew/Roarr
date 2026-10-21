@@ -1,0 +1,58 @@
+{%- liquid
+  assign s = block.settings
+  assign de_id = block.id | replace: '_', '' | downcase
+  assign color_schema = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#a34e4e'
+  assign processing_days = s.processing_days | default: 2 | plus: 0
+  assign delivery_days_after_processing = s.delivery_days_after_processing | default: 3 | plus: 0
+  assign total_delivered_days = processing_days | plus: delivery_days_after_processing
+  assign show_simple_line = s.show_simple_line
+  assign show_delivery_estimator = true
+  if s.show_delivery_estimator == false or s.show_delivery_estimator == 'false'
+    assign show_delivery_estimator = false
+  endif
+-%}
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+<link rel="stylesheet" href="{{ 'delivery-estimator.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<script src="{{ 'delivery-estimator.js' | asset_url }}" defer></script>
+<delivery-estimator-{{ de_id }} class="de-fe hide-frame{% if show_simple_line %} de-fe--simple-line{% endif %}" style="--bg:#ffffff;--txt:#111111;--date:#666666;--line:#e0e0e0;--icon-color:{{ color_schema }};--icon-bdc:#e0e0e0;--pad-v:12px;--pad-h:0px;" data-processing-days="{{ processing_days }}" data-delivery-days-after="{{ delivery_days_after_processing }}">
+  <div class="de-fe__container app_blocks_class" style="display:none">
+    {%- if show_delivery_estimator -%}
+      {%- if show_simple_line -%}
+        <div class="de-fe__simple-line">Order placed on <span data-date-today></span> will be processed until <span data-date-processing></span> and will be delivered on <span data-date-delivered></span></div>
+      {%- else -%}
+      <div class="de-fe__steps">
+        <div class="de-fe__line"></div>
+        <div class="de-fe__step" data-step="1" data-days="0">
+          <div class="de-fe__iconWrap is-circle"><div class="de-fe__iconSvg"><img class="de-fe__iconImg" src="{{ 'order-placed.svg' | asset_url }}" width="24" height="24" alt="" loading="lazy"></div></div>
+          <div class="de-fe__content"><p>Order placed</p><div class="de-fe__date" data-date-target></div></div>
+        </div>
+        <div class="de-fe__step" data-step="2" data-days="{{ processing_days }}">
+          <div class="de-fe__iconWrap is-circle"><div class="de-fe__iconSvg"><img class="de-fe__iconImg" src="{{ 'processing.svg' | asset_url }}" width="24" height="24" alt="" loading="lazy"></div></div>
+          <div class="de-fe__content"><p>Processing</p><div class="de-fe__date" data-date-target></div></div>
+        </div>
+        <div class="de-fe__step" data-step="3" data-days="{{ total_delivered_days }}">
+          <div class="de-fe__iconWrap is-circle"><div class="de-fe__iconSvg"><img class="de-fe__iconImg" src="{{ 'delivered.svg' | asset_url }}" width="24" height="24" alt="" loading="lazy"></div></div>
+          <div class="de-fe__content"><p>Delivered</p><div class="de-fe__date" data-date-target></div></div>
+        </div>
+      </div>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if s.show_service_accordion -%}
+      <div class="de-fe__service-container" data-service-accordion>
+        <div class="de-fe__service-bar">
+          <button type="button" class="de-fe__service-item" data-service-toggle="s1" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><p>{{ s.title_1 }}</p></button>
+          <button type="button" class="de-fe__service-item" data-service-toggle="s2" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><line x1="16" y1="8" x2="20" y2="8"/><line x1="16" y1="16" x2="23" y2="16"/><path d="M16 12h7"/></svg><p>{{ s.title_2 }}</p></button>
+          <button type="button" class="de-fe__service-item" data-service-toggle="s3" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg><p>{{ s.title_3 }}</p></button>
+        </div>
+        <div class="de-fe__service-content" data-service-content="s1">{{ s.content_1 }}</div>
+        <div class="de-fe__service-content" data-service-content="s2">{{ s.content_2 }}</div>
+        <div class="de-fe__service-content" data-service-content="s3">{{ s.content_3 }}</div>
+      </div>
+    {%- endif -%}
+  </div>
+</delivery-estimator-{{ de_id }}>
+{%- endif -%}
+
+{% schema %} { "name": "Delivery Estimator", "target": "section", "settings": [ { "type": "header", "content": "Delivery Timeline" }, { "type": "checkbox", "id": "show_delivery_estimator", "label": "Show delivery estimator", "default": true }, { "type": "checkbox", "id": "show_simple_line", "label": "Show as simple line", "default": false, "info": "Display a single line: Order placed on [date] will be processed until [date] and will be delivered on [date]" }, { "type": "range", "id": "processing_days", "label": "Processing days", "min": 0, "max": 14, "step": 1, "default": 2, "info": "Number of days until processing starts" }, { "type": "range", "id": "delivery_days_after_processing", "label": "Days from processing to delivery", "min": 1, "max": 21, "step": 1, "default": 3, "info": "Number of days from processing start to delivery" }, { "type": "header", "content": "Service Accordion" }, { "type": "checkbox", "id": "show_service_accordion", "label": "Show service accordion", "default": false }, { "type": "text", "id": "title_1", "label": "Title 1", "default": "Safe Purchase" }, { "type": "textarea", "id": "content_1", "label": "Content 1", "default": "No hidden fees and full transparency at checkout. Your personal and financial details are always kept strictly confidential." }, { "type": "text", "id": "title_2", "label": "Title 2", "default": "Reliable Shipping" }, { "type": "textarea", "id": "content_2", "label": "Content 2", "default": "We process and dispatch orders quickly to minimize your wait time. Enjoy dependable delivery options to get your items when you need them." }, { "type": "text", "id": "title_3", "label": "Title 3", "default": "Customer Care" }, { "type": "textarea", "id": "content_3", "label": "Content 3", "default": "We believe in putting our customers first, every single time. Contact our dedicated team for hassle-free help and guidance." } ] } {% endschema %}

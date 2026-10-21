@@ -1,0 +1,132 @@
+{%- if shop.metafields.app.block_control.value -%}
+  {%- liquid
+    assign s = block.settings
+    assign m = product.metafields.kluck_ai
+    assign clr = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
+    assign use = s.use_metafields
+    
+    assign hd = s.heading
+    assign sub = s.subheading
+    assign b_img = s.before_image
+    assign a_img = s.after_image
+    assign f1 = s.feat_1
+    assign f2 = s.feat_2
+    assign f3 = s.feat_3
+    assign f4 = s.feat_4
+    assign bi1 = s.before_issue_1
+    assign bi2 = s.before_issue_2
+    assign bi3 = s.before_issue_3
+    assign ab1 = s.after_benefit_1
+    assign ab2 = s.after_benefit_2
+    assign ab3 = s.after_benefit_3
+  
+    if use
+      assign hd = m.before_after_heading.value | default: hd
+      assign sub = m.before_after_subheading.value | default: sub
+      assign mf_b_img = m.before_use_image.value | default: m.before_use_image
+      assign mf_a_img = m.after_use_image.value | default: m.after_use_image
+      assign b_img = b_img | default: mf_b_img
+      assign a_img = a_img | default: mf_a_img
+      assign f1 = m.before_after_feature_1.value | default: m.before_after_feature_1 | default: f1
+      assign f2 = m.before_after_feature_2.value | default: m.before_after_feature_2 | default: f2
+      assign f3 = m.before_after_feature_3.value | default: m.before_after_feature_3 | default: f3
+      assign f4 = m.before_after_feature_4.value | default: m.before_after_feature_4 | default: f4
+      assign bi1 = m.before_use_issue_1.value | default: bi1
+      assign bi2 = m.before_use_issue_2.value | default: bi2
+      assign bi3 = m.before_use_issue_3.value | default: bi3
+      assign ab1 = m.after_use_benefit_1.value | default: ab1
+      assign ab2 = m.after_use_benefit_2.value | default: ab2
+      assign ab3 = m.after_use_benefit_3.value | default: ab3
+    endif
+  
+    assign feats = f1 | append: '||' | append: f2 | append: '||' | append: f3 | append: '||' | append: f4 | split: '||'
+    assign b_list = bi1 | append: '||' | append: bi2 | append: '||' | append: bi3 | split: '||'
+    assign a_list = ab1 | append: '||' | append: ab2 | append: '||' | append: ab3 | split: '||'
+  
+    assign bul = '✔'
+    if s.bullet_style == 'arrow'
+      assign bul = '↳'
+    elsif s.bullet_style == 'dot'
+      assign bul = '⦿'
+    endif
+  
+    assign ic_s = ''
+    if s.bullet_shape != 'none'
+      assign rad = '4px'
+      if s.bullet_shape == 'circle'
+        assign rad = '50%'
+      endif
+      assign bg_c = clr | color_modify: 'alpha', 0.1
+      assign ic_s = 'display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:' | append: bg_c | append: ';border-radius:' | append: rad
+    endif
+  -%}
+  
+  <link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'before-after.css' | asset_url }}" media="all">
+  <script src="{{ 'before-after.js' | asset_url }}" defer></script>
+  
+  {%- capture col_txt -%}
+  <div class="ba__left ba-align">
+    {%- if hd != blank -%}<h3 class="ba__heading">{{ hd }}</h3>{%- endif -%}
+    {%- if sub != blank -%}<p class="ba__subheading" style="margin-bottom:20px;opacity:.8;">{{ sub }}</p>{%- endif -%}
+    {%- if s.show_comparison_table -%}
+      <div class="ba__comparison-table">
+        <div class="ba__comparison-grid">
+          <div class="ba__comparison-col ba__comparison-col--left">
+            <h5 class="ba__comparison-col-title">Before</h5>
+            <div class="ba__comparison-items">
+              {%- for i in b_list -%}{%- if i != blank -%}
+                <div class="ba__comparison-item"><span class="ba__comparison-icon ba__comparison-icon--no">✕</span><span class="ba__comparison-text">{{ i }}</span></div>
+              {%- endif -%}{%- endfor -%}
+            </div>
+          </div>
+          <div class="ba__comparison-col ba__comparison-col--right">
+            <h5 class="ba__comparison-col-title">After</h5>
+            <div class="ba__comparison-items">
+              {%- for i in a_list -%}{%- if i != blank -%}
+                <div class="ba__comparison-item"><span class="ba__comparison-icon ba__comparison-icon--yes">✓</span><span class="ba__comparison-text">{{ i }}</span></div>
+              {%- endif -%}{%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="ba__features">
+        {%- for i in feats -%}{%- if i != blank -%}
+          <div class="ba__feature-item" style="display:flex;align-items:center;gap:12px; margin-bottom:10px ">
+            <span class="ba__icon" style="color:{{ clr }};flex-shrink:0;{{ ic_s }}">{{ bul }}</span><span class="ba__text">{{ i }}</span>
+          </div>
+        {%- endif -%}{%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- if s.button_label != blank -%}
+      <a class="ba__btn" href="/checkout" style="background-color:{{ clr }};border-radius:{{ s.button_radius }}px;margin-top:20px;">{{ s.button_label }}</a>
+    {%- endif -%}
+  </div>
+  {%- endcapture -%}
+  
+  {%- capture col_img -%}
+  <div class="ba__right">
+    <div class="ba__compare ba__ratio--1x1" role="region" aria-label="Before and after comparison" data-ba-container>
+      <img class="ba__img ba__img--under" src="{{ a_img | image_url: width: 2000 }}" alt="After" loading="lazy" width="2000" height="2000">
+      <div class="ba__over" style="--split:50%;" data-ba-over>
+        <img class="ba__img" src="{{ b_img | image_url: width: 2000 }}" alt="Before" loading="lazy" width="2000" height="2000">
+      </div>
+      <div class="ba__divider" data-ba-divider></div>
+      <button class="ba__handle" type="button" aria-label="Drag to compare" data-ba-handle><span class="ba__handle-dot"><i></i></span></button>
+      <span class="ba__tag ba__tag--left" style="border-radius:{{ s.button_radius }}px;">Before</span>
+      <span class="ba__tag ba__tag--right" style="border-radius:{{ s.button_radius }}px;">After</span>
+    </div>
+  </div>
+  {%- endcapture -%}
+  
+  <div class="tae-before-after app_blocks_class" aria-label="{{ hd | escape }}" style="display:none;--before-after-primary-color:{{ clr }};">
+    <div class="ba__inner">
+      <div class="ba__grid">{%- if s.img_pos == 'left' -%}{{ col_img }}{{ col_txt }}{%- else -%}{{ col_txt }}{{ col_img }}{%- endif -%}</div>
+    </div>
+  </div>
+  {%- endif -%}
+  
+  {% schema %}
+  {"name":"Before/After","target":"section","settings":[{"type":"checkbox","id":"use_metafields","label":"Use Kluck AI metafields","default":true},{"type":"select","id":"img_pos","label":"Image Position","default":"right","options":[{"value":"left","label":"Left"},{"value":"right","label":"Right"}]},{"type":"text","id":"heading","label":"Heading","default":"Results"},{"type":"text","id":"subheading","label":"Subheading","default":"See the difference yourself"},{"type":"header","content":"Bullet Styling"},{"type":"select","id":"bullet_style","label":"Icon Symbol","default":"check","options":[{"value":"check","label":"✓"},{"value":"arrow","label":"↳"},{"value":"dot","label":"⦿"}]},{"type":"select","id":"bullet_shape","label":"Icon Shape","default":"circle","options":[{"value":"none","label":"None"},{"value":"circle","label":"Circle"},{"value":"square","label":"Square"}]},{"type":"checkbox","id":"show_comparison_table","label":"Show comparison table","default":true,"info":"Replace features list with Before/After comparison table"},{"type":"header","content":"Features"},{"type":"text","id":"feat_1","label":"Feature 1","default":"Visible improvement"},{"type":"text","id":"feat_2","label":"Feature 2","default":"Fast results"},{"type":"text","id":"feat_3","label":"Feature 3","default":"Easy to use"},{"type":"text","id":"feat_4","label":"Feature 4","default":"High quality"},{"type":"header","content":"Comparison Table (Before)"},{"type":"text","id":"before_issue_1","label":"Before issue 1"},{"type":"text","id":"before_issue_2","label":"Before issue 2"},{"type":"text","id":"before_issue_3","label":"Before issue 3"},{"type":"header","content":"Comparison Table (After)"},{"type":"text","id":"after_benefit_1","label":"After benefit 1"},{"type":"text","id":"after_benefit_2","label":"After benefit 2"},{"type":"text","id":"after_benefit_3","label":"After benefit 3"},{"type":"header","content":"Button & Images"},{"type":"text","id":"button_label","label":"Button label","default":"Try it Yourself"},{"type":"range","id":"button_radius","label":"Button border radius","min":0,"max":50,"step":1,"unit":"px","default":8},{"type":"image_picker","id":"before_image","label":"Before image"},{"type":"image_picker","id":"after_image","label":"After image"}]}
+  {% endschema %}

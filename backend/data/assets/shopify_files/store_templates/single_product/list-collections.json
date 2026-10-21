@@ -1,0 +1,42 @@
+
+{
+    "sections": {
+      "kluck-ai-collections-list-page-section": {
+        "type": "kluck-ai-collections-list-page-section",
+        "name": "Kluck AI - Collections Page",
+        "settings": {
+          "container_width": 1400,
+          "section_bg_color": "#ffffff",
+          "heading": "Collections",
+          "heading_alignment": "center",
+          "heading_size_desktop": 48,
+          "heading_size_mobile": 32,
+          "heading_margin": 50,
+          "desktop_columns": 4,
+          "grid_gap": 24,
+          "mobile_layout": "slider",
+          "mobile_columns": "1",
+          "mobile_card_width": 80,
+          "image_aspect_ratio": "1 / 1",
+          "image_radius": 24,
+          "card_bg_color": "#f6f6f6",
+          "title_size": 24,
+          "text_color": "#000000",
+          "subtext_size": 18,
+          "subtext_color": "#666666",
+          "icon_bg_color": "#EAEAEA",
+          "icon_arrow_color": "#000000",
+          "icon_hover_bg": "#000000",
+          "icon_hover_color": "#FFFFFF",
+          "padding_top_desktop": 60,
+          "padding_bottom_desktop": 60,
+          "padding_top_mobile": 40,
+          "padding_bottom_mobile": 40
+        }
+      }
+    },
+    "order": [
+      "kluck-ai-collections-list-page-section"
+    ]
+  }
+  

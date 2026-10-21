@@ -1,0 +1,345 @@
+{% comment %}
+  Block: Kluck AI - Marquee Banner
+  - Purpose: Horizontal scrolling strip with "Kluck AI" global controls.
+  - Logic: Metafields for color, max-width container, typography, text + image items.
+{% endcomment %}
+
+{%- liquid
+  assign s = block.settings
+  assign m = product.metafields.kluck_ai
+
+  assign show_background = s.show_background
+  assign opacity_val = s.background_opacity | default: 100 | divided_by: 100.0
+  if show_background == false or show_background == 'false'
+    assign opacity = 0
+  else
+    assign opacity = opacity_val
+  endif
+
+  assign bg_color = s.background_color | default: '#ffffff'
+  unless s.use_metafields_bg == false
+    if s.use_metafields_bg and product != blank and m.color_schema != blank
+      assign bg_color = m.color_schema.value | default: m.color_schema
+    elsif s.use_metafields and product != blank and m.color_schema != blank
+      assign bg_color = m.color_schema.value | default: m.color_schema
+    endif
+  endunless
+
+  assign marquee_bg_color = s.marquee_bg_color | default: ''
+  if marquee_bg_color != blank
+    assign color_schema = marquee_bg_color
+  elsif s.use_metafields_bg != false and s.use_metafields and product != blank and m.color_schema != blank
+    assign color_schema = m.color_schema.value | default: m.color_schema
+  else
+    assign color_schema = s.background_color | default: '#BCCCE0'
+  endif
+
+  assign speed_d = s.speed_d | default: 30
+  assign speed_m = s.speed_m | default: 15
+  assign rotation = s.rotation | default: 0
+  assign mask_width = s.mask_width | default: 50
+  assign container_max_width = s.container_max_width | default: 2000
+  assign padding_v = s.padding_v | default: 20
+  assign gap_d = s.gap_d | default: 60
+  assign gap_m = s.gap_m | default: 30
+  assign render_images = s.render_images | default: true
+  assign img_height_d = s.img_height_d | default: 60
+  assign img_height_m = s.img_height_m | default: 40
+  assign img_radius = s.img_radius | default: 10
+  assign text_color = s.text_color | default: '#000000'
+  
+  assign font_color = s.font_color
+  if font_color == blank or font_color == null
+    if s.use_metafields and product != blank and m.color_schema != blank
+      assign font_color = m.color_schema.value | default: m.color_schema
+    else
+      assign font_color = text_color
+    endif
+  endif
+
+  assign body_size = s.body_size | default: 16
+  assign body_weight = s.body_weight | default: 400
+  assign h1_size = s.h1_size | default: 48
+  assign h1_weight = s.h1_weight | default: 700
+  assign h2_size = s.h2_size | default: 64
+  assign h2_weight = s.h2_weight | default: 500
+  assign h3_size = s.h3_size | default: 30
+  assign h3_weight = s.h3_weight | default: 600
+  assign h4_size = s.h4_size | default: 24
+  assign h4_weight = s.h4_weight | default: 600
+  assign h5_size = s.h5_size | default: 20
+  assign h5_weight = s.h5_weight | default: 500
+  assign h6_size = s.h6_size | default: 16
+  assign h6_weight = s.h6_weight | default: 500
+
+  if s.use_metafields
+    assign text_1_meta = product.metafields.kluck_ai.marquee_text_1
+    assign text_1_content = text_1_meta.value | default: text_1_meta | default: s.text_1
+    assign text_2_meta = product.metafields.kluck_ai.marquee_text_2
+    assign text_2_content = text_2_meta.value | default: text_2_meta | default: s.text_2
+    assign text_3_meta = product.metafields.kluck_ai.marquee_text_3
+    assign text_3_content = text_3_meta.value | default: text_3_meta | default: s.text_3
+    assign image_1_content = m.product_image_1 | default: m.product_image_1 | default: s.image_1
+    assign image_2_content = m.product_image_2 | default: m.product_image_2 | default: s.image_2
+    assign image_3_content = m.product_image_3 | default: m.product_image_3 | default: s.image_3
+  else
+    assign text_1_content = s.text_1
+    assign text_2_content = s.text_2
+    assign text_3_content = s.text_3
+    assign image_1_content = s.image_1
+    assign image_2_content = s.image_2
+    assign image_3_content = s.image_3
+  endif
+
+  assign heading_font = s.heading_font_family
+  assign body_font = s.body_font_family
+  assign block_slug = block.id | replace: '_', '-' | downcase
+  assign has_items = false
+  if text_1_content != blank or text_2_content != blank or text_3_content != blank or image_1_content != blank or image_2_content != blank or image_3_content != blank
+    assign has_items = true
+  endif
+-%}
+
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true and has_items -%}
+  {% comment %} 1. LOAD FONTS {% endcomment %}
+  {% if heading_font != blank or body_font != blank %}
+    <style>
+      {% if heading_font != blank %}{{ heading_font | font_face: font_display: 'swap' }}{% endif %}
+      {% if body_font != blank %}{{ body_font | font_face: font_display: 'swap' }}{% endif %}
+    </style>
+  {% endif %}
+
+  {% comment %} 2. MAIN CONTENT WRAPPER {% endcomment %}
+  <div
+    id="KluckMarquee-{{ block.id }}"
+    class="kluck-marquee-wrapper kluck-marquee-wrapper-{{ block_slug }} app_blocks_class"
+  >
+    <div class="kluck-marquee-inner kluck-marquee-inner-{{ block_slug }}">
+      <div class="mq-section">
+        <div class="mq-track">
+          {% comment %} Repeat 4 times for seamless infinite scroll on wide screens {% endcomment %}
+          {% for i in (1..4) %}
+            <div class="mq-group">
+              {%- if text_1_content != blank -%}
+                <div class="mq-item">
+                  <span class="mq-text">{{ text_1_content }}</span>
+                </div>
+              {%- endif -%}
+              {%- if render_images != false and render_images != 'false' and image_1_content != blank -%}
+                <div class="mq-item">
+                  <div class="mq-img-wrap">
+                    <img
+                      src="{{ image_1_content | image_url: width: 400 }}"
+                      class="mq-img"
+                      alt="{{ image_1_content.alt | default: '' }}"
+                      loading="lazy"
+                    >
+                  </div>
+                </div>
+              {%- endif -%}
+              {%- if text_2_content != blank -%}
+                <div class="mq-item">
+                  <span class="mq-text">{{ text_2_content }}</span>
+                </div>
+              {%- endif -%}
+              {%- if render_images != false and render_images != 'false' and image_2_content != blank -%}
+                <div class="mq-item">
+                  <div class="mq-img-wrap">
+                    <img
+                      src="{{ image_2_content | image_url: width: 400 }}"
+                      class="mq-img"
+                      alt="{{ image_2_content.alt | default: '' }}"
+                      loading="lazy"
+                    >
+                  </div>
+                </div>
+              {%- endif -%}
+              {%- if text_3_content != blank -%}
+                <div class="mq-item">
+                  <span class="mq-text">{{ text_3_content }}</span>
+                </div>
+              {%- endif -%}
+              {%- if render_images != false and render_images != 'false' and image_3_content != blank -%}
+                <div class="mq-item">
+                  <div class="mq-img-wrap">
+                    <img
+                      src="{{ image_3_content | image_url: width: 400 }}"
+                      class="mq-img"
+                      alt="{{ image_3_content.alt | default: '' }}"
+                      loading="lazy"
+                    >
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} 3. CSS STYLES & VARIABLES {% endcomment %}
+  <style>
+    .kluck-marquee-wrapper-{{ block_slug }} {
+      /* --- Layout & Background Variables --- */
+      --bg-color: {{ bg_color }};
+      --bg-opacity: {{ opacity }};
+      --marquee-bg-color: {{ color_schema }};
+      --container-width: {{ container_max_width }}px;
+
+      /* --- Animation Variables --- */
+      --speed-d: {{ speed_d }}s;
+      --speed-m: {{ speed_m }}s;
+      --rotation: {{ rotation }}deg;
+      --mask-width: {{ mask_width }}px;
+      --gap-d: {{ gap_d }}px;
+      --gap-m: {{ gap_m }}px;
+
+      /* --- FONT FAMILIES --- */
+      {% if heading_font != blank and heading_font.family != blank %}
+      --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }};
+      {% else %}
+      --font-heading-family: inherit;
+      {% endif %}
+      {% if body_font != blank and body_font.family != blank %}
+      --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }};
+      {% else %}
+      --font-body-family: inherit;
+      {% endif %}
+      --body-size: {{ body_size }}px;
+      --body-weight: {{ body_weight }};
+      --h1-size: {{ h1_size }}px;
+      --h1-weight: {{ h1_weight }};
+      --h2-size: {{ h2_size }}px;
+      --h2-weight: {{ h2_weight }};
+      --h3-size: {{ h3_size }}px;
+      --h3-weight: {{ h3_weight }};
+      --h4-size: {{ h4_size }}px;
+      --h4-weight: {{ h4_weight }};
+      --h5-size: {{ h5_size }}px;
+      --h5-weight: {{ h5_weight }};
+      --h6-size: {{ h6_size }}px;
+      --h6-weight: {{ h6_weight }};
+      --img-height-d: {{ img_height_d }}px;
+      --img-height-m: {{ img_height_m }}px;
+      --img-radius: {{ img_radius }}px;
+      --text-color: {{ text_color }};
+      --font-color: {{ font_color }};
+
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding: {{ padding_v }}px 0;
+      transform: rotate(var(--rotation));
+      transform-origin: center;
+    }
+
+    {% if show_background != false and show_background != 'false' %}
+    .kluck-marquee-wrapper-{{ block_slug }}::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--bg-color);
+      opacity: var(--bg-opacity);
+      z-index: 0;
+    }
+    {% endif %}
+
+    .kluck-marquee-inner-{{ block_slug }} {
+      position: relative;
+      z-index: 1;
+      max-width: var(--container-width);
+      margin: 0 auto;
+    }
+
+    .mq-section {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      /* Edge Fade Mask */
+      -webkit-mask-image: linear-gradient(to right, transparent, black var(--mask-width), black calc(100% - var(--mask-width)), transparent);
+      mask-image: linear-gradient(to right, transparent, black var(--mask-width), black calc(100% - var(--mask-width)), transparent);
+    }
+
+    .mq-track {
+      display: flex;
+      align-items: center; /* FIXED: Ensures groups align centrally */
+      white-space: nowrap;
+      width: max-content;
+      background-color: var(--marquee-bg-color);
+      color: #ffffff;
+      padding: 15px 0;
+    }
+
+    .mq-group {
+      display: flex;
+      align-items: center; /* FIXED: Ensures items inside group align centrally */
+      flex-shrink: 0; 
+      will-change: transform; 
+      animation: mq-scroll-{{ block_slug }} var(--speed-d) linear infinite;
+      {% if s.direction == 'right' %}
+      animation-direction: reverse;
+      {% endif %}
+    }
+
+    {% if s.pause_hover %}
+    .kluck-marquee-wrapper-{{ block_slug }} .mq-section:hover .mq-group {
+      animation-play-state: paused;
+    }
+    {% endif %}
+
+    .mq-item {
+      display: inline-flex;
+      align-items: center; /* FIXED: Centers content vertically within the item */
+      justify-content: center;
+      margin-right: var(--gap-d);
+      flex-shrink: 0;
+      color: var(--font-color);
+    }
+
+    /* Using H2 settings for the scrolling text */
+    .mq-text {
+      display: block; /* FIXED: Removes inline baseline inconsistencies */
+      font-family: var(--font-heading-family);
+      font-size: var(--h2-size);
+      font-weight: var(--h2-weight);
+      color: var(--font-color);
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .mq-img-wrap {
+      height: var(--img-height-d);
+      display: flex;
+      align-items: center;
+    }
+    .mq-img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+      border-radius: var(--img-radius);
+    }
+
+    @keyframes mq-scroll-{{ block_slug }} {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-100%, 0, 0); }
+    }
+
+    @media (max-width: 768px) {
+      .kluck-marquee-wrapper-{{ block_slug }} .mq-group {
+        animation-duration: var(--speed-m);
+      }
+      .kluck-marquee-wrapper-{{ block_slug }} .mq-item {
+        margin-right: var(--gap-m);
+      }
+      .kluck-marquee-wrapper-{{ block_slug }} {
+        font-size: calc(var(--h2-size) * 0.7);
+      }
+      .kluck-marquee-wrapper-{{ block_slug }} .mq-img-wrap {
+        height: var(--img-height-m);
+      }
+    }
+  </style>
+{%- endif -%}

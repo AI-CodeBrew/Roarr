@@ -1,0 +1,88 @@
+{% comment %}
+  Modern Asymmetric Bento Grid - App Extension Block
+  - Layout: 5 Specific Panels (2 Wide, 2 Small, 1 Tall)
+  - Scope: block.settings and block.id
+{% endcomment %}
+{%- assign color_schema = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#a34e4e' -%}
+{%- assign kai = product.metafields.kluck_ai -%}
+{%- assign p2_heading = kai.bento_stat_1.value | default: kai.bento_stat_1 | default: block.settings.p2_heading -%}
+{%- assign p2_text = kai.bento_stat_description_1.value | default: kai.bento_stat_description_1 | default: block.settings.p2_text -%}
+{%- assign p3_heading = kai.bento_stat_2.value | default: kai.bento_stat_2 | default: block.settings.p3_heading -%}
+{%- assign p3_text = kai.bento_stat_description_2.value | default: kai.bento_stat_description_2 | default: block.settings.p3_text -%}
+
+<link rel="stylesheet" href="{{ 'bento-grid.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+
+{% style %}
+  #bento-{{ block.id }} {
+    --radius: {{ block.settings.border_radius }}px;
+    --bento-gap: {{ block.settings.panel_gap }}px;
+  }
+  #bento-{{ block.id }} .panel-2 {
+    --panel-color: {{ color_schema }};
+    text-align: {{ block.settings.p2_text_align }};
+  }
+  #bento-{{ block.id }} .panel-3 {
+    --panel-color: {{ color_schema }};
+    text-align: {{ block.settings.p3_text_align }};
+  }
+{% endstyle %}
+
+<div id="bento-{{ block.id }}" class="bento-grid-block">
+  <div class="bento-container">
+    <div class="bento-grid">
+      
+      <!-- Panel 1: Wide Image (Top Left) - happy_customer_image_1 -->
+      {%- assign img_1 = product.metafields.kluck_ai.happy_customer_image_1.value | default: product.metafields.kluck_ai.happy_customer_image_1 -%}
+      {%- if block.settings.image_1 != blank %}{% assign img_1 = block.settings.image_1 %}{% endif -%}
+      <div class="bento-panel is-image panel-1">
+        {% if img_1 != blank %}
+          <img src="{{ img_1 | image_url: width: 1000 }}" alt="{{ img_1.alt | default: 'Bento image 1' }}" loading="lazy" width="1000" height="1000">
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+
+      <!-- Panel 2: Wide Text (Bottom Left) - bento_stat_1, bento_stat_description_1 -->
+      <div class="bento-panel bento-text-panel panel-2">
+        {% if p2_heading != blank %}
+          <h4>{{ p2_heading }}</h4>
+        {% endif %}
+        {% if p2_text != blank %}<p>{{ p2_text }}</p>{% endif %}
+      </div>
+
+      <!-- Panel 3: Small Text (Top Middle) - bento_stat_2, bento_stat_description_2 -->
+      <div class="bento-panel bento-text-panel panel-3">
+        {% if p3_heading != blank %}
+          <h4>{{ p3_heading }}</h4>
+        {% endif %}
+        {% if p3_text != blank %}<p>{{ p3_text }}</p>{% endif %}
+      </div>
+
+      <!-- Panel 4: Small Image (Bottom Middle) - happy_customer_image_2 -->
+      {%- assign img_4 = product.metafields.kluck_ai.happy_customer_image_2.value | default: product.metafields.kluck_ai.happy_customer_image_2 -%}
+      {%- if block.settings.image_4 != blank %}{% assign img_4 = block.settings.image_4 %}{% endif -%}
+      <div class="bento-panel is-image panel-4">
+        {% if img_4 != blank %}
+          <img src="{{ img_4 | image_url: width: 600 }}" alt="{{ img_4.alt | default: 'Bento image 4' }}" loading="lazy" width="600" height="600">
+        {% else %}
+          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+
+      <!-- Panel 5: Tall Image (Right) - happy_customer_image_3 -->
+      {%- assign img_5 = product.metafields.kluck_ai.happy_customer_image_3.value | default: product.metafields.kluck_ai.happy_customer_image_3 -%}
+      {%- if block.settings.image_5 != blank %}{% assign img_5 = block.settings.image_5 %}{% endif -%}
+      <div class="bento-panel is-image panel-5">
+        {% if img_5 != blank %}
+          <img src="{{ img_5 | image_url: width: 800 }}" alt="{{ img_5.alt | default: 'Bento image 5' }}" loading="lazy" width="800" height="800">
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %} { "name": "Bento Grid (5 Panels)", "target": "section", "settings": [ { "type": "header", "content": "Layout Settings" }, { "type": "range", "id": "border_radius", "min": 0, "max": 40, "step": 2, "unit": "px", "label": "Corner Radius", "default": 24 }, { "type": "range", "id": "panel_gap", "min": 0, "max": 60, "step": 2, "unit": "px", "label": "Gap between panels", "default": 20 }, { "type": "header", "content": "Panel 1: Top Left (Wide Image)" }, { "type": "image_picker", "id": "image_1", "label": "Image" }, { "type": "header", "content": "Panel 2: Bottom Left (Wide Text)" }, { "type": "text", "id": "p2_heading", "label": "Heading", "default": "95%" }, { "type": "textarea", "id": "p2_text", "label": "Text", "default": "Complete customer satisfaction achieved through personalized solutions and proactive support." }, { "type": "select", "id": "p2_text_align", "label": "Text alignment", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ], "default": "left" }, { "type": "header", "content": "Panel 3: Top Middle (Small Text)" }, { "type": "text", "id": "p3_heading", "label": "Heading", "default": "10+" }, { "type": "textarea", "id": "p3_text", "label": "Text", "default": "Years of innovation empowering businesses to thrive in a competitive market." }, { "type": "select", "id": "p3_text_align", "label": "Text alignment", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ], "default": "left" }, { "type": "header", "content": "Panel 4: Bottom Middle (Small Image)" }, { "type": "image_picker", "id": "image_4", "label": "Image" }, { "type": "header", "content": "Panel 5: Right (Tall Image)" }, { "type": "image_picker", "id": "image_5", "label": "Image" } ] } {% endschema %}

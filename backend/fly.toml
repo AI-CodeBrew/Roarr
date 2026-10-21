@@ -1,0 +1,33 @@
+# Fly.io — Kluck v2 API
+# Create: fly apps create kluck-v2-api
+# Secrets: fly secrets set DATABASE_URL=... SUPABASE_URL=... SUPABASE_JWT_SECRET=... BUNNY_*=... SHOPIFY_*=...
+
+app = "kluck-v2-api"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "5001"
+  HOST = "0.0.0.0"
+  ENVIRONMENT = "production"
+
+[http_service]
+  internal_port = 5001
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "15s"
+    method = "GET"
+    path = "/api/health"
+
+[[vm]]
+  memory = "2gb"
+  cpu_kind = "shared"
+  cpus = 2

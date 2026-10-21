@@ -1,0 +1,42 @@
+{% comment %}
+  Infinite Marquee
+  - CSS animation for continuous horizontal scroll
+  - Two groups of repeated items, -50% translate for seamless loop
+  - Pause on hover (optional)
+{% endcomment %}
+
+<link rel="stylesheet" href="{{ 'infinite-marquee.css' | asset_url }}" media="all">
+
+<div class="marquee-wrapper marquee-wrapper--{{ section.id }}{% if section.settings.pause_on_hover %} marquee-pause-on-hover{% endif %}"
+     style="
+       --bg-color: {{ section.settings.bg_color }};
+       --text-color: {{ section.settings.text_color }};
+       --padding-y: {{ section.settings.padding_y }}px;
+       --gap: {{ section.settings.gap }}px;
+       --icon-width: {{ section.settings.icon_width }}px;
+       --speed: {{ section.settings.speed }}s;
+     ">
+  <div class="marquee-track">
+    {% for i in (1..2) %}
+      <div class="marquee-group">
+        {% if section.blocks.size > 0 %}
+          {% for j in (1..10) %}
+            {% for block in section.blocks %}
+              <div class="marquee-item" {{ block.shopify_attributes }}>
+                {% if block.settings.icon != blank %}
+                  <img 
+                    src="{{ block.settings.icon | image_url: width: 100 }}" 
+                    alt="" 
+                    class="marquee-icon" 
+                    loading="lazy"
+                  >
+                {% endif %}
+                <span>{{ block.settings.text }}</span>
+              </div>
+            {% endfor %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,196 @@
+/**
+ * Multi-Purpose Image Accordion - Pro Version
+ * Colors: Scheme-driven via pf-color-schemes.css
+ */
+
+.img-acc-section {
+  padding-top: var(--padding-top-m);
+  padding-bottom: var(--padding-bottom-m);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Main Title Styling */
+.img-acc-main-title {
+  text-align: center;
+  font-family: var(--main-heading-font);
+  font-weight: var(--main-heading-weight);
+  font-size: var(--main-heading-size-m);
+  color: var(--color-foreground-heading, var(--color-foreground));
+  margin-top: 0;
+  margin-bottom: var(--title-spacing-m);
+  line-height: 1.2;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+/* Layout Container */
+.img-acc-container {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+/* Left Side: Accordion Area - uses container scheme */
+.img-acc-text-side {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding: 40px 20px;
+  width: 100%;
+}
+
+/* Right Side: Image Area */
+.img-acc-image-side {
+  width: 100%;
+  position: relative;
+  min-height: 350px;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.img-acc-image-side img,
+.img-acc-image-side svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.img-acc-image-side img.is-active,
+.img-acc-image-side svg.is-active {
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+}
+
+/* Accordion Item Styling */
+.img-acc-item {
+  border-bottom: 1px solid var(--border-divider, var(--color-border));
+}
+
+.img-acc-item:first-child {
+  border-top: none;
+}
+
+.img-acc-trigger {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--acc-heading-font);
+  font-size: var(--acc-heading-size-m);
+  font-weight: var(--acc-heading-weight);
+  color: var(--color-foreground-heading, var(--color-foreground));
+}
+
+.img-acc-trigger-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+
+.img-acc-trigger.is-open .img-acc-trigger-icon {
+  transform: rotate(180deg);
+}
+
+.img-acc-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.img-acc-content-inner {
+  padding-bottom: 30px;
+  padding-right: 20px;
+}
+
+.img-acc-desc {
+  font-family: var(--body-font);
+  font-size: var(--body-size-m);
+  color: var(--color-foreground);
+  line-height: 1.6;
+  margin-top: 0;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+/* Optional Button/Link Styling */
+.img-acc-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-family: var(--body-font);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--color-foreground);
+  text-transform: uppercase;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 4px;
+  transition: opacity 0.3s ease;
+}
+
+.img-acc-link svg {
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.img-acc-link:hover {
+  opacity: 0.7;
+}
+
+.img-acc-link:hover svg {
+  transform: translateX(5px);
+}
+
+/* --- DESKTOP ADJUSTMENTS --- */
+@media screen and (min-width: 768px) {
+  .img-acc-section {
+    padding-top: var(--padding-top-d);
+    padding-bottom: var(--padding-bottom-d);
+  }
+
+  .img-acc-main-title {
+    font-size: var(--main-heading-size-d);
+    margin-bottom: var(--title-spacing-d);
+  }
+
+  .img-acc-container {
+    flex-direction: var(--desktop-layout);
+  }
+
+  .img-acc-text-side {
+    width: 50%;
+    padding: 60px var(--text-padding-right) 60px var(--text-padding-left);
+  }
+
+  .img-acc-image-side {
+    width: 50%;
+  }
+
+  .img-acc-trigger {
+    font-size: var(--acc-heading-size-d);
+    padding: 25px 0;
+  }
+
+  .img-acc-desc {
+    font-size: var(--body-size-d);
+  }
+}

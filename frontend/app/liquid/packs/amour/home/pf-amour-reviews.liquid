@@ -1,0 +1,149 @@
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+{% assign home = store_gen.home_page %}
+{% assign ht = home.text %}
+{% assign hi = home.images %}
+{% assign use_mf = section.settings.use_kluck_ai_metafields %}
+{% assign homeData = section.settings.homeData %}
+{% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
+{% if hi == blank and homeData.images != blank %}{% assign hi = homeData.images %}{% endif %}
+
+{% assign reviews_eyebrow = section.settings.reviews_eyebrow %}
+{% if use_mf and ht.reviews_eyebrow != blank %}{% assign reviews_eyebrow = ht.reviews_eyebrow %}{% endif %}
+{% assign reviews_heading = section.settings.reviews_heading %}
+{% if use_mf and ht.reviews_heading != blank %}{% assign reviews_heading = ht.reviews_heading %}{% endif %}
+{% assign customer_name_1 = section.settings.customer_name_1 %}
+{% if use_mf and ht.customer_name_1 != blank %}{% assign customer_name_1 = ht.customer_name_1 %}{% endif %}
+{% assign customer_review_1 = section.settings.customer_review_1 %}
+{% if use_mf and ht.customer_review_1 != blank %}{% assign customer_review_1 = ht.customer_review_1 %}{% endif %}
+{% assign customer_name_2 = section.settings.customer_name_2 %}
+{% if use_mf and ht.customer_name_2 != blank %}{% assign customer_name_2 = ht.customer_name_2 %}{% endif %}
+{% assign customer_review_2 = section.settings.customer_review_2 %}
+{% if use_mf and ht.customer_review_2 != blank %}{% assign customer_review_2 = ht.customer_review_2 %}{% endif %}
+{% assign customer_name_3 = section.settings.customer_name_3 %}
+{% if use_mf and ht.customer_name_3 != blank %}{% assign customer_name_3 = ht.customer_name_3 %}{% endif %}
+{% assign customer_review_3 = section.settings.customer_review_3 %}
+{% if use_mf and ht.customer_review_3 != blank %}{% assign customer_review_3 = ht.customer_review_3 %}{% endif %}
+{% assign customer_name_4 = section.settings.customer_name_4 %}
+{% if use_mf and ht.customer_name_4 != blank %}{% assign customer_name_4 = ht.customer_name_4 %}{% endif %}
+{% assign customer_review_4 = section.settings.customer_review_4 %}
+{% if use_mf and ht.customer_review_4 != blank %}{% assign customer_review_4 = ht.customer_review_4 %}{% endif %}
+{% assign product_image_2 = section.settings.product_image_2 %}
+{% if use_mf %}{% if shop.metafields.kluck_ai.product_image_2.value != blank %}{% assign product_image_2 = shop.metafields.kluck_ai.product_image_2.value %}{% elsif hi.product_image_2 != blank %}{% assign product_image_2 = hi.product_image_2 %}{% endif %}{% endif %}
+{% assign split_image = section.settings.split_image %}
+{% if use_mf %}{% if shop.metafields.kluck_ai.split_image.value != blank %}{% assign split_image = shop.metafields.kluck_ai.split_image.value %}{% elsif hi.split_image != blank %}{% assign split_image = hi.split_image %}{% endif %}{% endif %}
+{% assign editorial_image_1 = section.settings.editorial_image_1 %}
+{% if use_mf %}{% if shop.metafields.kluck_ai.editorial_image_1.value != blank %}{% assign editorial_image_1 = shop.metafields.kluck_ai.editorial_image_1.value %}{% elsif hi.editorial_image_1 != blank %}{% assign editorial_image_1 = hi.editorial_image_1 %}{% endif %}{% endif %}
+{% assign look_image_2 = section.settings.look_image_2 %}
+{% if use_mf %}{% if shop.metafields.kluck_ai.look_image_2.value != blank %}{% assign look_image_2 = shop.metafields.kluck_ai.look_image_2.value %}{% elsif hi.look_image_2 != blank %}{% assign look_image_2 = hi.look_image_2 %}{% endif %}{% endif %}
+
+{% assign amour_product = blank %}
+{% if section.settings.product != blank %}
+  {% assign amour_product = section.settings.product %}
+{% elsif ht.selected_product != blank %}
+  {% assign amour_product = all_products[ht.selected_product] %}
+{% endif %}
+{% if amour_product == blank and collections.all.products.first != blank %}
+  {% assign amour_product = collections.all.products.first %}
+{% endif %}
+{% assign amour_product_url = routes.all_products_collection_url %}
+{% assign amour_product_title = section.settings.fallback_title %}
+{% assign amour_product_price = section.settings.fallback_price %}
+{% if amour_product != blank and amour_product.title != blank %}
+  {% assign amour_product_url = amour_product.url %}
+  {% assign amour_product_title = amour_product.title %}
+  {% assign amour_product_price = amour_product.price | money %}
+{% endif %}
+
+
+{% if shop.metafields.app.block_control.value %}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap">
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  #amour-{{ section.id }} {
+  --a-ink: var(--color-foreground, #111111);
+  --a-paper: var(--color-background, #ffffff);
+  --a-wine: {{ section.settings.accent_color | default: '#6b0808' }};
+  --a-on-wine: #ffffff;
+  --a-blush: {{ section.settings.blush_color | default: '#ffe3de' }};
+  --a-mist: #f2f1ef;
+  --a-head: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+  --a-body: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --a-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  font-family: var(--a-body); color: var(--a-ink); background: var(--a-paper);
+  }
+
+  #amour-{{ section.id }}, #amour-{{ section.id }} * { box-sizing: border-box; }
+  #amour-{{ section.id }} img { display: block; max-width: 100%; }
+  #amour-{{ section.id }} .a-wrap { max-width: 1340px; margin: 0 auto; padding: 0 20px; }
+  #amour-{{ section.id }} .a-h2 { margin: 0; font-family: var(--a-head); font-weight: 700; text-transform: uppercase; font-size: 40px; line-height: 1.2; letter-spacing: -0.01em; }
+  #amour-{{ section.id }} .a-serif { font-family: var(--a-serif); font-style: italic; font-weight: 400; }
+  #amour-{{ section.id }} .a-serif span, #amour-{{ section.id }} .a-serif p { font-family: inherit; font-style: inherit; font-weight: inherit; }
+  #amour-{{ section.id }} .a-link { display: inline-block; font-size: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; padding: 0 0 4px; }
+  #amour-{{ section.id }} .a-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 32px; font-family: var(--a-body); font-size: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; transition: background .2s, color .2s; }
+  #amour-{{ section.id }} .a-btn--light { background: #fff; color: #000; border: 1px solid #fff; }
+  #amour-{{ section.id }} .a-btn--light:hover { background: transparent; color: #fff; }
+  #amour-{{ section.id }} .a-btn--outline { background: transparent; color: var(--a-ink); border: 1px solid var(--a-ink); }
+  #amour-{{ section.id }} .a-btn--outline:hover { background: var(--a-ink); color: var(--a-paper); }
+  #amour-{{ section.id }} .a-media { position: relative; overflow: hidden; background: var(--a-mist); }
+  #amour-{{ section.id }} .a-media img, #amour-{{ section.id }} .a-media svg { width: 100%; height: 100%; object-fit: cover; }
+  #amour-{{ section.id }} .a-ph { width: 100%; height: 100%; fill: rgba(0,0,0,.18); background: var(--a-mist); }
+  @media (max-width: 767px) {
+    #amour-{{ section.id }} .a-h2 { font-size: 28px; }
+  }
+
+  #amour-{{ section.id }} .arv { padding: 100px 0; overflow: hidden; }
+  #amour-{{ section.id }} .arv__head { text-align: center; padding: 0 20px; margin-bottom: 56px; }
+  #amour-{{ section.id }} .arv__eyebrow { margin: 0; font-size: 56px; line-height: 1.15; }
+  #amour-{{ section.id }} .arv__marquee { overflow: hidden; width: 100%; }
+  #amour-{{ section.id }} .arv__track { display: flex; align-items: center; width: max-content; animation: amour-reviews-{{ section.id }} 55s linear infinite; }
+  #amour-{{ section.id }} .arv__marquee:hover .arv__track { animation-play-state: paused; }
+  #amour-{{ section.id }} .arv__group { display: flex; align-items: center; flex: 0 0 auto; }
+  #amour-{{ section.id }} .arv__card { flex: 0 0 auto; width: 300px; margin-right: 80px; display: flex; flex-direction: column; }
+  #amour-{{ section.id }} .arv__card .a-media { margin-bottom: 24px; }
+  #amour-{{ section.id }} .arv__quote { margin: 0; font-size: 16px; line-height: 1.55; }
+  #amour-{{ section.id }} .arv__name { margin: 10px 0 0; font-size: 18px; font-weight: 500; }
+  #amour-{{ section.id }} .arv__product { margin-top: 8px; align-self: flex-start; font-size: 13px; font-weight: 500; text-transform: uppercase; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  @keyframes amour-reviews-{{ section.id }} { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { #amour-{{ section.id }} .arv__track { animation: none; } }
+  @media (max-width: 767px) {
+    #amour-{{ section.id }} .arv { padding: 64px 0; }
+    #amour-{{ section.id }} .arv__eyebrow { font-size: 40px; }
+    #amour-{{ section.id }} .arv__head { margin-bottom: 32px; }
+    #amour-{{ section.id }} .arv__card { width: 220px; margin-right: 28px; }
+    #amour-{{ section.id }} .arv__track { animation-duration: 40s; }
+  }
+
+</style>
+<div id="amour-{{ section.id }}" class="kluck-amour color-{{ section_scheme }}">
+<section class="arv">
+  <div class="arv__head">
+    {% if reviews_eyebrow != blank %}<p class="arv__eyebrow a-serif">{{ reviews_eyebrow }}</p>{% endif %}
+    {% if reviews_heading != blank %}<h2 class="a-h2">{{ reviews_heading }}</h2>{% endif %}
+  </div>
+  <div class="arv__marquee"><div class="arv__track">
+    {%- for pass in (1..2) -%}
+    <div class="arv__group"{% if pass == 2 %} aria-hidden="true"{% endif %}>
+      {%- for i in (1..8) -%}
+        {%- assign n = i | modulo: 4 -%}
+        {%- case n -%}
+          {%- when 1 -%}{%- assign r_img = product_image_2 -%}{%- assign r_shape = '3 / 4' -%}{%- assign r_name = customer_name_1 -%}{%- assign r_text = customer_review_1 -%}
+          {%- when 2 -%}{%- assign r_img = split_image -%}{%- assign r_shape = '1 / 1' -%}{%- assign r_name = customer_name_2 -%}{%- assign r_text = customer_review_2 -%}
+          {%- when 3 -%}{%- assign r_img = editorial_image_1 -%}{%- assign r_shape = '16 / 10' -%}{%- assign r_name = customer_name_3 -%}{%- assign r_text = customer_review_3 -%}
+          {%- else -%}{%- assign r_img = look_image_2 -%}{%- assign r_shape = '3 / 4' -%}{%- assign r_name = customer_name_4 -%}{%- assign r_text = customer_review_4 -%}
+        {%- endcase -%}
+        {%- if r_text != blank -%}
+        <div class="arv__card">
+          <div class="a-media" style="aspect-ratio: {{ r_shape }};">{%- if r_img != blank -%}{%- if r_img contains 'http' or r_img contains '//' -%}<img src="{{ r_img }}" alt="{{ r_name | escape }}" loading="eager" class="">{%- else -%}<img src="{{ r_img | image_url: width: 700 }}" alt="{{ r_name | escape }}" loading="eager" class="">{%- endif -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'a-ph' }}{%- endif -%}</div>
+          <p class="arv__quote">&ldquo;{{ r_text }}&rdquo;</p>
+          {% if r_name != blank %}<p class="arv__name">{{ r_name }}</p>{% endif %}
+          <a class="arv__product" href="{{ amour_product_url }}"{% if pass == 2 %} tabindex="-1"{% endif %}>{{ amour_product_title }}</a>
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- endfor -%}
+  </div></div>
+</section>
+</div>
+{% endif %}

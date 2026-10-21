@@ -1,0 +1,25 @@
+{
+  "home_page": {
+    "banner_image_1": "16:9",
+    "banner_image_2": "16:9",
+    "banner_image_3": "16:9",
+    "product_impact_image_1": "1:1",
+    "product_impact_image_2": "1:1",
+    "product_impact_image_3": "1:1",
+    "feature_image_1": "4:5",
+    "feature_image_2": "4:5",
+    "feature_image_3": "4:5",
+    "highlight_image": "1:1",
+    "star_image": "1:1",
+    "product_image_1": "1:1",
+    "product_image_2": "1:1",
+    "product_image_3": "1:1"
+  },
+  "product_page": {
+    "product_image_1": "1:1",
+    "product_image_2": "1:1",
+    "product_image_3": "1:1",
+    "product_image_4": "1:1",
+    "product_image_5": "1:1"
+  }
+}

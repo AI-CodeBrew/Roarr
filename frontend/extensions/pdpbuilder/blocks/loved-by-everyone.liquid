@@ -1,0 +1,106 @@
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'image-gallery.css' | asset_url }}" media="all">
+<script src="{{ 'image-gallery.js' | asset_url }}" defer></script>
+
+<div class="tae-image-gallery tae-image-gallery-{{ block.id | replace: '_', '-' | downcase }} app_blocks_class" style="display: none">
+  <div class="tae-image-gallery-container">
+
+    {% if block.settings.heading != blank %}
+      <div class="tae-image-gallery-heading">
+        <h3>{{ block.settings.heading }}</h3>
+      </div>
+    {% endif %}
+
+    {% if block.settings.subheading != blank %}
+      <div class="tae-image-gallery-subheading">
+        {{ block.settings.subheading }}
+      </div>
+    {% endif %}
+
+    <div class="tae-image-gallery-carousel" data-carousel>
+      <div class="tae-image-gallery-track" data-track data-image-count="{{ (1..3) | map: 'image_' | map: block.settings | compact | size }}">
+
+          {% for i in (1..3) %}
+            {%- liquid
+              assign img_key = 'image_' | append: i
+              assign img = blank
+              assign meta_key = 'happy_customer_image_' | append: i
+              assign img_meta = product.metafields.kluck_ai[meta_key]
+              if img_meta
+                assign img = img_meta.value | default: img_meta
+              endif
+              if block.settings[img_key] != blank
+                assign img = block.settings[img_key]
+              endif
+            -%}
+            
+            {% if img != blank %}
+              <div class="tae-image-gallery-slide">
+                <img 
+                  src="{{ img | image_url: width: 600 }}"
+                  srcset="{{ img | image_url: width: 300 }} 300w,
+                          {{ img | image_url: width: 600 }} 600w,
+                          {{ img | image_url: width: 900 }} 900w"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  alt="{{ img.alt | default: 'Gallery image ' | append: i }}"
+                  loading="lazy"
+                  width="600"
+                  height="600"
+                >
+              </div>
+            {% else %}
+              <div class="tae-image-gallery-slide">
+                <img src="{{ 'image-svg.svg' | asset_url }}" width="48" height="48" alt="" loading="lazy">
+              </div>
+            {% endif %}
+          {% endfor %}
+
+      </div>
+
+      <div class="tae-image-gallery-dots" data-dots></div>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "Loved by Everyone",
+  "target": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by Everyone!"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    }
+  ]
+}
+{% endschema %}
+

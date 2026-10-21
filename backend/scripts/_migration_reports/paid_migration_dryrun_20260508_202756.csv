@@ -1,0 +1,3 @@
+fk_user_id,shop_url,subscription_id,plan_name,price,interval,classification,credits_to_grant,cancel_status,grant_status,ledger_entry_id,new_balance,error,dry_run
+112940be-6091-70db-1081-9cdd35162d5d,,35670294844,Basic Plan (Monthly),1.00,every_30_days,skipped,,skipped (no shop_url),skipped,,,no primary store / shop_url for user,True
+c109f01e-a091-709e-315c-971112f17fdd,,35782852924,Basic Plan (Monthly),0.10,every_30_days,skipped,,skipped (no shop_url),skipped,,,no primary store / shop_url for user,True

@@ -1,0 +1,334 @@
+<link rel="stylesheet" href="{{ 'pf-new-default-product-hero.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'bundle.css' | asset_url }}" media="all">
+<script src="{{ 'pf-new-default-product-hero.js' | asset_url }}" defer></script>
+<script src="{{ 'bundle.js' | asset_url }}" type="module" defer></script>
+
+{%- style -%}
+  /* --- FORCE LOAD FONTS --- */
+  {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+  {{ settings.type_body_font | font_face: font_display: 'swap' }}
+  {{ settings.type_subheading_font | font_face: font_display: 'swap' }}
+  {{ settings.type_accent_font | font_face: font_display: 'swap' }}
+
+  .modern-product-section-{{ section.id }} {
+    --pt-mobile: {{ section.settings.padding_top_mobile }}px;
+    --pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+    --pt-desktop: {{ section.settings.padding_top_desktop }}px;
+    --pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+  }
+
+  .modern-product-{{ section.id }} {
+    --font-heading: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-subheading: {{ settings.type_subheading_font.family | default: settings.type_heading_font.family }}, sans-serif;
+    --font-accent: {{ settings.type_accent_font.family | default: settings.type_body_font.family }}, sans-serif;
+    --max-width: {{ section.settings.container_width }}px;
+    --corner-radius: {{ section.settings.corner_radius }}px;
+    --accent-color: {{ section.settings.accent_color }};
+    --image-bg: {{ section.settings.image_bg }};
+    --button-radius: {{ section.settings.button_radius }}px;
+    --block-spacing: {{ section.settings.block_spacing }}px;
+    --title-size: {{ section.settings.title_size }}px;
+  }
+{%- endstyle -%}
+
+{%- assign product = section.settings.product | default: product -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="modern-product-section modern-product-section-{{ section.id }} color-{{ section.settings.color_scheme }}" id="ModernProduct-{{ section.id }}" data-variants="{{ product.variants | json | escape }}" data-product-price="{{ current_variant.price | default: product.price }}" data-product-id="{{ product.id }}">
+  <div class="modern-product modern-product-{{ section.id }}">
+    <div class="modern-product__grid">
+      <div class="modern-product__media-col">
+        {%- if product != blank and product.media.size > 0 -%}
+          <div class="modern-product__gallery">
+            <div class="modern-product__main-image-wrapper">
+              {%- if product.media.size > 1 -%}
+                <div class="modern-product__arrow modern-product__arrow--prev">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              {%- endif -%}
+
+              <div class="modern-product__slider" id="Slider-{{ section.id }}">
+                {%- for media in product.media -%}
+                  <div class="modern-product__slide" data-index="{{ forloop.index0 }}">
+                    <img src="{{ media.preview_image | image_url: width: 1200 }}" alt="{{ media.alt | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+                  </div>
+                {%- endfor -%}
+              </div>
+
+              {%- if product.media.size > 1 -%}
+                <div class="modern-product__arrow modern-product__arrow--next">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- if product.media.size > 1 -%}
+              <div class="modern-product__thumbs">
+                {%- for media in product.media -%}
+                  <button
+                    type="button"
+                    class="modern-product__thumb {% if forloop.first %}is-active{% endif %}"
+                    data-index="{{ forloop.index0 }}"
+                    aria-label="View image {{ forloop.index }}"
+                  >
+                    {{ media.preview_image | image_url: width: 240 | image_tag: loading: 'lazy' }}
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="modern-product__main-image-wrapper">
+            {{ 'product-1' | placeholder_svg_tag: 'modern-product__main-image' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="modern-product__info-col">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'badges' -%}
+              <div class="modern-product__block" {{ block.shopify_attributes }}>
+                {%- if block.settings.show_new -%}
+                  <span class="modern-badge" style="background: {{ block.settings.new_bg }}; color: {{ block.settings.new_color }};">{{ block.settings.new_text }}</span>
+                {%- endif -%}
+                {%- if block.settings.show_sale and product.compare_at_price > product.price -%}
+                  {%- assign saving = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                  <span class="modern-badge" style="background: var(--accent-color); color: #fff;">{{ block.settings.sale_text | replace: '[%]', saving | append: '%' }}</span>
+                {%- endif -%}
+              </div>
+
+            {%- when 'title' -%}
+              <div class="modern-product__block" {{ block.shopify_attributes }}>
+                <h1 class="modern-product__title">{{ product.title | default: 'Cleansing foam' }}</h1>
+                {%- if block.settings.show_reviews -%}
+                  <div class="modern-product__reviews">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <span>{{ block.settings.review_text }}</span>
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'price' -%}
+              <div class="modern-product__block" {{ block.shopify_attributes }}>
+                <div class="modern-product__price-wrap">
+                  <span class="modern-product__price">{{ current_variant.price | default: 7900 | money }}</span>
+                  {%- if current_variant.compare_at_price > current_variant.price -%}
+                    <span class="modern-product__compare-price">{{ current_variant.compare_at_price | money }}</span>
+                  {%- endif -%}
+                </div>
+                <div class="modern-product__tax-note">Shipping calculated at checkout.</div>
+              </div>
+
+            {%- when 'description' -%}
+              <div class="modern-product__block" {{ block.shopify_attributes }}>
+                <div class="modern-product__desc">
+                  {{ product.description | strip_html | truncatewords: 30 | default: 'Whether organic, natural, or allergy-conscious, every serum, moisturizer, or treatment is clinically effective for every kind of clean beauty routine.' }}
+                </div>
+              </div>
+
+            {%- when 'stock' -%}
+              <div class="modern-product__block" {{ block.shopify_attributes }}>
+                {%- assign bg_alpha = block.settings.stock_color | color_modify: 'alpha', 0.1 -%}
+                <div class="modern-product__stock" style="background: {{ bg_alpha }}; color: {{ block.settings.stock_color }};">
+                  <div class="modern-product__stock-dot" style="background: {{ block.settings.stock_color }};"></div>
+                  <span>{{ block.settings.stock_text }}</span>
+                </div>
+              </div>
+
+            {%- when 'variants' -%}
+              {%- unless product.has_only_default_variant -%}
+                <div class="modern-product__block" {{ block.shopify_attributes }}>
+                  {%- assign swatch_triggers = block.settings.swatch_trigger | downcase | split: ',' -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- assign is_swatch = false -%}
+                    {%- if block.settings.enable_swatches -%}
+                      {%- assign opt_name = option.name | downcase -%}
+                      {%- for trigger in swatch_triggers -%}
+                        {%- assign stripped_trigger = trigger | strip -%}
+                        {%- if opt_name contains stripped_trigger -%}
+                          {%- assign is_swatch = true -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+
+                    <span class="modern-variant__label">{{ option.name }}: <span style="font-weight:400;">{{ option.selected_value }}</span></span>
+                    {%- if is_swatch -%}
+                      <div class="modern-variant__options">
+                        {%- for value in option.values -%}
+                          {%- assign swatch_color = value | split: ' ' | last | handleize -%}
+                          <button type="button" class="modern-variant__swatch {% if option.selected_value == value %}is-active{% endif %}" style="background-color: {{ swatch_color }};" title="{{ value }}" data-value="{{ value | escape }}"></button>
+                        {%- endfor -%}
+                      </div>
+                    {%- else -%}
+                      <div class="modern-variant__options">
+                        {%- for value in option.values -%}
+                          <button type="button" class="modern-variant__btn {% if option.selected_value == value %}is-active{% endif %}" data-value="{{ value | escape }}">{{ value }}</button>
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
+
+            {%- when 'bundle' -%}
+              {%- comment -%}
+                Preview stand-in for the Kluck Bundler app block. Live themes
+                render the real app block; this mirrors the default seeded
+                "Bundle and Save" tiers so prepaid single homepage checkout
+                shows the offer before publish.
+              {%- endcomment -%}
+              {%- assign unit_price = current_variant.price | default: product.price | default: 2300 -%}
+              {%- if unit_price == blank or unit_price == 0 -%}
+                {%- assign unit_price = 2300 -%}
+              {%- endif -%}
+              {%- assign t1_orig = unit_price -%}
+              {%- assign t2_orig = unit_price | times: 2 -%}
+              {%- assign t2_disc = t2_orig | times: 10 | divided_by: 100 -%}
+              {%- assign t2_price = t2_orig | minus: t2_disc -%}
+              {%- assign t3_orig = unit_price | times: 3 -%}
+              {%- assign t3_disc = t3_orig | times: 15 | divided_by: 100 -%}
+              {%- assign t3_price = t3_orig | minus: t3_disc -%}
+              <div class="modern-product__block" {{ block.shopify_attributes }} style="margin-left: -16px; margin-right: -16px;">
+                <div
+                  class="bundle-save-container"
+                  data-variant-gid="{{ current_variant.id }}"
+                  data-product-id="{{ product.id }}"
+                  data-current-variant-id="{{ current_variant.id | split: '/' | last }}"
+                  data-current-variant-price="{{ unit_price }}"
+                  data-bundle-id="preview-default"
+                  data-bundle-type="discounted"
+                  data-primary-color="#2563EB"
+                  data-corner-roundness="9"
+                  data-breathing-space="14"
+                  data-most-popular-badge-color="#F59E0B"
+                  style="--bundle-primary-color:#2563EB;--bundle-primary-color-rgb:37,99,235;--bundle-corner-roundness:9px;"
+                >
+                  <div class="bundle-header-with-lines">
+                    <div class="bundle-header-line"></div>
+                    <h2>Bundle and Save</h2>
+                    <div class="bundle-header-line"></div>
+                  </div>
+                  <div class="bundle-options" style="gap:14px;">
+                    <label class="bundle-option bundle-option-wrapper" data-quantity="1" data-discount-type="percentage" data-selected="true" style="border-radius:9px;">
+                      <input type="radio" name="bundle-quantity-{{ product.id | default: 'preview' }}" value="1" class="bundle-quantity-radio" data-product-id="{{ product.id }}" checked>
+                      <div class="bundle-option-details">
+                        <div class="bundle-option-title">Buy 1</div>
+                        <div class="bundle-option-discount">Standard Price</div>
+                      </div>
+                      <div class="bundle-option-pricing">
+                        <div class="bundle-option-price">{{ t1_orig | money }}</div>
+                      </div>
+                    </label>
+                    <label class="bundle-option bundle-option-wrapper" data-quantity="2" data-discount-type="percentage" style="border-radius:9px;">
+                      <div class="bundle-most-popular-badge">
+                        <span class="bundle-most-popular-star" aria-hidden="true"></span>
+                        Most Popular
+                      </div>
+                      <input type="radio" name="bundle-quantity-{{ product.id | default: 'preview' }}" value="2" class="bundle-quantity-radio" data-product-id="{{ product.id }}">
+                      <div class="bundle-option-details">
+                        <div class="bundle-option-title">Buy 2</div>
+                        <div class="bundle-option-discount">10% OFF</div>
+                      </div>
+                      <div class="bundle-option-pricing">
+                        <div class="bundle-option-price">{{ t2_price | money }}</div>
+                        <div class="bundle-option-original-price">{{ t2_orig | money }}</div>
+                      </div>
+                    </label>
+                    <label class="bundle-option bundle-option-wrapper" data-quantity="3" data-discount-type="percentage" style="border-radius:9px;">
+                      <input type="radio" name="bundle-quantity-{{ product.id | default: 'preview' }}" value="3" class="bundle-quantity-radio" data-product-id="{{ product.id }}">
+                      <div class="bundle-option-details">
+                        <div class="bundle-option-title">Buy 3</div>
+                        <div class="bundle-option-discount">15% OFF</div>
+                      </div>
+                      <div class="bundle-option-pricing">
+                        <div class="bundle-option-price">{{ t3_price | money }}</div>
+                        <div class="bundle-option-original-price">{{ t3_orig | money }}</div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              {%- assign product_form_id = 'product-form-' | append: section.id -%}
+              {%- assign inventory_quantity = current_variant.inventory_quantity -%}
+              {%- assign inventory_policy = current_variant.inventory_policy -%}
+              {%- assign can_add_to_cart = false -%}
+              {%- if current_variant.available -%}
+                {%- assign can_add_to_cart = true -%}
+              {%- endif -%}
+
+              <div class="modern-product__block modern-buy-block-{{ section.id }}" {{ block.shopify_attributes }}>
+                <form id="{{ product_form_id }}" class="modern-buy__container form" method="post" action="/cart/add" novalidate data-type="add-to-cart-form">
+                  <input type="hidden" name="id" value="{{ current_variant.id }}" class="product-variant-id" form="{{ product_form_id }}">
+                  <div class="modern-buy__row-1">
+                    <div class="modern-qty">
+                      <button type="button" class="modern-qty__btn">−</button>
+                      <input type="number" name="quantity" class="modern-qty__input" value="1" min="1" form="{{ product_form_id }}">
+                      <button type="button" class="modern-qty__btn">+</button>
+                    </div>
+                    <button type="submit" name="add" class="button button-secondary modern-btn modern-btn--add" id="MainAddToCart-{{ section.id }}" {% if can_add_to_cart == false %}disabled{% endif %} data-add-text="{{ block.settings.add_to_cart_text }}">
+                      <span>{%- if can_add_to_cart -%}{{ block.settings.add_to_cart_text }}{%- else -%}Sold out{%- endif -%}</span>
+                    </button>
+                  </div>
+                  {%- if block.settings.show_dynamic_checkout -%}
+                    <div class="modern-buy__dynamic-checkout" style="margin-top: 10px;">
+                      <button type="button" class="modern-btn modern-btn--add" style="background: var(--color-secondary-button-background, var(--color-foreground)); color: var(--color-secondary-button-text, var(--color-background)); border: 1px solid var(--color-secondary-button-border, var(--color-foreground));">Buy it now</button>
+                    </div>
+                  {%- endif -%}
+                </form>
+              </div>
+
+            {%- when 'trust_badges' -%}
+              <div class="modern-product__block modern-trust" {{ block.shopify_attributes }}>
+                <div class="modern-trust__item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                  {{ block.settings.trust_1 }}
+                </div>
+                <div class="modern-trust__item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  {{ block.settings.trust_2 }}
+                </div>
+              </div>
+
+            {%- when 'accordion' -%}
+              <div class="modern-accordion" {{ block.shopify_attributes }}>
+                <button type="button" class="modern-accordion__btn" onclick="this.closest('.modern-accordion').classList.toggle('is-open')">
+                  {{ block.settings.title }}
+                  <span class="modern-accordion__icon">+</span>
+                </button>
+                <div class="modern-accordion__content">
+                  <div class="modern-accordion__inner">
+                    {{ block.settings.content }}
+                  </div>
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{%- if section.settings.show_sticky_cart -%}
+  <div class="modern-sticky-cart" id="StickyCart-{{ section.id }}">
+    <div class="modern-sticky-cart__inner">
+      <div class="modern-sticky-cart__product-info">
+        <img src="{{ product.featured_media | image_url: width: 100 }}" alt="{{ product.title }}" class="modern-sticky-cart__img">
+        <div>
+          <span class="modern-sticky-cart__title">{{ product.title }}</span>
+          <span class="modern-sticky-cart__price">{{ current_variant.price | money }}</span>
+        </div>
+      </div>
+      <button type="button" class="button button-secondary modern-btn modern-btn--add modern-sticky-cart__btn" onclick="document.querySelector('#MainAddToCart-{{ section.id }}').click();">Add To Cart</button>
+    </div>
+  </div>
+{%- endif -%}

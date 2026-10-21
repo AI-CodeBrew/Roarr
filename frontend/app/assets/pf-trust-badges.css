@@ -1,0 +1,206 @@
+/**
+ * Trust Badges / Guarantee Bar - Pro Version
+ * Desktop: Standard Grid/Flex Layout.
+ * Mobile: Optional Infinite Marquee Scroll.
+ * Colors: Scheme-driven via pf-color-schemes.css
+ * Typography: tb-font-heading | tb-font-body | tb-font-accent (set on root from section.settings.font_family)
+ */
+
+[id^="tb-"] .tb-section {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding-top: var(--pt-d);
+  padding-bottom: var(--pb-d);
+  overflow: hidden;
+}
+
+/* CONTAINER */
+[id^="tb-"] .tb-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+/* TRACK */
+[id^="tb-"] .tb-track {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: var(--alignment);
+  gap: var(--gap-d);
+  width: 100%;
+}
+
+/* ITEM STYLES (Badge scheme - each item gets color-{{ badge_scheme }}) */
+[id^="tb-"] .tb-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  border-radius: var(--radius);
+  padding: var(--item-pad-y-d) var(--item-pad-x-d);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: default;
+  white-space: nowrap;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* Smart Border (Adapts to Text Color) */
+[id^="tb-"] .tb-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  border: var(--border-width) solid currentColor;
+  opacity: 0.15;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+/* Smart Hover (Inverts Colors) */
+[id^="tb-"] .tb-item:hover {
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  transform: translateY(-2px);
+}
+
+[id^="tb-"] .tb-item:hover::after {
+  opacity: 1;
+}
+
+/* CLONED ITEMS (Hidden on Desktop) */
+[id^="tb-"] .tb-item.tb-cloned {
+  display: none;
+}
+
+/* ICON */
+[id^="tb-"] .tb-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: var(--icon-size-d);
+  height: var(--icon-size-d);
+  margin-right: 12px;
+  flex-shrink: 0;
+  color: var(--color-primary-button-background);
+  z-index: 3;
+}
+
+/* Smart icon circle (10% opacity of primary button color) */
+[id^="tb-"] .tb-icon-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: var(--color-primary-button-background);
+  opacity: 0.1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+[id^="tb-"] .tb-icon-svg {
+  width: 60%;
+  height: 60%;
+  fill: currentColor;
+}
+
+[id^="tb-"] .tb-custom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+/* TEXT (font stack from theme via --font-h / --font-b / --font-a on section root) */
+[id^="tb-"].tb-font-heading .tb-text {
+  font-family: var(--font-h);
+}
+
+[id^="tb-"].tb-font-body .tb-text {
+  font-family: var(--font-b);
+}
+
+[id^="tb-"].tb-font-accent .tb-text {
+  font-family: var(--font-a);
+}
+
+[id^="tb-"] .tb-text {
+  font-weight: var(--font-weight);
+  font-size: var(--font-size-d);
+  line-height: 1.2;
+  z-index: 3;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  [id^="tb-"] .tb-section {
+    padding-top: var(--pt-m);
+    padding-bottom: var(--pb-m);
+  }
+
+  [id^="tb-"] .tb-item {
+    padding: var(--item-pad-y-m) var(--item-pad-x-m);
+  }
+
+  [id^="tb-"] .tb-text {
+    font-size: var(--font-size-m);
+  }
+
+  [id^="tb-"] .tb-icon-wrap {
+    width: var(--icon-size-m);
+    height: var(--icon-size-m);
+    margin-right: 8px;
+  }
+
+  /* --- MOBILE MARQUEE LOGIC --- */
+  [id^="tb-"].tb-mobile-scroll .tb-container {
+    padding: 0;
+    max-width: 100vw;
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+
+  [id^="tb-"].tb-mobile-scroll .tb-track {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: var(--gap-m);
+    width: max-content;
+    animation: tb-scroll var(--scroll-speed) linear infinite;
+    will-change: transform;
+  }
+
+  [id^="tb-"].tb-mobile-scroll .tb-item.tb-cloned {
+    display: inline-flex;
+  }
+
+  @keyframes tb-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-50% - (var(--gap-m) / 2))); }
+  }
+
+  /* Standard Horizontal Scroll (If Auto-Scroll is OFF) */
+  [id^="tb-"]:not(.tb-mobile-scroll) .tb-container {
+    padding-right: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  [id^="tb-"]:not(.tb-mobile-scroll) .tb-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  [id^="tb-"]:not(.tb-mobile-scroll) .tb-track {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: var(--gap-m);
+  }
+}

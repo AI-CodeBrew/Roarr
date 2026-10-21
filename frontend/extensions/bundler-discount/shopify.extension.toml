@@ -1,0 +1,26 @@
+api_version = "2026-01"
+
+[[extensions]]
+name = "t:name"
+handle = "bundler-discount"
+type = "function"
+uid = "efbad6d5-08aa-0b0c-fae9-fa65eed451d333e4cab7"
+description = "t:description"
+
+  [[extensions.targeting]]
+  target = "cart.lines.discounts.generate.run"
+  input_query = "src/cart_lines_discounts_generate_run.graphql"
+  export = "cart-lines-discounts-generate-run"
+
+  [[extensions.targeting]]
+  target = "cart.delivery-options.discounts.generate.run"
+  input_query = "src/cart_delivery_options_discounts_generate_run.graphql"
+  export = "cart-delivery-options-discounts-generate-run"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"
+
+[extensions.ui.paths]
+create = "/bundles"
+details = "/bundles"

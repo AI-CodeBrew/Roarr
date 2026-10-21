@@ -1,0 +1,92 @@
+/**
+ * Collection List - Simplified for preview
+ * Colors: Scheme-driven via pf-color-schemes.css
+ */
+
+[id^="cl-"] .cl-section {
+  padding-top: var(--cl-pt);
+  padding-bottom: var(--cl-pb);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+[id^="cl-"] .cl-container {
+  max-width: var(--cl-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+[id^="cl-"] .cl-grid {
+  display: grid;
+  gap: var(--cl-col-gap);
+}
+
+[id^="cl-"] .cl-grid--grid {
+  grid-template-columns: repeat(var(--cl-cols), 1fr);
+  gap: var(--cl-col-gap);
+  row-gap: var(--cl-row-gap);
+}
+
+[id^="cl-"] .cl-grid--bento {
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--cl-bento-gap);
+}
+
+[id^="cl-"] .cl-grid--bento .cl-card--large {
+  grid-row: span 2;
+}
+
+[id^="cl-"] .cl-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgb(from var(--color-foreground) r g b / 5%);
+}
+
+[id^="cl-"] .cl-card-img-wrap {
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+[id^="cl-"] .cl-grid--bento .cl-card--large .cl-card-img-wrap {
+  aspect-ratio: 1;
+  height: 100%;
+  min-height: 200px;
+}
+
+[id^="cl-"] .cl-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+[id^="cl-"] .cl-card:hover .cl-card-img {
+  transform: scale(1.05);
+}
+
+[id^="cl-"] .cl-card-title {
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--color-background);
+  color: var(--color-foreground-heading);
+}
+
+@media (max-width: 768px) {
+  [id^="cl-"] .cl-grid--grid {
+    grid-template-columns: repeat(var(--cl-cols-mobile), 1fr);
+    gap: 12px;
+  }
+
+  [id^="cl-"] .cl-grid--bento {
+    grid-template-columns: 1fr;
+  }
+
+  [id^="cl-"] .cl-grid--bento .cl-card--large {
+    grid-row: span 1;
+  }
+}

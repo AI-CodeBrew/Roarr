@@ -1,0 +1,227 @@
+{% comment %}
+  Section: Kluck AI - Marquee Banner
+  - Purpose: Horizontal scrolling strip with "Kluck AI" global controls.
+  - Logic: Metafields for color, max-width container, and full typography suite.
+  - Updates: White text, Product Image priority, Dynamic Text Metafields (marquee_text_x).
+{% endcomment %}
+
+{%- assign heading_font = section.settings.heading_font_family -%}
+{%- assign body_font = section.settings.body_font_family -%}
+
+{% comment %} 1. LOAD FONTS {% endcomment %}
+<style>
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+</style>
+
+{% comment %} 2. MAIN CONTENT WRAPPER {% endcomment %}
+{% if shop.metafields.app.block_control.value %}
+
+  {% assign use_metafields = section.settings.use_metafields %}
+  {% assign opacity = section.settings.background_opacity | divided_by: 100.0 %}
+  {% assign bg_color = section.settings.background_color %}
+
+  {% comment %} Background Color Metafield Logic {% endcomment %}
+  {% if use_metafields
+    and product != blank
+    and product.metafields.kluck_ai.color_schema != blank
+  %}
+    {% assign _cs = product.metafields.kluck_ai.color_schema %}
+    {% assign bg_color = _cs.value | default: _cs %}
+  {% endif %}
+
+  <div id="KluckMarquee-{{ section.id }}" class="kluck-marquee-wrapper-{{ section.id }}">
+    <div class="inner-container-{{ section.id }}">
+      <div class="mq-section">
+        <div class="mq-track">
+          
+          {% comment %} Repeat 4 times for seamless infinite scroll on wide screens {% endcomment %}
+          {% for i in (1..4) %}
+            <div class="mq-group">
+              
+              {% comment %} Reset text counter for each group iteration to map metafields correctly {% endcomment %}
+              {% assign text_count = 0 %}
+
+              {%- for block in section.blocks -%}
+                <div class="mq-item" {{ block.shopify_attributes }}>
+                  {% case block.type %}
+                    
+                    {% when 'text' %}
+                      {% assign text_count = text_count | plus: 1 %}
+                      {% assign final_text = block.settings.text %}
+                      
+                      {% comment %} Logic: Check metafields marquee_text_1, 2, or 3 {% endcomment %}
+                      {% if use_metafields and product != blank %}
+                        {% assign meta_key = 'marquee_text_' | append: text_count %}
+                        {% assign meta_raw = product.metafields.kluck_ai[meta_key] %}
+                        {% assign meta_value = meta_raw.value | default: meta_raw %}
+                        
+                        {% if meta_value != blank %}
+                          {% assign final_text = meta_value %}
+                        {% endif %}
+                      {% endif %}
+
+                      <span class="mq-text">{{ final_text }}</span>
+
+                    {% when 'image' %}
+                      {% assign final_image = block.settings.image %}
+                      
+                      {% comment %} Logic: Always use first product image if on product page {% endcomment %}
+                      {% if use_metafields and product != blank and product.featured_image != blank %}
+                        {% assign final_image = product.featured_image %}
+                      {% endif %}
+
+                      <div class="mq-img-wrap">
+                        {% if final_image != blank %}
+                          <img src="{{ final_image | img_url: '400x' }}" class="mq-img" alt="{{ final_image.alt }}" loading="lazy">
+                        {% else %}
+                          {{ 'image' | placeholder_svg_tag: 'mq-img' }}
+                        {% endif %}
+                      </div>
+
+                  {% endcase %}
+                </div>
+              {%- endfor -%}
+            </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endif %}
+
+<!-- 3. CSS STYLES & VARIABLES -->
+<!-- 3. CSS STYLES & VARIABLES -->
+<style>
+  .kluck-marquee-wrapper-{{ section.id }} {
+    /* --- Layout & Background Variables --- */
+    --bg-color: {{ bg_color }};
+    --bg-opacity: {{ opacity }};
+    --container-width: {{ section.settings.container_max_width }}px;
+
+    /* --- Animation Variables --- */
+    --speed-d: {{ section.settings.speed_d }}s;
+    --speed-m: {{ section.settings.speed_m }}s;
+    --rotation: {{ section.settings.rotation }}deg;
+    --mask-width: {{ section.settings.mask_width }}px;
+    --gap-d: {{ section.settings.gap_d }}px;
+    --gap-m: {{ section.settings.gap_m }}px;
+
+    /* --- FONT FAMILIES --- */
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+
+    /* --- TYPOGRAPHY --- */
+    --h1-size: {{ section.settings.h1_size }}px; --h1-weight: {{ section.settings.h1_weight }};
+    --h2-size: {{ section.settings.h2_size }}px; --h2-weight: {{ section.settings.h2_weight }};
+    --h3-size: {{ section.settings.h3_size }}px; --h3-weight: {{ section.settings.h3_weight }};
+    --h4-size: {{ section.settings.h4_size }}px; --h4-weight: {{ section.settings.h4_weight }};
+    --h5-size: {{ section.settings.h5_size }}px; --h5-weight: {{ section.settings.h5_weight }};
+    --h6-size: {{ section.settings.h6_size }}px; --h6-weight: {{ section.settings.h6_weight }};
+    --body-size: {{ section.settings.body_size }}px; --body-weight: {{ section.settings.body_weight }};
+
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: {{ section.settings.padding_v }}px 0;
+    transform: rotate(var(--rotation));
+    transform-origin: center;
+  }
+
+  /* Background Layer */
+  .kluck-marquee-wrapper-{{ section.id }}::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--bg-color);
+    opacity: var(--bg-opacity);
+    z-index: 0;
+  }
+
+  .inner-container-{{ section.id }} {
+    position: relative;
+    z-index: 1;
+    max-width: var(--container-width);
+    margin: 0 auto;
+  }
+
+  .mq-section {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    /* Edge Fade Mask */
+    -webkit-mask-image: linear-gradient(to right, transparent, black var(--mask-width), black calc(100% - var(--mask-width)), transparent);
+    mask-image: linear-gradient(to right, transparent, black var(--mask-width), black calc(100% - var(--mask-width)), transparent);
+  }
+
+  .mq-track {
+    display: flex;
+    align-items: center; /* FIXED: Ensures groups align centrally */
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  .mq-group {
+    display: flex;
+    align-items: center; /* FIXED: Ensures items inside group align centrally */
+    flex-shrink: 0; 
+    will-change: transform; 
+    animation: mq-scroll-{{ section.id }} var(--speed-d) linear infinite;
+    {% if section.settings.direction == 'right' %}
+      animation-direction: reverse;
+    {% endif %}
+  }
+
+  {% if section.settings.pause_hover %}
+    .mq-section:hover .mq-group { animation-play-state: paused; }
+  {% endif %}
+
+  .mq-item {
+    display: inline-flex;
+    align-items: center; /* FIXED: Centers content vertically within the item */
+    justify-content: center;
+    margin-right: var(--gap-d);
+    flex-shrink: 0;
+    height: 100%; /* Ensures it fills available vertical space for alignment */
+  }
+
+  /* Using H2 settings for the scrolling text */
+  .mq-text {
+    display: block; /* FIXED: Removes inline baseline inconsistencies */
+    font-family: var(--font-heading-family);
+    font-size: var(--h2-size);
+    font-weight: var(--h2-weight);
+
+    margin: 0;
+    text-transform: uppercase;
+    color: #ffffff; 
+    {% comment %} padding-top: 3px; /* FIXED: Optical adjustment for uppercase text */ {% endcomment %}
+  }
+
+  .mq-img-wrap {
+    height: {{ section.settings.img_height_d }}px;
+    display: flex;
+    align-items: center;
+  }
+  .mq-img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    border-radius: {{ section.settings.img_radius }}px;
+  }
+
+  @keyframes mq-scroll-{{ section.id }} {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+  }
+
+  @media (max-width: 768px) {
+    .mq-group { animation-duration: var(--speed-m); }
+    .mq-item { margin-right: var(--gap-m); }
+    .mq-text { font-size: calc(var(--h2-size) * 0.7); } 
+    .mq-img-wrap { height: {{ section.settings.img_height_m }}px; }
+  }
+</style>

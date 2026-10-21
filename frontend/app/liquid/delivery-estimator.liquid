@@ -1,0 +1,74 @@
+{%- liquid
+  assign s = block.settings
+  assign de_id = block.id | replace: '_', '' | downcase
+  assign m = product.metafields.kluck_ai
+  assign color_schema = m.color_schema.value | default: m.color_schema | default: '#a34e4e'
+
+  assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
+  if s.show_background == false
+    assign opacity = 0
+  else
+    assign opacity = opacity_val
+  endif
+  assign bg_color = s.background_color | default: '#ffffff'
+  if s.use_metafields_bg and product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  elsif product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  endif
+
+  assign heading_font = s.heading_font_family
+  assign body_font = s.body_font_family
+
+  assign processing_days = s.processing_days | default: 2 | plus: 0
+  assign delivery_days_after_processing = s.delivery_days_after_processing | default: 3 | plus: 0
+  assign total_delivered_days = processing_days | plus: delivery_days_after_processing
+  assign show_simple_line = s.show_simple_line
+  assign show_delivery_estimator = true
+  if s.show_delivery_estimator == false or s.show_delivery_estimator == 'false'
+    assign show_delivery_estimator = false
+  endif
+-%}
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+<link rel="stylesheet" href="{{ 'delivery-estimator.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<script src="{{ 'delivery-estimator.js' | asset_url }}" defer></script>
+<delivery-estimator-{{ de_id }} class="de-fe hide-frame{% if show_simple_line %} de-fe--simple-line{% endif %}" style="--product-section-bg:{{ bg_color }};--product-section-opacity:{{ opacity }};--bg-color:{{ bg_color }};--bg-opacity:{{ opacity }};--container-width:{{ s.container_max_width | default: 1250 }}px;--bg:#ffffff;--txt:#111111;--date:#666666;--line:#e0e0e0;--icon-color:{{ color_schema }};--icon-bdc:#e0e0e0;--pad-v:12px;--pad-h:0px;--font-heading-family:{% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--font-body-family:{% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--body-size:{{ s.body_size | default: 16 }}px;--body-weight:{{ s.body_weight | default: 400 }};--h1-size:{{ s.h1_size | default: 48 }}px;--h1-weight:{{ s.h1_weight | default: 700 }};--h2-size:{{ s.h2_size | default: 36 }}px;--h2-weight:{{ s.h2_weight | default: 700 }};--h3-size:{{ s.h3_size | default: 30 }}px;--h3-weight:{{ s.h3_weight | default: 600 }};--h4-size:{{ s.h4_size | default: 24 }}px;--h4-weight:{{ s.h4_weight | default: 600 }};--h5-size:{{ s.h5_size | default: 20 }}px;--h5-weight:{{ s.h5_weight | default: 500 }};--h6-size:{{ s.h6_size | default: 16 }}px;--h6-weight:{{ s.h6_weight | default: 500 }};" data-processing-days="{{ processing_days }}" data-delivery-days-after="{{ delivery_days_after_processing }}">
+  <div class="de-fe__container app_blocks_class" style="display:block">
+    {%- if show_delivery_estimator -%}
+      {%- if show_simple_line -%}
+        <div class="de-fe__simple-line">Order placed on <span data-date-today></span> will be processed until <span data-date-processing></span> and will be delivered on <span data-date-delivered></span></div>
+      {%- else -%}
+        <div class="de-fe__steps">
+          <div class="de-fe__line"></div>
+          <div class="de-fe__step" data-step="1" data-days="0">
+            <div class="de-fe__iconWrap is-circle"><div class="de-fe__iconSvg">{% render 'snippets/order-placed' %}</div></div>
+            <div class="de-fe__content"><p>Order placed</p><div class="de-fe__date" data-date-target></div></div>
+          </div>
+          <div class="de-fe__step" data-step="2" data-days="{{ processing_days }}">
+            <div class="de-fe__iconWrap is-circle"><div class="de-fe__iconSvg">{% render 'snippets/processing' %}</div></div>
+            <div class="de-fe__content"><p>Processing</p><div class="de-fe__date" data-date-target></div></div>
+          </div>
+          <div class="de-fe__step" data-step="3" data-days="{{ total_delivered_days }}">
+            <div class="de-fe__iconWrap is-circle"><div class="de-fe__iconSvg">{% render 'snippets/delivered' %}</div></div>
+            <div class="de-fe__content"><p>Delivered</p><div class="de-fe__date" data-date-target></div></div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if s.show_service_accordion -%}
+      <div class="de-fe__service-container" data-service-accordion>
+        <div class="de-fe__service-bar">
+          <button type="button" class="de-fe__service-item" data-service-toggle="s1" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><p>{{ s.title_1 }}</p></button>
+          <button type="button" class="de-fe__service-item" data-service-toggle="s2" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><line x1="16" y1="8" x2="20" y2="8"/><line x1="16" y1="16" x2="23" y2="16"/><path d="M16 12h7"/></svg><p>{{ s.title_2 }}</p></button>
+          <button type="button" class="de-fe__service-item" data-service-toggle="s3" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg><p>{{ s.title_3 }}</p></button>
+        </div>
+        <div class="de-fe__service-content" data-service-content="s1">{{ s.content_1 }}</div>
+        <div class="de-fe__service-content" data-service-content="s2">{{ s.content_2 }}</div>
+        <div class="de-fe__service-content" data-service-content="s3">{{ s.content_3 }}</div>
+      </div>
+    {%- endif -%}
+  </div>
+</delivery-estimator-{{ de_id }}>
+{%- endif -%}

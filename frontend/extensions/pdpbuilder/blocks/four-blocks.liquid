@@ -1,0 +1,66 @@
+{%- liquid
+  assign s = block.settings
+  assign m = product.metafields.kluck_ai
+  assign color = m.color_schema.value | default: m.color_schema | default: '#111'
+  assign layout = s.layout | default: 'layout_1'
+  assign align = s.text_align | default: 'center'
+  assign h_con = s.heading
+  assign s_con = s.subheading
+  if s.use_metafields
+    assign h_con = m.four_blocks_heading.value | default: s.heading
+    assign s_con = m.four_blocks_subheading.value | default: s.subheading
+  endif
+-%}
+{%- if shop.metafields.app.block_control.value -%}
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'four-blocks.css' | asset_url }}" media="all">
+<script src="{{ 'four-blocks.js' | asset_url }}" defer></script>
+<div class="tae-four-blocks tae-four-blocks-{{ block.id | replace: '_', '-' | downcase }}{% unless s.show_border %} tae-four-blocks--no-border{% endunless %} app_blocks_class" style="display:none;--four-blocks-heading-text-color:{{ color }};--four-blocks-image-radius:{{ s.image_radius | default: 50 }}%;">
+  {%- if h_con != blank or s_con != blank -%}
+    <div class="tae-four-blocks-heading-wrapper">
+      {%- if h_con != blank -%}<h3 class="tae-four-blocks-main-heading">{{ h_con }}</h3>{%- endif -%}
+      {%- if s_con != blank -%}<div class="tae-four-blocks-main-subheading"><p>{{ s_con }}</p></div>{%- endif -%}
+    </div>
+  {%- endif -%}
+  <div class="tae-four-blocks-container"><div class="tae-four-blocks-carousel" data-carousel><div class="tae-four-blocks-grid" data-track>
+    {%- for i in (1..4) -%}
+      {%- liquid
+        assign ik = 'block_' | append: i | append: '_image'
+        assign hk = 'block_' | append: i | append: '_heading'
+        assign sk = 'block_' | append: i | append: '_subheading'
+        assign mk = 'product_highlight_' | append: i
+        assign image = s[ik] | default: m[mk].value | default: m[mk]
+        assign name = s[hk]
+        assign desc = s[sk]
+        if s.use_metafields
+          assign nk = 'four_blocks_block_' | append: i | append: '_name'
+          assign dk = 'four_blocks_block_' | append: i | append: '_desc'
+          assign name = m[nk].value | default: m[nk] | default: name
+          assign desc = m[dk].value | default: m[dk] | default: desc
+        endif
+      -%}
+      {%- if image != blank or name != blank or desc != blank -%}
+        <div class="tae-four-blocks-item tae-four-blocks-item--{{ layout | replace: '_', '-' }} tae-four-blocks-text-{{ align }}">
+          <div class="tae-four-blocks-image-wrapper">
+            {%- if image != blank -%}
+              <img src="{{ image | image_url: width: 200 }}" srcset="{{ image | image_url: width: 100 }} 100w, {{ image | image_url: width: 200 }} 200w, {{ image | image_url: width: 300 }} 300w" sizes="200px" alt="{{ image.alt | default: name }}" loading="lazy" width="200" height="200" class="tae-four-blocks-image">
+            {%- else -%}<img src="{{ 'image-svg.svg' | asset_url }}" width="48" height="48" alt="" loading="lazy">{%- endif -%}
+          </div>
+          {%- if name != blank or desc != blank -%}
+            {%- if layout == 'layout_2' -%}<div class="tae-four-blocks-text-card">{%- endif -%}
+              {%- if name != blank -%}<h5 class="tae-four-blocks-item-heading">{{ name }}</h5>{%- endif -%}
+              {%- if desc != blank -%}<p class="tae-four-blocks-item-subheading">{{ desc }}</p>{%- endif -%}
+            {%- if layout == 'layout_2' -%}</div>{%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+  <div class="tae-four-blocks-nav" aria-hidden="true">
+    <button class="tae-four-blocks-nav-btn tae-four-blocks-nav-btn--prev" type="button" data-prev aria-label="Previous">‹</button>
+    <button class="tae-four-blocks-nav-btn tae-four-blocks-nav-btn--next" type="button" data-next aria-label="Next">›</button>
+  </div>
+</div></div></div>
+{%- endif -%}
+
+{% schema %} { "name": "Four Blocks", "target": "section", "settings": [ { "type": "checkbox", "id": "use_metafields", "label": "Use Kluck AI metafields", "default": true }, { "type": "select", "id": "layout", "label": "Layout", "default": "layout_1", "options": [ { "value": "layout_1", "label": "Option 1" }, { "value": "layout_2", "label": "Option 2" } ]}, { "type": "select", "id": "text_align", "label": "Text alignment", "default": "center", "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ]}, { "type": "checkbox", "id": "show_border", "label": "Show borders", "default": true }, { "type": "range", "id": "image_radius", "label": "Image radius", "min": 0, "max": 50, "step": 1, "unit": "%", "default": 50 }, { "type": "text", "id": "heading", "label": "Heading", "default": "Enter text" }, { "type": "richtext", "id": "subheading", "label": "Subheading", "default": "<p>Enter text</p>" }, { "type": "header", "content": "Block 1" }, { "type": "image_picker", "id": "block_1_image", "label": "Image" }, { "type": "text", "id": "block_1_heading", "label": "Heading", "default": "Heading 1" }, { "type": "text", "id": "block_1_subheading", "label": "Subheading", "default": "Subheading 1" }, { "type": "header", "content": "Block 2" }, { "type": "image_picker", "id": "block_2_image", "label": "Image" }, { "type": "text", "id": "block_2_heading", "label": "Heading", "default": "Heading 2" }, { "type": "text", "id": "block_2_subheading", "label": "Subheading", "default": "Subheading 2" }, { "type": "header", "content": "Block 3" }, { "type": "image_picker", "id": "block_3_image", "label": "Image" }, { "type": "text", "id": "block_3_heading", "label": "Heading", "default": "Heading 3" }, { "type": "text", "id": "block_3_subheading", "label": "Subheading", "default": "Subheading 3" }, { "type": "header", "content": "Block 4" }, { "type": "image_picker", "id": "block_4_image", "label": "Image" }, { "type": "text", "id": "block_4_heading", "label": "Heading", "default": "Heading 4" }, { "type": "text", "id": "block_4_subheading", "label": "Subheading", "default": "Subheading 4" } ] } {% endschema %}

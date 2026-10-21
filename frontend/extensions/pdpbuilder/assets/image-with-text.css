@@ -1,0 +1,139 @@
+.tae-two-panel {
+  width: 100%;
+  padding: var(--section-padding-v-d, 10px) var(--section-padding-h-d, 10px);
+  margin: 20px 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991.98px) {
+  .tae-two-panel {
+    padding: var(--section-padding-v-m, 20px) var(--section-padding-h-m, 10px);
+  }
+}
+
+.tae-two-panel-container {
+  display: flex;
+  width: 100%;
+  border-radius: var(--image-with-text-radius, 0);
+  overflow: hidden;
+}
+
+/* When image is on the right, reverse the flex row (desktop only) */
+.tae-two-panel--image-right .tae-two-panel-container {
+  flex-direction: row-reverse;
+}
+
+/* Left and right panels always share width equally */
+.tae-two-panel-left,
+.tae-two-panel-right {
+  flex: 1 1 50%;
+  width: 50%;
+}
+
+.tae-two-panel-left {
+  overflow: hidden;
+}
+
+.tae-two-panel-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tae-two-panel-left img:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.tae-two-panel-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 24px;
+  box-sizing: border-box;
+  background-color: var(--image-with-text-bg-color, #A34E4E);
+}
+
+.tae-two-panel-content {
+  text-align: center;
+  width: 100%;
+  max-width: 520px;
+}
+
+.tae-two-panel-heading,
+.tae-two-panel-item-heading {
+  text-transform: uppercase;
+}
+
+.tae-two-panel-heading {
+  margin: 0 0 8px 0;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.tae-two-panel-item {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.tae-two-panel-item:last-child {
+  margin-bottom: 0;
+}
+
+.tae-two-panel-item-heading {
+  margin: 0 0 4px 0;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.tae-two-panel-item-desc {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.35;
+  font-size: var(--body-size, 16px);
+  font-weight: var(--body-weight, 400);
+  font-family: var(--font-body-family, inherit);
+  text-transform: none;
+}
+
+/* Mobile / tablet: Stack panels vertically with image on top, text below */
+@media (max-width: 991.98px) {
+  .tae-two-panel-container,
+  .tae-two-panel--image-right .tae-two-panel-container {
+    flex-direction: column;
+    min-height: auto;
+    max-height: none;
+    height: auto;
+  }
+
+  .tae-two-panel-left {
+    width: 100%;
+    min-height: 300px;
+    height: auto;
+  }
+
+  .tae-two-panel-left img {
+    height: auto;
+    min-height: 300px;
+  }
+
+  .tae-two-panel-right {
+    width: 100%;
+    padding: 40px 20px;
+    height: auto;
+    min-height: auto;
+  }
+
+  .tae-two-panel-content {
+    max-width: 100%;
+  }
+
+  .tae-two-panel-heading {
+    margin-bottom: 20px;
+  }
+
+  .tae-two-panel-item {
+    margin-bottom: 20px;
+  }
+}

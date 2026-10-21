@@ -1,0 +1,86 @@
+{% comment %}
+  Inline Image Headline - Scroll Reveal Pro
+  - Logic: JavaScript splits text into individual characters.
+  - Animation: Characters light up one by one based on scroll position.
+  - Colors/Fonts: Inherited from section settings and color schemes.
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+
+{% render 'snippets/theme-fonts', settings: settings %}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-inline-headline.css' | asset_url }}" media="all">
+
+<style>
+  #ih-{{ section.id }} {
+    /* FONTS (from theme settings) */
+    --font-h: {{ settings.type_heading_font | font_family: 'sans-serif' }};
+    --font-b: {{ settings.type_body_font | font_family: 'sans-serif' }};
+    --font-a: {{ settings.type_accent_font | font_family: 'sans-serif' }};
+    
+    /* SIZING */
+    --font-size-d: {{ section.settings.size_desktop }}px;
+    --font-size-m: {{ section.settings.size_mobile }}px;
+    --line-height: {{ section.settings.line_height }};
+    
+    /* SPACING */
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+    --max-w: {{ section.settings.max_width }}px;
+  }
+</style>
+
+<div id="ih-{{ section.id }}" class="ih-section-wrapper color-{{ section_scheme }}">
+  <div class="ih-section" id="ih-trigger-{{ section.id }}">
+    <div class="ih-container">
+      
+      <h2 class="ih-headline">
+        {% for block in section.blocks %}
+          
+          {% case block.type %}
+            
+            {% when 'text_segment' %}
+              <style>
+                #ih-{{ section.id }} .ih-text-{{ block.id }} {
+                  font-family: var(--font-{% if block.settings.font_family == 'accent' %}a{% elsif block.settings.font_family == 'body' %}b{% else %}h{% endif %});
+                  {% if block.settings.italic %}font-style: italic;{% endif %}
+                  {% if block.settings.text_scale != 100 %}
+                    font-size: {{ block.settings.text_scale }}%;
+                  {% endif %}
+                }
+              </style>
+              <span class="ih-text ih-text-{{ block.id }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+
+            {% when 'image_pill' %}
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" class="ih-image-wrap ih-anim-item" {{ block.shopify_attributes }}>
+                  {% if block.settings.image != blank %}
+                    <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.image.alt | default: '' | escape }}" class="ih-img" loading="lazy">
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'ih-img' }}
+                  {% endif %}
+                </a>
+              {% else %}
+                <span class="ih-image-wrap ih-anim-item" {{ block.shopify_attributes }}>
+                  {% if block.settings.image != blank %}
+                    <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.image.alt | default: '' | escape }}" class="ih-img" loading="lazy">
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'ih-img' }}
+                  {% endif %}
+                </span>
+              {% endif %}
+
+            {% when 'line_break' %}
+              <span class="ih-break" {{ block.shopify_attributes }}></span>
+
+          {% endcase %}
+          
+        {% endfor %}
+      </h2>
+
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'pf-inline-headline.js' | asset_url }}" defer></script>

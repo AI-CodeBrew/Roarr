@@ -1,0 +1,125 @@
+{% comment %}
+  Shoppable Bundle / Product Lookbook
+  - Main image with hotspot pins
+  - Product list with thumbnails, prices, variant selectors
+  - Add All To Cart button
+  - Colors: Scheme-driven via pf-color-schemes.css
+{% endcomment %}
+
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+
+<link rel="stylesheet" href="{{ 'pf-color-schemes.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'pf-product-lookbook.css' | asset_url }}" media="all">
+
+<style>
+  #Bundle-{{ section.id }} {
+    --image-radius: {{ section.settings.image_radius }}px;
+    --heading-size: {{ section.settings.heading_size }}px;
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+    --pt-m: {{ section.settings.padding_top_mobile }}px;
+    --pb-m: {{ section.settings.padding_bottom_mobile }}px;
+    --sale-color: {{ section.settings.sale_color | default: '#d32f2f' }};
+    --pin-bg: {{ section.settings.pin_bg_color | default: '#ffffff' }};
+    --pin-text: {{ section.settings.pin_text_color | default: '#000000' }};
+  }
+</style>
+
+<div class="plb-section plb-section--{{ section.id }} color-{{ section_scheme }}"
+     id="Bundle-{{ section.id }}">
+  <div class="shoppable-bundle-wrapper {% if section.settings.desktop_layout == 'right' %}image-right{% endif %}">
+
+    <!-- Left: Image & Hotspots -->
+    <div class="bundle-image-container">
+      {% if section.settings.main_image != blank %}
+        {{ section.settings.main_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+
+      {% for block in section.blocks %}
+        {% if block.settings.product != blank %}
+          <div class="hotspot-pin" style="top: {{ block.settings.pos_y }}%; left: {{ block.settings.pos_x }}%;" {{ block.shopify_attributes }}>
+            {{ forloop.index }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Right: Content & Product List -->
+    <div class="bundle-content-container">
+      <div class="bundle-header">
+        {% if section.settings.subtitle != blank %}
+          <span class="bundle-subtitle">{{ section.settings.subtitle }}</span>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h2 class="bundle-title">{{ section.settings.title }}</h2>
+        {% endif %}
+      </div>
+
+      <div class="bundle-product-list" id="BundleItems-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% assign prod = block.settings.product %}
+          {% if prod.title == blank and prod != blank %}
+            {% assign prod = all_products[prod] %}
+          {% endif %}
+          {% if block.settings.product != blank %}
+            <div class="bundle-product-item" {{ block.shopify_attributes }}>
+
+              <div class="item-number">{{ forloop.index }}</div>
+
+              <div class="item-image">
+                {% if prod != blank and prod.featured_image != blank %}
+                  {{ prod.featured_image | image_url: width: 150 | image_tag: loading: 'lazy' }}
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag }}
+                {% endif %}
+              </div>
+
+              <div class="item-details">
+                <div class="item-title-row">
+                  <h4 class="item-title">
+                    {% if prod != blank %}{{ prod.title }}{% else %}{{ block.settings.product | replace: '-', ' ' | capitalize }}{% endif %}
+                  </h4>
+                  <div class="item-price">
+                    {% if prod != blank %}
+                      {% if prod.compare_at_price > prod.price %}
+                        <span class="price-sale">{{ prod.price | money }}</span>
+                        <span class="price-compare">{{ prod.compare_at_price | money }}</span>
+                      {% else %}
+                        <span class="price-regular">{{ prod.price | money }}</span>
+                      {% endif %}
+                    {% else %}
+                      <span class="price-regular">—</span>
+                    {% endif %}
+                  </div>
+                </div>
+
+                {% if prod != blank %}
+                  {% unless prod.has_only_default_variant %}
+                    <select class="item-variant-select bundle-variant-select" data-product-id="{{ prod.id }}">
+                      {% for variant in prod.variants %}
+                        <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                          {{ variant.title }}{% unless variant.available %} - Sold Out{% endunless %}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  {% else %}
+                    <input type="hidden" class="bundle-variant-select" value="{{ prod.variants.first.id }}">
+                  {% endunless %}
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <button type="button" class="bundle-add-button" id="AddBundle-{{ section.id }}">
+        {{ section.settings.button_label }}
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'pf-product-lookbook.js' | asset_url }}" defer></script>

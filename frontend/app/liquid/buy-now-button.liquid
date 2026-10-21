@@ -1,0 +1,70 @@
+{%- liquid
+  assign s = block.settings
+  assign instance_id = block.id | replace: '_', '-' | downcase
+  assign m = product.metafields.kluck_ai
+  assign color_schema = m.color_schema.value | default: m.color_schema | default: '#a34e4e'
+
+  assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
+  if s.show_background == false
+    assign opacity = 0
+  else
+    assign opacity = opacity_val
+  endif
+  assign bg_color = s.background_color | default: '#ffffff'
+  if s.use_metafields_bg and product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  elsif product != blank and m.color_schema != blank
+    assign bg_color = m.color_schema.value | default: m.color_schema
+  endif
+
+  assign heading_font = s.heading_font_family
+  assign body_font = s.body_font_family
+
+  assign button_width = s.button_width | default: 100
+  assign button_border_radius = s.button_border_radius | default: 12
+  assign quantity_border_radius = s.quantity_border_radius | default: 12
+  assign quantity_width = s.quantity_width | default: 150
+  assign quantity_style = s.quantity_style | default: 'option1'
+  assign button_height = s.button_height | default: 48
+  if product
+    assign variant = product.selected_or_first_available_variant
+  endif
+-%}
+{%- assign render_flag = shop.metafields.app.block_control.value -%}
+{%- if render_flag == true -%}
+<link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
+<link rel="stylesheet" href="{{ 'buy-now-button.css' | asset_url }}" media="all">
+<script src="{{ 'buy-now-button.js' | asset_url }}" defer></script>
+<div class="tae-buy-now-button tae-buy-now-button-{{ instance_id }} tae-buy-now-quantity-style-{{ quantity_style }} app_blocks_class" style="--product-section-bg:{{ bg_color }};--product-section-opacity:{{ opacity }};--bg-color:{{ bg_color }};--bg-opacity:{{ opacity }};--container-width:{{ s.container_max_width | default: 1250 }}px;--buy-now-button-max-width:600px;--buy-now-button-gap:12px;--button-width:{{ button_width }}%;--button-border-radius:{{ button_border_radius }}px;--quantity-border-radius:{{ quantity_border_radius }}px;--quantity-width:{{ quantity_width }}px;--button-height:{{ button_height }}px;--font-heading-family:{% if heading_font != blank and heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--font-body-family:{% if body_font != blank and body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families | default: 'sans-serif' }}{% else %}inherit{% endif %};--body-size:{{ s.body_size | default: 16 }}px;--body-weight:{{ s.body_weight | default: 400 }};--h1-size:{{ s.h1_size | default: 48 }}px;--h1-weight:{{ s.h1_weight | default: 700 }};--h2-size:{{ s.h2_size | default: 36 }}px;--h2-weight:{{ s.h2_weight | default: 700 }};--h3-size:{{ s.h3_size | default: 30 }}px;--h3-weight:{{ s.h3_weight | default: 600 }};--h4-size:{{ s.h4_size | default: 24 }}px;--h4-weight:{{ s.h4_weight | default: 600 }};--h5-size:{{ s.h5_size | default: 20 }}px;--h5-weight:{{ s.h5_weight | default: 500 }};--h6-size:{{ s.h6_size | default: 16 }}px;--h6-weight:{{ s.h6_weight | default: 500 }};display:block;">
+  <div class="tae-buy-now-button-wrapper">
+    {%- if product -%}
+      <div class="tae-buy-now-button-container">
+        {%- if quantity_style == 'option1' -%}
+          <div class="tae-buy-now-quantity-selector tae-buy-now-quantity-selector--style-1">
+            <button type="button" class="tae-buy-now-quantity-btn tae-buy-now-quantity-minus" aria-label="Decrease quantity">−</button>
+            <input type="number" class="tae-buy-now-quantity-input" value="1" min="1" aria-label="Quantity" data-quantity-input-{{ instance_id }}>
+            <button type="button" class="tae-buy-now-quantity-btn tae-buy-now-quantity-plus" aria-label="Increase quantity">+</button>
+          </div>
+        {%- elsif quantity_style == 'option2' -%}
+          <div class="tae-buy-now-quantity-selector tae-buy-now-quantity-selector--style-2">
+            <button type="button" class="tae-buy-now-quantity-btn tae-buy-now-quantity-minus" aria-label="Decrease quantity">−</button>
+            <input type="number" class="tae-buy-now-quantity-input" value="1" min="1" aria-label="Quantity" data-quantity-input-{{ instance_id }}>
+            <button type="button" class="tae-buy-now-quantity-btn tae-buy-now-quantity-plus" aria-label="Increase quantity">+</button>
+          </div>
+        {%- elsif quantity_style == 'option3' -%}
+          <div class="tae-buy-now-quantity-selector tae-buy-now-quantity-selector--style-3">
+            <button type="button" class="tae-buy-now-quantity-btn tae-buy-now-quantity-minus" aria-label="Decrease quantity">−</button>
+            <input type="number" class="tae-buy-now-quantity-input" value="1" min="1" aria-label="Quantity" data-quantity-input-{{ instance_id }}>
+            <button type="button" class="tae-buy-now-quantity-btn tae-buy-now-quantity-plus" aria-label="Increase quantity">+</button>
+          </div>
+        {%- endif -%}
+        <button type="button" class="tae-buy-now-button-btn tae-buy-now-button-btn-{{ instance_id }}" style="background-color:{{ color_schema }};border-radius:var(--button-border-radius);" data-variant-id="{{ variant.id }}">
+          <h5 style="color:white">{{ s.button_text | default: 'Buy Now' }}</h5>
+        </button>
+      </div>
+    {%- else -%}
+      <a class="tae-buy-now-button-btn" style="background-color:{{ color_schema }};color:#ffffff;border-radius:var(--button-border-radius);width:var(--button-width);">{{ s.button_text | default: 'Buy Now' }}</a>
+    {%- endif -%}
+  </div>
+</div>
+{%- endif -%}
