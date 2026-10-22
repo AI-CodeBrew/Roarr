@@ -49,6 +49,12 @@ export default defineConfig({
     },
   },
   plugins: [reactRouter(), tsconfigPaths()],
+  ssr: {
+    // posthog-js/react ships ESM in a .js file without "type": "module", so
+    // runtimes that don't sniff module syntax (Vercel) load it as CommonJS and
+    // crash on the named import. Bundling it into the server build avoids that.
+    noExternal: [/^posthog-js(\/|$)/],
+  },
   build: {
     assetsInlineLimit: 0,
   },

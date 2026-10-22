@@ -1,6 +1,7 @@
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import { Form, useActionData, useLoaderData, useSearchParams } from "react-router";
 import { login } from "../../shopify.server";
+import { loginErrorMessage } from "./error.server";
 
 // export const loader = async ({ request }) => {
 //   const url = new URL(request.url);
@@ -37,17 +38,17 @@ import { login } from "../../shopify.server";
 
 
 export async function loader({ request }) {
-  return login(request);
+  return { errors: loginErrorMessage(await login(request)) };
 }
 export const action = async ({ request }) => {
-  return login(request);
+  return { errors: loginErrorMessage(await login(request)) };
 };
 
 export default function Auth() {
   const loaderData = useLoaderData();
   const actionData = useActionData();
   const [searchParams] = useSearchParams();
-  const { errors } = actionData || loaderData;
+  const errors = (actionData || loaderData)?.errors || {};
 
   // Get shop from loader data (which extracts from path or query params)
   const shop = loaderData?.shop || searchParams.get("shop") || "";
@@ -60,6 +61,13 @@ export default function Auth() {
       <s-page>
         <Form method="post">
           <s-section heading="Re-authenticate">
+            <s-text-field
+              name="shop"
+              label="Shop domain"
+              details="example.myshopify.com"
+              value={shop}
+              autocomplete="on"
+            ></s-text-field>
 
             <s-button type="submit" variant="primary">
               Re-authenticate

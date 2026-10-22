@@ -16,8 +16,13 @@ const SupabaseAuthContext = createContext({
 });
 
 export function SupabaseAuthProvider({ url, anonKey, children }) {
+  // *.client modules are stubbed out in the server build, so only create the
+  // browser client once we're actually in the browser.
   const supabase = useMemo(
-    () => getSupabaseBrowserClient(url, anonKey),
+    () =>
+      typeof window === "undefined"
+        ? null
+        : getSupabaseBrowserClient(url, anonKey),
     [url, anonKey],
   );
   const [session, setSession] = useState(null);
