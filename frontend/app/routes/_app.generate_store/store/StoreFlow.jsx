@@ -6,6 +6,7 @@ export default function StoreFlow({ hubPath = "/entire-store", setFlowType }) {
     <s-page heading="Entire Store Experience" inlineSize="large">
       <CreditWalletWidget floating={false} slot="secondary-actions" />
       <div
+        className="roarr-theme"
         style={{
           width: "100%",
           maxWidth: "100%",

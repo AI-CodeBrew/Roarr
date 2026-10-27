@@ -10,7 +10,6 @@ const PAGE_NAMES = {
   '/preferences': 'preferences',
   '/entire-store': 'entire_store',
   '/product-page': 'product_page',
-  '/brand-ads': 'brand_ads',
 }
 
 export function usePageTracking(pageNameOverride) {

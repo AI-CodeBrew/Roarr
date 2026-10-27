@@ -12,20 +12,21 @@
  * which calls /api/credits/confirm-pack to grant credits.
  */
 import { useEffect, useState, useCallback, useMemo } from "react";
+import { DataTable, Spinner } from "@shopify/polaris";
 import {
-  BlockStack,
-  Box,
-  Banner,
-  Button,
-  DataTable,
-  Icon,
-  InlineStack,
-  LegacyCard,
-  Spinner,
-  Text,
-  TextField,
-} from "@shopify/polaris";
-import { ProductIcon, StoreIcon } from "@shopify/polaris-icons";
+  Check,
+  CircleAlert,
+  CircleCheck,
+  Coins,
+  History,
+  Info,
+  Package,
+  ShieldCheck,
+  Sparkles,
+  Store,
+  X,
+} from "lucide-react";
+import { Panel, PrimaryButton, StepFrame } from "../../components/RoarrUI.jsx";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { useCredits } from "../../lib/CreditsContext";
 import { usePosthogAfterIdentify } from "../../lib/PosthogIdentityContext";
@@ -41,50 +42,102 @@ import {
 const FEATURE_COST_CHIPS = [
   {
     key: "store_creation",
-    label: "Store Creation",
-    icon: StoreIcon,
+    label: "Store creation",
+    icon: Store,
   },
   {
     key: "page_generation",
-    label: "Product Page",
-    icon: ProductIcon,
+    label: "Product page",
+    icon: Package,
   },
 ];
 
 const PACK_SUBTITLES = {
-  starter: "(Best for single product store)",
-  value: "(Best for Multi Product Store)",
+  starter: "Best for a single product store",
+  value: "Best for a multi product store",
 };
 
-function FeatureCostChips({ featureCosts }) {
+const ALERT_TONES = {
+  success: { box: "bg-emerald-50 text-emerald-900 ring-emerald-200", icon: CircleCheck, iconColor: "text-emerald-600" },
+  critical: { box: "bg-red-50 text-red-900 ring-red-200", icon: CircleAlert, iconColor: "text-red-600" },
+  warning: { box: "bg-amber-50 text-amber-900 ring-amber-200", icon: CircleAlert, iconColor: "text-amber-600" },
+  info: { box: "bg-blue-50 text-[#1e3a8a] ring-blue-200", icon: Info, iconColor: "text-[#1e40af]" },
+};
+
+/** Inline message strip; `onDismiss` adds a close button. */
+function Alert({ tone = "info", onDismiss, children }) {
+  const t = ALERT_TONES[tone] || ALERT_TONES.info;
+  const IconComponent = t.icon;
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm">
-      <p className="mb-4 text-center text-sm font-semibold text-gray-800">
-        Following are the credits used per action:
-      </p>
-      <ul className="m-0 flex list-none flex-wrap items-center justify-center gap-3 p-0">
-        {FEATURE_COST_CHIPS.map(({ key, label, icon }) => {
-          const cost = resolveFeatureCost(key, featureCosts);
-          return (
-            <li
-              key={key}
-              className="flex items-center gap-2 px-2 text-xs text-gray-700"
-            >
-              <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700">
-                <Icon source={icon} tone="base" />
-              </span>
-              <span className="whitespace-nowrap">
-                <span className="font-semibold text-gray-900">{label}:</span>{" "}
-                <span className="font-bold tabular-nums text-gray-900">
-                  {Number(cost).toLocaleString()}cr
-                </span>{" "}
-                will be used
-              </span>
-            </li>
-          );
-        })}
-      </ul>
+    <div role="alert" className={`flex items-start gap-2.5 rounded-xl px-3.5 py-2.5 text-[13px] leading-relaxed ring-1 ring-inset ${t.box}`}>
+      <IconComponent size={16} className={`mt-0.5 flex-none ${t.iconColor}`} aria-hidden />
+      <div className="min-w-0 flex-1">{children}</div>
+      {onDismiss ? (
+        <button
+          type="button"
+          onClick={onDismiss}
+          aria-label="Dismiss"
+          className="flex-none rounded-md p-0.5 opacity-70 transition hover:bg-white/70 hover:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a]"
+        >
+          <X size={14} />
+        </button>
+      ) : null}
     </div>
+  );
+}
+
+/** Balance on the left, what each action costs on the right. */
+function BalanceCard({ balance, lifetimeSpent, featureCosts }) {
+  const known = typeof balance === "number";
+  return (
+    <StepFrame compact>
+      <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+        <div className="flex items-center gap-3.5">
+          <span className="flex h-12 w-12 flex-none items-center justify-center rounded-2xl bg-white text-[#1e40af] shadow-sm ring-1 ring-blue-100">
+            <Coins size={24} aria-hidden />
+          </span>
+          <div>
+            <p className="m-0 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+              Your balance
+            </p>
+            <p className="m-0 flex items-baseline gap-1.5">
+              <span className="text-3xl font-bold leading-tight tracking-tight tabular-nums text-slate-900">
+                {known ? Number(balance).toLocaleString() : "…"}
+              </span>
+              <span className="text-sm font-medium text-slate-500">credits</span>
+            </p>
+            {known && lifetimeSpent > 0 ? (
+              <p className="m-0 text-xs text-slate-500">
+                {formatCredits(lifetimeSpent)} used so far
+              </p>
+            ) : null}
+          </div>
+        </div>
+
+        <div>
+          <p className="m-0 mb-2 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+            Credits used per action
+          </p>
+          <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+            {FEATURE_COST_CHIPS.map(({ key, label, icon: IconComponent }) => {
+              const cost = resolveFeatureCost(key, featureCosts);
+              return (
+                <li
+                  key={key}
+                  className="inline-flex items-center gap-2 rounded-xl bg-white px-3 py-2 text-[13px] text-slate-600 shadow-sm ring-1 ring-blue-100"
+                >
+                  <IconComponent size={16} className="text-[#1e40af]" aria-hidden />
+                  <span className="font-medium text-slate-800">{label}</span>
+                  <span className="font-bold tabular-nums text-[#1e3a8a]">
+                    {Number(cost).toLocaleString()} cr
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    </StepFrame>
   );
 }
 
@@ -137,6 +190,12 @@ function formatSignedCredits(delta) {
   return signed;
 }
 
+const PACK_PERKS = [
+  "One-time payment — no recurring charges",
+  "Credits never expire",
+  "Accumulates with existing balance",
+];
+
 function PackCard({ packKey, pack, onBuy, busy, mostPopular, promoPending }) {
   const subtitle = PACK_SUBTITLES[packKey];
   const baseCredits = Number(pack.credits) || 0;
@@ -144,75 +203,64 @@ function PackCard({ packKey, pack, onBuy, busy, mostPopular, promoPending }) {
 
   return (
     <div
-      className={`relative flex flex-col rounded-2xl bg-white p-5 shadow-md ${
-        mostPopular ? "border-2 border-fuchsia-500" : "border border-gray-200"
+      className={`relative flex flex-col rounded-2xl p-5 transition hover:-translate-y-0.5 ${
+        mostPopular
+          ? "bg-gradient-to-b from-[#f6f8ff] to-white shadow-[0_18px_40px_-24px_rgba(30,58,138,0.55)] ring-2 ring-[#4f46e5]"
+          : "bg-white shadow-sm ring-1 ring-slate-200 hover:shadow-[0_18px_40px_-26px_rgba(30,58,138,0.4)] hover:ring-blue-200"
       }`}
     >
-      {mostPopular && (
-        <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-fuchsia-100 px-2 py-0.5 text-xs font-semibold text-fuchsia-800">
+      {mostPopular ? (
+        <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-[#1e40af] to-[#7c3aed] px-2.5 py-0.5 text-[11px] font-semibold text-white">
+          <Sparkles size={11} aria-hidden />
           Best value
         </span>
-      )}
+      ) : null}
 
-      <div className={mostPopular ? "pr-20" : ""}>
-        <Text as="h3" variant="headingMd" fontWeight="semibold">
-          {pack.name}
-          {subtitle && (
-            <span className="text-xs font-bold italic text-gray-500">
-              {" "}{subtitle}
-            </span>
-          )}
-        </Text>
+      <div className={mostPopular ? "pr-24" : ""}>
+        <h3 className="m-0 text-base font-bold tracking-tight text-slate-900">{pack.name}</h3>
+        {subtitle ? <p className="m-0 mt-0.5 text-xs text-slate-500">{subtitle}</p> : null}
       </div>
 
-      <div style={{ marginTop: 16 }}>
-        <Text as="p" variant="heading2xl" fontWeight="bold">
+      <div className="mt-4">
+        <p className="m-0 text-4xl font-bold leading-none tracking-tight text-slate-900">
           {priceLabel(pack)}
-        </Text>
+        </p>
         {promoPending ? (
-          <div>
-            <Text as="p" fontWeight="semibold">
+          <div className="mt-2">
+            <p className="m-0 text-sm font-semibold text-[#1e40af]">
               {formatCredits(grantedCredits, "credits")} with ROARR2X
-            </Text>
-            <Text as="p" tone="subdued" variant="bodySm">
+            </p>
+            <p className="m-0 text-xs text-slate-500">
               Normally {formatCredits(baseCredits, "credits")}
-            </Text>
+            </p>
           </div>
         ) : (
-          <Text as="p" tone="subdued">
+          <p className="m-0 mt-2 text-sm font-medium text-slate-600">
             {formatCredits(baseCredits, "credits")}
-          </Text>
+          </p>
         )}
       </div>
 
-      <ul style={{ margin: "16px 0", paddingLeft: 18 }}>
-        <li>
-          <Text as="span" tone="subdued">
-            One-time payment — no recurring charges
-          </Text>
-        </li>
-        <li>
-          <Text as="span" tone="subdued">
-            Credits never expire
-          </Text>
-        </li>
-        <li>
-          <Text as="span" tone="subdued">
-            Accumulates with existing balance
-          </Text>
-        </li>
+      <ul className="m-0 my-5 flex list-none flex-col gap-2 p-0">
+        {PACK_PERKS.map((perk) => (
+          <li key={perk} className="flex items-start gap-2 text-[13px] text-slate-600">
+            <span className="mt-0.5 flex h-4 w-4 flex-none items-center justify-center rounded-full bg-blue-50 text-[#1e40af]">
+              <Check size={11} strokeWidth={3} aria-hidden />
+            </span>
+            {perk}
+          </li>
+        ))}
       </ul>
 
-      <div style={{ marginTop: "auto" }}>
-        <Button
-          fullWidth
-          variant="primary"
+      <div className="mt-auto">
+        <PrimaryButton
+          className="w-full"
           loading={busy}
           disabled={busy}
           onClick={() => onBuy(packKey)}
         >
           Buy {pack.name}
-        </Button>
+        </PrimaryButton>
       </div>
     </div>
   );
@@ -220,6 +268,8 @@ function PackCard({ packKey, pack, onBuy, busy, mostPopular, promoPending }) {
 
 export function CreditPacks() {
   const {
+    balance,
+    lifetimeSpent,
     packs,
     refresh,
     featureCosts,
@@ -231,10 +281,6 @@ export function CreditPacks() {
   const [busyPack, setBusyPack] = useState(null);
   const [actionError, setActionError] = useState(null);
   const [reconcileMessage, setReconcileMessage] = useState(null);
-  const [promoCode, setPromoCode] = useState("");
-  const [promoBusy, setPromoBusy] = useState(false);
-  const [promoError, setPromoError] = useState(null);
-  const [promoSuccess, setPromoSuccess] = useState(null);
   const [ledgerEntries, setLedgerEntries] = useState([]);
   const [ledgerLoading, setLedgerLoading] = useState(false);
   const [ledgerError, setLedgerError] = useState(null);
@@ -322,40 +368,6 @@ export function CreditPacks() {
     setLedgerPage(1);
   }, [ledgerEntries]);
 
-  const handleRedeemPromo = useCallback(async () => {
-    const code = String(promoCode || "").trim();
-    if (!code) {
-      setPromoError("Enter a promo code");
-      return;
-    }
-    setPromoBusy(true);
-    setPromoError(null);
-    setPromoSuccess(null);
-    try {
-      const res = await fetch("/api/credits/redeem-promo", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok || !json?.success) {
-        throw new Error(json?.error || "Could not apply promo code");
-      }
-      setPromoSuccess(
-        json.message ||
-          "Promo applied. Your next credit pack purchase will be doubled.",
-      );
-      setPromoCode("");
-      posthog?.capture("credits_promo_redeemed", { code: json.code || code });
-      refresh();
-    } catch (err) {
-      setPromoError(err?.message || "Could not apply promo code");
-    } finally {
-      setPromoBusy(false);
-    }
-  }, [promoCode, posthog, refresh]);
-
   const handleBuy = useCallback(
     async (packKey) => {
       setBusyPack(packKey);
@@ -420,74 +432,29 @@ export function CreditPacks() {
   }, [ledgerEntries, ledgerPage]);
 
   return (
-    <Box paddingBlockStart="0" paddingBlockEnd="400">
-      <BlockStack gap="400">
-        <FeatureCostChips
-          featureCosts={featureCosts || FEATURE_COSTS_DEFAULT}
-        />
+    <div className="flex flex-col gap-5 pb-4">
+      <BalanceCard
+        balance={balance}
+        lifetimeSpent={lifetimeSpent}
+        featureCosts={featureCosts || FEATURE_COSTS_DEFAULT}
+      />
 
-        <BlockStack gap="200">
-          <Text as="h2" variant="headingLg" fontWeight="semibold">
-            Credit packs
-          </Text>
-          <Text as="p" tone="subdued">
-            One-time purchases. Credits never expire and accumulate across
-            packs. Spend them on store generation and product pages.
-          </Text>
-        </BlockStack>
+      <section className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+          <div className="min-w-0">
+            <h2 className="m-0 text-xl font-bold tracking-tight text-slate-900">Credit packs</h2>
+            <p className="m-0 mt-0.5 max-w-xl text-[13px] leading-relaxed text-slate-500">
+              One-time purchases. Credits never expire and accumulate across packs. Spend them on
+              store generation and product pages.
+            </p>
+          </div>
+        </div>
 
-        <Box
-          background="bg-surface-secondary"
-          padding="300"
-          borderRadius="200"
-        >
-          <BlockStack gap="200">
-            <Text as="h3" variant="headingSm" fontWeight="semibold">
-              Promo code
-            </Text>
-            {promoPending && (
-              <Banner tone="success">
-                ROARR2X is active. Your next pack purchase grants double
-                credits.
-              </Banner>
-            )}
-            <InlineStack gap="200" blockAlign="end" wrap={false}>
-              <div style={{ flex: 1, minWidth: 180 }}>
-                <TextField
-                  label="Promo code"
-                  labelHidden
-                  value={promoCode}
-                  onChange={(value) => {
-                    setPromoCode(value);
-                    if (promoError) setPromoError(null);
-                    if (promoSuccess) setPromoSuccess(null);
-                  }}
-                  autoComplete="off"
-                  placeholder="Enter promo code"
-                  disabled={promoBusy}
-                />
-              </div>
-              <Button
-                variant="primary"
-                loading={promoBusy}
-                disabled={promoBusy || !String(promoCode || "").trim()}
-                onClick={handleRedeemPromo}
-              >
-                Apply
-              </Button>
-            </InlineStack>
-            {promoSuccess && (
-              <Banner tone="success" onDismiss={() => setPromoSuccess(null)}>
-                {promoSuccess}
-              </Banner>
-            )}
-            {promoError && (
-              <Banner tone="critical" onDismiss={() => setPromoError(null)}>
-                {promoError}
-              </Banner>
-            )}
-          </BlockStack>
-        </Box>
+        {promoPending ? (
+          <Alert tone="success">
+            ROARR2X is active. Your next pack purchase grants double credits.
+          </Alert>
+        ) : null}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {orderedPacks.map(({ key, pack }) => (
@@ -503,91 +470,62 @@ export function CreditPacks() {
           ))}
         </div>
 
-        {reconcileMessage && (
-          <Banner tone="success" onDismiss={() => setReconcileMessage(null)}>
+        {reconcileMessage ? (
+          <Alert tone="success" onDismiss={() => setReconcileMessage(null)}>
             {reconcileMessage}
-          </Banner>
-        )}
+          </Alert>
+        ) : null}
 
-        {actionError && (
-          <Banner tone="critical" onDismiss={() => setActionError(null)}>
+        {actionError ? (
+          <Alert tone="critical" onDismiss={() => setActionError(null)}>
             {actionError}
-          </Banner>
+          </Alert>
+        ) : null}
+
+        <p className="m-0 flex items-start gap-2 rounded-xl bg-white/70 px-3.5 py-2.5 text-xs leading-relaxed text-slate-500 ring-1 ring-inset ring-slate-200">
+          <ShieldCheck size={15} className="mt-0.5 flex-none text-[#1e40af]" aria-hidden />
+          Charges are processed by Shopify Billing — you&apos;ll be redirected to approve. If
+          anything goes wrong on our end after a charge, the credits are automatically refunded.
+        </p>
+      </section>
+
+      <Panel
+        icon={History}
+        title="Activity"
+        description={`Credits added and spent. Showing up to ${LEDGER_FETCH_LIMIT} most recent entries (newest first).`}
+      >
+        {ledgerLoading ? (
+          <div className="flex items-center gap-2 text-[13px] text-slate-500">
+            <Spinner size="small" />
+            Loading history…
+          </div>
+        ) : ledgerError ? (
+          <Alert tone="warning" onDismiss={() => setLedgerError(null)}>
+            {ledgerError}
+          </Alert>
+        ) : ledgerEntries.length === 0 ? (
+          <p className="m-0 rounded-xl bg-slate-50 px-4 py-6 text-center text-[13px] text-slate-500">
+            No activity yet.
+          </p>
+        ) : (
+          <div className="overflow-hidden rounded-xl ring-1 ring-slate-200/80">
+            <DataTable
+              columnContentTypes={["text", "text", "text", "text", "text"]}
+              headings={["Date", "Type", "Feature", "Change", "Balance after"]}
+              rows={paginatedLedgerRows}
+              pagination={{
+                hasPrevious: ledgerPage > 1,
+                hasNext: ledgerPage < ledgerTotalPages,
+                onPrevious: () => setLedgerPage((p) => Math.max(1, p - 1)),
+                onNext: () =>
+                  setLedgerPage((p) => Math.min(ledgerTotalPages, p + 1)),
+                label: `Page ${ledgerPage} of ${ledgerTotalPages}`,
+                accessibilityLabel: "Ledger activity pages",
+              }}
+            />
+          </div>
         )}
-
-        <Box
-          background="bg-surface-secondary"
-          padding="300"
-          borderRadius="200"
-        >
-          <Text as="p" variant="bodySm" tone="subdued">
-            Charges are processed by Shopify Billing — you'll be redirected to
-            approve. If anything goes wrong on our end after a charge, the
-            credits are automatically refunded.
-          </Text>
-        </Box>
-
-        <BlockStack gap="300">
-          <BlockStack gap="150">
-            <Text as="h3" variant="headingMd" fontWeight="semibold">
-              Activity
-            </Text>
-            <Text as="p" tone="subdued" variant="bodySm">
-              Credits added and spent. Showing up to {LEDGER_FETCH_LIMIT}{" "}
-              most recent entries (newest first).
-            </Text>
-          </BlockStack>
-
-          {ledgerLoading ? (
-            <InlineStack gap="200" blockAlign="center">
-              <Spinner size="small" />
-              <Text as="p" tone="subdued" variant="bodySm">
-                Loading history…
-              </Text>
-            </InlineStack>
-          ) : ledgerError ? (
-            <Banner tone="warning" onDismiss={() => setLedgerError(null)}>
-              {ledgerError}
-            </Banner>
-          ) : ledgerEntries.length === 0 ? (
-            <Text as="p" tone="subdued" variant="bodySm">
-              No activity yet.
-            </Text>
-          ) : (
-            <LegacyCard>
-              <DataTable
-                columnContentTypes={[
-                  "text",
-                  "text",
-                  "text",
-                  "text",
-                  "text",
-                ]}
-                headings={[
-                  "Date",
-                  "Type",
-                  "Feature",
-                  "Change",
-                  "Balance after",
-                ]}
-                rows={paginatedLedgerRows}
-                pagination={{
-                  hasPrevious: ledgerPage > 1,
-                  hasNext: ledgerPage < ledgerTotalPages,
-                  onPrevious: () =>
-                    setLedgerPage((p) => Math.max(1, p - 1)),
-                  onNext: () =>
-                    setLedgerPage((p) =>
-                      Math.min(ledgerTotalPages, p + 1)
-                    ),
-                  label: `Page ${ledgerPage} of ${ledgerTotalPages}`,
-                  accessibilityLabel: "Ledger activity pages",
-                }}
-              />
-            </LegacyCard>
-          )}
-        </BlockStack>
-      </BlockStack>
-    </Box>
+      </Panel>
+    </div>
   );
 }

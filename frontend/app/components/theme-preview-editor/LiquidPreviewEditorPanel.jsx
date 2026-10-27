@@ -124,6 +124,9 @@ export default function LiquidPreviewEditorPanel({
         if (normalized.startsWith("packs/amour/home/")) {
             normalized = normalized.slice("packs/amour/home/".length);
         }
+        if (normalized.startsWith("packs/lumenook/home/")) {
+            normalized = normalized.slice("packs/lumenook/home/".length);
+        }
         if (normalized.startsWith("product/")) {
             normalized = normalized.slice("product/".length);
         }
@@ -146,7 +149,7 @@ export default function LiquidPreviewEditorPanel({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors shrink-0"
+                            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-blue-50 hover:text-[#1e40af] transition-colors shrink-0"
                             aria-label="Close editor panel"
                         >
                             <X size={18} strokeWidth={2} />
@@ -239,7 +242,7 @@ export default function LiquidPreviewEditorPanel({
                                     padding: "5px 10px",
                                     fontSize: 12,
                                     fontWeight: isActive ? 600 : 500,
-                                    color: isActive ? "#111827" : "#6b7280",
+                                    color: isActive ? "#1e3a8a" : "#64748b",
                                     background: isActive ? "#ffffff" : "transparent",
                                     boxShadow: isActive
                                         ? "0 1px 2px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04)"
@@ -270,9 +273,9 @@ export default function LiquidPreviewEditorPanel({
                                 padding: "8px 10px",
                                 borderRadius: 8,
                                 border: isActive
-                                    ? "1px solid #111827"
-                                    : "1px solid #e1e3e5",
-                                background: isActive ? "#f6f6f7" : "#ffffff",
+                                    ? "1px solid #1e40af"
+                                    : "1px solid #e2e8f0",
+                                background: isActive ? "#eff4ff" : "#ffffff",
                                 cursor: "pointer",
                                 textAlign: "left",
                             }}
@@ -326,7 +329,7 @@ export default function LiquidPreviewEditorPanel({
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors shrink-0"
+                                className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-blue-50 hover:text-[#1e40af] transition-colors shrink-0"
                                 aria-label="Close editor panel"
                             >
                                 <X size={18} strokeWidth={2} />
@@ -414,7 +417,7 @@ export default function LiquidPreviewEditorPanel({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors shrink-0"
+                            className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-blue-50 hover:text-[#1e40af] transition-colors shrink-0"
                             aria-label="Close editor panel"
                         >
                             <X size={18} strokeWidth={2} />

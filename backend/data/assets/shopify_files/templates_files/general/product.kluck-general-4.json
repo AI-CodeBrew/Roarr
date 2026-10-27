@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "lumen-hero": {
+      "type": "kluck-ai-lumen-hero",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
+    "lumen-detail": {
+      "type": "kluck-ai-lumen-detail",
+      "settings": {}
+    },
+    "lumen-feature": {
+      "type": "kluck-ai-lumen-feature",
+      "settings": {}
+    },
+    "lumen-details": {
+      "type": "kluck-ai-lumen-details",
+      "settings": {}
+    },
+    "lumen-circle": {
+      "type": "kluck-ai-lumen-circle",
+      "settings": {}
+    },
+    "lumen-mood": {
+      "type": "kluck-ai-lumen-mood",
+      "settings": {}
+    }
+  },
+  "order": [
+    "lumen-hero",
+    "lumen-detail",
+    "lumen-feature",
+    "lumen-details",
+    "lumen-circle",
+    "lumen-mood"
+  ]
+}

@@ -2,21 +2,18 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { BlockStack, Box, Spinner, Text } from "@shopify/polaris";
-import { normalizeProductSource } from "../../lib/utils";
 import PagesTable from "../../components/PagesTable.jsx";
 import PagesHubWelcome from "../../components/PagesHubWelcome.jsx";
 import { usePages } from "../../lib/PagesContext";
+import { useFlowTemplate } from "../../lib/useFlowTemplate";
 import { usePageTracking } from "../../hooks/usePageTracking";
+import { buildEmbeddedHref } from "../../lib/embeddedNavigation";
 import { CreditWalletWidget } from "../../components/CreditWalletWidget";
 
 const ProductFlow = lazy(() => import("./product-page/ProductFlow.jsx"));
 
-export const loader = async ({ request }) => {
-  const url = new URL(request.url);
-  const productSourceParam = url.searchParams.get("source") || null;
-  const productSource = normalizeProductSource(productSourceParam);
-  return { productSource };
-};
+// No `loader`: nothing reads loader data here, and a loader makes every client-side visit wait on a
+// server round trip (a cold serverless start on Vercel) before the page can show.
 
 export function shouldRevalidate({ currentUrl, nextUrl }) {
   return currentUrl.search !== nextUrl.search;
@@ -28,6 +25,7 @@ export default function ProductPageRoute() {
   const pageId = searchParams.get("pageId");
   const [showFlow, setShowFlow] = useState(Boolean(pageId));
   const { pages, loading: pagesLoading } = usePages();
+  const heroTemplate = useFlowTemplate("product");
 
   usePageTracking();
 
@@ -105,7 +103,11 @@ export default function ProductPageRoute() {
           }}
         >
           <BlockStack gap="600">
-            <PagesHubWelcome variant="product" onStart={() => setShowFlow(true)} />
+            <PagesHubWelcome
+              variant="product"
+              template={heroTemplate}
+              onStart={() => setShowFlow(true)}
+            />
             <PagesTable
               listFilter="product"
               hubBasePath="/product-page"

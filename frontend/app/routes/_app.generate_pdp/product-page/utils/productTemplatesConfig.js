@@ -98,6 +98,23 @@ export function generateTemplateConfig(detectedCategory, productData, templateNu
 
   let rows;
 
+  // Lumenook (template 4) — same layout for every category
+  if (templateNumber === 4) {
+    const lumenSection = (id, displayName) => [{
+      template: id.replace(/_/g, "-"),
+      displayName,
+      context: { product, block: { id, settings: {} }, shop },
+    }];
+    return [
+      lumenSection("lumen_hero", "Hero"),
+      lumenSection("lumen_detail", "In detail"),
+      lumenSection("lumen_feature", "Feature"),
+      lumenSection("lumen_details", "The details"),
+      lumenSection("lumen_circle", "Chosen with care"),
+      lumenSection("lumen_mood", "Mood"),
+    ];
+  }
+
   // Aura (template 3) — same layout for every category
   if (templateNumber === 3) {
     const glowSection = (id, displayName) => [{

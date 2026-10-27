@@ -16,6 +16,8 @@ export const FEATURE_COSTS_DEFAULT = Object.freeze({
   page_generation: 200,
   // Aura (template 3) product page — all categories.
   page_generation_glow: 150,
+  // Lumenook (template 4) product page — all categories.
+  page_generation_lumenook: 150,
   image_regenerate: 5,
   // Brand ads: one campaign produces 3 creatives at 10 credits each = 30.
   brand_ads_campaign: 30,
@@ -59,9 +61,10 @@ export const CREDIT_PACKS_DEFAULT = Object.freeze({
 export const PACK_ORDER = ["starter", "value", "agency"];
 
 export const FEATURE_LABELS = Object.freeze({
-  store_creation: "Revamp Entire Store",
+  store_creation: "Redesign Entire Store",
   page_generation: "Generate Product Page",
   page_generation_glow: "Generate Product Page",
+  page_generation_lumenook: "Generate Product Page",
   image_regenerate: "Image Regeneration",
   brand_ads_campaign: "Brand Ads Campaign",
 });
@@ -78,9 +81,12 @@ export function formatCredits(n, unit = "cr") {
 /**
  * Resolved cost for `featureKey` using API-backed costs when provided, else defaults.
  */
-/** Feature key for a product page: Aura (template 3) has its own price. */
+/** Feature key for a product page: Aura (template 3) and Lumenook (template 4) have their own price. */
 export function pageGenerationFeatureKey(_category, template) {
-  return Number(template) === 3 ? "page_generation_glow" : "page_generation";
+  const n = Number(template);
+  if (n === 3) return "page_generation_glow";
+  if (n === 4) return "page_generation_lumenook";
+  return "page_generation";
 }
 
 export function resolveFeatureCost(featureKey, featureCosts) {

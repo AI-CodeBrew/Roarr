@@ -25,7 +25,7 @@ export function LabeledTextField({
                     {showMetafieldIcon && (
                         <button
                             type="button"
-                            className="p-0.5 rounded hover:bg-gray-100 text-gray-500"
+                            className="p-0.5 rounded hover:bg-blue-50 hover:text-[#1e40af] text-gray-500"
                             title="Link to product metafield"
                             aria-label="Link to metafield"
                         >
@@ -37,7 +37,7 @@ export function LabeledTextField({
                     <button
                         type="button"
                         onClick={onOptionsClick}
-                        className="p-1 rounded hover:bg-gray-100 text-gray-500"
+                        className="p-1 rounded hover:bg-blue-50 hover:text-[#1e40af] text-gray-500"
                         aria-label="More options"
                     >
                         <MoreHorizontal size={16} />
@@ -90,7 +90,7 @@ export function LabeledImageField({
                 {showMetafieldIcon && (
                     <button
                         type="button"
-                        className="border-0 bg-transparent p-0.5 rounded hover:bg-gray-100 text-gray-500 cursor-pointer"
+                        className="border-0 bg-transparent p-0.5 rounded hover:bg-blue-50 hover:text-[#1e40af] text-gray-500 cursor-pointer"
                         title="Link to product metafield"
                         aria-label="Link to metafield"
                     >
@@ -98,7 +98,7 @@ export function LabeledImageField({
                     </button>
                 )}
             </div>
-            <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 hover:border-gray-300 transition-colors">
+            <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
                 <div className="flex flex-col gap-2">
 
                     <EditableImage

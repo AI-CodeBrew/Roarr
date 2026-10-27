@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { BlockStack, Button, Text } from "@shopify/polaris";
+import { Check, Sparkles } from "lucide-react";
 import LiquidPagePreview from "./LiquidPagePreview.jsx";
+import { PrimaryButton, SecondaryButton } from "../RoarrUI.jsx";
 import LiquidPreviewRender from "./LiquidPreviewRender.jsx";
 import EyeIcon from "../icons/EyeIcon.jsx";
 import {
@@ -38,7 +39,7 @@ export default function ThemePreviewCard({
   onBeginMagic,
   beginMagicDisabled = false,
   beginMagicLoading = false,
-  beginMagicLabel = "Begin Magic",
+  beginMagicLabel = "Use Template",
   previewProps = null,
   templateRows = null,
   previewCacheKey = null,
@@ -258,15 +259,18 @@ export default function ThemePreviewCard({
 
   return (
     <div
+      className={`transition duration-200 hover:-translate-y-0.5 ${
+        selected
+          ? "shadow-[0_18px_40px_-22px_rgba(30,58,138,0.6)] ring-2 ring-[#1e40af]"
+          : "shadow-sm ring-1 ring-slate-200 hover:shadow-[0_18px_40px_-24px_rgba(30,58,138,0.45)] hover:ring-blue-200"
+      }`}
       style={{
-        border: `2px solid ${selected ? "#2C6ECB" : "#d1d5db"}`,
-        borderRadius: 12,
+        borderRadius: 16,
         background: "#fff",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        boxShadow: selected ? "0 0 0 1px #2C6ECB" : "none",
       }}
     >
       <div
@@ -298,11 +302,19 @@ export default function ThemePreviewCard({
           height: previewFrameHeight,
           overflow: "hidden",
           overflowAnchor: "none",
-          background: "#f6f6f7",
-          borderBottom: "1px solid #e1e3e5",
+          background: "#f1f5f9",
+          borderBottom: "1px solid #e2e8f0",
           cursor: typeof onSelect === "function" ? "pointer" : "default",
         }}
       >
+        {selected ? (
+          <span
+            aria-hidden
+            className="absolute right-2.5 top-2.5 z-[6] flex h-7 w-7 items-center justify-center rounded-full bg-[#1e40af] text-white shadow-md ring-2 ring-white"
+          >
+            <Check size={15} strokeWidth={3} />
+          </span>
+        ) : null}
         {badge?.label ? (
           <span
             style={{
@@ -321,7 +333,10 @@ export default function ThemePreviewCard({
               lineHeight: "16px",
               letterSpacing: "0.02em",
               color: badge.tone === "top" ? "#4a3500" : "#ffffff",
-              background: badge.tone === "top" ? "#ffd666" : "#6b0808",
+              background:
+                badge.tone === "top"
+                  ? "linear-gradient(90deg, #fde68a, #fbbf24)"
+                  : "linear-gradient(90deg, #1e40af, #7c3aed)",
               boxShadow: "0 2px 6px rgba(0, 0, 0, 0.18)",
             }}
           >
@@ -481,116 +496,64 @@ export default function ThemePreviewCard({
       <div
         style={{
           flex: 1,
-          padding: "12px 14px 14px",
+          padding: "14px 16px 16px",
           boxSizing: "border-box",
         }}
       >
-        <BlockStack gap="200">
-          <Text as="h3" variant="headingSm" fontWeight="semibold">
-            {title}
-          </Text>
+        <div className="flex h-full flex-col gap-2.5">
+          <h3 className="m-0 text-[15px] font-bold tracking-tight text-slate-900">{title}</h3>
           {blurb ? (
-            <Text as="p" variant="bodySm" tone="subdued">
+            <p className="m-0 truncate text-[13px] leading-relaxed text-slate-500" title={blurb}>
               {blurb}
-            </Text>
+            </p>
           ) : null}
           {showCreditMeter ? (
-            <div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: 13,
-                  lineHeight: 1.3,
-                  color: "#202223",
-                }}
-              >
-                <span style={{ fontWeight: 700 }}>
+            <div className="rounded-xl bg-slate-50 px-3 py-2.5 ring-1 ring-inset ring-slate-200/70">
+              <p className="m-0 text-[13px] leading-snug text-slate-700">
+                <span className="font-bold text-slate-900">
                   {formatCredits(numericCost, "credits")} required
                 </span>
                 {balanceKnown ? (
-                  <span style={{ fontWeight: 450 }}>
-                    {" "}
-                    · You have {Number(creditBalance).toLocaleString()}
-                  </span>
+                  <span> · You have {Number(creditBalance).toLocaleString()}</span>
                 ) : null}
               </p>
-              <div
-                style={{
-                  marginTop: 8,
-                  height: 4,
-                  borderRadius: 999,
-                  background: "#ececec",
-                  overflow: "hidden",
-                }}
-              >
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200">
                 <div
-                  style={{
-                    width: `${meterPct}%`,
-                    height: "100%",
-                    borderRadius: 999,
-                    background: balanceKnown && hasEnoughCredits(creditBalance, numericCost)
-                      ? "#1f8a4c"
-                      : "#e0a317",
-                  }}
+                  className={`h-full rounded-full ${
+                    balanceKnown && hasEnoughCredits(creditBalance, numericCost)
+                      ? "bg-gradient-to-r from-[#1e40af] to-[#7c3aed]"
+                      : "bg-amber-400"
+                  }`}
+                  style={{ width: `${meterPct}%` }}
                 />
               </div>
             </div>
           ) : null}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              width: "100%",
-            }}
-          >
+          <div className="mt-auto flex w-full items-center gap-2 pt-1">
             {typeof onPreview === "function" ? (
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <Button
-                  fullWidth
-                  size="slim"
-                  onClick={() => onPreview()}
-                >
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 6,
-                    }}
-                  >
-                    <EyeIcon width={14} height={14} />
-                    Preview
-                  </span>
-                </Button>
-              </div>
+              <SecondaryButton size="sm" className="min-w-0 flex-1" onClick={() => onPreview()}>
+                <EyeIcon width={14} height={14} />
+                Preview
+              </SecondaryButton>
             ) : null}
             {needsCredits ? (
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <Button
-                  fullWidth
-                  size="slim"
-                  onClick={() => onGetCredits?.()}
-                >
-                  Get credits
-                </Button>
-              </div>
+              <SecondaryButton size="sm" className="min-w-0 flex-1" onClick={() => onGetCredits?.()}>
+                Get credits
+              </SecondaryButton>
             ) : typeof onBeginMagic === "function" ? (
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <Button
-                  fullWidth
-                  size="slim"
-                  variant="primary"
-                  disabled={beginMagicDisabled}
-                  loading={beginMagicLoading}
-                  onClick={() => onBeginMagic()}
-                >
-                  {beginMagicLabel}
-                </Button>
-              </div>
+              <PrimaryButton
+                size="sm"
+                className="min-w-0 flex-1"
+                disabled={beginMagicDisabled}
+                loading={beginMagicLoading}
+                onClick={() => onBeginMagic()}
+              >
+                {beginMagicLoading ? null : <Sparkles size={14} aria-hidden />}
+                {beginMagicLabel}
+              </PrimaryButton>
             ) : null}
           </div>
-        </BlockStack>
+        </div>
       </div>
     </div>
   );

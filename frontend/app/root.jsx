@@ -11,6 +11,7 @@ import tailwindStyles from "./tailwind.css?url";
 import DeferredPostHogProvider from "./components/DeferredPostHogProvider";
 import { SupabaseAuthProvider } from "./components/SupabaseAuthProvider";
 import { reportWebVitals } from "./lib/reportWebVitals";
+import RoarrSplash, { SPLASH_SCRIPT, SPLASH_STYLES } from "./components/RoarrSplash";
 
 export const links = () => [
   { rel: "stylesheet", href: tailwindStyles },
@@ -37,65 +38,6 @@ export const loader = async () => {
   };
 };
 
-const LCP_SPLASH_STYLES = `
-  .lcp-splash {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f1f1f1;
-    transition: opacity 0.2s ease-out;
-  }
-  .lcp-splash[aria-hidden="true"] {
-    opacity: 0;
-    pointer-events: none;
-  }
-  .lcp-splash__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-  .lcp-splash__logo {
-    width: 70px;
-    height: 70px;
-    border-radius: 5px;
-    object-fit: contain;
-    animation: lcp-pulse 1.2s ease-in-out infinite;
-  }
-  .lcp-splash__text {
-    font-size: 14px;
-    color:rgb(40, 41, 41);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  @keyframes lcp-pulse {
-    0%, 100% { opacity: 0.85; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.05); }
-  }
-`;
-
-// Inline script installed in <head> BEFORE React mounts so that the
-// `app-ready` event dispatched during hydration is never missed.
-// Previously the listener was attached inside a React effect, but React
-// runs child effects before parent effects, so the event fired before
-// the listener was registered and the splash sat until the 8s fallback.
-const SPLASH_HIDE_INLINE_SCRIPT = `
-(function () {
-  var hidden = false;
-  function hide() {
-    if (hidden) return;
-    hidden = true;
-    var el = document.querySelector('.lcp-splash');
-    if (el) el.setAttribute('aria-hidden', 'true');
-  }
-  window.addEventListener('app-ready', hide, { once: true });
-  // Safety net: hide on full DOM load or after 4s max, whichever comes first.
-  window.addEventListener('load', function () { setTimeout(hide, 50); });
-  setTimeout(hide, 4000);
-})();
-`;
 
 export default function App() {
   const {
@@ -121,12 +63,10 @@ export default function App() {
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* Preload critical images */}
+        {/* Display font for dashboard headings (falls back to the system sans while loading) */}
         <link
-          rel="preload"
-          as="image"
-          href="https://cdn.shopify.com/s/files/1/0704/0119/6122/files/New_Project.png?v=1769678513"
-          fetchpriority="high"
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
         />
 
         {/* Preload Shopify App Bridge script */}
@@ -161,8 +101,7 @@ export default function App() {
           href="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
         />
 
-        <style dangerouslySetInnerHTML={{ __html: LCP_SPLASH_STYLES }} />
-        <script dangerouslySetInnerHTML={{ __html: SPLASH_HIDE_INLINE_SCRIPT }} />
+        <style dangerouslySetInnerHTML={{ __html: SPLASH_STYLES }} />
 
 
         <meta charSet="utf-8" />
@@ -178,24 +117,9 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <div
-          className="lcp-splash"
-          aria-hidden="false"
-          aria-live="polite"
-          suppressHydrationWarning
-        >
-          <div className="lcp-splash__content">
-            <img
-              src="https://cdn.shopify.com/s/files/1/0704/0119/6122/files/New_Project.png?v=1769678513"
-              alt=""
-              className="lcp-splash__logo"
-              width={80}
-              height={80}
-              fetchpriority="low"
-            />
-            <span className="lcp-splash__text">Initializing…</span>
-          </div>
-        </div>
+        <RoarrSplash />
+        {/* Runs before React loads (the scripts sit at the end of body), so `app-ready` is never missed. */}
+        <script dangerouslySetInnerHTML={{ __html: SPLASH_SCRIPT }} />
         <SupabaseAuthProvider url={supabaseUrl} anonKey={supabaseAnonKey}>
           <DeferredPostHogProvider
             apiKey={posthogApiKey}

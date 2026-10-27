@@ -29,7 +29,7 @@ export default function CreditsPage() {
   }, [posthog]);
 
   return (
-    <div>
+    <div className="roarr-theme">
       <div style={{ padding: "16px", maxWidth: "1150px", margin: "0 auto" }}>
         <s-page heading="Credits" inlineSize="large">
           <CreditWalletWidget floating={false} slot="secondary-actions" />

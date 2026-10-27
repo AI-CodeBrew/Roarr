@@ -1,15 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Box,
-  Button,
-  Text,
-  InlineStack,
-  BlockStack,
-  Card,
-} from "@shopify/polaris";
-import { Check } from "lucide-react";
+import { Box } from "@shopify/polaris";
+import { Rocket } from "lucide-react";
 import GenerateContainer from "../utils/GenerateContainer.jsx";
 import GenerateProgressCard from "../utils/GenerateProgressCard.jsx";
+import PublishProgressView from "../../../components/PublishProgressView.jsx";
+import { PrimaryButton, SecondaryButton } from "../../../components/RoarrUI.jsx";
 import { usePages } from "../../../lib/PagesContext";
 import { usePosthogAfterIdentify } from "../../../lib/PosthogIdentityContext";
 import { useDashboardLoaderData } from "../../../lib/DashboardDataContext";
@@ -216,15 +211,7 @@ function PublishStep({
 
     try {
       const normalizedSelectedTemplate =
-        selectedTemplate === 1 || selectedTemplate === 2 || selectedTemplate === 3
-          ? selectedTemplate
-          : selectedTemplate == 1
-            ? 1
-            : selectedTemplate == 2
-              ? 2
-              : selectedTemplate == 3
-                ? 3
-                : undefined;
+        [1, 2, 3, 4].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : undefined;
 
       const res = await fetch("/api/publish-page", {
         method: "POST",
@@ -336,42 +323,30 @@ function PublishStep({
           className="pb-[88px] md:pb-4"
           bottomActions={
             !publishResult ? (
-              <InlineStack
-                gap="200"
-                align="end"
-                blockAlign="center"
-                className="flex-col sm:flex-row"
-              >
+              <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
                 {onBack && (
-                  <Button
-                    variant="secondary"
+                  <SecondaryButton
                     onClick={onBack}
                     disabled={isPublishing}
                     className="w-full sm:w-auto"
                   >
                     Back
-                  </Button>
+                  </SecondaryButton>
                 )}
 
-                <Button
-                  variant="primary"
+                <PrimaryButton
                   onClick={handlePublish}
                   loading={isPublishing}
                   disabled={!magicResponse || isPublishing}
                   className="w-full sm:w-auto"
                 >
+                  {isPublishing ? null : <Rocket size={16} aria-hidden />}
                   {isPublishing ? "Pushing..." : "Push"}
-                </Button>
-              </InlineStack>
+                </PrimaryButton>
+              </div>
             ) : (
-              <InlineStack
-                gap="200"
-                align="end"
-                blockAlign="center"
-                className="flex-col sm:flex-row"
-              >
-                <Button
-                  variant="primary"
+              <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+                <PrimaryButton
                   onClick={async () => {
                     setIsLoading(true);
                     try {
@@ -387,321 +362,47 @@ function PublishStep({
                   loading={isLoading}
                 >
                   {isLoading ? "Redirecting..." : completeButtonText || 'Open Dashboard'}
-                </Button>
-              </InlineStack>
+                </PrimaryButton>
+              </div>
             )
           }
         >
-          <BlockStack gap="400">
-            {/* Same heading pattern as Product Configurations (step 1) */}
-            <BlockStack gap="100">
-              <InlineStack gap="200" blockAlign="center">
-                <div
-                  style={{
-                    width: 26,
-                    height: 26,
-                    borderRadius: "999px",
-                    border: "1px solid #d1d5db",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "13px",
-                  }}
-                >
-                  4
-                </div>
-                <Text as="h2" variant="headingLg" fontWeight="semibold">
-                  {publishResult ? "Pushed to Shopify" : "Publish to Shopify"}
-                </Text>
-              </InlineStack>
-              <Box paddingBlockStart="100">
-                <Text as="p" variant="bodySm" tone="subdued">
-                  {publishResult
-                    ? "Your page has been pushed to Shopify. You can review it in your Online Store."
-                    : isPublishing
-                      ? "We’re pushing your generated page to Shopify. This may take a moment."
-                      : "Click the Push button below to publish your generated page to Shopify."}
-                </Text>
-              </Box>
-            </BlockStack>
-
-            {!hideStepIndicator && (
-              <GenerateProgressCard
-                currentStep={publishResult ? 5 : 4}
-                isLoading={isPublishing && !publishResult}
-              />
-            )}
-
-            {/* Publishing Progress - always visible but disabled until Push is clicked */}
-            <Card roundedAbove="sm" padding="0">
-              <Box background="bg-surface" padding="400">
-                <BlockStack gap="300">
-                <Text as="h3" variant="bodySm" fontWeight="semibold">
-                  Pushing to Shopify Progress
-                </Text>
-                <Box className="grid grid-cols-1 lg:grid-cols-[1fr_500px] gap-6 items-stretch">
-                  {/* Left: Progress Steps */}
-                  <BlockStack gap="200">
-                    {publishSteps.map((label, index) => {
-                      const status = statusForIndex(index);
-                      const isDisabled = !isPublishing && !publishResult;
-                      return (
-                        <InlineStack
-                          key={label}
-                          gap="200"
-                          align="start"
-                          blockAlign="center"
-                        >
-                          <Box
-                            className={[
-                              "w-6 h-6 rounded-full flex items-center justify-center shrink-0",
-                              isDisabled
-                                ? "bg-gray-100 border border-gray-200 text-gray-400"
-                                : status === "done"
-                                  ? "bg-gray-900 text-white"
-                                  : status === "active"
-                                    ? "bg-gray-200 text-gray-900"
-                                    : "bg-white border border-gray-200 text-gray-500",
-                            ].join(" ")}
-                          >
-                            {isDisabled ? (
-                              <Text
-                                as="span"
-                                variant="bodyXs"
-                                fontWeight="semibold"
-                              >
-                                {index + 1}
-                              </Text>
-                            ) : status === "done" ? (
-                              <Check size={16} />
-                            ) : status === "active" ? (
-                              <Box className="w-4 h-4">
-                                <svg
-                                  className="animate-spin text-gray-900"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <circle
-                                    className="opacity-25"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                    stroke="currentColor"
-                                    strokeWidth="4"
-                                  />
-                                  <path
-                                    className="opacity-75"
-                                    fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                  />
-                                </svg>
-                              </Box>
-                            ) : (
-                              <Text
-                                as="span"
-                                variant="bodyXs"
-                                fontWeight="semibold"
-                              >
-                                {index + 1}
-                              </Text>
-                            )}
-                          </Box>
-
-                          <Text
-                            as="span"
-                            variant="bodySm"
-                            tone={
-                              isDisabled || status === "todo"
-                                ? "subdued"
-                                : undefined
-                            }
-                            fontWeight={
-                              status === "active" ? "semibold" : "regular"
-                            }
-                          >
-                            {label}
-                          </Text>
-                        </InlineStack>
-                      );
-                    })}
-                  </BlockStack>
-
-                  {/* Right: Image */}
-                  <Box className="hidden lg:block h-full">
-                    <Box
-                      className={`w-full h-full rounded-xl flex items-center justify-center overflow-hidden ${publishResult
-                        ? "bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50"
-                        : isPublishing
-                          ? "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"
-                          : "bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200"
-                        }`}
-                      style={{
-                        backgroundImage: publishResult
-                          ? "radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.1) 0%, transparent 70%)"
-                          : isPublishing
-                            ? "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 70%)"
-                            : "radial-gradient(circle at 50% 50%, rgba(107, 114, 128, 0.1) 0%, transparent 70%)",
-                      }}
-                    >
-                      <Box className="text-center p-6">
-                        {publishResult ? (
-                          <Box className="flex flex-col items-center gap-3">
-                            <Box className="w-24 h-24 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg">
-                              <Check
-                                size={48}
-                                className="text-white"
-                                strokeWidth={3}
-                              />
-                            </Box>
-                            <Text
-                              as="p"
-                              variant="bodyMd"
-                              fontWeight="semibold"
-                              alignment="center"
-                            >
-                              Published!
-                            </Text>
-                          </Box>
-                        ) : isPublishing ? (
-                          <Box className="flex flex-col items-center gap-3">
-                            <Box className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg animate-pulse">
-                              <svg
-                                className="w-12 h-12 text-white"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                                />
-                              </svg>
-                            </Box>
-                            <Text
-                              as="p"
-                              variant="bodyMd"
-                              fontWeight="semibold"
-                              alignment="center"
-                            >
-                              Pushing...
-                            </Text>
-                          </Box>
-                        ) : (
-                          <Box className="flex flex-col items-center gap-3">
-                            <Box className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center shadow-lg">
-                              <svg
-                                className="w-12 h-12 text-white"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                                />
-                              </svg>
-                            </Box>
-                            <Text
-                              as="p"
-                              variant="bodyMd"
-                              fontWeight="semibold"
-                              alignment="center"
-                            >
-                              Ready to Push
-                            </Text>
-                          </Box>
-                        )}
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-                </BlockStack>
-              </Box>
-            </Card>
-
-            {/* Success message and button - shown when publishing is complete */}
-            {publishResult && (
-              <BlockStack gap="300">
-                <Card roundedAbove="sm" padding="0">
-                  <Box background="bg-surface-success" padding="300">
-                    <BlockStack gap="100">
-                      <Text as="p" variant="bodySm" fontWeight="semibold">
-                        Pushed to Shopify Successfully!
-                      </Text>
-                      <Text as="p" variant="bodyXs" tone="subdued">
-                        Your page has been pushed to Shopify and is now live.
-                      </Text>
-                    </BlockStack>
-                  </Box>
-                </Card>
-                {previewUrl && (
-                  <Button variant="primary" url={previewUrl} external fullWidth>
-                    Preview Page
-                  </Button>
-                )}
-              </BlockStack>
-            )}
-
-            {/* What happens and other content - moved down */}
-            <Card roundedAbove="sm" padding="0">
-              <Box background="bg-surface" padding="400">
-                <BlockStack gap="300">
-                <Text as="h2" variant="headingSm" fontWeight="semibold">
-                  What is happening after 'Push'
-                </Text>
-                <BlockStack gap="200">
-                  <Text as="p" variant="bodySm" tone="subdued">
-                    • Selected product will be updated with the generated title, description, and images
-                  </Text>
-                  <Text as="p" variant="bodySm" tone="subdued">
-                    • Sections and templates will be added to the theme
-                  </Text>
-                  <Text as="p" variant="bodySm" tone="subdued">
-                    • Dynamic data is stored using metafields of product for
-                    easy management
-                  </Text>
-                  <Text as="p" variant="bodySm" tone="subdued">
-                    • Images are first uploaded to the content section, then
-                    their reference IDs are set in metafields to make them
-                    dynamic
-                  </Text>
-                  <Text as="p" variant="bodySm" tone="subdued">
-                    • Assigning uploaded template to the product
-                  </Text>
-                  <Text as="p" variant="bodySm" tone="subdued">
-                    • You can always edit and customize your page in the theme
-                    editor
-                  </Text>
-                </BlockStack>
-                </BlockStack>
-              </Box>
-            </Card>
-
-            {publishError && (
-              <Card roundedAbove="sm" padding="0">
-                <Box background="bg-surface-critical" padding="300">
-                  <BlockStack gap="100">
-                    <InlineStack align="space-between" blockAlign="center">
-                      <Text as="p" variant="bodySm" fontWeight="semibold">
-                        Push to Shopify Failed
-                      </Text>
-                      <Button variant="plain" onClick={() => setPublishError("")}>
-                        Dismiss
-                      </Button>
-                    </InlineStack>
-                    <Text as="p" variant="bodyXs">
-                      {publishError}
-                    </Text>
-                  </BlockStack>
-                </Box>
-              </Card>
-            )}
-          </BlockStack>
+          <PublishProgressView
+            title={publishResult ? "Pushed to Shopify" : "Publish to Shopify"}
+            description={
+              publishResult
+                ? "Your page has been pushed to Shopify. You can review it in your Online Store."
+                : isPublishing
+                  ? "We’re pushing your generated page to Shopify. This may take a moment."
+                  : "Click the Push button below to publish your generated page to Shopify."
+            }
+            beforeProgress={
+              !hideStepIndicator ? (
+                <GenerateProgressCard
+                  currentStep={publishResult ? 5 : 4}
+                  isLoading={isPublishing && !publishResult}
+                />
+              ) : null
+            }
+            steps={publishSteps}
+            statusForIndex={statusForIndex}
+            isPublishing={isPublishing}
+            isDone={Boolean(publishResult)}
+            successMessage="Your page has been pushed to Shopify and is now live."
+            successLink={previewUrl ? { url: previewUrl, label: "Preview Page" } : null}
+            infoTitle="What is happening after 'Push'"
+            infoItems={[
+              "Selected product will be updated with the generated title, description, and images",
+              "Sections and templates will be added to the theme",
+              "Dynamic data is stored using metafields of product for easy management",
+              "Images are first uploaded to the content section, then their reference IDs are set in metafields to make them dynamic",
+              "Assigning uploaded template to the product",
+              "You can always edit and customize your page in the theme editor",
+            ]}
+            error={publishError}
+            errorTitle="Push to Shopify Failed"
+            onDismissError={() => setPublishError("")}
+          />
         </GenerateContainer>
       </Box>
 

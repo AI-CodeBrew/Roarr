@@ -48,7 +48,7 @@ export default function StepIndicator({ currentStep, onStepClick, canNavigateToS
         : "bg-white/80 border-gray-300 text-gray-600";
 
     const interactivity = isClickable
-      ? "cursor-pointer hover:border-gray-400"
+      ? "cursor-pointer hover:border-blue-400"
       : isFuture
         ? "cursor-not-allowed opacity-60"
         : "cursor-default";

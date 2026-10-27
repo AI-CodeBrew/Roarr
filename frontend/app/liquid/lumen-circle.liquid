@@ -1,0 +1,99 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+{%- assign m = product.metafields.kluck_ai -%}
+{%- assign eyebrow = m.lumen_circle_eyebrow.value | default: m.lumen_circle_eyebrow | default: 'Our way' -%}
+{%- assign heading = m.lumen_circle_heading.value | default: m.lumen_circle_heading | default: 'Chosen with care' -%}
+{%- assign c1 = m.lumen_circle_1_title.value | default: m.lumen_circle_1_title | default: 'Considered design' -%}
+{%- assign c1t = m.lumen_circle_1_text.value | default: m.lumen_circle_1_text | default: 'Chosen for its form as much as its function.' -%}
+{%- assign c2 = m.lumen_circle_2_title.value | default: m.lumen_circle_2_title | default: 'Calm and useful' -%}
+{%- assign c2t = m.lumen_circle_2_text.value | default: m.lumen_circle_2_text | default: 'Made to make everyday moments easier.' -%}
+{%- assign c3 = m.lumen_circle_3_title.value | default: m.lumen_circle_3_title | default: 'Made to live with' -%}
+{%- assign c3t = m.lumen_circle_3_text.value | default: m.lumen_circle_3_text | default: 'Sits comfortably in any room.' -%}
+{%- assign c4 = m.lumen_circle_4_title.value | default: m.lumen_circle_4_title | default: 'Delivered with care' -%}
+{%- assign c4t = m.lumen_circle_4_text.value | default: m.lumen_circle_4_text | default: 'Packed carefully and sent to your door.' -%}
+{%- assign c5 = m.lumen_circle_5_title.value | default: m.lumen_circle_5_title | default: 'Ready to gift' -%}
+{%- assign c5t = m.lumen_circle_5_text.value | default: m.lumen_circle_5_text | default: 'A thoughtful present for someone you love.' -%}
+{%- assign c6 = m.lumen_circle_6_title.value | default: m.lumen_circle_6_title | default: 'Here to help' -%}
+{%- assign c6t = m.lumen_circle_6_text.value | default: m.lumen_circle_6_text | default: 'Questions before or after you buy? Just ask.' -%}
+{%- assign circle_img = m.product_image_1.value | default: m.product_image_1 -%}
+{%- if product.featured_image != blank -%}{%- assign circle_img = product.featured_image -%}{%- elsif circle_img == blank and product.media.size > 0 -%}{%- assign circle_img = product.media.first.preview_image | default: product.media.first -%}{%- endif -%}
+<section class="lmk-circle">
+  <div class="lmk-circle__inner">
+    <header class="lmk-circle__header">
+      <p class="lmk-eyebrow">{{ eyebrow }}</p>
+      <h2 class="lmk-circle__heading">{{ heading }}</h2>
+    </header>
+    <div class="lmk-circle__layout">
+      <ul class="lmk-circle__list lmk-circle__list--start" role="list">
+        <li class="lmk-circle__item" tabindex="0"><span class="lmk-circle__title">{{ c1 }}</span><span class="lmk-circle__text">{{ c1t }}</span></li>
+        <li class="lmk-circle__item" tabindex="0"><span class="lmk-circle__title">{{ c2 }}</span><span class="lmk-circle__text">{{ c2t }}</span></li>
+        <li class="lmk-circle__item" tabindex="0"><span class="lmk-circle__title">{{ c3 }}</span><span class="lmk-circle__text">{{ c3t }}</span></li>
+      </ul>
+      <div class="lmk-circle__media">
+        <div class="lmk-circle__frame">
+          {%- if circle_img != blank -%}<img class="lmk-circle__image" src="{{ circle_img | image_url: width: 900 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
+        </div>
+      </div>
+      <ul class="lmk-circle__list lmk-circle__list--end" role="list">
+        <li class="lmk-circle__item" tabindex="0"><span class="lmk-circle__title">{{ c4 }}</span><span class="lmk-circle__text">{{ c4t }}</span></li>
+        <li class="lmk-circle__item" tabindex="0"><span class="lmk-circle__title">{{ c5 }}</span><span class="lmk-circle__text">{{ c5t }}</span></li>
+        <li class="lmk-circle__item" tabindex="0"><span class="lmk-circle__title">{{ c6 }}</span><span class="lmk-circle__text">{{ c6t }}</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<style>
+  .lmk-circle { --lmk-ivory: #F6F1EA; --lmk-sand: #E6DCCF; --lmk-stone: #D9CFC2; --lmk-brass: #B08D57; --lmk-brass-dark: #775A2C; --lmk-espresso: #2B2320; --lmk-muted: #6B5F58; background: var(--lmk-ivory); color: var(--lmk-espresso); font-family: "Jost", sans-serif; padding: clamp(64px, 9vw, 128px) 0; }
+  .lmk-circle *, .lmk-circle *::before, .lmk-circle *::after { box-sizing: border-box; }
+  .lmk-circle__inner { width: min(1320px, calc(100% - 48px)); margin: 0 auto; }
+  .lmk-circle__header { text-align: center; margin-bottom: clamp(28px, 4vw, 48px); }
+  .lmk-eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--lmk-muted); }
+  .lmk-circle__heading { margin: 0; font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(28px, 3vw, 38px); line-height: 1.15; }
+  .lmk-circle__layout { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: clamp(24px, 4vw, 64px); }
+  .lmk-circle__list { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(22px, 3vw, 36px); }
+  .lmk-circle__list--start { text-align: end; }
+  .lmk-circle__list--end { text-align: start; }
+  .lmk-circle__item { position: relative; display: grid; gap: 4px; padding-block: 4px; cursor: default; outline-offset: 6px; transition: transform 250ms ease; }
+  .lmk-circle__title { font-family: "Cormorant Garamond", serif; font-size: 22px; font-weight: 500; line-height: 1.2; color: var(--lmk-espresso); transition: color 250ms ease; }
+  .lmk-circle__text { font-size: 14px; line-height: 1.55; color: var(--lmk-muted); transition: color 250ms ease; }
+  .lmk-circle__item::after { content: ""; position: absolute; top: 50%; height: 1px; width: 0; background: var(--lmk-brass); transition: width 250ms ease; }
+  .lmk-circle__list--start .lmk-circle__item::after { inset-inline-end: -40px; }
+  .lmk-circle__list--end .lmk-circle__item::after { inset-inline-start: -40px; }
+  .lmk-circle__item:is(:hover, :focus-visible) .lmk-circle__title { color: var(--lmk-brass-dark); }
+  .lmk-circle__item:is(:hover, :focus-visible) .lmk-circle__text { color: var(--lmk-espresso); }
+  .lmk-circle__item:is(:hover, :focus-visible)::after { width: 28px; }
+  .lmk-circle__list--start .lmk-circle__item:is(:hover, :focus-visible) { transform: translateX(6px); }
+  .lmk-circle__list--end .lmk-circle__item:is(:hover, :focus-visible) { transform: translateX(-6px); }
+  .lmk-circle__media { display: grid; place-items: center; }
+  .lmk-circle__frame { position: relative; width: clamp(240px, 26vw, 360px); aspect-ratio: 1; border-radius: 50%; padding: 10px; background: #FFFDF9; box-shadow: 0 0 0 1px var(--lmk-stone); }
+  .lmk-circle__frame::before { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 1px solid var(--lmk-brass); opacity: .55; pointer-events: none; }
+  .lmk-circle__image { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; background: var(--lmk-sand); transition: transform 400ms ease; }
+  .lmk-circle__layout:hover .lmk-circle__image { transform: scale(1.02); }
+  @media (max-width: 989px) {
+    .lmk-circle__inner { width: calc(100% - 32px); }
+    .lmk-circle__layout { grid-template-columns: 1fr; text-align: center; }
+    .lmk-circle__media { order: -1; margin-bottom: 8px; }
+    .lmk-circle__list--start, .lmk-circle__list--end { text-align: center; }
+    .lmk-circle__item::after { display: none; }
+    .lmk-circle__list .lmk-circle__item:is(:hover, :focus-visible) { transform: none; }
+    .lmk-circle__frame { width: min(70vw, 280px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lmk-circle__item, .lmk-circle__item::after, .lmk-circle__image { transition: none; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--lumen" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Jost", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Cormorant Garamond", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

@@ -59,6 +59,32 @@ export default defineConfig({
     assetsInlineLimit: 0,
   },
   optimizeDeps: {
-    include: ["@shopify/app-bridge-react"],
+    // Pre-bundle every client dep up front: if Vite discovers one mid-session it
+    // re-optimizes, and an already-open embedded page ends up mixing React chunks
+    // from two optimizer runs ("Cannot read properties of null (reading 'useContext')").
+    include: [
+      "react",
+      "react/jsx-runtime",
+      "react/jsx-dev-runtime",
+      "react-dom",
+      "react-dom/client",
+      "react-router",
+      "react-router/dom",
+      "@shopify/shopify-app-react-router/react",
+      "@shopify/shopify-app-react-router/server",
+      "@shopify/app-bridge-react",
+      "@shopify/polaris",
+      "@shopify/polaris-icons",
+      "@supabase/supabase-js",
+      "@dnd-kit/core",
+      "@dnd-kit/sortable",
+      "@dnd-kit/utilities",
+      "crisp-sdk-web",
+      "lucide-react",
+      "posthog-js/react",
+      "react-colorful",
+      "uuid",
+      "web-vitals",
+    ],
   },
 });

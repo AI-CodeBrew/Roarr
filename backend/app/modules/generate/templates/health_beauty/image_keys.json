@@ -62,5 +62,21 @@
       "how_to_image_2",
       "how_to_image_3"
     ]
+  },
+  "4": {
+    "product_images": [
+      "product_image_1",
+      "product_image_2",
+      "product_image_3",
+      "product_image_4",
+      "product_image_5"
+    ],
+    "body_images": [
+      "product_highlight_1",
+      "product_highlight_2",
+      "product_highlight_3",
+      "feature_image",
+      "product_impact_image"
+    ]
   }
 }

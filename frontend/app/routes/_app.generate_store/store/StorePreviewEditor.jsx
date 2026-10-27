@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useBlocker } from "react-router";
-import { ActionList, BlockStack, Button, Icon, InlineStack, Page, Popover, Text } from "@shopify/polaris";
+import { ActionList, Icon, InlineStack, Page, Popover, Text } from "@shopify/polaris";
 import {
   DesktopIcon,
   DragDropIcon,
@@ -16,6 +16,8 @@ import {
   ChevronDownIcon,
 } from "@shopify/polaris-icons";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import { ExternalLink, Rocket, Wand2 } from "lucide-react";
+import { PrimaryButton } from "../../../components/RoarrUI.jsx";
 import LiquidPagePreview from "../../../components/theme-preview-editor/LiquidPagePreview.jsx";
 import LiquidPreviewRender from "../../../components/theme-preview-editor/LiquidPreviewRender.jsx";
 import LiquidPreviewSettingsPanel from "../../../components/theme-preview-editor/LiquidPreviewSettingsPanel.jsx";
@@ -27,6 +29,7 @@ import {
   HOME_MULTI_TEMPLATE_SCHEMAS,
   HOME_CINEMATIC_TEMPLATE_SCHEMAS,
   HOME_AMOUR_TEMPLATE_SCHEMAS,
+  HOME_LUMENOOK_TEMPLATE_SCHEMAS,
 } from "./utils/editor-schema/index.js";
 import { useViewportBelowMd } from "../../../hooks/useViewportBelowMd.js";
 import MobilePreviewReadonlyBanner from "../../../components/theme-preview-editor/MobilePreviewReadonlyBanner.jsx";
@@ -439,7 +442,9 @@ export default function StorePreviewEditor({
   const templateSchemas = useMemo(
     () => ({
       ...(isMultiProductHome
-        ? HOME_MULTI_TEMPLATE_SCHEMAS
+        ? String(storeTemplatePack || "").toLowerCase() === "lumenook"
+          ? HOME_LUMENOOK_TEMPLATE_SCHEMAS
+          : HOME_MULTI_TEMPLATE_SCHEMAS
         : String(storeTemplatePack || "").toLowerCase() === "cinematic"
           ? HOME_CINEMATIC_TEMPLATE_SCHEMAS
           : String(storeTemplatePack || "").toLowerCase() === "amour"
@@ -869,7 +874,7 @@ export default function StorePreviewEditor({
             onClick={() => setIsTemplateViewPopoverOpen((o) => !o)}
             onMouseEnter={() => setTemplateViewPillHovered(true)}
             onMouseLeave={() => setTemplateViewPillHovered(false)}
-            className="inline-flex items-center justify-center gap-1 rounded-lg py-1 px-2.5 border-0 bg-white hover:bg-[#f5f5f5] cursor-pointer"
+            className="inline-flex items-center justify-center gap-1 rounded-lg py-1 px-2.5 border-0 bg-white hover:bg-blue-50 cursor-pointer"
           >
             {getTemplateViewIcon(templatePreviewView) ? (
               <Icon source={getTemplateViewIcon(templatePreviewView)} tone="base" />
@@ -1072,21 +1077,19 @@ export default function StorePreviewEditor({
         {(showPublishSecondary || showThemeEditorPreview) ? (
           <div className="shrink-0 flex justify-end">
             {showThemeEditorPreview ? (
-              <s-button
-                variant="primary"
-                disabled={!shopifyThemeEditorUrl?.trim() ? true : undefined}
+              <PrimaryButton
+                size="sm"
+                disabled={!shopifyThemeEditorUrl?.trim()}
                 onClick={handleOpenShopifyThemeEditor}
               >
+                <ExternalLink size={15} aria-hidden />
                 Preview
-              </s-button>
+              </PrimaryButton>
             ) : showPublishSecondary ? (
-              <s-button
-                variant="primary"
-                loading={publishLoading ? true : undefined}
-                onClick={handlePublishClick}
-              >
+              <PrimaryButton size="sm" loading={publishLoading} onClick={handlePublishClick}>
+                {publishLoading ? null : <Rocket size={15} aria-hidden />}
                 Publish
-              </s-button>
+              </PrimaryButton>
             ) : null}
           </div>
         ) : null}
@@ -1137,9 +1140,9 @@ export default function StorePreviewEditor({
           <button
             type="button"
             onClick={() => setSelectorMode((on) => !on)}
-            className={`flex items-center justify-center p-2 rounded-lg transition-colors ${selectorMode
-              ? "bg-blue-100 text-blue-600"
-              : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+            className={`flex items-center justify-center p-2 rounded-xl transition-colors ${selectorMode
+              ? "bg-blue-50 text-[#1e40af] ring-1 ring-inset ring-blue-200"
+              : "bg-white text-slate-500 ring-1 ring-inset ring-slate-200 hover:bg-blue-50 hover:text-[#1e40af]"
               }`}
             title={
               selectorMode
@@ -1153,7 +1156,7 @@ export default function StorePreviewEditor({
           </button>
         ) : null}
         <div
-          className="flex items-center rounded-full border border-black/15 bg-white p-0.5 gap-0.5"
+          className="flex items-center gap-0.5 rounded-full bg-white p-0.5 shadow-sm ring-1 ring-slate-200"
           role="group"
           aria-label="Preview device"
         >
@@ -1169,8 +1172,8 @@ export default function StorePreviewEditor({
                 if (mode === "desktop") setLeftExpandedOpen(true);
               }}
               className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${previewMode === mode
-                ? "bg-black text-white shadow-sm"
-                : "text-black/60 hover:bg-black/5 hover:text-black"
+                ? "bg-[#1e3a8a] text-white shadow-sm"
+                : "text-slate-500 hover:bg-blue-50 hover:text-[#1e3a8a]"
                 }`}
               aria-label={`${label} preview`}
               aria-pressed={previewMode === mode}
@@ -1183,18 +1186,20 @@ export default function StorePreviewEditor({
         {showSave || showPublishSecondary || showThemeEditorPreview ? (
           <div className="flex shrink-0 items-center gap-2">
             {showThemeEditorPreview ? (
-              <Button
-                variant="primary"
+              <PrimaryButton
+                size="sm"
                 disabled={!shopifyThemeEditorUrl?.trim()}
                 onClick={handleOpenShopifyThemeEditor}
               >
+                <ExternalLink size={15} aria-hidden />
                 Preview
-              </Button>
+              </PrimaryButton>
             ) : null}
             {showPublishSecondary ? (
-              <Button variant="primary" loading={publishLoading} onClick={handlePublishClick}>
+              <PrimaryButton size="sm" loading={publishLoading} onClick={handlePublishClick}>
+                {publishLoading ? null : <Rocket size={15} aria-hidden />}
                 Publish
-              </Button>
+              </PrimaryButton>
             ) : null}
           </div>
         ) : null}
@@ -1212,7 +1217,7 @@ export default function StorePreviewEditor({
           />
         )}
 
-        <div className="shrink-0 self-stretch min-h-0 flex overflow-hidden rounded-lg border border-gray-200 bg-white">
+        <div className="shrink-0 self-stretch min-h-0 flex overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/80">
           <LiquidPreviewSettingsPanel
             templatesConfig={settingsTemplatesConfig}
             form={settingsForm}
@@ -1240,7 +1245,7 @@ export default function StorePreviewEditor({
         <div className="flex-1 min-w-0 min-h-0 flex flex-col px-1 overflow-hidden">
           <div
             ref={previewContainerRef}
-            className="flex-1 min-h-0 w-full flex relative overflow-hidden rounded-lg"
+            className="flex-1 min-h-0 w-full flex relative overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200/80"
             style={{ minHeight: 0 }}
             onWheel={
               previewContainerSize.width > 0 && previewContainerSize.height > 0
@@ -1409,8 +1414,21 @@ export default function StorePreviewEditor({
                 </Page>
       ) : (
         <div className="flex h-full min-h-screen w-full flex-col">
-          <div className="px-2 pb-2 pt-2 sm:px-3">
-            <BlockStack gap="100">{previewToolbarSecondaryActions}</BlockStack>
+          <div className="px-2 pb-3 pt-2 sm:px-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-gradient-to-r from-[#f6f8ff] to-[#e8eeff] px-3.5 py-2.5 ring-1 ring-blue-100">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <span className="flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-white text-[#4f46e5] shadow-sm ring-1 ring-blue-100">
+                  <Wand2 size={16} aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <p className="m-0 text-sm font-semibold text-slate-900">Review &amp; customize</p>
+                  <p className="m-0 hidden text-xs text-slate-500 sm:block">
+                    Click a section to edit it, then publish when it looks right.
+                  </p>
+                </div>
+              </div>
+              {previewToolbarSecondaryActions}
+            </div>
           </div>
           {editorWorkspace}
         </div>

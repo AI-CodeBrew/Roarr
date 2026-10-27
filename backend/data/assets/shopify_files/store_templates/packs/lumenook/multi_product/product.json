@@ -1,0 +1,267 @@
+{
+  "sections": {
+    "kluck-ai-product-hero-section": {
+      "type": "kluck-ai-product-hero-section",
+      "blocks": {
+        "badges_9ip6Dg": {
+          "type": "badges",
+          "settings": {
+            "show_new": true,
+            "new_text": "New",
+            "new_bg": "#4caf50",
+            "new_color": "#ffffff",
+            "show_sale": true,
+            "sale_text": "Save [%]"
+          }
+        },
+        "title_zCQ7tW": {
+          "type": "title",
+          "settings": {
+            "show_reviews": true,
+            "review_text": "Top Quality"
+          }
+        },
+        "price_pqMMVG": {
+          "type": "price",
+          "settings": {}
+        },
+        "description_6Pxz9J": {
+          "type": "description",
+          "settings": {}
+        },
+        "stock_F8kpDD": {
+          "type": "stock",
+          "settings": {
+            "stock_text": "In stock and ready to ship",
+            "stock_color": "#4caf50"
+          }
+        },
+        "variants_VQNHdX": {
+          "type": "variants",
+          "settings": {
+            "enable_swatches": true,
+            "swatch_trigger": "color,colour"
+          }
+        },
+        "kluck_ai_bundle": {
+          "type": "bundle",
+          "settings": {}
+        },
+        "buy_buttons_63FBt6": {
+          "type": "buy_buttons",
+          "settings": {
+            "add_to_cart_text": "Add To Cart",
+            "show_dynamic_checkout": true
+          }
+        },
+        "trust_badges_ngCUyE": {
+          "type": "trust_badges",
+          "settings": {
+            "trust_1": "Orders over $50 ship free",
+            "trust_2": "30 day returns"
+          }
+        },
+        "accordion_ybqfcV": {
+          "type": "accordion",
+          "settings": {
+            "title": "Shipping & Delivery",
+            "content": "<p>Put your product details, ingredients, or how to use instructions here.</p>"
+          }
+        },
+        "accordion_T43g9G": {
+          "type": "accordion",
+          "settings": {
+            "title": "Guarantee",
+            "content": "<p>Put your product details, ingredients, or how to use instructions here.</p>"
+          }
+        },
+        "accordion_wCrxN6": {
+          "type": "accordion",
+          "settings": {
+            "title": "Friendly Support",
+            "content": "<p>Put your product details, ingredients, or how to use instructions here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "badges_9ip6Dg",
+        "title_zCQ7tW",
+        "price_pqMMVG",
+        "description_6Pxz9J",
+        "stock_F8kpDD",
+        "variants_VQNHdX",
+        "kluck_ai_bundle",
+        "buy_buttons_63FBt6",
+        "trust_badges_ngCUyE",
+        "accordion_ybqfcV",
+        "accordion_T43g9G",
+        "accordion_wCrxN6"
+      ],
+      "name": "Roarr - Hero Banner",
+      "settings": {
+        "product": "",
+        "container_width": 1400,
+        "corner_radius": 18,
+        "button_radius": 40,
+        "block_spacing": 8,
+        "show_sticky_cart": true,
+        "title_size": 42,
+        "color_scheme": "",
+        "image_bg": "#f4f4f4",
+        "accent_color": "#d32f2f",
+        "padding_top_desktop": 60,
+        "padding_bottom_desktop": 60,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40
+      }
+    },
+    "kluck-ai-trust-badge-2-section": {
+      "type": "kluck-ai-trust-badge-2-section",
+      "blocks": {
+        "badge_N6M3wN": {
+          "type": "badge",
+          "settings": {
+            "text": "Free Shipping"
+          }
+        },
+        "badge_VQGW8J": {
+          "type": "badge",
+          "settings": {
+            "text": "Money Guarantee"
+          }
+        },
+        "badge_RiFeL9": {
+          "type": "badge",
+          "settings": {
+            "text": "Flexible Payment"
+          }
+        },
+        "badge_qRdnjd": {
+          "type": "badge",
+          "settings": {
+            "text": "Online Support"
+          }
+        }
+      },
+      "block_order": [
+        "badge_N6M3wN",
+        "badge_VQGW8J",
+        "badge_RiFeL9",
+        "badge_qRdnjd"
+      ],
+      "name": "Roarr - Trust Badges",
+      "settings": {
+        "max_width": 1400,
+        "alignment": "center",
+        "color_scheme": "",
+        "badge_color_scheme": "scheme-1",
+        "mobile_auto_scroll": true,
+        "scroll_speed": 20,
+        "border_width": 1,
+        "border_radius": 50,
+        "font_family": "work_sans_n4",
+        "font_weight": 400,
+        "pt_d": 40,
+        "pb_d": 40,
+        "gap_d": 20,
+        "font_size_d": 16,
+        "icon_size_d": 32,
+        "item_pad_x_d": 20,
+        "item_pad_y_d": 10,
+        "pt_m": 30,
+        "pb_m": 30,
+        "gap_m": 12,
+        "font_size_m": 14,
+        "icon_size_m": 28,
+        "item_pad_x_m": 15,
+        "item_pad_y_m": 8
+      }
+    },
+    "kluck-ai-product-image-with-text": {
+      "type": "kluck-ai-product-image-with-text",
+      "name": "Roarr - Image with text",
+      "settings": {
+        "section_width": 1400,
+        "text_column_width": 50,
+        "border_radius": 20,
+        "color_scheme": "",
+        "card_color_scheme": "",
+        "eyebrow": "Customer Favorite · Top Rated",
+        "heading": "Simply Better",
+        "text": "Whether it's for you or someone you love, this product delivers exactly what it promises — every single time, without compromise.",
+        "heading_size": 42,
+        "body_size": 16,
+        "eyebrow_size": 14,
+        "watermark_text": "",
+        "watermark_color": "#ffffff",
+        "btn_label": "Shop Now",
+        "btn_link": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "kluck-ai-faq-section-home-2": {
+      "type": "kluck-ai-faq-section-home-2",
+      "blocks": {
+        "faq_item_pgGaVh": {
+          "type": "faq_item",
+          "settings": {
+            "title": "How long does shipping take?",
+            "answer": "<p>Shipping typically takes 5–7 business days within the United States. For international orders, shipping can take 10–15 business days, depending on the destination and customs processing times. You will receive a tracking number once your order has shipped so you can monitor its progress.</p>"
+          }
+        },
+        "faq_item_Ptzzby": {
+          "type": "faq_item",
+          "settings": {
+            "title": "Does my piece come in any packaging?",
+            "answer": "<p>Yes, all items arrive carefully packaged in our signature branded boxes.</p>"
+          }
+        },
+        "faq_item_gWbzLQ": {
+          "type": "faq_item",
+          "settings": {
+            "title": "Do you ship internationally?",
+            "answer": "<p>Yes, we ship to over 50 countries worldwide. Shipping rates will be calculated at checkout.</p>"
+          }
+        },
+        "faq_item_ap7YXg": {
+          "type": "faq_item",
+          "settings": {
+            "title": "What payment methods do you accept?",
+            "answer": "<p>We accept all major credit cards, PayPal, Apple Pay, and Google Pay.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_pgGaVh",
+        "faq_item_Ptzzby",
+        "faq_item_gWbzLQ",
+        "faq_item_ap7YXg"
+      ],
+      "name": "Roarr - FAQ - 2",
+      "settings": {
+        "heading": "Questions check here",
+        "heading_alignment": "center",
+        "open_first": true,
+        "auto_close": true,
+        "container_width": 900,
+        "heading_size_desktop": 48,
+        "heading_size_mobile": 36,
+        "question_size": 22,
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "border_color": "#e0e0e0",
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80,
+        "padding_top_mobile": 50,
+        "padding_bottom_mobile": 50
+      }
+    }
+  },
+  "order": [
+    "kluck-ai-product-hero-section",
+    "kluck-ai-trust-badge-2-section",
+    "kluck-ai-product-image-with-text",
+    "kluck-ai-faq-section-home-2"
+  ]
+}

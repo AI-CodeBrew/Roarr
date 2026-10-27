@@ -4,9 +4,13 @@
  *
  * Click navigates to credits.
  */
-import { useNavigate } from "react-router";
+import { useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 import { useCredits } from "../lib/CreditsContext";
 import { formatCredits } from "../lib/credits";
+import { usePages } from "../lib/PagesContext";
+import { countPagesByGenerationType } from "../lib/pageCounts";
+import { buildEmbeddedHref } from "../lib/embeddedNavigation";
 
 const PILL_FLOATING_CONTENT = {
   padding: "6px 12px",
@@ -67,7 +71,41 @@ function balanceBackground(balance) {
   return bg;
 }
 
-export function CreditWalletWidget({ floating = true, onClick, slot: slotName }) {
+/** Title-bar buttons for unpublished product pages and stores; each opens its hub. */
+function PageUsageButtons({ slot }) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { pages, loading } = usePages();
+  const { product, store } = useMemo(() => countPagesByGenerationType(pages), [pages]);
+  const ready = !(loading && !pages?.length);
+  const shop = searchParams.get("shop");
+  const unpublished = ({ total, published }) => (ready ? `${total - published} unpublished` : "…");
+
+  return (
+    <>
+      <s-button
+        slot={slot}
+        variant="secondary"
+        onClick={() => navigate(buildEmbeddedHref("/product-page", searchParams, shop))}
+      >
+        {`Product pages: ${unpublished(product)}`}
+      </s-button>
+      <s-button
+        slot={slot}
+        variant="secondary"
+        onClick={() => navigate(buildEmbeddedHref("/entire-store", searchParams, shop))}
+      >
+        {`Stores: ${unpublished(store)}`}
+      </s-button>
+    </>
+  );
+}
+
+/**
+ * `usage` (title-bar variant only) adds the product page / store buttons before the wallet;
+ * onboarding screens turn it off.
+ */
+export function CreditWalletWidget({ floating = true, onClick, slot: slotName, usage = true }) {
   const { balance, loading, error } = useCredits();
   const navigate = useNavigate();
 
@@ -108,16 +146,19 @@ export function CreditWalletWidget({ floating = true, onClick, slot: slotName })
 
   if (slotName) {
     return (
-      <s-button
-        slot={slotName}
-        variant="secondary"
-        onClick={handleClick}
-        style={balancePageStyle}
-        aria-label={balanceAria}
-        title={balanceTitle}
-      >
-        {balanceInner}
-      </s-button>
+      <>
+        {usage ? <PageUsageButtons slot={slotName} /> : null}
+        <s-button
+          slot={slotName}
+          variant="secondary"
+          onClick={handleClick}
+          style={balancePageStyle}
+          aria-label={balanceAria}
+          title={balanceTitle}
+        >
+          {balanceInner}
+        </s-button>
+      </>
     );
   }
 

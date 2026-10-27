@@ -10,7 +10,8 @@ import time
 from typing import List, Tuple, Optional, Dict, Any
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from google.genai import types
-from ...clients import gemini_client as client
+from ...clients.gemini_client import client
+from ...clients.openai_client import client as openai_client
 from ...clients.langchain_client import llm_4_1_nano, llm_5_mini_medium
 from .prompts import (
     BASE_IMAGE_PROMPT_FRONT,
@@ -40,6 +41,16 @@ DEFAULT_MAX_WORKERS = int(
 IMAGE_DOWNLOAD_TIMEOUT_SECONDS = int(os.getenv("IMAGE_DOWNLOAD_TIMEOUT_SECONDS", "0"))
 IMAGE_GENERATION_RETRY_ATTEMPTS = int(os.getenv("IMAGE_GENERATION_RETRY_ATTEMPTS", "3"))
 IMAGE_RETRY_BACKOFF_SECONDS = float(os.getenv("IMAGE_RETRY_BACKOFF_SECONDS", "1.0"))
+# Images are made by OpenAI's cheapest image model first (low quality 1024x1024 is about $0.005 per
+# image); Gemini stays as the fallback when OpenAI fails or has no key. IMAGE_PROVIDER=gemini
+# switches back to Gemini only.
+IMAGE_PROVIDER = os.getenv("IMAGE_PROVIDER", "openai").strip().lower()
+OPENAI_IMAGE_MODEL = os.getenv("OPENAI_IMAGE_MODEL", "gpt-image-1-mini")
+OPENAI_IMAGE_QUALITY = os.getenv("OPENAI_IMAGE_QUALITY", "low")  # low | medium | high
+OPENAI_IMAGE_TIMEOUT_SECONDS = float(os.getenv("OPENAI_IMAGE_TIMEOUT_SECONDS", "180"))
+# Reference photos are billed as input tokens, so only a few are sent, each shrunk first.
+OPENAI_MAX_REFERENCE_IMAGES = int(os.getenv("OPENAI_MAX_REFERENCE_IMAGES", "3"))
+OPENAI_REFERENCE_MAX_SIDE = 1024
 GEMINI_IMAGE_MODEL = "gemini-3.1-flash-image-preview"
 GEMINI_IMAGE_FALLBACK_MODEL = "gemini-2.5-flash-image"
 # Homepage creative/highlight used to stay on the fallback model. That model
@@ -198,15 +209,15 @@ def load_template_image_keys(
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         config = data.get(template_num)
-        # Aura (template 3) image keys are shared — fall back to health_beauty when missing.
-        if not config and template_num == "3" and category != "health_beauty":
+        # Aura (template 3) and Lumenook (template 4) image keys are shared — fall back to health_beauty when missing.
+        if not config and template_num in ("3", "4") and category != "health_beauty":
             hb_path = os.path.join(
                 os.path.dirname(__file__), "templates", "health_beauty", "image_keys.json"
             )
             if os.path.exists(hb_path):
                 with open(hb_path, "r", encoding="utf-8") as hb_f:
                     hb_data = json.load(hb_f)
-                config = hb_data.get("3")
+                config = hb_data.get(template_num)
         if not config:
             return None
         return config
@@ -1191,6 +1202,42 @@ _GLOW_FRAME = {
 }
 
 
+_LUMEN_FRAME = {
+    "product_image_1": " Frame this as a square product photo on a warm ivory background in soft natural light. The product fills the frame. No text, logo, or border.",
+    "product_image_2": " Frame this as a square product photo from another angle, warm ivory background, soft shadow. No text, logo, or border.",
+    "product_image_3": " Frame this as a square close-up of the finish and materials, warm soft light. No text, logo, or border.",
+    "product_image_4": " Frame this as a square lifestyle photo of the product in a calm, minimal, warm-toned room. No text or border.",
+    "product_image_5": " Frame this as a square product photo, centered and large, on a warm sand background. No text, logo, or border.",
+    "product_highlight_1": " Portrait 4:5 editorial photo of the product in a calm, warm-toned interior with soft window light. No text.",
+    "product_highlight_2": " Portrait 4:5 editorial close-up of a different detail of the product, warm soft light, muted ivory and sand tones. No text.",
+    "product_highlight_3": " Portrait 4:5 editorial photo of the product in everyday use in a minimal, warm-toned space. No text.",
+    "feature_image": " Tall vertical 9:16 photo, like a phone screen. The product in a calm, warm-toned room with soft natural light, full product visible and centered. No text, no border.",
+    "product_impact_image": " Portrait 4:5 moody editorial photo of the product in a warm, softly lit evening interior with gentle shadows. No text.",
+}
+
+
+def _apply_lumen_frame(prompts):
+    if not isinstance(prompts, dict):
+        return prompts
+    framed = {}
+    for key, value in prompts.items():
+        if isinstance(value, dict):
+            framed[key] = _apply_lumen_frame(value)
+        elif isinstance(value, str) and key in _LUMEN_FRAME:
+            framed[key] = value.rstrip() + _LUMEN_FRAME[key]
+        else:
+            framed[key] = value
+    return framed
+
+
+def _is_lumenook_template(template) -> bool:
+    """Lumenook is template 4 for all categories."""
+    raw = str(template or "").strip().lower()
+    if raw.startswith("template_"):
+        raw = raw.split("_")[-1]
+    return raw == "4" or template == 4
+
+
 def _apply_glow_frame(prompts):
     if not isinstance(prompts, dict):
         return prompts
@@ -1279,6 +1326,8 @@ def generate_images(
                 )
             if _is_glow_template(template, category):
                 product_prompts = _apply_glow_frame(product_prompts)
+            elif _is_lumenook_template(template):
+                product_prompts = _apply_lumen_frame(product_prompts)
             if product_prompts.get("product_images"):
                 print("Generating product images...")
                 product_images_result = generate_product_images(
@@ -1325,6 +1374,8 @@ def generate_images(
                     body_prompts = dict(body_prompts)
                     body_prompts["how_to_images"] = block
                 body_prompts = _apply_glow_frame(body_prompts)
+            elif _is_lumenook_template(template):
+                body_prompts = _apply_lumen_frame(body_prompts)
             if body_prompts:
                 print("Generating body images...")
                 # Determine body image generation function based on subcategory
@@ -1416,6 +1467,119 @@ def _rescue_product_photo_contents(contents, aspect_ratio: str):
     return kept
 
 
+def _openai_size_for_ratio(aspect_ratio: str):
+    """Nearest of the three sizes gpt-image models offer, plus the exact ratio to crop to."""
+    try:
+        w, h = (float(x) for x in str(aspect_ratio).split(":"))
+        ratio = w / h
+    except (ValueError, ZeroDivisionError):
+        ratio = 1.0
+    if ratio > 1.2:
+        return "1536x1024", ratio
+    if ratio < 0.83:
+        return "1024x1536", ratio
+    return "1024x1024", ratio
+
+
+def _crop_to_ratio(path: str, ratio: float) -> None:
+    """Center-crop an image file to the exact ratio asked for (OpenAI sizes are only 1:1, 3:2, 2:3)."""
+    from PIL import Image
+
+    with Image.open(path) as img:
+        width, height = img.size
+        if abs(width / height - ratio) / ratio < 0.01:
+            return
+        if width / height > ratio:
+            new_w, new_h = round(height * ratio), height
+        else:
+            new_w, new_h = width, round(width / ratio)
+        left, top = (width - new_w) // 2, (height - new_h) // 2
+        cropped = img.crop((left, top, left + new_w, top + new_h))
+        cropped.save(path, quality=92)
+
+
+def _reference_for_openai(path: str):
+    """Reference photo shrunk to <=1024px JPEG bytes, as a (name, bytes, mime) upload tuple."""
+    import io
+    from PIL import Image
+
+    with Image.open(path) as img:
+        img = img.convert("RGB")
+        img.thumbnail((OPENAI_REFERENCE_MAX_SIDE, OPENAI_REFERENCE_MAX_SIDE))
+        buf = io.BytesIO()
+        img.save(buf, "JPEG", quality=85)
+    return (f"{os.path.splitext(os.path.basename(path))[0]}.jpg", buf.getvalue(), "image/jpeg")
+
+
+def _log_openai_image_cost(response, label: str) -> None:
+    """Log the tokens one image call used and what they cost at gpt-image-1-mini's token prices
+    ($2.50/M image-in, $2.00/M text-in, $8.00/M image-out). OpenAI bills a flat per-image price
+    for the output (about $0.005 at low quality, 1024x1024), so treat this as a lower bound."""
+    usage = getattr(response, "usage", None)
+    if usage is None:
+        return
+    try:
+        details = getattr(usage, "input_tokens_details", None)
+        image_in = getattr(details, "image_tokens", 0) or 0
+        text_in = getattr(details, "text_tokens", 0) or 0
+        out = getattr(usage, "output_tokens", 0) or 0
+        cost = image_in * 2.5e-6 + text_in * 2.0e-6 + out * 8.0e-6
+        print(
+            f"  OpenAI image usage for {label}: image-in={image_in} text-in={text_in} "
+            f"out={out} tokens ~${cost:.4f} (token price)"
+        )
+    except Exception:
+        pass
+
+
+def _generate_image_openai(
+    base_image_paths, prompt, temp_dir, filename_base, aspect_ratio, label
+):
+    """
+    One image from OpenAI (gpt-image-1-mini by default). With reference photos it uses the edit
+    endpoint so the product stays recognisable; without any it uses plain generation.
+    Returns the saved file path, or None on any failure so the caller can fall back to Gemini.
+    """
+    if openai_client is None:
+        return None
+    import base64
+
+    size, ratio = _openai_size_for_ratio(aspect_ratio)
+    print(f"  Using {OPENAI_IMAGE_MODEL} ({OPENAI_IMAGE_QUALITY}, {size}) for {label}")
+    try:
+        common = dict(
+            model=OPENAI_IMAGE_MODEL,
+            prompt=prompt,
+            size=size,
+            quality=OPENAI_IMAGE_QUALITY,
+            n=1,
+            output_format="jpeg",
+            output_compression=90,
+            timeout=OPENAI_IMAGE_TIMEOUT_SECONDS,
+        )
+        refs = [p for p in base_image_paths if p][:OPENAI_MAX_REFERENCE_IMAGES]
+        if refs:
+            response = openai_client.images.edit(
+                image=[_reference_for_openai(p) for p in refs],
+                **{**common, "prompt": f"The attached images are reference photos of the product. {prompt}"},
+            )
+        else:
+            response = openai_client.images.generate(**common)
+        _log_openai_image_cost(response, label)
+        b64 = response.data[0].b64_json if response.data else None
+        if not b64:
+            print(f"  {OPENAI_IMAGE_MODEL} returned no image for {label}")
+            return None
+        name = filename_base or f"{uuid.uuid4().hex[:8]}_zambeel_ai_generated_image"
+        file_path = os.path.join(temp_dir, f"{name}.jpg")
+        save_binary_file(file_path, base64.b64decode(b64))
+        _crop_to_ratio(file_path, ratio)
+        return file_path
+    except Exception as e:
+        print(f"  {OPENAI_IMAGE_MODEL} failed for {label}: {e}")
+        return None
+
+
 def generate_image(
     base_image_paths,
     prompt,
@@ -1429,8 +1593,9 @@ def generate_image(
     """
     Generate a single image using one or more base images and a specific prompt.
 
-    The preferred model is tried first. An empty response or an error switches
-    to the other image model before this call gives up. On the last outer retry,
+    OpenAI's gpt-image-1-mini is tried first (cheapest); Gemini is the fallback. Within Gemini the
+    preferred model goes first, and an empty response or an error switches to the other one
+    before this call gives up. On the last outer retry,
     a plain product photograph is tried so the slot is not left empty.
 
     Returns:
@@ -1506,6 +1671,14 @@ def generate_image(
         aspect_ratio_value = "16:9"
     else:
         aspect_ratio_value = "1:1"
+
+    if IMAGE_PROVIDER == "openai":
+        path = _generate_image_openai(
+            paths, prompt, temp_dir, filename_base, aspect_ratio_value, label
+        )
+        if path:
+            return path
+        print(f"  {label}: OpenAI gave no image; falling back to Gemini")
 
     target_image_size = "4K" if is_banner_image else "1K"
     gemini_3_sized = _image_generate_config(

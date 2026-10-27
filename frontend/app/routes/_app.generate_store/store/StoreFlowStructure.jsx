@@ -9,14 +9,11 @@ import {
   BlockStack,
   Box,
   Button,
-  Card,
   Icon,
   InlineStack,
   Modal,
   Popover,
-  RadioButton,
   Page,
-  Select,
   Spinner,
   Text,
 } from "@shopify/polaris";
@@ -33,8 +30,27 @@ import {
   PhoneIcon,
   QuestionCircleIcon,
   ChevronDownIcon,
-  ArrowLeftIcon,
 } from "@shopify/polaris-icons";
+import {
+  Boxes,
+  Check,
+  ChevronDown,
+  Globe,
+  LayoutTemplate,
+  Package,
+  Palette,
+  Sparkles,
+  Store as StoreGlyph,
+  Type as TypeGlyph,
+} from "lucide-react";
+import {
+  ChoiceCard,
+  FlowPageHeader,
+  Panel,
+  SecondaryButton,
+  StepHeading,
+} from "../../../components/RoarrUI.jsx";
+import CategoryDetectRow from "../../../components/CategoryDetectRow.jsx";
 import { useDashboardLoaderData } from "../../../lib/DashboardDataContext";
 import { usePages } from "../../../lib/PagesContext.jsx";
 import GenerateContainer from "../../_app.generate_pdp/utils/GenerateContainer.jsx";
@@ -56,6 +72,7 @@ import { buildPulseProductHomeData } from "./utils/buildPulseProductHomeData.js"
 import { buildEclipseProductHomeData } from "./utils/buildEclipseProductHomeData.js";
 import { buildVelvetHomeProductPageData } from "./utils/buildVelvetHomeProductPage.js";
 import { buildLuminousHomeData, buildLuminousDemoProduct, buildLuminousDemoGridProducts } from "./utils/buildLuminousDemo.js";
+import { buildLumenookHomeData, buildLumenookDemoGridProducts } from "./utils/buildLumenookDemo.js";
 import { buildPremiumMultiHomeData, buildPremiumMultiGridProducts } from "./utils/buildPremiumMultiHome.js";
 import { resolveStoreProductPageData } from "./utils/buildStorePremiumPdpPreview.js";
 import { STORE_COUNTRY_OPTIONS } from "./utils/storeCountryOptions.js";
@@ -66,13 +83,7 @@ import {
 import { useViewportBelowMd } from "../../../hooks/useViewportBelowMd.js";
 import { buildEmbeddedHref } from "../../../lib/embeddedNavigation.js";
 import { clearLiquidPreviewCache } from "../../../lib/liquidPreviewCache.js";
-import {
-  getDemoPreviewEyeThumbUrl,
-  getDemoPreviewThumbUrl,
-  getDemoPreviewUrl,
-  resolveStoreDemoPairUrls,
-  STORE_DEMO_VARIANTS,
-} from "../../../lib/demoPreviewUrls.js";
+import { resolveStoreDemoPairUrls } from "../../../lib/demoPreviewUrls.js";
 import { useCredits } from "../../../lib/CreditsContext";
 import {
   getStoreCreationCost,
@@ -85,6 +96,11 @@ import {
   normalizeMarketType,
   syncPosthogMarketType,
 } from "../../../lib/posthogMarketType.js";
+import {
+  getStoreComboCardMedia,
+  MULTI_THEME_COMBOS,
+  PREPAID_CLASSIC_THEME_COMBO,
+} from "./storeThemeCombos.js";
 
 const StoreGenerationStep = lazy(() => import("./StoreGenerationStep.jsx"));
 const StorePublishStep = lazy(() => import("./StorePublishStep.jsx"));
@@ -147,31 +163,6 @@ const SINGLE_PRIMARY_VIEWS = ["Home", "Product"];
 const MORE_VIEW_OPTIONS = ["404", "FAQs", "Contact", "About Us"];
 /** Product page liquid templates (same as Generate Product Page). */
 const PRODUCT_TEMPLATE_LABELS = { 1: "Sleek", 2: "Vibe" };
-
-/** Single store: Swift only (homepage checkout, no premium PDP). */
-const PREPAID_CLASSIC_THEME_COMBO = {
-  id: "prepaid-classic",
-  pack: "classic",
-  template: null,
-  includePremium: false,
-  title: "Swift",
-  blurb: "Single-product store with on-page checkout — ready to launch",
-  defaultView: "Home",
-  cardPageType: "home-page",
-};
-
-/** Multi store: Swift only (store home, no premium PDPs). */
-const MULTI_THEME_COMBOS = [
-  {
-    id: "luminous",
-    includePremium: false,
-    template: null,
-    title: "Swift",
-    blurb: "Multi-product storefront — homepage, collections, trust, FAQs, and reviews",
-    defaultView: "Home",
-    cardPageType: "home-page",
-  },
-];
 
 const VIEW_ICONS = {
   Home: HomeIcon,
@@ -434,54 +425,13 @@ function StoreConfigureStepShell({
         boxSizing: "border-box",
       }}
     >
-      <div
-        className="generate-flow-sticky-page-header"
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 200,
-          background: "#f2f2f2",
-          padding: "12px 0 16px",
-          marginBottom: 8,
-          borderBottom: "1px solid #e1e3e5",
-        }}
-      >
-        <InlineStack align="space-between" blockAlign="center" gap="400" wrap>
-          <InlineStack gap="300" blockAlign="center" wrap={false}>
-            <button
-              type="button"
-              aria-label={backLabel || "Back"}
-              onClick={onBack}
-              style={{
-                border: "none",
-                background: "transparent",
-                padding: 4,
-                margin: 0,
-                cursor: "pointer",
-                display: "inline-flex",
-                alignItems: "center",
-                color: "#202223",
-                flexShrink: 0,
-              }}
-            >
-              <Icon source={ArrowLeftIcon} tone="base" />
-            </button>
-            <BlockStack gap="100">
-              <Text as="h1" variant="headingLg" fontWeight="semibold">
-                {title}
-              </Text>
-              {subtitle ? (
-                <Text as="p" variant="bodySm" tone="subdued">
-                  {subtitle}
-                </Text>
-              ) : null}
-            </BlockStack>
-          </InlineStack>
-          {primaryAction ? (
-            <div style={{ flexShrink: 0 }}>{primaryAction}</div>
-          ) : null}
-        </InlineStack>
-      </div>
+      <FlowPageHeader
+        title={title}
+        subtitle={subtitle}
+        backLabel={backLabel || "Back"}
+        onBack={onBack}
+        primaryAction={primaryAction}
+      />
         <BlockStack gap="400">{children}</BlockStack>
     </Box>
   );
@@ -840,14 +790,15 @@ export default function StoreFlowStructure({
     }
   }, []);
 
-  /** One click sets Swift multi (store-only). */
+  /** One click sets a multi store template: Swift (classic) or Lumenook, store-only. */
   const selectMultiThemeCombo = useCallback((combo) => {
     const includePremium = combo.includePremium === true;
     themeSelectionRef.current = {
-      pack: "classic",
+      pack: combo.pack || "classic",
       includePremium,
       template: includePremium ? (combo.template === 2 ? 2 : 1) : null,
     };
+    setStoreTemplatePack(combo.pack || "classic");
     setMultiIncludePremiumPdps(combo.includePremium);
     setSelectedMoreView("");
     if (!combo.includePremium) {
@@ -863,17 +814,22 @@ export default function StoreFlowStructure({
     }
   }, [selectedProductForPreview, multiProductsForStore]);
 
-  // v2: only Swift — auto-select once products are chosen.
+  // Auto-select once products are chosen: Swift for single; for multi keep the picked
+  // template (Swift or Lumenook), defaulting to Swift.
   useEffect(() => {
     if (!hasStoreProductsSelected) return;
     if (storeType === "single") {
       selectSingleThemeCombo(PREPAID_CLASSIC_THEME_COMBO);
     } else if (storeType === "multi") {
-      selectMultiThemeCombo(MULTI_THEME_COMBOS[0]);
+      selectMultiThemeCombo(
+        MULTI_THEME_COMBOS.find((combo) => (combo.pack || "classic") === storeTemplatePack) ||
+          MULTI_THEME_COMBOS[0],
+      );
     }
   }, [
     hasStoreProductsSelected,
     storeType,
+    storeTemplatePack,
     selectSingleThemeCombo,
     selectMultiThemeCombo,
   ]);
@@ -1123,7 +1079,10 @@ export default function StoreFlowStructure({
       storeType === "multi" &&
       demoMultiIncludePremiumPdps === false;
     if (isPrepaidLuminous) {
-      const luminousHome = buildLuminousHomeData(cat);
+      const luminousHome =
+        String(demoStoreTemplatePack || "").toLowerCase() === "lumenook"
+          ? buildLumenookHomeData(cat)
+          : buildLuminousHomeData(cat);
       if (luminousHome) return luminousHome;
     }
     const isPremiumMulti =
@@ -1162,7 +1121,7 @@ export default function StoreFlowStructure({
     if (storeType === "single") {
       return demoStoreTemplatePack || "classic";
     }
-    return "classic";
+    return String(demoStoreTemplatePack || "").toLowerCase() === "lumenook" ? "lumenook" : "classic";
   }, [storeType, demoStoreTemplatePack]);
 
   const linenHomeProductPageData = useMemo(() => {
@@ -1216,10 +1175,13 @@ export default function StoreFlowStructure({
       storeType === "multi" &&
       demoMultiIncludePremiumPdps === false;
     if (!isPrepaidLuminous) return null;
-    return buildLuminousDemoGridProducts(configureDemoCategory);
+    return String(demoStoreTemplatePack || "").toLowerCase() === "lumenook"
+      ? buildLumenookDemoGridProducts()
+      : buildLuminousDemoGridProducts(configureDemoCategory);
   }, [
     storeType,
     demoMultiIncludePremiumPdps,
+    demoStoreTemplatePack,
     configureDemoCategory,
   ]);
 
@@ -1314,7 +1276,7 @@ export default function StoreFlowStructure({
         storeType,
         marketType,
         storeCreationCosts,
-        storeType === "single" ? storeTemplatePack : "classic",
+        storeTemplatePack,
         storeType === "multi"
           ? multiIncludePremiumPdps === true
           : storeType === "single"
@@ -1438,7 +1400,9 @@ export default function StoreFlowStructure({
         collectionProducts:
           pageType === "home-page" && storeType === "multi"
             ? includePremium === false
-              ? buildLuminousDemoGridProducts(previewCategory)
+              ? String(pack).toLowerCase() === "lumenook"
+                ? buildLumenookDemoGridProducts()
+                : buildLuminousDemoGridProducts(previewCategory)
               : buildPremiumMultiGridProducts(previewCategory, template) ||
                 (multiProductsForStore.length > 0
                   ? multiProductsForStore
@@ -1452,7 +1416,10 @@ export default function StoreFlowStructure({
         omitCheckoutBlocks: includePremium === true,
         homeData: (() => {
           if (pageType === "home-page" && storeType === "multi" && includePremium === false) {
-            const luminousHome = buildLuminousHomeData(previewCategory);
+            const luminousHome =
+              String(pack).toLowerCase() === "lumenook"
+                ? buildLumenookHomeData(previewCategory)
+                : buildLuminousHomeData(previewCategory);
             if (luminousHome) return luminousHome;
           }
           if (pageType === "home-page" && storeType === "multi" && includePremium === true) {
@@ -2375,8 +2342,7 @@ export default function StoreFlowStructure({
             : selection.template === 2
               ? 2
               : 1,
-        storeTemplatePack:
-          storeType === "single" ? selection.pack || "classic" : "classic",
+        storeTemplatePack: selection.pack || "classic",
         stylePreferences: {
           dynamicColor: selectedDynamicColor,
           headingFont: headingFontForBackend,
@@ -2775,7 +2741,7 @@ export default function StoreFlowStructure({
     ? "Update settings, then save to regenerate"
     : "Step 1 of 3";
   const configureStepNumber = 1;
-  const configurePrimaryLabel = "Begin Magic";
+  const configurePrimaryLabel = "Use Template";
   const openCreditsPage = useCallback(() => {
     navigate(buildEmbeddedHref("/credits", searchParams, shopFromUrl));
   }, [navigate, searchParams, shopFromUrl]);
@@ -3009,16 +2975,9 @@ export default function StoreFlowStructure({
 
     const generationBody = (
       <BlockStack gap="400">
-        <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5, color: "#202223" }}>
-          <span
-            style={{
-              background: "#fff3a0",
-              padding: "2px 6px",
-              borderRadius: 4,
-            }}
-          >
-            Store creation is free. Publishing your store requires a paid plan.
-          </span>
+        <p className="m-0 flex items-center gap-2 rounded-xl bg-amber-50 px-3.5 py-2.5 text-[13px] font-medium text-amber-900 ring-1 ring-inset ring-amber-200">
+          <Sparkles size={15} className="flex-none text-amber-600" aria-hidden />
+          Store creation is free. Publishing your store requires a paid plan.
         </p>
         <Suspense fallback={<Spinner accessibilityLabel="Loading generation step" size="large" />}>
           <StoreGenerationStep
@@ -3032,13 +2991,11 @@ export default function StoreFlowStructure({
           />
         </Suspense>
         {!isGeneratingStore && storeGenerationStatus === "failed" ? (
-          <Card roundedAbove="sm" padding="0">
-            <Box background="bg-surface" padding="400">
-              <InlineStack align="center">
-                <Button onClick={() => setStep(1)}>Back to Configuration</Button>
-              </InlineStack>
-            </Box>
-          </Card>
+          <Panel>
+            <div className="flex justify-center">
+              <SecondaryButton onClick={() => setStep(1)}>Back to Configuration</SecondaryButton>
+            </div>
+          </Panel>
         ) : null}
       </BlockStack>
     );
@@ -3288,7 +3245,7 @@ export default function StoreFlowStructure({
                     }}
                     style={{
                       border: "none",
-                      background: isActive ? "#111827" : "transparent",
+                      background: isActive ? "#1e3a8a" : "transparent",
                       color: isActive ? "#ffffff" : "#6b7280",
                       borderRadius: 999,
                       width: 32,
@@ -3477,40 +3434,18 @@ export default function StoreFlowStructure({
               <>
                 <div
                   className="generate-flow-sticky-page-header"
-                  style={{
-                    padding: "12px 0 16px",
-                    marginBottom: 8,
-                    borderBottom: "1px solid #e1e3e5",
-                  }}
+                  style={{ padding: "14px 0 10px" }}
                 >
-                  <BlockStack gap="200">
-                    <InlineStack gap="200" blockAlign="center">
-                      <div
-                        style={{
-                          width: 26,
-                          height: 26,
-                          borderRadius: "999px",
-                          border: "1px solid #d1d5db",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "13px",
-                          flexShrink: 0,
-                        }}
-                      >
-                        {configureStepNumber}
-                      </div>
-                      <Text as="h2" variant="headingLg" fontWeight="semibold">
-                        {configureStepTitle}
-                      </Text>
-                    </InlineStack>
-                        <Text as="p" variant="bodySm" tone="subdued">
-                      {isEditingExistingStore
+                  <StepHeading
+                    number={configureStepNumber}
+                    title={configureStepTitle}
+                    subtitle={
+                      isEditingExistingStore
                         ? "Update store type, products, or template, then save to regenerate"
-                        : "Configure your store type, fine tune your style, and begin magic"}
-                        </Text>
-                  </BlockStack>
-                  </div>
+                        : "Configure your store type, fine tune your style, and begin magic"
+                    }
+                  />
+                </div>
               </>
             ) : null
           ) : null}
@@ -3528,192 +3463,122 @@ export default function StoreFlowStructure({
               style={{ display: "flex", flexDirection: "column", gap: "16px" }}
             >
               <BlockStack gap="300">
-                <Card roundedAbove="sm" padding="0">
-                  <Box background="bg-surface" padding="300">
-                    <InlineStack align="space-between" blockAlign="center" gap="200" wrap>
-                      <BlockStack gap="100">
-                        <Text as="p" variant="bodySm" tone="subdued">
-                          Your preferences
-                        </Text>
-                        <Text as="p" variant="bodyMd" fontWeight="semibold">
-                          {prefsMarketLabel}
-                          {" · "}
-                          {prefsCountryLabel}
-                          {" · "}
-                          {prefsLanguage?.name || effectiveLanguageLabel}
-                        </Text>
-                        {!marketType || !countryCode ? (
-                          <Text as="p" variant="bodySm" tone="critical">
-                            Missing preferences — set them in Preferences to continue.
-                          </Text>
-                        ) : null}
-                      </BlockStack>
-                      <Button
-                        variant="plain"
-                        url="/preferences"
-                      >
-                        Edit
-                      </Button>
-                    </InlineStack>
-                  </Box>
-                </Card>
-                <Card roundedAbove="sm" padding="0">
-                  <Box background="bg-surface" padding="400">
-                  <BlockStack gap="300">
-                    <BlockStack gap="100">
-                      <Text as="h3" variant="headingSm" fontWeight="semibold">
-                        Select Store Type
-                      </Text>
-                      <Text as="p" variant="bodySm" tone="subdued">
-                        What&apos;s included: 1 Entire Store{" "}
-                        <strong>
-                          (Homepage, Collections, FAQs, Customer reviews section)
-                        </strong>
-                        . Each theme is one complete look, including the product page.
-                      </Text>
-                    </BlockStack>
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                        gap: "12px",
+                <section className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-slate-200/70">
+                  <div className="flex min-w-0 flex-wrap items-center gap-2">
+                    <span className="mr-1 inline-flex items-center gap-1.5 text-[13px] font-medium text-slate-500">
+                      <Globe size={15} className="text-[#1e40af]" aria-hidden />
+                      Your preferences
+                    </span>
+                    {[prefsMarketLabel, prefsCountryLabel, prefsLanguage?.name || effectiveLanguageLabel].map(
+                      (label, index) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-[#1e3a8a] ring-1 ring-inset ring-blue-100"
+                        >
+                          {label}
+                        </span>
+                      ),
+                    )}
+                    {!marketType || !countryCode ? (
+                      <p className="m-0 w-full text-[13px] text-red-700">
+                        Missing preferences — set them in Preferences to continue.
+                      </p>
+                    ) : null}
+                  </div>
+                  <Button
+                    variant="plain"
+                    url="/preferences"
+                  >
+                    Edit
+                  </Button>
+                </section>
+                <Panel
+                  icon={StoreGlyph}
+                  title="Select Store Type"
+                  description={
+                    <>
+                      What&apos;s included: 1 Entire Store{" "}
+                      <strong className="font-semibold text-slate-700">
+                        (Homepage, Collections, FAQs, Customer reviews section)
+                      </strong>
+                      . Each theme is one complete look, including the product page.
+                    </>
+                  }
+                >
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <ChoiceCard
+                      icon={Package}
+                      title="Create Single-Product Store"
+                      description="One hero product with on-page checkout."
+                      selected={storeType === "single"}
+                      onClick={() => {
+                        setStoreType("single");
+                        setSelectedMoreView("");
+                        setActivePreviewTabIndex(0);
+                        setCategoryMatchPercentage(null);
+                        setStoreTemplatePack("classic");
+                        setSelectedProductTemplate(null);
+                        setMultiIncludePremiumPdps(null);
                       }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setStoreType("single");
-                          setSelectedMoreView("");
-                          setActivePreviewTabIndex(0);
-                          setCategoryMatchPercentage(null);
-                          setStoreTemplatePack("classic");
-                          setSelectedProductTemplate(null);
-                          setMultiIncludePremiumPdps(null);
-                        }}
-                        style={{
-                          textAlign: "left",
-                          padding: "14px",
-                          borderRadius: "10px",
-                          border: `1px solid ${storeType === "single" ? "#2f6f63" : "#d1d5db"}`,
-                          boxShadow: "none",
-                          background: storeType === "single" ? "#edf5f3" : "#ffffff",
-                          cursor: "pointer",
-                          position: "relative",
-                        }}
-                      >
-                        <BlockStack gap="100">
-                          <div style={{ position: "absolute", top: 12, right: 12, pointerEvents: "none" }}>
-                            <RadioButton
-                              label="Single-Product Store"
-                              labelHidden
-                              name="storeType"
-                              checked={storeType === "single"}
-                              onChange={() => { }}
-                            />
-                          </div>
-                          <Text as="h4" variant="bodyMd" fontWeight="semibold">
-                            Create Single-Product Store
-                          </Text>
-                        </BlockStack>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setStoreType("multi");
-                          setSelectedMoreView("");
-                          setActivePreviewTabIndex(0);
-                          setCategoryMatchPercentage(null);
-                          setStoreTemplatePack("classic");
-                          setMultiIncludePremiumPdps(null);
-                          setSelectedProductTemplate(null);
-                        }}
-                        style={{
-                          textAlign: "left",
-                          padding: "14px",
-                          borderRadius: "10px",
-                          border: `1px solid ${storeType === "multi" ? "#2f6f63" : "#d1d5db"}`,
-                          boxShadow: "none",
-                          background: storeType === "multi" ? "#edf5f3" : "#ffffff",
-                          cursor: "pointer",
-                          position: "relative",
-                        }}
-                      >
-                        <BlockStack gap="100">
-                          <div style={{ position: "absolute", top: 12, right: 12, pointerEvents: "none" }}>
-                            <RadioButton
-                              label="Multi-Product Store"
-                              labelHidden
-                              name="storeType"
-                              checked={storeType === "multi"}
-                              onChange={() => { }}
-                            />
-                          </div>
-                          <Text as="h4" variant="bodyMd" fontWeight="semibold">
-                            Create Multi-Product Store
-                          </Text>
-                        </BlockStack>
-                      </button>
-                    </div>
-                  </BlockStack>
-                  </Box>
-                </Card>
+                    />
+                    <ChoiceCard
+                      icon={Boxes}
+                      title="Create Multi-Product Store"
+                      description="Homepage, collections and trust pages for your catalog."
+                      selected={storeType === "multi"}
+                      onClick={() => {
+                        setStoreType("multi");
+                        setSelectedMoreView("");
+                        setActivePreviewTabIndex(0);
+                        setCategoryMatchPercentage(null);
+                        setStoreTemplatePack("classic");
+                        setMultiIncludePremiumPdps(null);
+                        setSelectedProductTemplate(null);
+                      }}
+                    />
+                  </div>
+                </Panel>
 
                 {storeType === "multi" ? (
-                  <Card roundedAbove="sm" padding="0">
-                    <Box background="bg-surface" padding="400">
+                  <Panel icon={Boxes} title="Select your products">
                     <BlockStack gap="300">
-                      <Text as="h3" variant="headingSm" fontWeight="semibold">
-                        Select your products
-                      </Text>
-                      <InlineStack align="space-between" blockAlign="center" wrap={isMobileLayout}>
+                      <div className="flex flex-wrap items-center justify-between gap-3">
                         {multiProductsForStore.length > 0 ? (
-                          <InlineStack gap="150" blockAlign="center" wrap={false}>
-                            {multiProductsForStore.map((product) => (
-                              <div
-                                key={product.id}
-                                style={{
-                                  width: 44,
-                                  height: 44,
-                                  borderRadius: 8,
-                                  overflow: "hidden",
-                                  border: "1px solid #e1e3e5",
-                                  background: "#f3f4f6",
-                                }}
-                              >
-                                <img
-                                  src={
-                                    product?.featuredImage?.url ||
-                                    product?.images?.edges?.[0]?.node?.url ||
-                                    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%23f3f4f6'/%3E%3C/svg%3E"
-                                  }
-                                  alt={product?.title || "Selected product"}
-                                  width={44}
-                                  height={44}
-                                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                                />
-                              </div>
-                            ))}
-                            <Text as="p" variant="bodySm" tone="subdued">
+                          <div className="flex items-center gap-2">
+                            <div className="flex -space-x-2">
+                              {multiProductsForStore.map((product) => (
+                                <div
+                                  key={product.id}
+                                  className="h-11 w-11 overflow-hidden rounded-xl bg-slate-100 ring-2 ring-white"
+                                >
+                                  <img
+                                    src={
+                                      product?.featuredImage?.url ||
+                                      product?.images?.edges?.[0]?.node?.url ||
+                                      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%23f3f4f6'/%3E%3C/svg%3E"
+                                    }
+                                    alt={product?.title || "Selected product"}
+                                    width={44}
+                                    height={44}
+                                    className="h-full w-full object-cover"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                            <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-[#1e3a8a] ring-1 ring-inset ring-blue-100">
                               {multiProductsForStore.length}/3 selected
-                            </Text>
-                          </InlineStack>
+                            </span>
+                          </div>
                         ) : (
-                          <Text as="p" variant="bodySm" tone="subdued">
-                            No products selected yet.
-                          </Text>
+                          <p className="m-0 text-[13px] text-slate-500">No products selected yet.</p>
                         )}
-                        <div
-                          style={{
-                            marginTop: isMobileLayout && multiProductsForStore.length > 0 ? "8px" : 0,
-                            width: isMobileLayout ? "100%" : "auto",
-                          }}
+                        <SecondaryButton
+                          onClick={() => setIsMultiProductModalOpen(true)}
+                          className="w-full sm:w-auto"
                         >
-                          <Button onClick={() => setIsMultiProductModalOpen(true)} fullWidth={isMobileLayout}>
-                            {multiProductsForStore.length > 0 ? "Change products" : "Select products"}
-                          </Button>
-                        </div>
-                      </InlineStack>
+                          {multiProductsForStore.length > 0 ? "Change products" : "Select products"}
+                        </SecondaryButton>
+                      </div>
                       {storeType === "multi" && hasMultiProductValidationErrors ? (
                         <BlockStack gap="150">
                           {invalidMultiProductDetails.map(({ product, message }) => (
@@ -3727,81 +3592,34 @@ export default function StoreFlowStructure({
                         </BlockStack>
                       ) : null}
                       {multiProductsForStore.length > 0 ? (
-                        <InlineStack align="space-between" blockAlign="center" gap="200" wrap={isMobileLayout}>
-                          <div style={{ minWidth: isMobileLayout ? "100%" : 220, width: isMobileLayout ? "100%" : "auto" }}>
-                            <Select
-                              label="Category"
-                              labelHidden
-                              options={CATEGORY_OPTIONS}
-                              value={storeCategory}
-                              onChange={handleManualStoreCategoryChange}
-                            />
-                          </div>
-                          {detectingStoreCategory ? (
-                            <InlineStack gap="150" blockAlign="center">
-                              <Spinner accessibilityLabel="Detecting category" size="small" />
-                              <Text as="p" variant="bodyMd" tone="subdued">
-                                AI is analyzing your selected product(s)...
-                              </Text>
-                            </InlineStack>
-                          ) : (
-                            <Text
-                              as="p"
-                              variant="bodyMd"
-                            >
-                              <span
-                                style={{
-                                  color: categoryMatchPercentage !== null ? "#026326" : "#6b7280",
-                                  fontWeight: 400,
-                                }}
-                              >
-                                {categoryMatchPercentage !== null
-                                  ? `AI detected these products are of ${selectedCategoryLabel} category with ${categoryMatchPercentage}% confidence`
-                                  : null}
-                              </span>
-                            </Text>
-                          )}
-                          {categoryMatchPercentage === null && !detectingStoreCategory && (
-                            <Button
-                              variant="plain"
-                              onClick={handleAutoDetectStoreCategoryFromMulti}
-                              fullWidth={isMobileLayout}
-                            >
-                              Detect using AI
-                            </Button>
-                          )}
-                        </InlineStack>
+                        <CategoryDetectRow
+                          options={CATEGORY_OPTIONS}
+                          value={storeCategory}
+                          onChange={handleManualStoreCategoryChange}
+                          detecting={detectingStoreCategory}
+                          detectedMessage={
+                            categoryMatchPercentage !== null
+                              ? `AI detected these products are of ${selectedCategoryLabel} category with ${categoryMatchPercentage}% confidence`
+                              : null
+                          }
+                          onDetect={handleAutoDetectStoreCategoryFromMulti}
+                        />
                       ) : null}
                     </BlockStack>
-                    </Box>
-                  </Card>
+                  </Panel>
                 ) : null}
 
                 {storeType === "single" ? (
-                  <Card roundedAbove="sm" padding="0">
-                    <Box background="bg-surface" padding="400">
+                  <Panel
+                    icon={Package}
+                    title="Select your product"
+                    description="Choose one product from your Shopify store for this single-product experience."
+                  >
                     <BlockStack gap="300">
-                      <Text as="h3" variant="headingSm" fontWeight="semibold">
-                        Select your product
-                      </Text>
-                      <Text as="p" variant="bodySm" tone="subdued">
-                        Choose one product from your Shopify store for this single-product experience.
-                      </Text>
-
-                      <InlineStack align="space-between" blockAlign="center" wrap={isMobileLayout}>
+                      <div className="flex flex-wrap items-center justify-between gap-3">
                         {selectedSingleProduct ? (
-                          <InlineStack gap="200" blockAlign="center" wrap={false}>
-                            <div
-                              style={{
-                                width: 44,
-                                height: 44,
-                                borderRadius: 8,
-                                overflow: "hidden",
-                                border: "1px solid #e1e3e5",
-                                background: "#f3f4f6",
-                                flexShrink: 0,
-                              }}
-                            >
+                          <div className="flex min-w-0 flex-1 items-center gap-3">
+                            <div className="h-11 w-11 flex-none overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200">
                               <img
                                 src={
                                   selectedSingleProduct?.featuredImage?.url ||
@@ -3811,106 +3629,50 @@ export default function StoreFlowStructure({
                                 alt={selectedSingleProduct?.title || "Selected product"}
                                 width={44}
                                 height={44}
-                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                className="h-full w-full object-cover"
                               />
                             </div>
-                            <div
-                              style={{
-                                minWidth: 0,
-                                maxWidth: isMobileLayout ? "calc(100vw - 160px)" : "280px",
-                                flex: "1 1 auto",
-                                overflow: "hidden",
-                              }}
-                            >
-                              <Text
-                                as="p"
-                                variant="bodySm"
-                                truncate
-                              >
-                                {selectedSingleProduct?.title || "Product selected"}
-                              </Text>
-                            </div>
-                          </InlineStack>
+                            <p className="m-0 min-w-0 max-w-[280px] truncate text-sm font-medium text-slate-800">
+                              {selectedSingleProduct?.title || "Product selected"}
+                            </p>
+                          </div>
                         ) : (
-                          <Text as="p" variant="bodySm" tone="subdued">
-                            No product selected yet.
-                          </Text>
+                          <p className="m-0 text-[13px] text-slate-500">No product selected yet.</p>
                         )}
-                        <div
-                          style={{
-                            marginTop: !selectedSingleProduct || (selectedSingleProduct && isMobileLayout) ? "8px" : 0,
-                            width: isMobileLayout ? "100%" : "auto",
-                          }}
+                        <SecondaryButton
+                          onClick={() => setIsSingleProductModalOpen(true)}
+                          className="w-full sm:w-auto"
                         >
-                          <Button onClick={() => setIsSingleProductModalOpen(true)} fullWidth={isMobileLayout}>
-                            {selectedSingleProduct ? "Change product" : "Select product"}
-                          </Button>
-                        </div>
-                      </InlineStack>
+                          {selectedSingleProduct ? "Change product" : "Select product"}
+                        </SecondaryButton>
+                      </div>
                       {storeType === "single" && singleProductValidationMessage
                         ? singleStoreProductValidationAlert
                         : null}
                       {selectedSingleProduct ? (
-                        <InlineStack align="space-between" blockAlign="center" gap="200" wrap={isMobileLayout}>
-                          <div style={{ minWidth: isMobileLayout ? "100%" : 220, width: isMobileLayout ? "100%" : "auto" }}>
-                            <Select
-                              label="Category"
-                              labelHidden
-                              options={CATEGORY_OPTIONS}
-                              value={storeCategory}
-                              onChange={handleManualStoreCategoryChange}
-                            />
-                          </div>
-                          {detectingStoreCategory ? (
-                            <InlineStack gap="150" blockAlign="center">
-                              <Spinner accessibilityLabel="Detecting category" size="small" />
-                              <Text as="p" variant="bodyMd" tone="subdued">
-                                AI is analyzing your selected product(s)...
-                              </Text>
-                            </InlineStack>
-                          ) : (
-                            <Text
-                              as="p"
-                              variant="bodyMd"
-                            >
-                              <span
-                                style={{
-                                  color: categoryMatchPercentage !== null ? "#026326" : "#6b7280",
-                                  fontWeight: 400,
-                                }}
-                              >
-                                {categoryMatchPercentage !== null
-                                  ? `AI detected this product of ${selectedCategoryLabel} with ${categoryMatchPercentage}% confidence`
-                                  : null}
-                              </span>
-                            </Text>
-                          )}
-                          {categoryMatchPercentage === null && !detectingStoreCategory && (
-                            <Button
-                              variant="plain"
-                              onClick={handleAutoDetectStoreCategoryFromSingle}
-                              fullWidth={isMobileLayout}
-                            >
-                              Detect using AI
-                            </Button>
-                          )}
-                        </InlineStack>
+                        <CategoryDetectRow
+                          options={CATEGORY_OPTIONS}
+                          value={storeCategory}
+                          onChange={handleManualStoreCategoryChange}
+                          detecting={detectingStoreCategory}
+                          detectedMessage={
+                            categoryMatchPercentage !== null
+                              ? `AI detected this product of ${selectedCategoryLabel} with ${categoryMatchPercentage}% confidence`
+                              : null
+                          }
+                          onDetect={handleAutoDetectStoreCategoryFromSingle}
+                        />
                       ) : null}
                     </BlockStack>
-                    </Box>
-                  </Card>
+                  </Panel>
                 ) : null}
 
                 {hasStoreProductsSelected && storeType === "single" ? (
-                  <Card roundedAbove="sm" padding="0">
-                    <Box background="bg-surface" padding="400">
-                      <BlockStack gap="300">
-                        <Text as="h3" variant="headingSm" fontWeight="semibold">
-                          Store template
-                        </Text>
-                        <Text as="p" variant="bodySm" tone="subdued">
-                          Swift — single-product storefront with on-page checkout.
-                        </Text>
+                  <Panel
+                    icon={LayoutTemplate}
+                    title="Store template"
+                    description="Swift — single-product storefront with on-page checkout."
+                  >
                         <div
                           style={{
                             display: "grid",
@@ -3928,22 +3690,6 @@ export default function StoreFlowStructure({
                                 selectedProductTemplate === combo.template
                               : selectedProductTemplate == null &&
                                 storeTemplatePack === (combo.pack || "classic");
-                            const homeVariant =
-                              combo.pack === "amour"
-                                ? STORE_DEMO_VARIANTS.AMOUR_HOME
-                                : !includePremium
-                                ? STORE_DEMO_VARIANTS.CLASSIC_HOME_PREPAID
-                                : combo.pack === "cinematic"
-                                  ? STORE_DEMO_VARIANTS.CINEMATIC_HOME
-                                  : STORE_DEMO_VARIANTS.CLASSIC_HOME;
-                            const productVariant =
-                              Number(combo.template) === 2
-                                ? STORE_DEMO_VARIANTS.PRODUCT_VIBE
-                                : STORE_DEMO_VARIANTS.PRODUCT_SLEEK;
-                            const cardVariant =
-                              combo.cardPageType === "product-page" && includePremium
-                                ? productVariant
-                                : homeVariant;
                             const comboCost = getStoreCreationCost(
                               "single",
                               marketType,
@@ -3953,6 +3699,7 @@ export default function StoreFlowStructure({
                               combo.template,
                             );
                             const cardDemoCategory = storeCategory || "general";
+                            const cardMedia = getStoreComboCardMedia(combo, cardDemoCategory);
                             return (
                               <ThemePreviewCard
                                 key={combo.id}
@@ -3989,138 +3736,55 @@ export default function StoreFlowStructure({
                                   includePremium,
                                   category: cardDemoCategory,
                                 })}
-                                thumbUrl={
-                                  combo.id === "amour"
-                                    ? getDemoPreviewThumbUrl({
-                                        family: "store",
-                                        variant: STORE_DEMO_VARIANTS.AMOUR_HOME,
-                                        category: cardDemoCategory,
-                                      })
-                                    : combo.id === "classic-sleek"
-                                    ? getDemoPreviewThumbUrl({
-                                        family: "store",
-                                        variant: STORE_DEMO_VARIANTS.LINEN_HOME,
-                                        category: cardDemoCategory,
-                                      })
-                                    : combo.id === "prepaid-classic"
-                                      ? getDemoPreviewThumbUrl({
-                                          family: "store",
-                                          variant: STORE_DEMO_VARIANTS.CLASSIC_HOME_PREPAID,
-                                          category: cardDemoCategory,
-                                        })
-                                      : null
-                                }
-                                hoverImageUrl={
-                                  combo.id === "amour"
-                                    ? `${getDemoPreviewEyeThumbUrl({
-                                        family: "store",
-                                        variant: STORE_DEMO_VARIANTS.AMOUR_HOME,
-                                        category: cardDemoCategory,
-                                      })}&shot=20261021-amour-imgs2`
-                                    : combo.id === "classic-sleek"
-                                    ? `${getDemoPreviewEyeThumbUrl({
-                                        family: "store",
-                                        variant: STORE_DEMO_VARIANTS.LINEN_HOME,
-                                        category: cardDemoCategory,
-                                      })}&shot=${String(cardDemoCategory || "").toLowerCase().includes("health") ? "20261008-hb3" : "20261008-full"}`
-                                    : combo.id === "prepaid-classic"
-                                      ? `${getDemoPreviewEyeThumbUrl({
-                                          family: "store",
-                                          variant: STORE_DEMO_VARIANTS.CLASSIC_HOME_PREPAID,
-                                          category: cardDemoCategory,
-                                        })}&shot=${
-                                          String(cardDemoCategory || "").toLowerCase().includes("health") ||
-                                          String(cardDemoCategory || "").toLowerCase().includes("car")
-                                            ? "20261008-qc2"
-                                            : "20261008-qc"
-                                        }`
-                                      : combo.id === "classic-vibe"
-                                        ? `${getDemoPreviewEyeThumbUrl({
-                                            family: "store",
-                                            variant: STORE_DEMO_VARIANTS.PRODUCT_VIBE,
-                                            category: cardDemoCategory,
-                                          })}&shot=20261008-pulse`
-                                        : combo.id === "cinematic-sleek"
-                                          ? `${getDemoPreviewEyeThumbUrl({
-                                              family: "store",
-                                              variant: STORE_DEMO_VARIANTS.PRODUCT_SLEEK,
-                                              category: cardDemoCategory,
-                                            })}&shot=${
-                                              String(cardDemoCategory || "").toLowerCase().includes("health")
-                                                ? "20261008-eclipse-hb"
-                                                : "20261008-eclipse"
-                                            }`
-                                          : combo.id === "cinematic-vibe"
-                                            ? `${getDemoPreviewEyeThumbUrl({
-                                                family: "store",
-                                                variant: STORE_DEMO_VARIANTS.CINEMATIC_HOME,
-                                                category: cardDemoCategory,
-                                              })}&shot=${
-                                                String(cardDemoCategory || "").toLowerCase().includes("health")
-                                                  ? "20261008-velvet-hb"
-                                                  : "20261008-velvet"
-                                              }`
-                                            : null
-                                }
-                                prebuiltHtmlUrl={getDemoPreviewUrl({
-                                  family: "store",
-                                  variant: cardVariant,
-                                  category: cardDemoCategory,
-                                })}
+                                thumbUrl={cardMedia.thumbUrl}
+                                hoverImageUrl={cardMedia.hoverImageUrl}
+                                prebuiltHtmlUrl={cardMedia.prebuiltHtmlUrl}
                                 demoFamily="store"
-                                demoVariant={cardVariant}
+                                demoVariant={cardMedia.demoVariant}
                                 demoCategory={cardDemoCategory}
                               />
                             );
                           })}
                         </div>
-                      </BlockStack>
-                    </Box>
-                  </Card>
+                  </Panel>
                 ) : null}
 
                 {hasStoreProductsSelected && storeType === "multi" ? (
-                  <Card roundedAbove="sm" padding="0">
-                    <Box background="bg-surface" padding="400">
-                    <BlockStack gap="300">
-                          <Text as="h3" variant="headingSm" fontWeight="semibold">
-                          Store template
-                          </Text>
-                            <Text as="p" variant="bodySm" tone="subdued">
-                          Swift — multi-product storefront with homepage, collections, and trust pages.
-                            </Text>
+                  <Panel
+                    icon={LayoutTemplate}
+                    title="Store template"
+                    description="Pick a look for your multi-product storefront. Preview it before you begin."
+                  >
                             <div
                               style={{
                                 display: "grid",
                                 gridTemplateColumns: isMobileLayout
                                   ? "minmax(0, 1fr)"
-                                  : "minmax(0, 360px)",
+                                  : `repeat(${MULTI_THEME_COMBOS.length}, minmax(0, 360px))`,
                                 gap: "12px",
                             alignItems: "stretch",
                           }}
                         >
                           {MULTI_THEME_COMBOS.map((combo) => {
+                            const comboPack = combo.pack || "classic";
                             const isSelected =
+                              storeTemplatePack === comboPack &&
                               multiIncludePremiumPdps === combo.includePremium &&
                               (combo.includePremium
                                 ? selectedProductTemplate === combo.template
                                 : selectedProductTemplate == null);
                             const productTemplate =
                               Number(combo.template) === 2 ? 2 : 1;
-                            const cardVariant = combo.includePremium
-                              ? productTemplate === 2
-                                ? STORE_DEMO_VARIANTS.PRODUCT_VIBE
-                                : STORE_DEMO_VARIANTS.PRODUCT_SLEEK
-                              : STORE_DEMO_VARIANTS.MULTI_HOME;
                             const comboCost = getStoreCreationCost(
                               "multi",
                               marketType,
                               storeCreationCosts,
-                              "classic",
+                              comboPack,
                               combo.includePremium === true,
                             );
                             // Cards/eye use the merchant-selected category's existing demo store.
                             const cardDemoCategory = storeCategory || "general";
+                            const cardMedia = getStoreComboCardMedia(combo, cardDemoCategory);
                                 return (
                               <ThemePreviewCard
                                 key={combo.id}
@@ -4143,6 +3807,7 @@ export default function StoreFlowStructure({
                                 onPreview={() => {
                                   selectMultiThemeCombo(combo);
                                   openThemeDemoModal({
+                                    pack: comboPack,
                                     includePremium: combo.includePremium,
                                     view: combo.defaultView,
                                     template: combo.includePremium
@@ -4153,99 +3818,64 @@ export default function StoreFlowStructure({
                                 }}
                                 previewProps={buildThemeCardPreviewProps({
                                   pageType: combo.cardPageType,
-                                  pack: "classic",
+                                  pack: comboPack,
                                   template: productTemplate,
                                   includePremium: combo.includePremium,
                                   category: cardDemoCategory,
                                 })}
-                                thumbUrl={
-                                  combo.includePremium === false
-                                    ? getDemoPreviewThumbUrl({
-                                        family: "store",
-                                        variant: STORE_DEMO_VARIANTS.LUMINOUS_HOME,
-                                        category: cardDemoCategory,
-                                      })
-                                    : null
-                                }
-                                hoverImageUrl={
-                                  combo.id === "luminous"
-                                    ? `${getDemoPreviewEyeThumbUrl({
-                                        family: "store",
-                                        variant: STORE_DEMO_VARIANTS.LUMINOUS_HOME,
-                                        category: cardDemoCategory,
-                                      })}&shot=${
-                                        String(cardDemoCategory || "").toLowerCase().includes("health")
-                                          ? "20261008-luminous-hb"
-                                          : "20261008-luminous"
-                                      }`
-                                    : combo.id === "collective-sleek"
-                                      ? `${getDemoPreviewEyeThumbUrl({
-                                          family: "store",
-                                          variant: STORE_DEMO_VARIANTS.PRODUCT_SLEEK,
-                                          category: cardDemoCategory,
-                                        })}&shot=${
-                                          String(cardDemoCategory || "").toLowerCase().includes("health")
-                                            ? "20261008-eclipse-hb"
-                                            : "20261008-eclipse"
-                                        }`
-                                      : combo.id === "collective-vibe"
-                                        ? `${getDemoPreviewEyeThumbUrl({
-                                            family: "store",
-                                            variant: STORE_DEMO_VARIANTS.PRODUCT_VIBE,
-                                            category: cardDemoCategory,
-                                          })}&shot=20261008-pulse`
-                                        : null
-                                }
-                                prebuiltHtmlUrl={
-                                  combo.includePremium === false
-                                    ? null
-                                    : getDemoPreviewUrl({
-                                        family: "store",
-                                        variant: cardVariant,
-                                        category: cardDemoCategory,
-                                      })
-                                }
+                                thumbUrl={cardMedia.thumbUrl}
+                                hoverImageUrl={cardMedia.hoverImageUrl}
+                                prebuiltHtmlUrl={cardMedia.prebuiltHtmlUrl}
                                 demoFamily="store"
-                                demoVariant={cardVariant}
+                                demoVariant={cardMedia.demoVariant}
                                 demoCategory={cardDemoCategory}
                               />
                             );
                           })}
                                     </div>
-                    </BlockStack>
-                    </Box>
-                  </Card>
+                  </Panel>
                 ) : null}
 
                 {hasStoreProductsSelected ? (
-                  <Card roundedAbove="sm" padding="0">
-                    <Box background="bg-surface" padding="400">
-                    <BlockStack gap="300">
-                      <InlineStack align="space-between" blockAlign="center">
-                        <InlineStack gap="200" blockAlign="center">
-                          <Text as="h3" variant="headingSm" fontWeight="semibold">
-                            Fine Tune your style
-                          </Text>
-                        </InlineStack>
-                        <Button
-                          variant="plain"
-                          disclosure={isFineTuneOpen ? "up" : "down"}
-                          onClick={() => setIsFineTuneOpen((prev) => {
-                            const next = !prev;
-                            if (next) selectEntireStoreDemoPreview();
-                            return next;
-                          })}
-                        >
-                        </Button>
-                      </InlineStack>
+                  <section className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70 sm:p-5">
+                    <BlockStack gap="400">
+                      <button
+                        type="button"
+                        aria-expanded={isFineTuneOpen}
+                        onClick={() => setIsFineTuneOpen((prev) => {
+                          const next = !prev;
+                          if (next) selectEntireStoreDemoPreview();
+                          return next;
+                        })}
+                        className="flex w-full items-center justify-between gap-3 rounded-xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a]"
+                      >
+                        <span className="flex items-center gap-3">
+                          <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-blue-50 to-violet-50 text-[#4f46e5] ring-1 ring-inset ring-blue-100">
+                            <Palette size={18} aria-hidden />
+                          </span>
+                          <span>
+                            <span className="block text-[15px] font-semibold tracking-tight text-slate-900">
+                              Fine Tune your style
+                            </span>
+                            <span className="block text-[13px] text-slate-500">
+                              Accent color and typography for your storefront
+                            </span>
+                          </span>
+                        </span>
+                        <ChevronDown
+                          size={18}
+                          aria-hidden
+                          className={`flex-none text-slate-500 transition ${isFineTuneOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
 
                       {isFineTuneOpen ? (
                         <>
                           {/* Accent color */}
                           <BlockStack gap="200">
-                            <Text as="p" variant="bodySm" tone="subdued">
+                            <p className="m-0 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">
                               Accent color (based on {selectedCategoryLabel})
-                            </Text>
+                            </p>
                             <div
                               style={{
                                 display: "flex",
@@ -4262,23 +3892,14 @@ export default function StoreFlowStructure({
                                     selectEntireStoreDemoPreview();
                                     setSelectedDynamicColor(color);
                                   }}
-                                  style={{
-                                    width: "36px",
-                                    height: "36px",
-                                    borderRadius: "999px",
-                                    background: color,
-                                    border:
-                                      selectedDynamicColor === color
-                                        ? "2px solid #111827"
-                                        : "1px solid rgba(0,0,0,0.12)",
-                                    boxShadow:
-                                      selectedDynamicColor === color
-                                        ? "0 0 0 2px #fff"
-                                        : "none",
-                                    cursor: "pointer",
-                                    padding: 0,
-                                  }}
+                                  className={`h-9 w-9 cursor-pointer rounded-full p-0 transition hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4f46e5] focus-visible:ring-offset-2 ${
+                                    selectedDynamicColor === color
+                                      ? "ring-2 ring-[#1e3a8a] ring-offset-2"
+                                      : "ring-1 ring-black/10"
+                                  }`}
+                                  style={{ background: color, border: "none" }}
                                   aria-label={`Select color ${color}`}
+                                  aria-pressed={selectedDynamicColor === color}
                                 />
                               ))}
                               <label
@@ -4290,18 +3911,15 @@ export default function StoreFlowStructure({
                                 }}
                               >
                                 <span
+                                  className={
+                                    !colorPalette.includes(selectedDynamicColor)
+                                      ? "ring-2 ring-[#1e3a8a] ring-offset-2"
+                                      : "ring-1 ring-black/10"
+                                  }
                                   style={{
                                     width: "36px",
                                     height: "36px",
                                     borderRadius: "999px",
-                                    border:
-                                      !colorPalette.includes(selectedDynamicColor)
-                                        ? "2px solid #111827"
-                                        : "1px solid rgba(0,0,0,0.12)",
-                                    boxShadow:
-                                      !colorPalette.includes(selectedDynamicColor)
-                                        ? "0 0 0 2px #fff"
-                                        : "none",
                                     background: selectedDynamicColor,
                                     position: "relative",
                                     overflow: "hidden",
@@ -4348,9 +3966,10 @@ export default function StoreFlowStructure({
                           </BlockStack>
 
                           <BlockStack gap="200">
-                            <Text as="p" variant="bodySm" tone="subdued">
+                            <p className="m-0 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">
+                              <TypeGlyph size={13} aria-hidden />
                               Typography style
-                            </Text>
+                            </p>
                             <div
                               style={{
                                 display: "grid",
@@ -4372,26 +3991,30 @@ export default function StoreFlowStructure({
                                       setHeadingFont(preset.headingFont);
                                       setBodyFont(preset.bodyFont);
                                     }}
+                                    aria-pressed={isActive}
+                                    className={`transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a] ${
+                                      isActive
+                                        ? "bg-blue-50/70 ring-2 ring-[#1e40af]"
+                                        : "bg-white ring-1 ring-slate-200 hover:ring-blue-300"
+                                    }`}
                                     style={{
                                       textAlign: "left",
                                       borderRadius: "12px",
-                                      border: `1px solid ${isActive ? "#2f6f63" : "#d1d5db"}`,
-                                      padding: "6px 12px",
-                                      background: isActive ? "#edf5f3" : "#ffffff",
+                                      border: "none",
+                                      padding: "8px 12px",
                                       cursor: isManualFontsEnabled ? "not-allowed" : "pointer",
                                       position: "relative",
                                       opacity: isManualFontsEnabled ? 0.55 : 1,
                                     }}
                                   >
-                                    <div style={{ position: "absolute", top: 8, right: 8, pointerEvents: "none" }}>
-                                      <RadioButton
-                                        label={`${preset.title} typography`}
-                                        labelHidden
-                                        name="typographyStylePreset"
-                                        checked={isActive}
-                                        onChange={() => { }}
-                                      />
-                                    </div>
+                                    <span
+                                      aria-hidden
+                                      className={`absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full ${
+                                        isActive ? "bg-[#1e40af] text-white" : "bg-white ring-1 ring-inset ring-slate-300"
+                                      }`}
+                                    >
+                                      {isActive ? <Check size={12} strokeWidth={3} /> : null}
+                                    </span>
                                     <div style={{ height: "100%", display: "flex", flexDirection: "column", gap: "3px" }}>
                                       <div style={{ fontFamily: `"${preset.headingFont}", serif`, paddingTop: "6px" }}>
                                         <Text
@@ -4414,8 +4037,8 @@ export default function StoreFlowStructure({
                                             lineHeight: "18px",
                                             padding: "2px 10px",
                                             borderRadius: "999px",
-                                            color: "#6b7280",
-                                            background: "#eef0f2",
+                                            color: isActive ? "#1e3a8a" : "#64748b",
+                                            background: isActive ? "#dbe5ff" : "#f1f5f9",
                                           }}
                                         >
                                           {preset.badgeLabel}
@@ -4454,7 +4077,7 @@ export default function StoreFlowStructure({
                                     width: 42,
                                     height: 24,
                                     borderRadius: 999,
-                                    background: isManualFontsEnabled ? "#2f6f63" : "#d1d5db",
+                                    background: isManualFontsEnabled ? "#1e3a8a" : "#cbd5e1",
                                     position: "relative",
                                     transition: "background 140ms ease",
                                   }}
@@ -4515,7 +4138,7 @@ export default function StoreFlowStructure({
                                             textAlign: "left",
                                             border: "none",
                                             borderRadius: "6px",
-                                            background: headingFont === font ? "#f3f4f6" : "transparent",
+                                            background: headingFont === font ? "#eff4ff" : "transparent",
                                             cursor: "pointer",
                                           }}
                                         >
@@ -4561,7 +4184,7 @@ export default function StoreFlowStructure({
                                             textAlign: "left",
                                             border: "none",
                                             borderRadius: "6px",
-                                            background: bodyFont === font ? "#f3f4f6" : "transparent",
+                                            background: bodyFont === font ? "#eff4ff" : "transparent",
                                             cursor: "pointer",
                                           }}
                                         >
@@ -4578,8 +4201,7 @@ export default function StoreFlowStructure({
                         </>
                       ) : null}
                     </BlockStack>
-                    </Box>
-                  </Card>
+                  </section>
               ) : null}
 
               </BlockStack>

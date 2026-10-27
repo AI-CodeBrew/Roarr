@@ -1,0 +1,32 @@
+{
+    "sections": {
+      "kluck-ai-collection-list-item-section": {
+        "type": "kluck-ai-collection-list-item-section",
+        "name": "Roarr - Collection Item",
+        "settings": {
+          "max_width": 1400,
+          "padding_top": 36,
+          "padding_bottom": 36,
+          "products_per_page": 12,
+          "columns_desktop": 4,
+          "columns_mobile": "2",
+          "grid_gap": 15,
+          "card_bg_color": "#f4f5f5",
+          "card_border_radius": 24,
+          "image_ratio": "1 / 1",
+          "text_color": "#000000",
+          "type_color": "#757575",
+          "show_vendor": true,
+          "title_size": 16,
+          "price_size": 16,
+          "type_size": 14,
+          "enable_filtering": true,
+          "enable_sorting": true
+        }
+      }
+    },
+    "order": [
+      "kluck-ai-collection-list-item-section"
+    ]
+  }
+  

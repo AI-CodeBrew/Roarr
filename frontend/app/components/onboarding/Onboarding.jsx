@@ -1,7 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  Box
-} from "@shopify/polaris";
 import { useSearchParams } from "react-router";
 import IntroStep from "./IntroStep";
 import BuildTypeStep from "./BuildTypeStep";
@@ -13,12 +10,10 @@ import OnboardingStoreFlow from "./OnboardingStoreFlow";
 import "./Onboarding.css";
 
 import { usePostHog } from "posthog-js/react";
-import { useViewportBelowMd } from "../../hooks/useViewportBelowMd.js";
 import { CreditWalletWidget } from "../CreditWalletWidget.jsx";
 import { syncPosthogMarketType } from "../../lib/posthogMarketType";
 
 export default function Onboarding({ onComplete, shop, locales: localesProp = [] }) {
-  const isMobileLayout = useViewportBelowMd();
   const [searchParams] = useSearchParams();
   const [showProductSelection, setShowProductSelection] = useState(false);
   const [showBuildTypeSelection, setShowBuildTypeSelection] = useState(false);
@@ -144,20 +139,15 @@ export default function Onboarding({ onComplete, shop, locales: localesProp = []
 
   return (
     <s-page heading="Roarr - Onboarding" inlineSize="large">
-      <CreditWalletWidget floating={false} slot="secondary-actions" />
-      <div
-        style={{
-          minHeight: isMobileLayout ? "auto" : "calc(100vh - 100px)",
-          display: "flex",
-          alignItems: isMobileLayout ? "flex-start" : "center",
-          justifyContent: "center",
-          overflowY: "auto",
-          overflowX: "hidden",
-          padding: isMobileLayout ? "16px 12px 32px" : "0 16px",
-        }}
-      >
-        <Box maxWidth="1150px" width="100%">
-          <div ref={stepHeadingRef} tabIndex={-1} style={{ outline: "none" }}>
+      <CreditWalletWidget floating={false} slot="secondary-actions" usage={false} />
+      <div className="roarr-theme flex justify-center px-3 pb-8 pt-4 md:min-h-[calc(100vh-100px)] md:items-center md:px-4 md:py-6">
+        <div className="w-full max-w-[1100px]">
+          <div
+            key={activeStep}
+            ref={stepHeadingRef}
+            tabIndex={-1}
+            className="onboarding-step-enter outline-none"
+          >
           {/* Initial onboarding content */}
           {!showBuildTypeSelection &&
             !showStoreScanStep &&
@@ -245,8 +235,7 @@ export default function Onboarding({ onComplete, shop, locales: localesProp = []
           )}
 
           </div>
-          {/* Bottom actions (only on first screen) */}
-        </Box>
+        </div>
       </div>
     </s-page>
   );

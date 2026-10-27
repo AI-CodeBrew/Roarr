@@ -455,11 +455,16 @@ def handle_app_charges_webhook():
         logger.info(f"Received app charges webhook: {webhook_data}")
 
         # Extract charge information
-        charge_id = webhook_data.get("id")
-        status = webhook_data.get("status")
-        name = webhook_data.get("name", "")
-        price = webhook_data.get("price", "0.00")
-        currency = webhook_data.get("currency", "USD")
+        # `app_purchases_one_time/update` nests the charge under `app_purchase_one_time`
+        # (GraphQL id and status); older payloads carried the fields at the top level.
+        charge = webhook_data.get("app_purchase_one_time") or webhook_data
+        charge_id = charge.get("id") or (
+            str(charge.get("admin_graphql_api_id") or "").rsplit("/", 1)[-1] or None
+        )
+        status = (charge.get("status") or "").lower() or None
+        name = charge.get("name", "")
+        price = charge.get("price", "0.00")
+        currency = charge.get("currency", "USD")
 
         if not charge_id:
             logger.error("No charge ID in webhook data")
@@ -509,7 +514,7 @@ def handle_app_charges_webhook():
             )
 
             # If the charge was accepted, the add-on is now active
-            if status == "accepted":
+            if status in ("accepted", "active"):
                 addon_name = addon_transaction.get("plan_name", "Unknown Add-on")
                 logger.info(
                     f"Add-on purchase activated for user {user_id}: {addon_name}"

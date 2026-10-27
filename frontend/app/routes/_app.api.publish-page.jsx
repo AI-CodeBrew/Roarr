@@ -70,25 +70,9 @@ export async function action({ request }) {
         pageId: pageId || null,
         page_id: pageId || null,
         selectedTemplate:
-          selectedTemplate === 1 || selectedTemplate === 2 || selectedTemplate === 3
-            ? selectedTemplate
-            : selectedTemplate == 1
-              ? 1
-              : selectedTemplate == 2
-                ? 2
-                : selectedTemplate == 3
-                  ? 3
-                  : null,
+          [1, 2, 3, 4].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : null,
         selected_template:
-          selectedTemplate === 1 || selectedTemplate === 2 || selectedTemplate === 3
-            ? selectedTemplate
-            : selectedTemplate == 1
-              ? 1
-              : selectedTemplate == 2
-                ? 2
-                : selectedTemplate == 3
-                  ? 3
-                  : null,
+          [1, 2, 3, 4].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : null,
         shop: session.shop,
       }),
     });

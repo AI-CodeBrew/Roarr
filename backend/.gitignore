@@ -9,3 +9,6 @@ __pycache__/
 *.py[cod]
 venv/
 .venv/
+
+# Dev-only Shopify CLI theme push cache
+.theme_cli_cache/

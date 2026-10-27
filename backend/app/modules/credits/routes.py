@@ -11,7 +11,6 @@ import logging
 import os
 import time
 
-import requests
 from dotenv import load_dotenv
 from flask import Blueprint, jsonify, request
 
@@ -29,6 +28,13 @@ from ...constants.credits import (
 from ...clients.posthog_client import posthog_client
 from ..auth.utils import require_shopify_auth
 from ..database import document_store
+from ..shopify.graphql_client import (
+    ShopifyGraphQLError,
+    gid_to_id,
+    raise_on_user_errors,
+    shopify_graphql,
+    to_gid,
+)
 from .service import wallet_service
 
 load_dotenv()
@@ -95,11 +101,11 @@ def _capture_credits_pack_purchased(
 
 def _fetch_charge_from_shopify(shop_user_id: str, charge_id: str):
     """
-    Fetch the live application_charge from Shopify for a given user (shop).
+    Fetch the live one-time purchase (credit pack charge) from Shopify for a given user (shop).
 
     Returns (charge_dict, error_response_tuple). If error_response_tuple is not
-    None, callers should return it directly. Otherwise charge_dict is the
-    `application_charge` payload from Shopify.
+    None, callers should return it directly. Otherwise charge_dict has
+    `id`, `name`, `status` (lowercase: pending/active/declined/expired), `price`, `test`.
     """
     shop = document_store.get_shop_details(shop_user_id)
     if not shop:
@@ -115,36 +121,51 @@ def _fetch_charge_from_shopify(shop_user_id: str, charge_id: str):
             400,
         )
 
-    shop_domain = _normalize_shop_domain(shop_user_id)
-    api_url = (
-        f"https://{shop_domain}.myshopify.com"
-        f"/admin/api/{SHOPIFY_API_VERSION}/application_charges/{charge_id}.json"
-    )
     try:
-        resp = requests.get(
-            api_url,
-            headers={"X-Shopify-Access-Token": access_token},
-            timeout=30,
+        data = shopify_graphql(
+            shop_user_id,
+            access_token,
+            """
+            query appPurchaseOneTime($id: ID!) {
+              node(id: $id) {
+                ... on AppPurchaseOneTime {
+                  id
+                  name
+                  status
+                  test
+                  createdAt
+                  price { amount currencyCode }
+                }
+              }
+            }
+            """,
+            {"id": to_gid("AppPurchaseOneTime", charge_id)},
         )
-    except requests.RequestException as exc:
-        logger.error(f"Shopify charge fetch network error for {charge_id}: {exc}")
+    except Exception as exc:
+        logger.error(f"Shopify charge fetch failed for {charge_id}: {exc}")
         return None, (
             jsonify({"success": False, "error": "Shopify request failed"}),
             502,
         )
 
-    if resp.status_code != 200:
-        logger.warning(
-            f"Shopify charge fetch returned {resp.status_code} for {charge_id}: {resp.text}"
-        )
+    node = data.get("node")
+    if not node:
+        logger.warning(f"Shopify charge fetch found no purchase for {charge_id}")
         return None, (
-            jsonify(
-                {"success": False, "error": f"Shopify error: HTTP {resp.status_code}"}
-            ),
+            jsonify({"success": False, "error": "Shopify charge not found"}),
             502,
         )
 
-    return resp.json().get("application_charge", {}) or {}, None
+    price = node.get("price") or {}
+    return {
+        "id": gid_to_id(node.get("id")),
+        "name": node.get("name"),
+        "status": (node.get("status") or "").lower(),
+        "test": bool(node.get("test")),
+        "created_at": node.get("createdAt"),
+        "price": price.get("amount"),
+        "currency": price.get("currencyCode"),
+    }, None
 
 
 @credits_bp.route("/api/credits/balance", methods=["GET"])
@@ -251,7 +272,7 @@ def purchase_pack():
     Flow:
       1. Validate pack name.
       2. Look up the user's Shopify creds.
-      3. POST to Shopify's application_charges.json (one-time, non-recurring).
+      3. Create a one-time charge with the appPurchaseOneTimeCreate GraphQL mutation.
       4. Persist a `pending` row in roarr_credit_purchases keyed on charge_id.
       5. Return the confirmation_url; user is redirected there to approve.
       6. On approval, Shopify sends a webhook -> we call
@@ -294,10 +315,6 @@ def purchase_pack():
             return jsonify({"success": False, "error": "Missing Shopify access token"}), 400
 
         shop_domain = _normalize_shop_domain(user_id)
-        api_url = (
-            f"https://{shop_domain}.myshopify.com"
-            f"/admin/api/{SHOPIFY_API_VERSION}/application_charges.json"
-        )
 
         # Shopify automatically appends `?charge_id=<id>` to the return URL
         # after the merchant approves the charge. The callback page should
@@ -327,52 +344,56 @@ def purchase_pack():
                 f"{pack['name']} credit pack ({charge_credits} credits, 2x promo)"
             )
 
-        charge_payload = {
-            "application_charge": {
-                "name": charge_name,
-                "price": pack["price"],
-                "return_url": return_url,
-                "test": is_test_mode,
-                "description": pack.get("description", ""),
-            }
-        }
-
         logger.info(
             f"Creating credit pack charge for user={user_id} shop={shop_domain} "
             f"pack={pack_name} pricing_region={pricing_region} price={pack['price']} "
             f"credits={charge_credits} promo_pending={promo_pending}"
         )
 
-        resp = requests.post(
-            api_url,
-            json=charge_payload,
-            headers={
-                "X-Shopify-Access-Token": access_token,
-                "Content-Type": "application/json",
-            },
-            timeout=30,
-        )
-
-        if resp.status_code != 201:
-            logger.error(
-                f"Shopify rejected pack charge for {shop_domain}: {resp.status_code} {resp.text}"
+        try:
+            data = shopify_graphql(
+                user_id,
+                access_token,
+                """
+                mutation appPurchaseOneTimeCreate($name: String!, $price: MoneyInput!, $returnUrl: URL!, $test: Boolean) {
+                  appPurchaseOneTimeCreate(name: $name, price: $price, returnUrl: $returnUrl, test: $test) {
+                    appPurchaseOneTime { id name status createdAt }
+                    confirmationUrl
+                    userErrors { field message }
+                  }
+                }
+                """,
+                {
+                    "name": charge_name,
+                    "price": {"amount": str(pack["price"]), "currencyCode": "USD"},
+                    "returnUrl": return_url,
+                    "test": is_test_mode,
+                },
             )
+            result = data.get("appPurchaseOneTimeCreate") or {}
+            raise_on_user_errors(result)
+        except ShopifyGraphQLError as exc:
+            logger.error(f"Shopify rejected pack charge for {shop_domain}: {exc}")
             return (
-                jsonify(
-                    {
-                        "success": False,
-                        "error": f"Shopify error: HTTP {resp.status_code}",
-                    }
-                ),
+                jsonify({"success": False, "error": f"Shopify error: {exc}"}),
                 502,
             )
 
-        charge = resp.json().get("application_charge", {})
-        charge_id = charge.get("id")
-        confirmation_url = charge.get("confirmation_url")
+        purchase = result.get("appPurchaseOneTime") or {}
+        # Numeric id: it is what Shopify appends to the return URL as `charge_id`.
+        charge_id = gid_to_id(purchase.get("id"))
+        confirmation_url = result.get("confirmationUrl")
+        charge = {
+            "id": charge_id,
+            "name": purchase.get("name") or charge_name,
+            "status": (purchase.get("status") or "").lower(),
+            "price": str(pack["price"]),
+            "created_at": purchase.get("createdAt"),
+            "test": is_test_mode,
+        }
 
         if not charge_id or not confirmation_url:
-            logger.error(f"Malformed Shopify response for pack charge: {charge}")
+            logger.error(f"Malformed Shopify response for pack charge: {result}")
             return (
                 jsonify({"success": False, "error": "Malformed Shopify response"}),
                 502,

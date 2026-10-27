@@ -3,7 +3,6 @@
  */
 export {
   default,
-  loader,
   shouldRevalidate,
   headers,
 } from "./_app.generate_pdp/ProductPageHubRoute.jsx";

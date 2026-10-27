@@ -5,6 +5,7 @@ import { BlockStack, Box, Spinner, Text } from "@shopify/polaris";
 import PagesTable from "../../components/PagesTable.jsx";
 import PagesHubWelcome from "../../components/PagesHubWelcome.jsx";
 import { usePages } from "../../lib/PagesContext";
+import { useFlowTemplate } from "../../lib/useFlowTemplate";
 import { usePageTracking } from "../../hooks/usePageTracking";
 import { buildEmbeddedHref } from "../../lib/embeddedNavigation";
 import { CreditWalletWidget } from "../../components/CreditWalletWidget";
@@ -21,6 +22,7 @@ export default function EntireStoreRoute() {
   const pageId = searchParams.get("pageId");
   const [showFlow, setShowFlow] = useState(Boolean(pageId));
   const { pages, loading: pagesLoading } = usePages();
+  const heroTemplate = useFlowTemplate("store");
 
   usePageTracking();
 
@@ -102,7 +104,11 @@ export default function EntireStoreRoute() {
           }}
         >
           <BlockStack gap="600">
-            <PagesHubWelcome variant="store" onStart={() => setShowFlow(true)} />
+            <PagesHubWelcome
+              variant="store"
+              template={heroTemplate}
+              onStart={() => setShowFlow(true)}
+            />
             <PagesTable
               listFilter="store"
               hubBasePath="/entire-store"

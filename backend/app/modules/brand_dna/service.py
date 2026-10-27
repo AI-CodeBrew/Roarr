@@ -14,8 +14,8 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Dict
 
-from ...clients import openai_client as client
-from ...clients import gemini_client
+from ...clients.openai_client import client
+from ...clients.gemini_client import client as gemini_client
 from .brand_assets import HEADERS, dedupe_urls, try_collect_storefront_signals
 from .brand_prompt import (
     build_brand_dna_prompt,

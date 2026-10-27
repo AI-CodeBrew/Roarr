@@ -26,6 +26,7 @@ import {
 import { EditIcon, ExternalIcon, MenuHorizontalIcon } from "@shopify/polaris-icons";
 
 import { usePosthogAfterIdentify } from "../lib/PosthogIdentityContext";
+import { StatChip, StatusPill, TagPill, toPlainText } from "./RoarrUI.jsx";
 
 /**
  * Toast requires Polaris {@link Frame} context. The default Frame is min-height: 100vh and
@@ -70,6 +71,15 @@ const pagesTableIndexHostStyles = (
     }
     .${PAGES_TABLE_INDEX_HOST_CLASS} .Polaris-IndexTable__Table--sticky {
       overflow: hidden !important;
+    }
+    .${PAGES_TABLE_INDEX_HOST_CLASS} .Polaris-IndexTable__TableHeading {
+      background: #f7faf9;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .${PAGES_TABLE_INDEX_HOST_CLASS} .Polaris-IndexTable__TableCell {
+      padding-block: 12px;
     }
   `}</style>
 );
@@ -137,9 +147,9 @@ export default function PagesTable({
         }}
         className={[
           "relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full p-0.5 transition-colors duration-150",
-          "focus:outline-none focus:ring-2 focus:ring-[#008060] focus:ring-offset-2",
+          "focus:outline-none focus:ring-2 focus:ring-[#2f6f63] focus:ring-offset-2",
           "disabled:cursor-not-allowed disabled:opacity-60",
-          checked ? "bg-[#008060]" : "bg-slate-200",
+          checked ? "bg-[#2f6f63]" : "bg-slate-300",
         ].join(" ")}
       >
         <span
@@ -201,7 +211,7 @@ export default function PagesTable({
       page?.store_template_pack ||
       "classic";
     const pack = String(raw || "classic").trim().toLowerCase();
-    return pack === "cinematic" || pack === "amour" ? pack : "classic";
+    return pack === "cinematic" || pack === "amour" || pack === "lumenook" ? pack : "classic";
   };
 
   const getStoreProductTemplateLabel = (page) => {
@@ -270,7 +280,7 @@ export default function PagesTable({
     const market = getStoreMarketType(page);
 
     if (isMulti) {
-      return "Multi Product - Swift";
+      return pack === "lumenook" ? "Multi Product - Lumenook" : "Multi Product - Swift";
     }
     return "Single Product - Swift";
   };
@@ -323,7 +333,9 @@ export default function PagesTable({
     const productTitle = page.product_title || "";
     const storedTemplate = page.selectedTemplate ?? page.selected_template ?? page.template;
     const template =
-      storedTemplate == 3 || storedTemplate == "3" || storedTemplate == "template_3"
+      storedTemplate == 4 || storedTemplate == "template_4"
+        ? 4
+        : storedTemplate == 3 || storedTemplate == "3" || storedTemplate == "template_3"
         ? 3
         : storedTemplate == 1 || storedTemplate == "template_1"
           ? 1
@@ -673,6 +685,17 @@ export default function PagesTable({
     [allPages, listFilter],
   );
 
+  const hubStats = useMemo(() => {
+    const isFailed = (p) =>
+      ["failed", "error"].includes(String(p?.generation_status || "").toLowerCase());
+    return {
+      total: hubScopedPages.length,
+      pushed: hubScopedPages.filter((p) => !!p.published).length,
+      drafts: hubScopedPages.filter((p) => !p.published).length,
+      failed: hubScopedPages.filter(isFailed).length,
+    };
+  }, [hubScopedPages]);
+
   // Client-side filtering and sorting
   const filteredPages = allPages
     .filter((page) => {
@@ -729,7 +752,7 @@ export default function PagesTable({
         borderWidth="025"
         borderColor="border"
         borderRadius="300"
-        className="min-w-0 max-w-full overflow-hidden shadow-sm ring-1 ring-black/5"
+        className="min-w-0 max-w-full overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5"
       >
 
 
@@ -856,16 +879,41 @@ export default function PagesTable({
     <Toast content={toggleSuccessToast} onDismiss={() => setToggleSuccessToast(null)} />
   ) : null;
 
+  const sectionTitle =
+    listFilter === "store"
+      ? "Your store designs"
+      : listFilter === "product"
+        ? "Your product pages"
+        : "Your pages";
+  const sectionHint =
+    listFilter === "store"
+      ? "Open a store design to keep editing or preview it."
+      : "Open a page to keep editing, preview it, or switch what shoppers see.";
+
   return (
     <PagesTableFrameHost>
       <Frame>
         {toggleToastMarkup}
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="text-base font-semibold text-slate-900">{sectionTitle}</h2>
+            <p className="mt-0.5 text-xs text-slate-500">{sectionHint}</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <StatChip label="Total" value={hubStats.total} />
+            <StatChip label="Pushed" value={hubStats.pushed} tone="success" />
+            <StatChip label="Drafts" value={hubStats.drafts} tone="attention" />
+            {hubStats.failed > 0 ? (
+              <StatChip label="Failed" value={hubStats.failed} tone="critical" />
+            ) : null}
+          </div>
+        </div>
         <Box
           background="bg-surface"
           borderWidth="025"
           borderColor="border"
           borderRadius="300"
-          className="mb-4 min-w-0 max-w-full overflow-hidden rounded-xl shadow-sm ring-1 ring-black/5"
+          className="mb-4 min-w-0 max-w-full overflow-hidden rounded-2xl shadow-[0_1px_2px_rgba(16,24,40,0.04),0_12px_32px_-16px_rgba(16,24,40,0.18)] ring-1 ring-black/5"
         >
       {/* <s-app-window id="app-window" src={src}></s-app-window> */}
 
@@ -916,12 +964,7 @@ export default function PagesTable({
             </Box>
           ) : sortedPages.length === 0 ? (
             <>
-              <div
-                style={{
-                  marginBottom: "16px",
-                  position: "relative",
-                }}
-              >
+              <div className="relative mb-4 flex h-36 w-36 items-center justify-center rounded-full bg-emerald-50 ring-8 ring-emerald-50/50">
                 <svg
                   width="120"
                   height="120"
@@ -954,7 +997,7 @@ export default function PagesTable({
                     width="70"
                     height="20"
                     rx="2"
-                    fill="#f97316"
+                    fill="#2f6f63"
                   />
                   <line
                     x1="20"
@@ -992,7 +1035,7 @@ export default function PagesTable({
               </div>
 
               <s-heading style={{ marginBottom: "12px", textAlign: "center" }}>
-                No page found!
+                No pages found
               </s-heading>
               <s-paragraph
                 color="subdued"
@@ -1103,103 +1146,89 @@ export default function PagesTable({
                     >
                       <IndexTable.Cell>
                         <div style={noWrapCellStyle}>
-                          <InlineStack gap="200" blockAlign="center" wrap={false}>
-                            <div
-                              style={{
-                                width: 40,
-                                height: 40,
-                                borderRadius: 8,
-                                overflow: "hidden",
-                                flexShrink: 0,
-                                background: "#f3f4f6",
-                                border: "1px solid #e1e3e5",
-                              }}
-                            >
+                          <div className="flex items-center gap-3">
+                            <div className="h-12 w-12 flex-none overflow-hidden rounded-xl bg-slate-100 ring-1 ring-black/5">
                               <img
                                 src={productImage}
                                 alt={title}
-                                width={40}
-                                height={40}
-                                style={{
-                                  width: "100%",
-                                  height: "100%",
-                                  objectFit: "cover",
-                                  objectPosition: "center center",
-                                  display: "block",
-                                }}
+                                width={48}
+                                height={48}
+                                className="block h-full w-full object-cover object-center"
                                 onError={(e) => {
                                   e.currentTarget.src = defaultEmptyImage;
                                 }}
                               />
                             </div>
                             <div style={titleCellContentStyle}>
-                              <BlockStack gap="100">
+                              <BlockStack gap="050">
                                 {page.generation_type === "store" ? (
                                   <>
                                     <InlineStack gap="200" blockAlign="center" wrap={false}>
                                       <Text as="span" variant="bodyMd" fontWeight="semibold" truncate>
                                         Entire Store
                                       </Text>
-                                      {page.is_free ? (
-                                        <Badge tone="success">Free</Badge>
-                                      ) : null}
+                                      {page.is_free ? <TagPill>Free</TagPill> : null}
                                     </InlineStack>
                                     <Text as="span" variant="bodySm" tone="subdued" truncate>
                                       {getStoreListSubtitle(page)}
                                     </Text>
                                   </>
-                                ) :
+                                ) : (
                                   <>
                                     <InlineStack gap="200" blockAlign="center" wrap={false}>
                                       <Text as="span" variant="bodyMd" fontWeight="semibold" truncate>
                                         {title.length > 50 ? `${title.slice(0, 50)}…` : title}
                                       </Text>
-                                      {page.is_free ? (
-                                        <Badge tone="success">Free</Badge>
-                                      ) : null}
+                                      {page.is_free ? <TagPill>Free</TagPill> : null}
                                     </InlineStack>
-                                    {page.product_description ? (
-                                      <Text as="span" variant="bodySm" tone="subdued" truncate>
-                                        {page.product_description.length > 40
-                                          ? `${page.product_description.slice(0, 40)}…`
-                                          : page.product_description}
-                                      </Text>
-                                    ) : null}</>}
-
+                                    {(() => {
+                                      const plainDescription = toPlainText(page.product_description);
+                                      if (!plainDescription) return null;
+                                      return (
+                                        <Text as="span" variant="bodySm" tone="subdued" truncate>
+                                          {plainDescription.length > 40
+                                            ? `${plainDescription.slice(0, 40)}…`
+                                            : plainDescription}
+                                        </Text>
+                                      );
+                                    })()}
+                                  </>
+                                )}
                               </BlockStack>
                             </div>
-                          </InlineStack>
+                          </div>
                         </div>
                       </IndexTable.Cell>
                       {showGenerationTypeColumn ? (
                         <IndexTable.Cell>
                           <div style={noWrapCellStyle}>
-                            <Badge tone={page.generation_type === "store" ? "attention" : "info"}>
+                            <StatusPill tone={page.generation_type === "store" ? "attention" : "info"}>
                               {getGenerationTypeLabel(page)}
-                            </Badge>
+                            </StatusPill>
                           </div>
                         </IndexTable.Cell>
                       ) : null}
                       <IndexTable.Cell>
                         <div style={noWrapCellStyle}>
-                          <Badge tone={page.published ? "magic" : "attention"}>
+                          <StatusPill tone={page.published ? "success" : "neutral"}>
                             {page.published ? "Pushed" : "Draft"}
-                          </Badge>
+                          </StatusPill>
                         </div>
                       </IndexTable.Cell>
                       <IndexTable.Cell>
                         <div style={noWrapCellStyle}>
-                          <Badge tone={getGenerationStatusTone(generationStatus)}>
+                          <StatusPill
+                            tone={getGenerationStatusTone(generationStatus)}
+                            pulse={getGenerationStatusTone(generationStatus) === "attention"}
+                          >
                             {formatGenerationStatus(generationStatus)}
-                          </Badge>
+                          </StatusPill>
                         </div>
                       </IndexTable.Cell>
 
                       <IndexTable.Cell>
-                        <div style={noWrapCellStyle}>
-                          <Text as="span" variant="bodySm" tone="subdued">
-                            {updatedDate}
-                          </Text>
+                        <div style={noWrapCellStyle} className="text-xs text-slate-500">
+                          {updatedDate}
                         </div>
                       </IndexTable.Cell>
                       {showProductPageColumn ? (
@@ -1210,11 +1239,9 @@ export default function PagesTable({
                         >
                           {!isPublished ? (
                             <Tooltip content="Publish page to choose what appears on your product page">
-                              <InlineStack gap="200" blockAlign="center">
-                                <Text as="span" variant="bodySm" tone="subdued">
-                                  —
-                                </Text>
-                                <span style={{ display: "inline-block" }}>
+                              <span className="inline-flex items-center gap-2 rounded-full bg-slate-50 px-2.5 py-1 opacity-70 ring-1 ring-inset ring-slate-200">
+                                <span className="text-xs font-medium text-slate-400">Original</span>
+                                <span className="inline-block">
                                   <SwitchToggle
                                     checked={false}
                                     disabled={true}
@@ -1223,10 +1250,8 @@ export default function PagesTable({
                                     onToggle={() => { }}
                                   />
                                 </span>
-                                <Text as="span" variant="bodySm" tone="subdued">
-                                  —
-                                </Text>
-                              </InlineStack>
+                                <span className="text-xs font-medium text-slate-400">Roarr</span>
+                              </span>
                             </Tooltip>
                           ) : (
                             <Tooltip
@@ -1239,10 +1264,10 @@ export default function PagesTable({
                               }
                               disabled={!(enabledValue === true && !hasOriginalContent)}
                             >
-                              <InlineStack gap="200" blockAlign="center" align="center">
-                                <Text as="span" variant="bodySm" tone={!enabledValue ? "success" : "subdued"}>
+                              <span className="inline-flex items-center gap-2 rounded-full bg-white px-2.5 py-1 ring-1 ring-inset ring-slate-200">
+                                <span className={`text-xs font-medium ${!enabledValue ? "text-slate-900" : "text-slate-400"}`}>
                                   Original
-                                </Text>
+                                </span>
                                 <span className="inline-block">
                                   <SwitchToggle
                                     checked={!!enabledValue}
@@ -1254,10 +1279,10 @@ export default function PagesTable({
                                     }
                                   />
                                 </span>
-                                <Text as="span" variant="bodySm" tone={enabledValue ? "success" : "subdued"}>
+                                <span className={`text-xs font-medium ${enabledValue ? "text-[#2f6f63]" : "text-slate-400"}`}>
                                   Roarr
-                                </Text>
-                              </InlineStack>
+                                </span>
+                              </span>
                             </Tooltip>
                           )}
                         </div>
@@ -1279,7 +1304,8 @@ export default function PagesTable({
                             onClose={() => setOpenActionsMenuId(null)}
                             activator={
                               <Button
-                                variant="plain"
+                                variant="secondary"
+                                size="slim"
                                 icon={MenuHorizontalIcon}
                                 onClick={(e) => {
                                   e.stopPropagation();

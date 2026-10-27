@@ -1,0 +1,62 @@
+
+{
+    "sections": {
+      "kluck-ai-faq-page-section": {
+        "type": "kluck-ai-faq-page-section",
+        "blocks": {
+          "faq_item_KDF6nW": {
+            "type": "faq_item",
+            "settings": {
+              "question": "How can I track my order?",
+              "answer": "<p>Once your order is placed, you'll receive a confirmation email with a tracking link. Use it to monitor your shipment's status in real time until delivery.</p>"
+            }
+          },
+          "faq_item_8JpLL9": {
+            "type": "faq_item",
+            "settings": {
+              "question": "How can I contact customer support?",
+              "answer": "<p>Our customer support team is available to assist you with any queries or concerns. Reach out through our contact page and we'll respond as soon as possible.</p>"
+            }
+          },
+          "faq_item_LWyxxC": {
+            "type": "faq_item",
+            "settings": {
+              "question": "Can I modify or cancel my order after placing it?",
+              "answer": "<p>If you wish to make changes or cancel your order, please contact our support team promptly. We'll do our best to accommodate your request depending on the order status.</p>"
+            }
+          },
+          "faq_item_e4B9UR": {
+            "type": "faq_item",
+            "settings": {
+              "question": "How long does delivery take?",
+              "answer": "<p>Delivery timelines vary based on your location and chosen shipping method. Estimated delivery dates are displayed at checkout, and delays may occasionally occur due to unforeseen circumstances.</p>"
+            }
+          }
+        },
+        "block_order": [
+          "faq_item_KDF6nW",
+          "faq_item_8JpLL9",
+          "faq_item_LWyxxC",
+          "faq_item_e4B9UR"
+        ],
+        "name": "FAQ Split Section",
+        "settings": {
+          "heading": "Discover more in our FAQ",
+          "subheading": "Have a question or comment? Don't be shy: Reach out and say hi!",
+          "card_heading": "Still need help?",
+          "card_text": "Shoot our team an email & we'll get back to you ASAP",
+          "btn_label": "Contact Us",
+          "btn_link": "",
+          "bg_color": "#ffffff",
+          "text_color": "#000000",
+          "max_width": 1200,
+          "padding_top": 80,
+          "padding_bottom": 80
+        }
+      }
+    },
+    "order": [
+      "kluck-ai-faq-page-section"
+    ]
+  }
+  

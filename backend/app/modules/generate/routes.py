@@ -40,7 +40,7 @@ from .store.templates.multi_store.signature import (
     ProductPageMultiStore,
 )
 from .prompts import PRODUCT_CATEGORY_PROMPT_SYSTEM, STORE_CATEGORY_PROMPT_SYSTEM
-from ...clients import openai_client as client
+from ...clients.openai_client import client
 from .service import run_generation_task, run_store_generation_task
 from .store_payload_utils import (
     collect_product_image_urls,
@@ -772,20 +772,12 @@ def generate_for_store():
         data["country_code"] = country_code
         data["selectedTemplate"] = selected_template
         data["selected_template"] = selected_template
-        from .store.pack_utils import (
-            SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS,
-            normalize_store_template_pack,
-        )
+        from .store.pack_utils import store_template_pack_for_mode
 
-        store_template_pack = normalize_store_template_pack(
-            data.get("storeTemplatePack") or data.get("store_template_pack")
+        # Cinematic and Amour are single-product only; Lumenook is multi-product only.
+        store_template_pack = store_template_pack_for_mode(
+            data.get("storeTemplatePack") or data.get("store_template_pack"), mode
         )
-        # Cinematic and Amour packs are single-product only (COD + prepaid).
-        if (
-            store_template_pack in SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS
-            and mode != "single_product"
-        ):
-            store_template_pack = "classic"
         data["storeTemplatePack"] = store_template_pack
         data["store_template_pack"] = store_template_pack
         product_ids = data.get("productIds", [])

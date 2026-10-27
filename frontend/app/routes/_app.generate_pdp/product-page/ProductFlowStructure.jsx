@@ -2,8 +2,16 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { usePostHog } from "posthog-js/react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useAppBridge, Modal as AppBridgeModal } from "@shopify/app-bridge-react";
-import { BlockStack, Box, Button, Card, Icon, InlineStack, Page, Select, Spinner, Text } from "@shopify/polaris";
-import { DesktopIcon, MobileIcon, ArrowLeftIcon } from "@shopify/polaris-icons";
+import { BlockStack, Box, Button, Icon, InlineStack, Page, Spinner, Text } from "@shopify/polaris";
+import { DesktopIcon, MobileIcon } from "@shopify/polaris-icons";
+import { LayoutTemplate, Package } from "lucide-react";
+import {
+  FlowPageHeader,
+  Panel,
+  SecondaryButton,
+  StepHeading,
+} from "../../../components/RoarrUI.jsx";
+import CategoryDetectRow from "../../../components/CategoryDetectRow.jsx";
 import { useDashboardLoaderData } from "../../../lib/DashboardDataContext";
 import { usePages } from "../../../lib/PagesContext";
 import { buildEmbeddedHref } from "../../../lib/embeddedNavigation.js";
@@ -18,11 +26,9 @@ import {
   DemoPreviewDisclaimer,
 } from "../../../components/theme-preview-editor/DemoPreviewChromeLabels.jsx";
 import {
-  getDemoPreviewEyeThumbUrl,
-  getDemoPreviewThumbUrl,
-  getDemoPreviewUrl,
-  PDP_DEMO_VARIANTS,
-} from "../../../lib/demoPreviewUrls.js";
+  getProductTemplateCardMedia,
+  PRODUCT_TEMPLATE_OPTIONS,
+} from "./productTemplateOptions.js";
 import ProductSelectionModal from "../../../components/ProductSelectionModal.jsx";
 import GenerateContainer from "../utils/GenerateContainer.jsx";
 import { useViewportBelowMd } from "../../../hooks/useViewportBelowMd.js";
@@ -44,11 +50,11 @@ const ProductPreviewEditor = lazy(() =>
 const ProductGenerationStep = lazy(() => import("./ProductGenerationStep.jsx"));
 const ProductPublishStep = lazy(() => import("./ProductPublishStep.jsx"));
 
-const TEMPLATE_LABELS = { 1: "Sleek", 2: "Vibe", 3: "Aura" };
+const TEMPLATE_LABELS = { 1: "Sleek", 2: "Vibe", 3: "Aura", 4: "Lumenook" };
 
 function asProductTemplate(value) {
   const n = Number(value);
-  return n === 1 || n === 2 || n === 3 ? n : null;
+  return n === 1 || n === 2 || n === 3 || n === 4 ? n : null;
 }
 const IMAGE_REGENERATE_FALLBACK_URL =
   "https://cdn.shopify.com/s/files/1/0670/3438/2430/files/ChatGPT_Image_Aug_7_2026_05_45_30_PM.png?v=1786106870";
@@ -205,7 +211,9 @@ function mapPageRecordToProductFlowState(page) {
     genDataForTemplate?.selectedTemplate ??
     genDataForTemplate?.selected_template;
   const template =
-    storedTemplate === 3 || storedTemplate === "3" || storedTemplate === "template_3"
+    storedTemplate === 4 || storedTemplate === "4" || storedTemplate === "template_4"
+      ? 4
+      : storedTemplate === 3 || storedTemplate === "3" || storedTemplate === "template_3"
       ? 3
       : generationLooksLikePlay(page)
         ? 3
@@ -264,52 +272,13 @@ function ProductConfigureStepShell({
         boxSizing: "border-box",
       }}
     >
-      <div
-        className="generate-flow-sticky-page-header"
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 200,
-          background: "#f2f2f2",
-          padding: "12px 0 16px",
-          marginBottom: 8,
-          borderBottom: "1px solid #e1e3e5",
-        }}
-      >
-        <InlineStack align="space-between" blockAlign="center" gap="400" wrap>
-          <InlineStack gap="300" blockAlign="center" wrap={false}>
-            <button
-              type="button"
-              aria-label={backLabel || "Back"}
-              onClick={onBack}
-              style={{
-                border: "none",
-                background: "transparent",
-                padding: 4,
-                margin: 0,
-                cursor: "pointer",
-                display: "inline-flex",
-                alignItems: "center",
-                color: "#202223",
-                flexShrink: 0,
-              }}
-            >
-              <Icon source={ArrowLeftIcon} tone="base" />
-            </button>
-            <BlockStack gap="100">
-              <Text as="h1" variant="headingLg" fontWeight="semibold">
-                Configure product page
-              </Text>
-              <Text as="p" variant="bodySm" tone="subdued">
-                Step 1 of 3
-              </Text>
-            </BlockStack>
-          </InlineStack>
-          {primaryAction ? (
-            <div style={{ flexShrink: 0 }}>{primaryAction}</div>
-          ) : null}
-        </InlineStack>
-      </div>
+      <FlowPageHeader
+        title="Configure product page"
+        subtitle="Step 1 of 3"
+        backLabel={backLabel || "Back"}
+        onBack={onBack}
+        primaryAction={primaryAction}
+      />
       <BlockStack gap="400">{children}</BlockStack>
     </Box>
   );
@@ -508,6 +477,28 @@ export default function ProductFlowStructure({
   );
   const glowPreviewCacheKey = useMemo(
     () => ["product-page-card", "health_beauty", "3-glow-faq", selectedProduct?.id || ""].join("::"),
+    [selectedProduct?.id],
+  );
+  const lumenMagicResponse = useMemo(() => {
+    const categoryDefaults = getDefaultMagicResponses("general", { template: 4 });
+    return {
+      ...DEFAULT_MAGIC_RESPONSE,
+      images: categoryDefaults.images || {},
+      text: categoryDefaults.text || {},
+      selected_color: categoryDefaults.color || undefined,
+      color_schemes: categoryDefaults.color ? [categoryDefaults.color] : [],
+    };
+  }, []);
+  const lumenProductData = useMemo(
+    () => aiResponseMapping(lumenMagicResponse),
+    [lumenMagicResponse],
+  );
+  const lumenTemplateRows = useMemo(
+    () => generateTemplateConfig("general", lumenProductData, 4, lumenMagicResponse),
+    [lumenProductData, lumenMagicResponse],
+  );
+  const lumenPreviewCacheKey = useMemo(
+    () => ["product-page-card", "general", "4-lumenook", selectedProduct?.id || ""].join("::"),
     [selectedProduct?.id],
   );
 
@@ -946,11 +937,12 @@ export default function ProductFlowStructure({
   const readSelectedTemplate = () =>
     asProductTemplate(templateSelectionRef.current) ?? asProductTemplate(selectedTemplate);
 
-  // Aura is the only product template in v2 — auto-select when a product is ready.
+  // Aura is the default product template — auto-select it when a product is ready,
+  // unless the merchant already picked Lumenook.
   useEffect(() => {
     if (pageIdFromUrl) return;
     if (!activeProduct || productValidationMessage) return;
-    if (selectedTemplate === 3) return;
+    if (selectedTemplate === 3 || selectedTemplate === 4) return;
     templateSelectionRef.current = 3;
     setSelectedTemplate(3);
   }, [activeProduct, productValidationMessage, selectedTemplate, pageIdFromUrl]);
@@ -960,7 +952,7 @@ export default function ProductFlowStructure({
     const ready =
       Boolean(activeProduct) &&
       !productValidationMessage &&
-      template === 3;
+      (template === 3 || template === 4);
     if (!ready) return;
     const wallet = await refreshCreditsWallet();
     const cost = resolveFeatureCost(
@@ -992,7 +984,7 @@ export default function ProductFlowStructure({
     const ready =
       Boolean(activeProduct) &&
       !productValidationMessage &&
-      template === 3;
+      (template === 3 || template === 4);
     if (!ready) return;
     setStep(2);
     setIsGenerating(true);
@@ -1096,17 +1088,13 @@ export default function ProductFlowStructure({
           backgroundColor: "#f2f2f2",
         }}
       >
-        <BlockStack gap="300" align="center" inlineAlign="center">
+        <div className="flex flex-col items-center gap-3 rounded-2xl bg-white px-8 py-6 text-center shadow-sm ring-1 ring-slate-200/70">
           <Spinner accessibilityLabel="Loading" size="large" />
-          <BlockStack gap="200" align="center" inlineAlign="center">
-            <Text as="p" variant="bodyMd" fontWeight="semibold" alignment="center">
-              Loading...
-            </Text>
-            <Text as="p" variant="bodySm" tone="subdued" alignment="center">
-              Preparing your page
-            </Text>
-          </BlockStack>
-        </BlockStack>
+          <div>
+            <p className="m-0 text-sm font-semibold text-slate-900">Loading...</p>
+            <p className="m-0 mt-0.5 text-[13px] text-slate-500">Preparing your page</p>
+          </div>
+        </div>
       </Box>
     );
   }
@@ -1125,13 +1113,11 @@ export default function ProductFlowStructure({
           />
         </Suspense>
         {!isGenerating ? (
-          <Card roundedAbove="sm" padding="0">
-            <Box background="bg-surface" padding="400">
-              <InlineStack align="center">
-                <Button onClick={() => setStep(1)}>Back to Configuration</Button>
-              </InlineStack>
-            </Box>
-          </Card>
+          <Panel>
+            <div className="flex justify-center">
+              <SecondaryButton onClick={() => setStep(1)}>Back to Configuration</SecondaryButton>
+            </div>
+          </Panel>
         ) : null}
       </BlockStack>
     );
@@ -1422,7 +1408,7 @@ export default function ProductFlowStructure({
                     }}
                     style={{
                       border: "none",
-                      background: isActive ? "#111827" : "transparent",
+                      background: isActive ? "#1e3a8a" : "transparent",
                       color: isActive ? "#ffffff" : "#6b7280",
                       borderRadius: 999,
                       width: 32,
@@ -1473,7 +1459,8 @@ export default function ProductFlowStructure({
               {(isProductDemoModalOpen || productDemoWarmed) &&
               (demoSelectedTemplate === 1 ||
                 demoSelectedTemplate === 2 ||
-                demoSelectedTemplate === 3) ? (
+                demoSelectedTemplate === 3 ||
+                demoSelectedTemplate === 4) ? (
                 <>
                     <div
                     style={{
@@ -1528,6 +1515,25 @@ export default function ProductFlowStructure({
                       attachBelowChrome={modalPreviewMode === "desktop"}
                       minHeight="1200px"
                       previewCacheKey={glowPreviewCacheKey}
+                      prebuiltHtmlUrl={null}
+                      expandToContent
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: demoSelectedTemplate === 4 ? "block" : "none",
+                      height: "auto",
+                    }}
+                    aria-hidden={demoSelectedTemplate !== 4}
+                  >
+                    <LiquidPreviewRender
+                      templateRows={lumenTemplateRows}
+                      previewMode={modalPreviewMode}
+                      selectedSection={null}
+                      storeName={null}
+                      attachBelowChrome={modalPreviewMode === "desktop"}
+                      minHeight="1200px"
+                      previewCacheKey={lumenPreviewCacheKey}
                       prebuiltHtmlUrl={null}
                       expandToContent
                     />
@@ -1591,20 +1597,13 @@ export default function ProductFlowStructure({
           {embedded && !hideConfigurationHeading ? (
             <div
               className="generate-flow-sticky-page-header"
-              style={{
-                padding: "12px 0 16px",
-                marginBottom: 8,
-                borderBottom: "1px solid #e1e3e5",
-              }}
+              style={{ padding: "14px 0 10px" }}
             >
-              <BlockStack gap="200">
-                <Text as="h2" variant="headingLg" fontWeight="semibold">
-                  Configure product page
-                </Text>
-                <Text as="p" variant="bodySm" tone="subdued">
-                  Step 1 of 3
-                </Text>
-              </BlockStack>
+              <StepHeading
+                number={1}
+                title="Configure product page"
+                subtitle="Select a product, choose a template, and begin magic"
+              />
             </div>
           ) : null}
           <div
@@ -1621,300 +1620,120 @@ export default function ProductFlowStructure({
               style={{ display: "flex", flexDirection: "column", gap: "16px" }}
             >
               <BlockStack gap="300">
-              <Card roundedAbove="sm" padding="0">
-                <Box background="bg-surface" padding="400">
-                    <BlockStack gap="300">
-                    <Text as="h3" variant="headingSm" fontWeight="semibold">
-                      Select your product
-                    </Text>
-                    <Text as="p" variant="bodySm" tone="subdued">
-                      Choose one product from your Shopify store for this single-product experience.
-                    </Text>
-
-                    {selectedProduct && isMobileLayout ? (
-                      <BlockStack gap="200">
-                        <InlineStack gap="200" blockAlign="center" wrap={false}>
-                          <div
-                            style={{
-                              width: 44,
-                              height: 44,
-                              borderRadius: 8,
-                              overflow: "hidden",
-                              border: "1px solid #e1e3e5",
-                              background: "#f3f4f6",
-                              flexShrink: 0,
-                            }}
-                          >
-                            <img
-                              src={
-                                selectedProduct?.featuredImage?.url ||
-                                selectedProduct?.images?.edges?.[0]?.node?.url ||
-                                "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%23f3f4f6'/%3E%3C/svg%3E"
-                              }
-                              alt={selectedProduct?.title || "Selected product"}
-                              width={44}
-                              height={44}
-                              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                            />
-                          </div>
-                          <div style={{ minWidth: 0, flex: "1 1 auto", overflow: "hidden" }}>
-                            <p
-                              style={{
-                                margin: 0,
-                                fontSize: "13px",
-                                lineHeight: "20px",
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                width: "100%",
-                              }}
-                            >
-                              {selectedProduct?.title || "Product selected"}
-                            </p>
-                          </div>
-                        </InlineStack>
-                        <Button onClick={() => setShowProductModal(true)} fullWidth>
-                          Change product
-                        </Button>
-                      </BlockStack>
-                    ) : (
-                      <InlineStack
-                        align="space-between"
-                        blockAlign={isMobileLayout ? "start" : "center"}
-                        wrap={isMobileLayout}
-                        gap="200"
-                      >
-                        {selectedProduct ? (
-                          <InlineStack
-                            gap="200"
-                            blockAlign="center"
-                            wrap={false}
-                          >
-                            <div
-                              style={{
-                                width: 44,
-                                height: 44,
-                                borderRadius: 8,
-                                overflow: "hidden",
-                                border: "1px solid #e1e3e5",
-                                background: "#f3f4f6",
-                              }}
-                            >
-                              <img
-                                src={
-                                  selectedProduct?.featuredImage?.url ||
-                                  selectedProduct?.images?.edges?.[0]?.node?.url ||
-                                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%23f3f4f6'/%3E%3C/svg%3E"
-                                }
-                                alt={selectedProduct?.title || "Selected product"}
-                                width={44}
-                                height={44}
-                                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                              />
-                            </div>
-                            <div
-                              style={{
-                                minWidth: 0,
-                                maxWidth: "280px",
-                                flex: 1,
-                                overflow: "hidden",
-                              }}
-                            >
-                              <Text
-                                as="p"
-                                variant="bodySm"
-                                truncate
-                                style={{
-                                  whiteSpace: "nowrap",
-                                  overflow: "hidden",
-                                  textOverflow: "ellipsis",
-                                  maxWidth: "100%",
-                                }}
-                              >
-                                {selectedProduct?.title || "Product selected"}
-                              </Text>
-                            </div>
-                          </InlineStack>
-                        ) : (
-                          <Text as="p" variant="bodySm" tone="subdued">
-                            No product selected yet.
-                          </Text>
-                        )}
-                        <Button onClick={() => setShowProductModal(true)} fullWidth={isMobileLayout}>
-                          {selectedProduct ? "Change product" : "Select product"}
-                        </Button>
-                      </InlineStack>
-                    )}
-                    {selectedProduct && productValidationMessage ? (
-                      productValidationAlert
-                    ) : null}
-
+              <Panel
+                icon={Package}
+                title="Select your product"
+                description="Choose one product from your Shopify store for this single-product experience."
+              >
+                <BlockStack gap="300">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
                     {selectedProduct ? (
-                      <InlineStack
-                        align="space-between"
-                        blockAlign={isMobileLayout ? "start" : "center"}
-                        gap="200"
-                        wrap={isMobileLayout}
-                      >
-                        <div style={{ minWidth: isMobileLayout ? "100%" : 220, width: isMobileLayout ? "100%" : "auto" }}>
-                          <Select
-                            label="Category"
-                            labelHidden
-                            options={CATEGORY_OPTIONS}
-                            value={productCategory}
-                            onChange={handleManualProductCategoryChange}
+                      <div className="flex min-w-0 flex-1 items-center gap-3">
+                        <div className="h-11 w-11 flex-none overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200">
+                          <img
+                            src={
+                              selectedProduct?.featuredImage?.url ||
+                              selectedProduct?.images?.edges?.[0]?.node?.url ||
+                              "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%23f3f4f6'/%3E%3C/svg%3E"
+                            }
+                            alt={selectedProduct?.title || "Selected product"}
+                            width={44}
+                            height={44}
+                            className="h-full w-full object-cover"
                           />
                         </div>
-                        {detectingProductCategory ? (
-                          <InlineStack gap="150" blockAlign="center">
-                            <Spinner accessibilityLabel="Detecting category" size="small" />
-                            <Text as="p" variant="bodyMd" tone="subdued">
-                              AI is analyzing your selected product(s)...
-                            </Text>
-                          </InlineStack>
-                        ) : (
-                          <Text
-                            as="p"
-                            variant="bodyMd"
-                          >
-                            <span
-                              style={{
-                                color: categoryMatchPercentage !== null ? "#026326" : "#6b7280",
-                                fontWeight: 400,
-                              }}
-                            >
-                              {categoryMatchPercentage !== null
-                                ? `AI detected this product of ${selectedCategoryLabel} with ${categoryMatchPercentage}% confidence`
-                                : null}
-                            </span>
-                          </Text>
-                        )}
-                        {categoryMatchPercentage === null && !detectingProductCategory && (
-                          <Button
-                            variant="plain"
-                            onClick={handleAutoDetectProductCategoryFromShopify}
-                            fullWidth={isMobileLayout}
-                          >
-                            Detect using AI
-                          </Button>
-                        )}
-                      </InlineStack>
-                    ) : null}
-                    </BlockStack>
-                  </Box>
-                </Card>
+                        <p className="m-0 min-w-0 max-w-[280px] truncate text-sm font-medium text-slate-800">
+                          {selectedProduct?.title || "Product selected"}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="m-0 text-[13px] text-slate-500">No product selected yet.</p>
+                    )}
+                    <SecondaryButton
+                      onClick={() => setShowProductModal(true)}
+                      className="w-full sm:w-auto"
+                    >
+                      {selectedProduct ? "Change product" : "Select product"}
+                    </SecondaryButton>
+                  </div>
+                  {selectedProduct && productValidationMessage ? (
+                    productValidationAlert
+                  ) : null}
+
+                  {selectedProduct ? (
+                    <CategoryDetectRow
+                      options={CATEGORY_OPTIONS}
+                      value={productCategory}
+                      onChange={handleManualProductCategoryChange}
+                      detecting={detectingProductCategory}
+                      detectedMessage={
+                        categoryMatchPercentage !== null
+                          ? `AI detected this product of ${selectedCategoryLabel} with ${categoryMatchPercentage}% confidence`
+                          : null
+                      }
+                      onDetect={handleAutoDetectProductCategoryFromShopify}
+                    />
+                  ) : null}
+                </BlockStack>
+              </Panel>
 
               {activeProduct && !productValidationMessage ? (
-                <Card roundedAbove="sm" padding="0">
-                  <Box background="bg-surface" padding="400">
-                    <BlockStack gap="300">
-                      <Text as="h3" variant="headingSm" fontWeight="semibold">
-                        Template
-                      </Text>
+                <Panel
+                  icon={LayoutTemplate}
+                  title="Template"
+                  description="Pick a look for your product page. Preview it before you begin."
+                >
                       <div
                         style={{
                           display: "grid",
                           gridTemplateColumns: isMobileLayout
                             ? "minmax(0, 1fr)"
-                            : "minmax(0, 360px)",
+                            : `repeat(${PRODUCT_TEMPLATE_OPTIONS.length}, minmax(0, 360px))`,
                           gap: "12px",
                           alignItems: "stretch",
                         }}
                       >
-                        {[
-                          {
-                            id: 3,
-                            title: "Aura",
-                            badge: { label: "Top rated", tone: "top" },
-                            blurb:
-                              "Serif headlines, cream layout, results, ingredients, and how to use — for every category",
-                            rows: glowTemplateRows,
-                            cacheKey: glowPreviewCacheKey,
-                            thumbVariant: "glow",
-                            thumbCategory: "health_beauty",
-                            shot: "20261010-glow-faq",
-                            eyeShot: "20261010-glow-faq",
-                          },
-                        ].map((opt) => (
-                          <ThemePreviewCard
-                            key={opt.id}
-                            title={opt.title}
-                            badge={opt.badge || null}
-                            blurb={opt.blurb}
-                            creditCost={pageGenerationCost(opt.id)}
-                            creditBalance={creditBalance}
-                            onGetCredits={openCreditsPage}
-                            skipCreditGate={pageSkipsCreditGates}
-                            selected={selectedTemplate === opt.id}
-                            onSelect={() => {
-                              templateSelectionRef.current = opt.id;
-                              setSelectedTemplate(opt.id);
-                            }}
-                            onBeginMagic={() => {
-                              templateSelectionRef.current = opt.id;
-                              setSelectedTemplate(opt.id);
-                              void requestPageGenerationCredit();
-                            }}
-                            beginMagicDisabled={
-                              !activeProduct || Boolean(productValidationMessage) || isGenerating
-                            }
-                            beginMagicLoading={isGenerating}
-                            onPreview={() => openProductDemoModal(opt.id)}
-                            templateRows={opt.rows}
-                            previewCacheKey={opt.cacheKey}
-                            framePreviewUrl={null}
-                            thumbUrl={
-                              opt.thumbVariant
-                                ? `${getDemoPreviewThumbUrl({
-                                    family: "pdp",
-                                    variant: opt.thumbVariant,
-                                    category: opt.thumbCategory,
-                                  })}&shot=${opt.shot}`
-                                : undefined
-                            }
-                            prebuiltHtmlUrl={
-                              opt.thumbVariant
-                                ? null
-                                : getDemoPreviewUrl({
-                                    family: "pdp",
-                                    variant:
-                                      opt.id === 2
-                                        ? PDP_DEMO_VARIANTS.VIBE
-                                        : PDP_DEMO_VARIANTS.SLEEK,
-                                    category: productCategory,
-                                  })
-                            }
-                            hoverImageUrl={
-                              opt.thumbVariant
-                                ? `${getDemoPreviewEyeThumbUrl({
-                                    family: "pdp",
-                                    variant: opt.thumbVariant,
-                                    category: opt.thumbCategory,
-                                  })}&shot=${opt.eyeShot}`
-                                : `${getDemoPreviewEyeThumbUrl({
-                                    family: "pdp",
-                                    variant:
-                                      opt.id === 2
-                                        ? PDP_DEMO_VARIANTS.VIBE
-                                        : PDP_DEMO_VARIANTS.SLEEK,
-                                    category: productCategory,
-                                  })}&shot=${opt.id === 2 ? "20261008-pdp-vibe" : "20261008-pdp-sleek"}`
-                            }
-                            demoFamily="pdp"
-                            demoVariant={
-                              opt.thumbVariant
-                                ? opt.thumbVariant
-                                : opt.id === 2
-                                  ? PDP_DEMO_VARIANTS.VIBE
-                                  : PDP_DEMO_VARIANTS.SLEEK
-                            }
-                            demoCategory={productCategory}
-                          />
-                        ))}
+                        {PRODUCT_TEMPLATE_OPTIONS.map((opt) => {
+                          const cardMedia = getProductTemplateCardMedia(opt);
+                          return (
+                            <ThemePreviewCard
+                              key={opt.id}
+                              title={opt.title}
+                              badge={opt.badge || null}
+                              blurb={opt.blurb}
+                              creditCost={pageGenerationCost(opt.id)}
+                              creditBalance={creditBalance}
+                              onGetCredits={openCreditsPage}
+                              skipCreditGate={pageSkipsCreditGates}
+                              selected={selectedTemplate === opt.id}
+                              onSelect={() => {
+                                templateSelectionRef.current = opt.id;
+                                setSelectedTemplate(opt.id);
+                              }}
+                              onBeginMagic={() => {
+                                templateSelectionRef.current = opt.id;
+                                setSelectedTemplate(opt.id);
+                                void requestPageGenerationCredit();
+                              }}
+                              beginMagicDisabled={
+                                !activeProduct || Boolean(productValidationMessage) || isGenerating
+                              }
+                              beginMagicLoading={isGenerating}
+                              onPreview={() => openProductDemoModal(opt.id)}
+                              templateRows={opt.id === 4 ? lumenTemplateRows : glowTemplateRows}
+                              previewCacheKey={opt.id === 4 ? lumenPreviewCacheKey : glowPreviewCacheKey}
+                              framePreviewUrl={null}
+                              thumbUrl={cardMedia.thumbUrl}
+                              prebuiltHtmlUrl={null}
+                              hoverImageUrl={cardMedia.hoverImageUrl}
+                              demoFamily="pdp"
+                              demoVariant={cardMedia.demoVariant}
+                              demoCategory={productCategory}
+                            />
+                          );
+                        })}
                       </div>
-                    </BlockStack>
-                  </Box>
-                </Card>
+                </Panel>
               ) : null}
 
               </BlockStack>

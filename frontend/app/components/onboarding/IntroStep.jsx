@@ -1,86 +1,76 @@
-import { Box, InlineStack, BlockStack, Text, Button } from "@shopify/polaris";
+import { ArrowRight, Gift, ShieldCheck, Timer } from "lucide-react";
 import WhatsComingCard from "./WhatsComingCard";
-import { useViewportBelowMd } from "../../hooks/useViewportBelowMd.js";
+import { GradientText, PrimaryButton, StepFrame } from "./OnboardingUI";
+import { HeroShowcase } from "../../routes/root.dashboard/ShowcaseArt.jsx";
+import RoarrLionMark from "../RoarrLionMark.jsx";
+
+const PERKS = [
+  { icon: ShieldCheck, label: "Your live theme & store stay untouched" },
+  { icon: Gift, label: "First page is free" },
+  { icon: Timer, label: "Ready in about 4 minutes" },
+];
 
 export default function IntroStep({ onStart }) {
-  const isMobileLayout = useViewportBelowMd();
-
   return (
-    <Box>
-      <BlockStack gap="600">
-        <InlineStack gap="200" blockAlign="center">
-          <img
-            src="https://cdn.shopify.com/s/files/1/0704/0119/6122/files/New_Project.png?v=1769678513"
-            alt="Roarr"
-            style={{ width: 30, height: 30, borderRadius: 4, objectFit: "cover" }}
-          />
-          <Text as="p" variant="headingMd" fontWeight="medium">
-            Welcome to Roarr
-          </Text>
-        </InlineStack>
-
-        <BlockStack gap="300">
-          <h1
-            className="onboarding-hero-title"
-            style={{
-              fontFamily: 'Baskerville, "Palatino Linotype", Palatino, "Times New Roman", Times, serif',
-              fontWeight: 400,
-              lineHeight: 1.3,
-              margin: 0,
-              color: "#1a1a1a",
-            }}
-          >
-            You are minutes away from a store
-            <br className="onboarding-hero-linebreak" />
-            that{" "}
-            <span
-              style={{
-                color: "#2f6f63",
-                fontStyle: "italic",
-                display: "inline-flex",
-                flexDirection: "column",
-                alignItems: "stretch",
-              }}
-            >
-              <span>actually converts.</span>
-              <span
-                aria-hidden="true"
-                style={{
-                  height: 3,
-                  background: "linear-gradient(to right, rgba(47, 111, 99, 0.95) 0%, rgba(47, 111, 99, 0.5) 45%, rgba(47, 111, 99, 0.1) 100%)",
-                  borderRadius: 999,
-                  width: "100%",
-                }}
-              />
+    <StepFrame>
+      <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="min-w-0">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/80 py-1 pl-1 pr-3 text-xs font-semibold text-[#1e40af] ring-1 ring-inset ring-blue-200">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white ring-1 ring-blue-100">
+              <RoarrLionMark size={22} strokeWidth={6} />
             </span>
-          </h1>
-          <Text as="p" variant="bodyMd" tone="subdued">
-            In about 4 minutes, you'll have a store that works harder for you.
-          </Text>
-        </BlockStack>
-
-        <Text as="p" variant="bodyMd">
-          <span style={{ fontWeight: 700, fontStyle: "italic", background: "#fff3a0", padding: "2px 6px", borderRadius: 4 }}>
-            Install and try without any hesitant, this will not affect your existing theme and store.
+            Welcome to Roarr
+            <span aria-hidden>👋</span>
           </span>
-        </Text>
 
-        <BlockStack gap="100">
-          <Text as="p" variant="bodyMd" fontWeight="medium" tone="subdued">
-            WHAT'S COMING
-          </Text>
-          <WhatsComingCard currentStep={1} completedStep={1} />
-        </BlockStack>
+          <h1
+            className="mt-4 font-bold leading-[1.12] tracking-tight text-slate-900"
+            style={{ fontSize: "clamp(1.7rem, 3.4vw, 2.6rem)" }}
+          >
+            You are minutes away from a store that <GradientText>actually converts.</GradientText>
+          </h1>
+          <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-slate-600">
+            In about 4 minutes, you'll have a store that works harder for you. Install and try
+            freely — nothing changes on your live store until you say so.
+          </p>
 
-        <BlockStack gap="200" inlineAlign={isMobileLayout ? "stretch" : "start"}>
-          <Button variant="primary" fullWidth={isMobileLayout} onClick={onStart}>
-            Let's get started →
-          </Button>
-          <Text as="p" variant="bodyMd" tone="subdued">
-            No charges on your Shopify bill for first page - <span style={{ color: "#111827", fontWeight: 600 }}>its on us!.</span>
-          </Text>
-        </BlockStack>
-      </BlockStack>
-    </Box>
+          <ul className="m-0 mt-4 flex list-none flex-wrap gap-2 p-0">
+            {PERKS.map(({ icon: Icon, label }) => (
+              <li
+                key={label}
+                className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm ring-1 ring-slate-200/70"
+              >
+                <Icon size={14} className="text-[#1e40af]" aria-hidden />
+                {label}
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <PrimaryButton onClick={onStart} className="w-full sm:w-auto">
+              Let's get started
+              <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
+            </PrimaryButton>
+            <p className="m-0 text-xs text-slate-500">
+              No charges on your Shopify bill for the first page —{" "}
+              <span className="font-semibold text-slate-800">it's on us!</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="hidden justify-center lg:flex">
+          <div className="onboarding-float w-[330px]">
+            <HeroShowcase />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 border-t border-blue-100 pt-5">
+        <p className="m-0 mb-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+          What's coming
+        </p>
+        <WhatsComingCard currentStep={1} completedStep={0} />
+      </div>
+    </StepFrame>
   );
 }

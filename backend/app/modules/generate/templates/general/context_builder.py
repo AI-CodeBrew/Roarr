@@ -5,9 +5,10 @@ This module builds product context using LLM to enhance text generation.
 This is a flexible context builder that works for any product category.
 """
 
+import os
 from pydantic import BaseModel, Field
 from typing import List
-from .....clients import openai_client as client
+from .....clients.openai_client import client
 
 
 class GeneralProductContext(BaseModel):
@@ -125,7 +126,7 @@ Be DETAILED, specific, persuasive, and use appropriate industry terminology for 
 
     # Use structured output with the Pydantic schema
     response = client.beta.chat.completions.parse(
-        model="gpt-4.1-nano",
+        model=os.getenv("OPENAI_TEXT_MODEL", "gpt-4o-mini"),  # gpt-4.1-nano was shut down by OpenAI
         messages=messages,
         response_format=GeneralProductContext,
         temperature=1,  # Higher temperature for more creativity

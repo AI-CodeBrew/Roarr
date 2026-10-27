@@ -11,9 +11,37 @@ from datetime import datetime
 import base64
 import html
 import mimetypes
+import hashlib
+import shutil
+import subprocess
+import tempfile
 from ..database import document_store
 
 logger = logging.getLogger(__name__)
+
+THEME_WRITE_BLOCKED_MESSAGE = (
+    "Shopify has not approved this app to modify theme files (the Theme API exemption is "
+    "required). Request the exemption for this app in the Partner Dashboard, or run the "
+    "backend with an app that already has it."
+)
+
+
+class ThemeWriteBlockedError(Exception):
+    """Theme files can't be written for this app/store; every other file would fail the same way."""
+
+
+# Development only: write theme files with the Shopify CLI (your own logged-in session) instead of
+# the Admin API, which refuses theme writes for apps without Shopify's Theme API exemption.
+# Needs `shopify` on PATH and a prior login:  shopify theme list --store <shop>.myshopify.com
+THEME_WRITE_VIA_CLI = os.getenv("THEME_WRITE_VIA_CLI", "").strip().lower() in ("1", "true", "yes")
+THEME_CLI_TIMEOUT_SECONDS = int(os.getenv("THEME_CLI_TIMEOUT_SECONDS", "300"))
+# Remembers which file contents were already pushed per shop+theme, so a publish only re-pushes
+# what changed instead of running the CLI once per section file.
+_THEME_CLI_CACHE_DIR = Path(__file__).resolve().parents[3] / ".theme_cli_cache"
+
+# How long, after Shopify refuses theme writes for a shop, further theme uploads fail instantly
+# instead of each one retrying REST and GraphQL for several seconds.
+THEME_WRITE_BLOCK_SECONDS = 600
 
 # Suppress SSL warnings for development
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -83,6 +111,9 @@ class ShopifyUtils:
     def __init__(self):
         # Remove hardcoded credentials - will use user-specific credentials
         self.api_version = "2025-10"
+        self._theme_cli_failed_until: Dict[str, float] = {}
+        # user_id -> time until which theme writes are known to be refused by Shopify.
+        self._theme_write_blocked_until: Dict[str, float] = {}
 
     def _to_gid(self, resource: str, resource_id: str) -> str:
         if not resource_id:
@@ -1019,34 +1050,30 @@ class ShopifyUtils:
         self, shop_url: str, access_token: str, webhook_url: str
     ) -> bool:
         try:
-            temp_headers = {
-                "Content-Type": "application/json",
-                "X-Shopify-Access-Token": access_token,
-            }
+            from .graphql_client import raise_on_user_errors, shopify_graphql
 
-            shop_domain = (
-                shop_url.replace("https://", "")
-                .replace("http://", "")
-                .replace(".myshopify.com", "")
-            )
-            api_url = f"https://{shop_domain}.myshopify.com/admin/api/{self.api_version}/webhooks.json"
-
-            webhook_data = {
-                "webhook": {
-                    "topic": "app/uninstalled",
-                    "address": webhook_url,
-                    "format": "json",
+            data = shopify_graphql(
+                shop_url,
+                access_token,
+                """
+                mutation webhookSubscriptionCreate($topic: WebhookSubscriptionTopic!, $sub: WebhookSubscriptionInput!) {
+                  webhookSubscriptionCreate(topic: $topic, webhookSubscription: $sub) {
+                    webhookSubscription { id }
+                    userErrors { field message }
+                  }
                 }
-            }
-
-            response = requests.post(api_url, headers=temp_headers, json=webhook_data)
-
-            if response.status_code == 201:
-                return True
-            else:
-                return False
+                """,
+                {
+                    "topic": "APP_UNINSTALLED",
+                    "sub": {"callbackUrl": webhook_url, "format": "JSON"},
+                },
+                api_version=self.api_version,
+            )
+            raise_on_user_errors(data.get("webhookSubscriptionCreate"))
+            return True
 
         except Exception as e:
+            logger.error(f"Failed to register uninstall webhook: {e}")
             return False
 
     def get_product(self, product_id: str, user_id: str) -> Dict[str, Any]:
@@ -1883,29 +1910,24 @@ class ShopifyUtils:
             if not shop_url or not access_token:
                 return {"success": False, "scopes": [], "error": "Missing credentials"}
 
-            shop_domain = shop_url.replace("https://", "").replace("http://", "")
-            if not shop_domain.endswith(".myshopify.com"):
-                shop_domain = f"{shop_domain}.myshopify.com"
+            from .graphql_client import shopify_graphql
 
-            url = (
-                f"https://{shop_domain}/admin/api/{self.api_version}/"
-                "oauth/access_scopes.json"
-            )
-            headers = {
-                "Content-Type": "application/json",
-                "X-Shopify-Access-Token": access_token,
-            }
-            response = requests.get(url, headers=headers, verify=False, timeout=30)
-            if response.status_code != 200:
-                return {
-                    "success": False,
-                    "scopes": [],
-                    "error": f"status {response.status_code}: {response.text[:200]}",
+            data = shopify_graphql(
+                shop_url,
+                access_token,
+                """
+                query accessScopes {
+                  currentAppInstallation { accessScopes { handle } }
                 }
+                """,
+                api_version=self.api_version,
+            )
             scopes = [
-                s.get("handle")
-                for s in (response.json().get("access_scopes") or [])
-                if isinstance(s, dict) and s.get("handle")
+                scope.get("handle")
+                for scope in (
+                    ((data.get("currentAppInstallation") or {}).get("accessScopes")) or []
+                )
+                if isinstance(scope, dict) and scope.get("handle")
             ]
             return {"success": True, "scopes": scopes}
         except Exception as e:
@@ -2035,6 +2057,122 @@ class ShopifyUtils:
             "response_text": rest.get("response_text"),
         }
 
+    # ----- Development only: theme writes through the Shopify CLI -----
+
+    def _theme_cli_cache_file(self, shop_domain: str, theme_id: str) -> Path:
+        return _THEME_CLI_CACHE_DIR / f"{shop_domain}__{theme_id}.json"
+
+    def _load_theme_cli_cache(self, shop_domain: str, theme_id: str) -> Dict[str, Any]:
+        try:
+            return json.loads(self._theme_cli_cache_file(shop_domain, theme_id).read_text("utf-8"))
+        except Exception:
+            return {}
+
+    def _save_theme_cli_cache(self, shop_domain: str, theme_id: str, cache: Dict[str, Any]) -> None:
+        path = self._theme_cli_cache_file(shop_domain, theme_id)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(cache), "utf-8")
+
+    def _run_theme_cli_push(self, shop_domain: str, theme_id: str, work_dir: Path, only: List[str]):
+        """`shopify theme push` of just the files matching `only`. Returns (ok, output tail)."""
+        exe = None
+        if os.name == "nt":
+            # npm installs `shopify` (a shell script Windows can't run) next to `shopify.cmd`;
+            # shutil.which("shopify") can return the script, so ask for the runnable ones first.
+            exe = shutil.which("shopify.cmd") or shutil.which("shopify.exe")
+        exe = exe or shutil.which("shopify")
+        if not exe:
+            return False, "Shopify CLI not found on PATH (install it: npm i -g @shopify/cli)"
+        cmd = [
+            exe, "theme", "push",
+            "--store", shop_domain, "--theme", str(theme_id),
+            "--allow-live", "--nodelete", "--path", str(work_dir),
+        ]
+        for pattern in only:
+            cmd += ["--only", pattern]
+        try:
+            result = subprocess.run(
+                cmd, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                timeout=THEME_CLI_TIMEOUT_SECONDS, stdin=subprocess.DEVNULL,
+            )
+        except subprocess.TimeoutExpired:
+            return False, (
+                "Shopify CLI timed out. Log in once in a terminal: "
+                f"shopify theme list --store {shop_domain}"
+            )
+        except OSError as e:
+            return False, f"Could not start the Shopify CLI ({exe}): {e}"
+        output = ((result.stdout or "") + (result.stderr or "")).strip()
+        return result.returncode == 0, output[-1500:]
+
+    def _theme_cli_bulk_sync(self, shop_domain: str, theme_id: str, cache: Dict[str, Any]):
+        """First CLI write for a theme: push every Roarr section/snippet in one CLI call."""
+        files_dir = Path(__file__).resolve().parents[3] / "data" / "assets" / "shopify_files"
+        sources = {"sections": files_dir / "liquid_files", "snippets": files_dir / "snippet_files"}
+        with tempfile.TemporaryDirectory(prefix="roarr-theme-") as tmp:
+            work = Path(tmp)
+            digests: Dict[str, str] = {}
+            for folder, src in sources.items():
+                if not src.is_dir():
+                    continue
+                (work / folder).mkdir()
+                for liquid in src.glob("*.liquid"):
+                    data = liquid.read_bytes()
+                    (work / folder / liquid.name).write_bytes(data)
+                    digests[f"{folder}/{liquid.name}"] = hashlib.sha256(data).hexdigest()
+            if not digests:
+                cache["__bulk__"] = True
+                return True, ""
+            logger.info("Theme CLI: pushing %s Roarr sections/snippets to theme %s", len(digests), theme_id)
+            ok, output = self._run_theme_cli_push(
+                shop_domain, theme_id, work, [f"{folder}/*.liquid" for folder in sources]
+            )
+            if ok:
+                cache.update(digests)
+                cache["__bulk__"] = True
+            return ok, output
+
+    def _write_theme_file_via_cli(
+        self, theme_id: str, asset_key: str, user_id: str,
+        text_value: Optional[str], base64_value: Optional[str],
+    ) -> Dict[str, Any]:
+        credentials = self._get_user_credentials(user_id)
+        shop_url = credentials.get("shop_url", "")
+        shop_domain = shop_url.replace("https://", "").replace("http://", "")
+        if not shop_domain.endswith(".myshopify.com"):
+            shop_domain = f"{shop_domain}.myshopify.com"
+        theme_id_cleaned = str(theme_id).split("/")[-1]
+
+        failed_until = self._theme_cli_failed_until.get(shop_domain, 0.0)
+        if failed_until > time.time():
+            raise ThemeWriteBlockedError("Shopify CLI theme push is not working; see the earlier error.")
+
+        data = text_value.encode("utf-8") if text_value is not None else base64.b64decode(base64_value)
+        digest = hashlib.sha256(data).hexdigest()
+        cache = self._load_theme_cli_cache(shop_domain, theme_id_cleaned)
+
+        if not cache.get("__bulk__"):
+            ok, output = self._theme_cli_bulk_sync(shop_domain, theme_id_cleaned, cache)
+            if not ok:
+                self._theme_cli_failed_until[shop_domain] = time.time() + 120
+                raise ThemeWriteBlockedError(f"Shopify CLI theme push failed: {output}")
+            self._save_theme_cli_cache(shop_domain, theme_id_cleaned, cache)
+
+        if cache.get(asset_key) == digest:
+            return {"success": True, "asset_key": asset_key, "theme_id": theme_id, "method": "cli-cache"}
+
+        with tempfile.TemporaryDirectory(prefix="roarr-theme-") as tmp:
+            target = Path(tmp) / asset_key
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+            ok, output = self._run_theme_cli_push(shop_domain, theme_id_cleaned, Path(tmp), [asset_key])
+        if not ok:
+            return {"success": False, "error": f"Shopify CLI push failed for {asset_key}: {output}"}
+        cache[asset_key] = digest
+        self._save_theme_cli_cache(shop_domain, theme_id_cleaned, cache)
+        logger.info("Theme CLI: pushed %s to theme %s", asset_key, theme_id_cleaned)
+        return {"success": True, "asset_key": asset_key, "theme_id": theme_id, "method": "cli"}
+
     def update_theme_asset_content(
         self,
         theme_id: str,
@@ -2046,6 +2184,23 @@ class ShopifyUtils:
         allow_graphql_fallback: bool = True,
     ) -> Dict[str, Any]:
         """Upload theme file content (text or base64) via REST, then GraphQL fallback."""
+        if THEME_WRITE_VIA_CLI and (text_value is not None or base64_value is not None):
+            try:
+                return self._write_theme_file_via_cli(
+                    theme_id, asset_key, user_id, text_value, base64_value
+                )
+            except ThemeWriteBlockedError as e:
+                return {"success": False, "error": str(e), "theme_write_blocked": True}
+            except Exception as e:
+                logger.error("Theme CLI write failed for %s: %s", asset_key, e)
+                return {"success": False, "error": str(e)}
+        blocked_until = self._theme_write_blocked_until.get(user_id, 0.0)
+        if blocked_until > time.time():
+            return {
+                "success": False,
+                "error": THEME_WRITE_BLOCKED_MESSAGE,
+                "theme_write_blocked": True,
+            }
         try:
             credentials = self._get_user_credentials(user_id)
             shop_url = credentials.get("shop_url", "")
@@ -2162,6 +2317,17 @@ class ShopifyUtils:
                 )
                 if gql.get("success"):
                     return gql
+                if "exemption" in str(gql.get("error") or "").lower():
+                    # Shopify refuses theme writes for this app: don't retry every other file.
+                    self._theme_write_blocked_until[user_id] = (
+                        time.time() + THEME_WRITE_BLOCK_SECONDS
+                    )
+                    return {
+                        "success": False,
+                        "error": THEME_WRITE_BLOCKED_MESSAGE,
+                        "theme_write_blocked": True,
+                        "graphql_error": gql.get("error"),
+                    }
                 return {
                     "success": False,
                     "error": (

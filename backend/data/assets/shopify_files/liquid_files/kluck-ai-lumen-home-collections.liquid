@@ -1,0 +1,116 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign eyebrow = section.settings.eyebrow | default: 'Curated edits' -%}
+{%- assign heading = section.settings.heading | default: 'Explore the collections' -%}
+{%- assign cta = section.settings.cta | default: 'Explore collection' -%}
+<section class="lmk-cols">
+  <div class="lmk-cols__header">
+    <p class="lmk-cols__eyebrow">{{ eyebrow }}</p>
+    <h2 class="lmk-cols__heading">{{ heading }}</h2>
+  </div>
+  <div class="lmk-cols__grid">
+    {%- for i in (1..3) -%}
+      {%- assign title_key = 'top_product_punchline_' | append: i -%}
+      {%- assign text_key = 'top_product_punchline_' | append: i | append: '_description' -%}
+      {%- assign handle_key = 'collection_' | append: i -%}
+      {%- assign image_key = 'product_impact_image_' | append: i -%}
+      {%- assign title = ht[title_key] -%}
+      {%- assign text = ht[text_key] -%}
+      {%- assign handle = ht[handle_key] -%}
+      {%- assign image = hi[image_key] -%}
+      {%- assign url = routes.all_products_collection_url | default: '/collections/all' -%}
+      {%- if handle != blank and collections[handle] != blank -%}
+        {%- assign url = collections[handle].url -%}
+        {%- if image == blank and collections[handle].featured_image != blank -%}{%- assign image = collections[handle].featured_image -%}{%- endif -%}
+      {%- elsif handle != blank -%}
+        {%- assign url = '/collections/' | append: handle -%}
+      {%- endif -%}
+      {%- if title != blank -%}
+        <a class="lmk-cols__card" href="{{ url }}">
+          <div class="lmk-cols__media">
+            {%- if image != blank -%}{%- if image contains 'http' or image contains '//' -%}<img src="{{ image }}" alt="{{ title | escape }}" loading="lazy">{%- else -%}<img src="{{ image | image_url: width: 1600 }}" alt="{{ title | escape }}" loading="lazy">{%- endif -%}{%- endif -%}
+            <div class="lmk-cols__shade"></div>
+          </div>
+          <div class="lmk-cols__content">
+            <span class="lmk-cols__tag">Collection 0{{ i }}</span>
+            <h3 class="lmk-cols__title">{{ title }}</h3>
+            {%- if text != blank -%}<p class="lmk-cols__text">{{ text }}</p>{%- endif -%}
+            <span class="lmk-cols__cta">{{ cta }}<span aria-hidden="true">&rarr;</span></span>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+  .lmk-cols { background: #F6F1EA; color: #1C1917; font-family: "Jost", sans-serif; padding: clamp(48px, 7vw, 96px) 0 8px; }
+  .lmk-cols *, .lmk-cols *::before, .lmk-cols *::after { box-sizing: border-box; }
+  .lmk-cols__header { text-align: center; max-width: 900px; margin: 0 auto 32px; padding-inline: 24px; }
+  .lmk-cols__eyebrow { margin: 0 0 10px; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: #775A2C; font-weight: 500; }
+  .lmk-cols__heading { margin: 0; font-family: "Cormorant Garamond", serif; font-size: clamp(28px, 3.5vw, 44px); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; }
+  .lmk-cols__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px; }
+  .lmk-cols__card { position: relative; display: block; height: 65vh; min-height: 460px; max-height: 720px; overflow: hidden; background: #1C1917; color: #fff; text-decoration: none; }
+  .lmk-cols__media { position: absolute; inset: 0; }
+  .lmk-cols__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .lmk-cols__card:hover .lmk-cols__media img { transform: scale(1.04); }
+  .lmk-cols__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20, 18, 16, .1) 0%, rgba(20, 18, 16, .3) 40%, rgba(20, 18, 16, .85) 100%); }
+  .lmk-cols__content { position: absolute; inset-inline: 0; bottom: 0; z-index: 1; padding: clamp(28px, 4vw, 56px); display: grid; justify-items: start; gap: 8px; transition: transform .4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .lmk-cols__card:hover .lmk-cols__content { transform: translateY(-4px); }
+  .lmk-cols__tag { font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: #DFD5C6; font-weight: 500; }
+  .lmk-cols__title { margin: 0; font-family: "Cormorant Garamond", serif; font-size: clamp(30px, 3.4vw, 46px); font-weight: 400; line-height: 1.1; color: #FAF7F2; }
+  .lmk-cols__text { margin: 0; max-width: 420px; font-size: 15px; line-height: 1.6; color: #EFE6DA; opacity: .9; }
+  .lmk-cols__cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 8px; padding-bottom: 4px; border-bottom: 1px solid rgb(239 230 218 / .5); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #FAF7F2; }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--lumen" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Jost", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Cormorant Garamond", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Lumenook Collections",
+  "tag": "section",
+  "class": "roarr-lumen-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Label",
+      "default": "Curated edits"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Explore the collections"
+    },
+    {
+      "type": "text",
+      "id": "cta",
+      "label": "Card link label",
+      "default": "Explore collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Roarr Lumenook Collections"
+    }
+  ]
+}
+{% endschema %}

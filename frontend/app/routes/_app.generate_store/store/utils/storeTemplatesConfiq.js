@@ -10,6 +10,8 @@ import { CINEMATIC_SINGLE_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings
 import { AMOUR_SINGLE_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/amour/single-product.js";
 import { AMOUR_SINGLE_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/amour/single-product-sections.js";
 import { withAmourCategoryColors } from "./liquid-schema-settings/packs/amour/categoryTheme.js";
+import { LUMENOOK_MULTI_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/lumenook/multi-product.js";
+import { LUMENOOK_MULTI_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/lumenook/multi-product-sections.js";
 import { applySectionColorSchemesToSettings } from "./sectionColorUtils.js";
 import { DEFAULT_PRODUCT_PAGE_SETTINGS } from "./liquid-schema-settings/default-product/product.js";
 import { COLLECTION_1_PREVIEW_CONTEXT } from "./liquid-schema-settings/collection/collection-1.js";
@@ -772,7 +774,9 @@ function buildHomeTemplateConfigFromSections(
                     ? `packs/cinematic/home/${sectionKey}`
                     : sectionKey.startsWith("pf-amour-")
                         ? `packs/amour/home/${sectionKey}`
-                        : `home/${sectionKey}`;
+                        : sectionKey.startsWith("pf-lumen-")
+                            ? `packs/lumenook/home/${sectionKey}`
+                            : `home/${sectionKey}`;
 
         const baseSettings = themeSettings?.current ?? {};
         const settings = { ...baseSettings };
@@ -1138,9 +1142,10 @@ export function buildLiquidPageTemplatesConfig({
     }
 
     if (productType === "multi-product" && pageType === "home-page") {
+        const isLumenook = String(storeTemplatePack || "").toLowerCase() === "lumenook";
         return buildHomeTemplateConfigFromSections(
-            MULTI_PRODUCT_HOME_SETTINGS,
-            MULTI_PRODUCT_HOME_SECTIONS,
+            isLumenook ? LUMENOOK_MULTI_PRODUCT_HOME_SETTINGS : MULTI_PRODUCT_HOME_SETTINGS,
+            isLumenook ? LUMENOOK_MULTI_PRODUCT_HOME_SECTIONS : MULTI_PRODUCT_HOME_SECTIONS,
             homeData,
             stylePreferences,
             categoryDefaults,

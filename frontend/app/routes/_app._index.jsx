@@ -1,25 +1,12 @@
 import { boundary } from "@shopify/shopify-app-react-router/server";
-import { useCallback, useEffect, useState } from "react";
-import { useLoaderData, useNavigate, useSearchParams } from "react-router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useLoaderData } from "react-router";
 import DashboardBuildFlows from "./root.dashboard/DashboardBuildFlows.jsx";
-import DashboardSetupGuide from "./root.dashboard/DashboardSetupGuide.jsx";
 import DashboardAnnouncement from "./root.dashboard/DashboardAnnouncement.jsx";
-import DashboardPageUsage from "./root.dashboard/DashboardPageUsage.jsx";
+import DashboardHero from "./root.dashboard/DashboardHero.jsx";
 import { usePages } from "../lib/PagesContext";
-import { CreditWalletWidget } from "../components/CreditWalletWidget";
 import { useDashboardLoaderData } from "../lib/DashboardDataContext";
-import {
-  BlockStack,
-  InlineStack,
-  Text,
-  Badge,
-  Button,
-  Modal,
-  Divider,
-} from "@shopify/polaris";
-import { RefreshIcon } from "@shopify/polaris-icons";
-import { buildEmbeddedHref } from "../lib/embeddedNavigation";
-import { useViewportBelowMd } from "../hooks/useViewportBelowMd.js";
+import { AppBlocksDialog, AppEmbedDialog } from "./root.dashboard/DashboardDialogs.jsx";
 
 // Loader is intentionally trivial: no authenticate.admin(), no GraphQL.
 // shopifyClientId: public OAuth client_id; used in theme editor deep link
@@ -39,51 +26,23 @@ export function shouldRevalidate() {
 /** Block handle from `extensions/pdpbuilder/blocks/app-embed.liquid` */
 const APP_EMBED_LIQUID_HANDLE = "app-embed";
 
-function StatusDot({ variant }) {
-  const outer = variant === "on" ? "bg-[#d4ebe4]" : "bg-gray-200";
-  const inner =
-    variant === "on" ? "bg-[#2f6f63]" : variant === "off" ? "bg-gray-400" : "bg-gray-300";
-  return (
-    <span
-      className={`inline-flex shrink-0 items-center justify-center size-2.5 rounded-full ${outer}`}
-      aria-hidden
-    >
-      <span className={`size-1.5 shrink-0 rounded-full ${inner}`} />
-    </span>
-  );
-}
+/** Last known "has generated pages" answer, so the setup pill is right on the first paint. */
+const SETUP_PAGES_CACHE_KEY = "roarr:hasGeneratedPages";
 
 export default function Index() {
   const { shop: sessionShop, shopifyClientId } = useLoaderData();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const shop = searchParams.get("shop");
-  const { storeDetails, pages } = usePages();
-  const [isEmbedEnabled, setIsEmbedEnabled] = useState(null);
+  const { storeDetails, pages, loading: pagesLoading } = usePages();
   const [appBlocksStatus, setAppBlocksStatus] = useState(null);
   const [appBlocksModalOpen, setAppBlocksModalOpen] = useState(false);
   const [appEmbedModalOpen, setAppEmbedModalOpen] = useState(false);
   const [enableEmbedError, setEnableEmbedError] = useState(null);
-  const isMobileLayout = useViewportBelowMd();
-  const userName =
+  const storeName =
     storeDetails?.name ||
     storeDetails?.shop_name ||
     storeDetails?.shopName ||
     storeDetails?.domain ||
-    "there";
-  const isInternalStore = Boolean(storeDetails?.is_internal);
+    null;
   const pageCount = Array.isArray(pages) ? pages.length : 0;
-
-  const fetchEmbedStatus = useCallback(async ({ force = false } = {}) => {
-    try {
-      const q = force ? "?refresh=1" : "";
-      const response = await fetch(`/api/app-embed-status${q}`, { cache: "no-store" });
-      const data = await response.json();
-      setIsEmbedEnabled(Boolean(data?.enabled));
-    } catch {
-      setIsEmbedEnabled(false);
-    }
-  }, []);
 
   const fetchAppBlocksStatus = useCallback(async ({ force = false } = {}) => {
     try {
@@ -104,37 +63,22 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    fetchEmbedStatus();
     fetchAppBlocksStatus();
-  }, [fetchEmbedStatus, fetchAppBlocksStatus]);
-
-  useEffect(() => {
-    if (isEmbedEnabled !== false) return;
-    if (typeof document !== "undefined" && document.visibilityState !== "visible") return;
-    const id = setInterval(() => {
-      fetchEmbedStatus();
-    }, 4000);
-    return () => clearInterval(id);
-  }, [isEmbedEnabled, fetchEmbedStatus]);
+  }, [fetchAppBlocksStatus]);
 
   useEffect(() => {
     function onVisibilityChange() {
       if (document.visibilityState !== "visible") return;
-      if (isEmbedEnabled === false) {
-        fetchEmbedStatus();
-      }
       fetchAppBlocksStatus();
     }
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => document.removeEventListener("visibilitychange", onVisibilityChange);
-  }, [isEmbedEnabled, fetchEmbedStatus, fetchAppBlocksStatus]);
+  }, [fetchAppBlocksStatus]);
 
-  const recheckEmbedAndAppBlocks = useCallback(() => {
-    setIsEmbedEnabled(null);
+  const recheckAppBlocks = useCallback(() => {
     setAppBlocksStatus(null);
-    void fetchEmbedStatus({ force: true });
     void fetchAppBlocksStatus({ force: true });
-  }, [fetchEmbedStatus, fetchAppBlocksStatus]);
+  }, [fetchAppBlocksStatus]);
 
   function handleOpenThemeAppEmbeds() {
     setEnableEmbedError(null);
@@ -163,253 +107,115 @@ export default function Index() {
     );
   }
 
-  function handleCreateProductPage() {
-    navigate(buildEmbeddedHref("/product-page", searchParams, shop));
-  }
-
-  function handleRevampEntireStore() {
-    navigate(buildEmbeddedHref("/entire-store", searchParams, shop));
-  }
-
   const enabledAppBlockCount = appBlocksStatus?.enabledCount ?? 0;
-  const appBlocksDotVariant =
-    appBlocksStatus === null ? "pending" : enabledAppBlockCount > 0 ? "on" : "off";
   const appBlocksButtonLabel =
     appBlocksStatus === null
-      ? "Checking App blocks..."
-      : `${enabledAppBlockCount} App blocks Enabled`;
+      ? "Checking app blocks…"
+      : `${enabledAppBlockCount} app block${enabledAppBlockCount === 1 ? "" : "s"} enabled`;
 
-  const appEmbedDotVariant =
-    isEmbedEnabled === null ? "pending" : isEmbedEnabled ? "on" : "off";
-  const appEmbedButtonLabel =
-    isEmbedEnabled === null
-      ? "Checking App Embed..."
-      : isEmbedEnabled
-        ? "App Embed Enabled"
-        : "App Embed Disabled";
+  // The Roarr theme extension (app embed) is always on, so it counts as a finished setup step
+  // and the dashboard no longer polls /api/app-embed-status.
+  // The second step (a generated page) is only known once the pages list arrives. Until then the pill
+  // shows the last known answer (or "checking") instead of flashing "Finish setup" and flipping.
+  const SETUP_TOTAL_STEPS = 2;
+  const hasPages = pageCount > 0;
+  const [cachedHasPages, setCachedHasPages] = useState(null);
+  const [pagesSettled, setPagesSettled] = useState(false);
+  const pagesSawLoading = useRef(false);
+
+  useEffect(() => {
+    try {
+      const raw = window.sessionStorage.getItem(SETUP_PAGES_CACHE_KEY);
+      if (raw === "true" || raw === "false") setCachedHasPages(raw === "true");
+    } catch {
+      /* storage blocked: the pill just starts in the checking state */
+    }
+  }, []);
+
+  useEffect(() => {
+    if (pagesLoading) pagesSawLoading.current = true;
+    else if (pagesSawLoading.current) setPagesSettled(true);
+  }, [pagesLoading]);
+
+  // Safety net so a pages fetch that never reports back can't leave the pill checking forever.
+  useEffect(() => {
+    const id = window.setTimeout(() => setPagesSettled(true), 5000);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    if (!pagesSettled) return;
+    try {
+      window.sessionStorage.setItem(SETUP_PAGES_CACHE_KEY, String(hasPages));
+    } catch {
+      /* ignore */
+    }
+  }, [pagesSettled, hasPages]);
+
+  const setupKnown = pagesSettled || hasPages || cachedHasPages !== null;
+  const setupHasPages = pagesSettled ? hasPages : hasPages || cachedHasPages === true;
+  const setupCompleted = 1 + Number(setupHasPages);
+  const setupState = !setupKnown
+    ? "checking"
+    : setupCompleted === SETUP_TOTAL_STEPS
+      ? "complete"
+      : "incomplete";
 
   return (
     <s-page heading="Dashboard" inlineSize="large">
-      <CreditWalletWidget floating={false} slot="secondary-actions" />
-      <div style={{ maxWidth: "1150px", margin: "0 auto", padding: "16px" }}>
-        <div className="bg-[#f2f2f2] overflow-x-hidden overflow-y-auto">
-          <BlockStack gap="400">
-            <h4
-              style={{
-                fontFamily:
-                  'Baskerville, "Palatino Linotype", Palatino, "Times New Roman", Times, serif',
-                fontSize: "1.75rem",
-                fontWeight: 400,
-                margin: 0,
-                color: "#1a1a1a",
-              }}
-            >
-              Welcome{" "}
-              <span
-                style={{
-                  color: "#2f6f63",
-                  fontStyle: "italic",
-                  display: "inline-flex",
-                  flexDirection: "column",
-                  alignItems: "stretch",
-                }}
-              >
-                <span>{userName}</span>
-                <span
-                  style={{
-                    marginTop: 4,
-                    height: 3,
-                    background:
-                      "linear-gradient(to right, rgba(47, 111, 99, 0.95) 0%, rgba(47, 111, 99, 0.5) 45%, rgba(47, 111, 99, 0.1) 100%)",
-                    borderRadius: 999,
-                    width: "100%",
-                  }}
-                />
-              </span>
-            </h4>
+      <s-button
+        slot="secondary-actions"
+        variant="secondary"
+        onClick={() => setAppBlocksModalOpen(true)}
+        aria-label="View Roarr app blocks status"
+      >
+        {appBlocksButtonLabel}
+      </s-button>
+      <s-button
+        slot="secondary-actions"
+        variant="secondary"
+        onClick={recheckAppBlocks}
+        aria-label="Recheck app blocks status"
+      >
+        Recheck
+      </s-button>
+      <div style={{ maxWidth: "1150px", margin: "-12px auto 0", padding: "0 16px 16px" }}>
+        <div className="flex flex-col gap-3 overflow-x-hidden">
+          <DashboardHero
+            storeName={storeName}
+            setup={{ state: setupState, completed: setupCompleted, total: SETUP_TOTAL_STEPS }}
+            embed={{
+              variant: "on",
+              label: "Enabled",
+              onClick: () => {
+                setEnableEmbedError(null);
+                setAppEmbedModalOpen(true);
+              },
+            }}
+            onManageTheme={handleOpenThemeAppEmbeds}
+          />
 
-            <InlineStack align="end" blockAlign="center" gap="200" wrap>
-              <button
-                type="button"
-                title="Recheck app embed and app blocks"
-                className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-gray-200 p-0 text-[#5c5f62] transition-colors hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#458fff]"
-                onClick={recheckEmbedAndAppBlocks}
-                aria-label="Recheck app embed and app blocks status"
-              >
-                <span className="pointer-events-none flex size-[18px] items-center justify-center [&_svg]:block [&_svg]:max-h-[18px] [&_svg]:max-w-[18px] [&_svg]:shrink-0">
-                  <RefreshIcon />
-                </span>
-              </button>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: isMobileLayout ? "column" : "row",
-                  gap: isMobileLayout ? 8 : 12,
-                  width: isMobileLayout ? "100%" : "auto",
-                }}
-              >
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    setEnableEmbedError(null);
-                    setAppEmbedModalOpen(true);
-                  }}
-                  aria-label="App embed status and instructions"
-                  fullWidth={isMobileLayout}
-                >
-                  <span className="inline-flex items-center gap-2">
-                    <StatusDot variant={appEmbedDotVariant} />
-                    {appEmbedButtonLabel}
-                  </span>
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => setAppBlocksModalOpen(true)}
-                  aria-label="View Roarr app blocks status"
-                  fullWidth={isMobileLayout}
-                >
-                  <span className="inline-flex items-center gap-2">
-                    <StatusDot variant={appBlocksDotVariant} />
-                    {appBlocksButtonLabel}
-                  </span>
-                </Button>
-              </div>
-            </InlineStack>
+          <DashboardBuildFlows />
 
-            <DashboardSetupGuide
-              isEmbedEnabled={isEmbedEnabled}
-              pageCount={pageCount}
-              onOpenThemeAppEmbeds={handleOpenThemeAppEmbeds}
-              onCreateProductPage={handleCreateProductPage}
-              onRevampEntireStore={handleRevampEntireStore}
-            />
-
-            <DashboardBuildFlows />
-
-            <DashboardPageUsage shop={sessionShop} pages={pages} isInternalStore={isInternalStore} />
-
-            {/* <DashboardAnnouncement shop={sessionShop} /> */}
-          </BlockStack>
+          {/* <DashboardAnnouncement shop={sessionShop} /> */}
         </div>
       </div>
-      <Modal
+      <AppEmbedDialog
         open={appEmbedModalOpen}
         onClose={() => setAppEmbedModalOpen(false)}
-        title="App embed"
-        primaryAction={{
-          content: "Open theme editor",
-          onAction: () => {
-            handleOpenThemeAppEmbeds();
-            setAppEmbedModalOpen(false);
-          },
+        error={enableEmbedError}
+        onOpenThemeEditor={() => {
+          handleOpenThemeAppEmbeds();
+          setAppEmbedModalOpen(false);
         }}
-        secondaryActions={[
-          {
-            content: "Close",
-            onAction: () => setAppEmbedModalOpen(false),
-          },
-        ]}
-      >
-        <Modal.Section>
-          <BlockStack gap="400">
-            {isEmbedEnabled === false ? (
-              <>
-                <Text as="p" variant="bodyMd">
-                  Roarr needs the <strong>Roarr Theme Extension</strong> app embed turned on in
-                  your live theme. Until it&apos;s enabled, storefront pages built in Roarr may not
-                  display correctly.
-                </Text>
-                <Text as="p" variant="bodyMd" tone="subdued">
-                  Use <strong>Open theme editor</strong> below—we&apos;ll open the theme editor with
-                  App embeds focused. Turn on <strong>Roarr Theme Extension</strong>, then click{" "}
-                  <strong>Save</strong>.
-                </Text>
-                <BlockStack gap="150">
-                  <Text as="p" variant="bodySm" fontWeight="semibold">
-                    Or enable manually
-                  </Text>
-                  <Text as="p" variant="bodySm" tone="subdued">
-                    Shopify Admin → Online Store → Themes → Customize → Theme settings → App embeds
-                    → enable Roarr Theme Extension → Save.
-                  </Text>
-                </BlockStack>
-              </>
-            ) : isEmbedEnabled === true ? (
-              <Text as="p" variant="bodyMd" tone="subdued">
-                App embed is enabled. You can still open the theme editor if you need to adjust embed settings.
-              </Text>
-            ) : (
-              <Text as="p" variant="bodyMd" tone="subdued">
-                Checking whether the app embed is enabled in your theme…
-              </Text>
-            )}
-            {enableEmbedError ? (
-              <Text as="p" variant="bodySm" tone="critical">
-                {enableEmbedError}
-              </Text>
-            ) : null}
-          </BlockStack>
-        </Modal.Section>
-      </Modal>
+      />
 
-      <Modal
+      <AppBlocksDialog
         open={appBlocksModalOpen}
         onClose={() => setAppBlocksModalOpen(false)}
-        title="App Blocks"
-        primaryAction={{
-          content: "Open Theme Editor",
-          onAction: handleOpenThemeEditor,
-        }}
-        secondaryActions={[
-          {
-            content: "Close",
-            onAction: () => setAppBlocksModalOpen(false),
-          },
-        ]}
-      >
-        <Modal.Section>
-          <BlockStack gap="400">
-            <Text as="p" variant="bodyMd" tone="subdued">
-            All relevant app blocks are added automatically when you generate a PDP or Full Store through Roarr. This view shows all available blocks in case you want to add any manually via the theme editor.
-            </Text>
-            <BlockStack gap="0">
-              {(appBlocksStatus?.blocks || []).map((block, index, blocks) => (
-                <div key={block.handle}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 16,
-                      padding: "14px 0",
-                    }}
-                  >
-                    <BlockStack gap="050">
-                      <Text as="p" variant="bodyMd" fontWeight="semibold">
-                        {block.name}
-                      </Text>
-                      <Text as="p" variant="bodySm" tone="subdued">
-                        {block.enabled
-                          ? `Added to live theme${block.count > 1 ? ` ${block.count} times` : ""}`
-                          : "Not added to current theme"}
-                      </Text>
-                    </BlockStack>
-                    <Badge tone={block.enabled ? "success" : undefined}>
-                      {block.enabled ? "Added" : "Available"}
-                    </Badge>
-                  </div>
-                  {index < blocks.length - 1 ? <Divider /> : null}
-                </div>
-              ))}
-              {appBlocksStatus === null ? (
-                <Text as="p" variant="bodyMd" tone="subdued">
-                  Checking app blocks...
-                </Text>
-              ) : null}
-            </BlockStack>
-          </BlockStack>
-        </Modal.Section>
-      </Modal>
+        status={appBlocksStatus}
+        onOpenThemeEditor={handleOpenThemeEditor}
+      />
     </s-page>
   );
 }

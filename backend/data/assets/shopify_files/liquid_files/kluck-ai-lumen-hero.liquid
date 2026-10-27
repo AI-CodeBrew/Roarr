@@ -1,0 +1,239 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+{%- assign m = product.metafields.kluck_ai -%}
+{%- assign eyebrow = m.lumen_eyebrow.value | default: m.lumen_eyebrow | default: product.type -%}
+{%- assign subtitle = m.product_subtitle.value | default: m.product_subtitle -%}
+{%- assign price_note = m.lumen_price_note.value | default: m.lumen_price_note | default: 'Taxes included. Shipping calculated at checkout.' -%}
+{%- assign delivery_heading = m.lumen_delivery_heading.value | default: m.lumen_delivery_heading | default: 'Delivered with care' -%}
+{%- assign delivery = m.delivery_line.value | default: m.delivery_line | default: 'Order today and it ships within 1 to 2 working days.' -%}
+{%- assign t1 = m.badge_text_1.value | default: m.badge_text_1 | default: '2-year warranty' -%}
+{%- assign t2 = m.badge_text_2.value | default: m.badge_text_2 | default: 'Cash on delivery' -%}
+{%- assign t3 = m.badge_text_3.value | default: m.badge_text_3 | default: 'Secure checkout' -%}
+{%- assign t4 = m.badge_text_4.value | default: m.badge_text_4 | default: '14-day returns' -%}
+{%- assign a1_title = m.lumen_acc_1_title.value | default: m.lumen_acc_1_title | default: 'Description' -%}
+{%- assign a1_body = m.lumen_acc_1_body.value | default: m.lumen_acc_1_body -%}
+{%- assign a2_title = m.lumen_acc_2_title.value | default: m.lumen_acc_2_title | default: 'Details' -%}
+{%- assign a2_body = m.lumen_acc_2_body.value | default: m.lumen_acc_2_body -%}
+{%- assign a3_title = m.lumen_acc_3_title.value | default: m.lumen_acc_3_title | default: 'Care' -%}
+{%- assign a3_body = m.lumen_acc_3_body.value | default: m.lumen_acc_3_body -%}
+{%- assign a4_title = m.lumen_acc_4_title.value | default: m.lumen_acc_4_title | default: 'Shipping & Returns' -%}
+{%- assign a4_body = m.lumen_acc_4_body.value | default: m.lumen_acc_4_body -%}
+{%- assign img1 = m.product_image_1.value | default: m.product_image_1 -%}
+{%- assign img2 = m.product_image_2.value | default: m.product_image_2 -%}
+{%- assign img3 = m.product_image_3.value | default: m.product_image_3 -%}
+{%- assign img4 = m.product_image_4.value | default: m.product_image_4 -%}
+{%- assign img5 = m.product_image_5.value | default: m.product_image_5 -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- if product.media.size > 2 -%}
+  {%- assign more1 = product.media[1].preview_image | default: product.media[1] -%}
+  {%- assign more2 = product.media[2].preview_image | default: product.media[2] -%}
+{%- else -%}
+  {%- assign more1 = img2 -%}
+  {%- assign more2 = img3 -%}
+{%- endif -%}
+<section class="lmk-hero">
+  <div class="lmk-hero__grid">
+    <div class="lmk-hero__media">
+      <div class="lmk-hero__thumbs">
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media limit: 6 -%}
+            {%- assign src = media.preview_image | default: media -%}
+            <button type="button" class="lmk-hero__thumb{% if forloop.first %} is-on{% endif %}" data-src="{{ src | image_url: width: 1400 }}" aria-label="Show image {{ forloop.index }}"><img src="{{ src | image_url: width: 160 }}" alt=""></button>
+          {%- endfor -%}
+        {%- else -%}
+          {%- if img1 != blank -%}<button type="button" class="lmk-hero__thumb is-on" data-src="{{ img1 | image_url: width: 1400 }}" aria-label="Show image 1"><img src="{{ img1 | image_url: width: 160 }}" alt=""></button>{%- endif -%}
+          {%- if img2 != blank -%}<button type="button" class="lmk-hero__thumb" data-src="{{ img2 | image_url: width: 1400 }}" aria-label="Show image 2"><img src="{{ img2 | image_url: width: 160 }}" alt=""></button>{%- endif -%}
+          {%- if img3 != blank -%}<button type="button" class="lmk-hero__thumb" data-src="{{ img3 | image_url: width: 1400 }}" aria-label="Show image 3"><img src="{{ img3 | image_url: width: 160 }}" alt=""></button>{%- endif -%}
+          {%- if img4 != blank -%}<button type="button" class="lmk-hero__thumb" data-src="{{ img4 | image_url: width: 1400 }}" aria-label="Show image 4"><img src="{{ img4 | image_url: width: 160 }}" alt=""></button>{%- endif -%}
+          {%- if img5 != blank -%}<button type="button" class="lmk-hero__thumb" data-src="{{ img5 | image_url: width: 1400 }}" aria-label="Show image 5"><img src="{{ img5 | image_url: width: 160 }}" alt=""></button>{%- endif -%}
+        {%- endif -%}
+      </div>
+      <div class="lmk-hero__main">
+        {%- if product.media.size > 0 -%}
+          {%- assign main = product.media.first.preview_image | default: product.media.first -%}
+          <img id="lmk-hero-main" src="{{ main | image_url: width: 1400 }}" alt="{{ product.title | escape }}">
+        {%- elsif img1 != blank -%}
+          <img id="lmk-hero-main" src="{{ img1 | image_url: width: 1400 }}" alt="{{ product.title | escape }}">
+        {%- endif -%}
+      </div>
+      {%- if more1 != blank or more2 != blank -%}
+        <div class="lmk-hero__more">
+          {%- if more1 != blank -%}<img src="{{ more1 | image_url: width: 800 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
+          {%- if more2 != blank -%}<img src="{{ more2 | image_url: width: 800 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="lmk-hero__details">
+      <h1 class="lmk-hero__title">{{ product.title }}</h1>
+      {%- if subtitle != blank -%}<p class="lmk-hero__subtitle">{{ subtitle }}</p>{%- endif -%}
+      <div class="lmk-hero__price">
+        <strong>{{ product.price | money }}</strong>
+        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+      </div>
+      {%- if price_note != blank -%}<p class="lmk-hero__note">{{ price_note }}</p>{%- endif -%}
+      {%- form 'product', product, class: 'lmk-hero__form' -%}
+        {%- if product.variants.size > 1 -%}
+          <label class="lmk-hero__label" for="lmk-variant-{{ section.id }}">Option</label>
+          <select class="lmk-hero__select" id="lmk-variant-{{ section.id }}" name="id">
+            {%- for v in product.variants -%}
+              <option value="{{ v.id }}"{% if v.id == variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }} · {{ v.price | money }}</option>
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ variant.id }}">
+        {%- endif -%}
+        <div class="lmk-hero__buy">
+          <div class="lmk-hero__qty">
+            <button type="button" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+            <input type="hidden" name="quantity" value="1" data-qty-input>
+            <b data-qty>1</b>
+            <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
+          </div>
+          <button class="lmk-hero__atc" type="submit"{% if variant.available == false %} disabled{% endif %}>
+            {%- if variant.available != false -%}{% render 'kluck-ui-string', key: 'add_to_cart' %}{%- else -%}{% render 'kluck-ui-string', key: 'sold_out' %}{%- endif -%}
+          </button>
+        </div>
+        <div class="lmk-hero__checkout">{{ form | payment_button }}</div>
+      {%- endform -%}
+      <div class="lmk-hero__delivery">
+        <svg class="lmk-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>
+        <div>
+          {%- if delivery_heading != blank -%}<p class="lmk-hero__delivery-heading">{{ delivery_heading }}</p>{%- endif -%}
+          <p class="lmk-hero__delivery-text">{{ delivery }}</p>
+        </div>
+      </div>
+      <ul class="lmk-hero__trust" role="list">
+        <li><svg class="lmk-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>{{ t1 }}</span></li>
+        <li><svg class="lmk-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="1"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/></svg><span>{{ t2 }}</span></li>
+        <li><svg class="lmk-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><span>{{ t3 }}</span></li>
+        <li><svg class="lmk-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg><span>{{ t4 }}</span></li>
+      </ul>
+      <div class="lmk-hero__accordions">
+        {%- if product.description != blank or a1_body != blank -%}
+          <details class="lmk-acc">
+            <summary>{{ a1_title }}</summary>
+            <div class="lmk-acc__body">{%- if product.description != blank -%}{{ product.description }}{%- else -%}<p>{{ a1_body }}</p>{%- endif -%}</div>
+          </details>
+        {%- endif -%}
+        {%- if a2_body != blank -%}<details class="lmk-acc"><summary>{{ a2_title }}</summary><div class="lmk-acc__body"><p>{{ a2_body }}</p></div></details>{%- endif -%}
+        {%- if a3_body != blank -%}<details class="lmk-acc"><summary>{{ a3_title }}</summary><div class="lmk-acc__body"><p>{{ a3_body }}</p></div></details>{%- endif -%}
+        {%- if a4_body != blank -%}<details class="lmk-acc"><summary>{{ a4_title }}</summary><div class="lmk-acc__body"><p>{{ a4_body }}</p></div></details>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .lmk-hero { --lmk-ivory: #F6F1EA; --lmk-sand: #E6DCCF; --lmk-stone: #D9CFC2; --lmk-brass: #B08D57; --lmk-brass-dark: #775A2C; --lmk-espresso: #2B2320; --lmk-muted: #6B5F58; background: var(--lmk-ivory); color: var(--lmk-espresso); font-family: "Jost", sans-serif; padding: clamp(24px, 4vw, 56px) 0; }
+  .lmk-hero *, .lmk-hero *::before, .lmk-hero *::after { box-sizing: border-box; }
+  .lmk-hero__grid { width: min(1320px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .lmk-hero__media { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; position: sticky; top: 24px; }
+  .lmk-hero__thumbs { display: flex; flex-direction: column; gap: 10px; }
+  .lmk-hero__thumb { padding: 0; border: 1px solid transparent; border-radius: 2px; background: var(--lmk-sand); cursor: pointer; line-height: 0; transition: border-color 250ms ease; }
+  .lmk-hero__thumb.is-on, .lmk-hero__thumb:hover { border-color: var(--lmk-brass); }
+  .lmk-hero__thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 2px; }
+  .lmk-hero__main { aspect-ratio: 1; background: var(--lmk-sand); border-radius: 4px; overflow: hidden; }
+  .lmk-hero__main img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lmk-hero__media { align-content: start; }
+  .lmk-hero__more { grid-column: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .lmk-hero__more img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 4px; background: var(--lmk-sand); }
+  .lmk-hero__more img:only-child { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
+  .lmk-hero__details { display: grid; gap: 16px; padding: 4px 0; }
+  .lmk-hero__crumbs ol { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 12px; color: var(--lmk-muted); }
+  .lmk-hero__crumbs li + li::before { content: "/"; margin-inline-end: 6px; }
+  .lmk-hero__crumbs a { color: inherit; text-decoration: none; }
+  .lmk-eyebrow { margin: 0; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--lmk-muted); }
+  .lmk-hero__title { margin: 0; font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(34px, 3.6vw, 48px); line-height: 1.1; letter-spacing: -0.01em; }
+  .lmk-hero__subtitle { margin: 0; font-size: 16px; line-height: 1.65; color: var(--lmk-muted); max-width: 520px; }
+  .lmk-hero__price { display: flex; gap: 12px; align-items: baseline; }
+  .lmk-hero__price strong { font-size: 20px; font-weight: 500; }
+  .lmk-hero__price s { color: var(--lmk-muted); font-size: 15px; }
+  .lmk-hero__note { margin: -8px 0 0; padding-bottom: 18px; border-bottom: 1px solid var(--lmk-stone); font-size: 12px; color: var(--lmk-muted); }
+  .lmk-hero__form { display: grid; gap: 12px; }
+  .lmk-hero__label { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--lmk-muted); }
+  .lmk-hero__select { width: 100%; min-height: 48px; padding: 0 14px; border: 1px solid var(--lmk-stone); border-radius: 2px; background: #FFFDF9; font: inherit; font-size: 14px; color: inherit; }
+  .lmk-hero__buy { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; }
+  .lmk-hero__qty { display: inline-flex; align-items: center; border: 1px solid var(--lmk-stone); border-radius: 2px; background: #FFFDF9; }
+  .lmk-hero__qty button, .lmk-hero__qty b { width: 44px; height: 50px; display: grid; place-items: center; font-weight: 400; }
+  .lmk-hero__qty button { border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 18px; color: inherit; }
+  .lmk-hero__atc { min-height: 52px; border: 0; border-radius: 2px; background: var(--lmk-espresso); color: var(--lmk-ivory); font: 500 13px "Jost", sans-serif; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background 250ms ease; }
+  .lmk-hero__atc:hover { background: #1C1917; }
+  .lmk-hero__atc[disabled] { opacity: .5; cursor: not-allowed; }
+  .lmk-hero__checkout .shopify-payment-button__button { min-height: 52px; border-radius: 2px; font-family: "Jost", sans-serif; }
+  .lmk-hero__checkout .shopify-payment-button__button--unbranded { background: transparent; color: var(--lmk-espresso); border: 1px solid var(--lmk-espresso); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+  .lmk-hero__checkout .shopify-payment-button__more-options { color: var(--lmk-muted); font-size: 12px; }
+  .lmk-hero__delivery { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; background: var(--lmk-sand); border-radius: 2px; font-size: 14px; }
+  .lmk-icon { flex: none; color: var(--lmk-brass-dark); }
+  .lmk-hero__delivery-heading { margin: 0 0 4px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--lmk-brass-dark); }
+  .lmk-hero__delivery-text { margin: 0; line-height: 1.5; }
+  .lmk-hero__trust { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 16px; list-style: none; margin: 0; padding: 16px 0; border-block: 1px solid var(--lmk-stone); font-size: 12px; color: var(--lmk-muted); }
+  .lmk-hero__trust li { display: flex; align-items: center; gap: 8px; }
+  .lmk-hero__accordions { border-top: 1px solid var(--lmk-stone); }
+  .lmk-acc { border-bottom: 1px solid var(--lmk-stone); }
+  .lmk-acc summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 52px; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; }
+  .lmk-acc summary::-webkit-details-marker { display: none; }
+  .lmk-acc summary::after { content: "+"; font-size: 18px; font-weight: 300; }
+  .lmk-acc[open] > summary::after { content: "\2013"; }
+  .lmk-acc__body { padding-bottom: 20px; font-size: 15px; line-height: 1.65; color: var(--lmk-espresso); }
+  .lmk-acc__body p { margin: 0 0 10px; }
+  .lmk-acc__body ul { margin: 0 0 10px; padding-inline-start: 18px; }
+  @media (max-width: 989px) {
+    .lmk-hero__grid { grid-template-columns: 1fr; width: calc(100% - 32px); gap: 24px; }
+    .lmk-hero__media { position: static; grid-template-columns: 1fr; }
+    .lmk-hero__thumbs { order: 2; flex-direction: row; overflow-x: auto; }
+    .lmk-hero__more { display: none; }
+    .lmk-hero__thumb { flex: 0 0 60px; }
+    .lmk-hero__trust { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+<script>
+  (function () {
+    var main = document.getElementById("lmk-hero-main");
+    document.querySelectorAll(".lmk-hero__thumb").forEach(function (button) {
+      button.addEventListener("click", function (event) {
+        event.stopPropagation();
+        if (main && button.dataset.src) main.src = button.dataset.src;
+        document.querySelectorAll(".lmk-hero__thumb").forEach(function (item) { item.classList.remove("is-on"); });
+        button.classList.add("is-on");
+      });
+    });
+    document.querySelectorAll(".lmk-hero__qty").forEach(function (qty) {
+      var label = qty.querySelector("[data-qty]");
+      var input = qty.querySelector("[data-qty-input]");
+      function setQty(next) {
+        var value = Math.max(1, next);
+        if (label) label.textContent = String(value);
+        if (input) input.value = String(value);
+      }
+      var minus = qty.querySelector("[data-qty-minus]");
+      var plus = qty.querySelector("[data-qty-plus]");
+      if (minus) minus.addEventListener("click", function (event) { event.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) - 1); });
+      if (plus) plus.addEventListener("click", function (event) { event.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) + 1); });
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--lumen" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Jost", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Cormorant Garamond", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Lumenook Hero",
+  "tag": "section",
+  "class": "roarr-lumen-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Lumenook Hero" }]
+}
+{% endschema %}

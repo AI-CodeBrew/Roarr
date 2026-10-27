@@ -17,11 +17,10 @@ export const FLOW_CHOICE_OPTIONS = [
   },
   {
     id: "store",
-    title: "Full Store Revamp",
+    title: "Full Store Redesign",
     titleBadge: "",
-    description:
-      "Your entire store redesigned and branded by Roarr. Every single page with Roarr’s premium Theme.",
-    cta: "Revamp my Full Store",
+    description: "Your whole store redesigned and branded by Roarr, in one premium theme.",
+    cta: "Redesign my Full Store",
     image: "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/full-store.png?v=1775027492",
     pillLabel: "Free Preview",
     featurePills: [

@@ -378,21 +378,14 @@ def run_store_generation_task(
         if selected_template not in {1, 2}:
             selected_template = 1
 
-        from .store.pack_utils import (
-            SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS,
-            normalize_store_template_pack,
-        )
+        from .store.pack_utils import store_template_pack_for_mode
 
-        store_template_pack = normalize_store_template_pack(
+        # Cinematic and Amour are single-product only; Lumenook is multi-product only.
+        store_template_pack = store_template_pack_for_mode(
             (payload or {}).get("storeTemplatePack")
-            or (payload or {}).get("store_template_pack")
+            or (payload or {}).get("store_template_pack"),
+            mode,
         )
-        # Cinematic and Amour packs are single-product only (COD + prepaid).
-        if (
-            store_template_pack in SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS
-            and mode != "single_product"
-        ):
-            store_template_pack = "classic"
 
         product_ids = (
             (payload or {}).get("productIds")

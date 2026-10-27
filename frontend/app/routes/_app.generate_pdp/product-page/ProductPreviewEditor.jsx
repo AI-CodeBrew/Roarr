@@ -1,9 +1,10 @@
 import { useCallback, useMemo, useState, useRef, useEffect } from "react";
 import { useBlocker } from "react-router";
 
-import { BlockStack, Icon, InlineStack, Page, Text } from "@shopify/polaris";
+import { Icon, InlineStack, Page, Text } from "@shopify/polaris";
 import { DesktopIcon, DragDropIcon, MobileIcon } from "@shopify/polaris-icons";
-import { PanelRight } from "lucide-react";
+import { ExternalLink, PanelRight, Rocket, Wand2 } from "lucide-react";
+import { PrimaryButton } from "../../../components/RoarrUI.jsx";
 import { aiResponseMapping } from "./utils/productAiResponeMapping.js";
 
 
@@ -348,18 +349,19 @@ export const ProductPreviewEditor = ({
                 <MobilePreviewReadonlyBanner variant="product" />
                 <div className="shrink-0 flex justify-end">
                     {isPublished ? (
-                        <s-button
+                        <PrimaryButton
+                            size="sm"
                             onClick={handleOpenPreview}
-                            variant="primary"
                             loading={isPreviewLoading}
-                            disabled={isPreviewLoading}
                         >
+                            {isPreviewLoading ? null : <ExternalLink size={15} aria-hidden />}
                             Preview
-                        </s-button>
+                        </PrimaryButton>
                     ) : (
-                        <s-button onClick={handlePublish} variant="primary">
+                        <PrimaryButton size="sm" onClick={handlePublish}>
+                            <Rocket size={15} aria-hidden />
                             Publish
-                        </s-button>
+                        </PrimaryButton>
                     )}
                 </div>
                 <div className="min-h-0 flex-1 overflow-auto [&_iframe]:rounded-lg">
@@ -383,7 +385,7 @@ export const ProductPreviewEditor = ({
                     <button
                         type="button"
                         onClick={() => setMobileRightOpen((o) => !o)}
-                        className={`flex items-center justify-center p-2 rounded-lg transition-colors ${mobileRightOpen ? "bg-gray-200 text-gray-900" : "text-gray-600 hover:bg-gray-100"}`}
+                        className={`flex items-center justify-center p-2 rounded-lg transition-colors ${mobileRightOpen ? "bg-blue-50 text-[#1e40af] ring-1 ring-inset ring-blue-200" : "bg-white text-slate-500 ring-1 ring-inset ring-slate-200 hover:bg-blue-50 hover:text-[#1e40af]"}`}
                         aria-label="Open editor panel"
                         aria-pressed={mobileRightOpen}
                     >
@@ -393,9 +395,9 @@ export const ProductPreviewEditor = ({
                 <button
                     type="button"
                     onClick={() => setSelectorMode((on) => !on)}
-                    className={`flex items-center justify-center p-2 rounded-lg transition-colors ${selectorMode
-                        ? "bg-blue-100 text-blue-700"
-                        : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                    className={`flex items-center justify-center p-2 rounded-xl transition-colors ${selectorMode
+                        ? "bg-blue-50 text-[#1e40af] ring-1 ring-inset ring-blue-200"
+                        : "bg-white text-slate-500 ring-1 ring-inset ring-slate-200 hover:bg-blue-50 hover:text-[#1e40af]"
                         }`}
                     title={selectorMode ? "Select mode on: click a section to open its settings" : "Select mode off: enable to hover and click sections to open settings"}
                     aria-label={selectorMode ? "Select mode on" : "Select mode off"}
@@ -404,7 +406,7 @@ export const ProductPreviewEditor = ({
                     <Icon source={DragDropIcon} />
                 </button>
                 <div
-                    className="flex items-center rounded-full border border-black/15 bg-white p-0.5 gap-0.5"
+                    className="flex items-center gap-0.5 rounded-full bg-white p-0.5 shadow-sm ring-1 ring-slate-200"
                     role="group"
                     aria-label="Preview device"
                 >
@@ -420,8 +422,8 @@ export const ProductPreviewEditor = ({
                                 if (mode === "desktop") setLeftExpandedOpen(true);
                             }}
                             className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${previewMode === mode
-                                ? "bg-black text-white shadow-sm"
-                                : "text-black/60 hover:bg-black/5 hover:text-black"
+                                ? "bg-[#1e3a8a] text-white shadow-sm"
+                                : "text-slate-500 hover:bg-blue-50 hover:text-[#1e3a8a]"
                                 }`}
                             aria-label={`${label} preview`}
                             aria-pressed={previewMode === mode}
@@ -432,18 +434,19 @@ export const ProductPreviewEditor = ({
                 </div>
                 <PreviewZoomControls scale={previewZoomScale} onScaleChange={setPreviewZoomScale} />
                 {isPublished ? (
-                    <s-button
+                    <PrimaryButton
+                        size="sm"
                         onClick={handleOpenPreview}
-                        variant="primary"
                         loading={isPreviewLoading}
-                        disabled={isPreviewLoading}
                     >
+                        {isPreviewLoading ? null : <ExternalLink size={15} aria-hidden />}
                         Preview
-                    </s-button>
+                    </PrimaryButton>
                 ) : (
-                    <s-button onClick={handlePublish} variant="primary">
+                    <PrimaryButton size="sm" onClick={handlePublish}>
+                        <Rocket size={15} aria-hidden />
                         Publish
-                    </s-button>
+                    </PrimaryButton>
                 )}
             </div>
         </InlineStack>
@@ -464,7 +467,7 @@ export const ProductPreviewEditor = ({
                     )}
 
                     {/* Left panel: slim icon bar + sections/colors panel */}
-                    <div className="shrink-0 self-stretch min-h-0 flex overflow-hidden rounded-lg border border-gray-200 bg-white">
+                    <div className="shrink-0 self-stretch min-h-0 flex overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/80">
                         <LiquidPreviewSettingsPanel
                             templatesConfig={templatesConfig}
                             form={form}
@@ -487,7 +490,7 @@ export const ProductPreviewEditor = ({
                     <div className="flex-1 min-w-0 min-h-0 flex flex-col px-1 overflow-hidden">
                         <div
                             ref={previewContainerRef}
-                            className="flex-1 min-h-0 w-full flex relative overflow-hidden rounded-lg"
+                            className="flex-1 min-h-0 w-full flex relative overflow-hidden rounded-2xl shadow-sm ring-1 ring-slate-200/80"
                             style={{ minHeight: 0 }}
                             onWheel={previewContainerSize.width > 0 && previewContainerSize.height > 0 ? (e) => {
                                 const iframe = previewContainerRef.current?.querySelector('iframe');
@@ -621,10 +624,21 @@ export const ProductPreviewEditor = ({
                     </Page>
                 ) : (
                 <div className="w-full h-full min-h-screen flex flex-col">
-                    <div className="px-2 sm:px-3 pt-2 pb-2">
-                        <BlockStack gap="100">
+                    <div className="px-2 sm:px-3 pt-2 pb-3">
+                        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-gradient-to-r from-[#f6f8ff] to-[#e8eeff] px-3.5 py-2.5 ring-1 ring-blue-100">
+                            <div className="flex min-w-0 items-center gap-2.5">
+                                <span className="flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-white text-[#4f46e5] shadow-sm ring-1 ring-blue-100">
+                                    <Wand2 size={16} aria-hidden />
+                                </span>
+                                <div className="min-w-0">
+                                    <p className="m-0 text-sm font-semibold text-slate-900">Review &amp; customize</p>
+                                    <p className="m-0 hidden text-xs text-slate-500 sm:block">
+                                        Click a section to edit it, then publish when it looks right.
+                                    </p>
+                                </div>
+                            </div>
                             {previewToolbarSecondaryActions}
-                        </BlockStack>
+                        </div>
                     </div>
                     {editorWorkspace}
                 </div>

@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { useOutletContext } from "react-router";
-import { BlockStack, Box, Button, Card, InlineStack, Text } from "@shopify/polaris";
+import { CircleAlert, CircleCheck, SlidersHorizontal } from "lucide-react";
 import MarketPreferencesForm, {
   areMarketPreferencesComplete,
   saveShopMarketPreferences,
 } from "../components/MarketPreferencesForm.jsx";
 import { CreditWalletWidget } from "../components/CreditWalletWidget";
+import { GradientText, PrimaryButton, StepFrame } from "../components/RoarrUI";
 import { usePageTracking } from "../hooks/usePageTracking";
 import { useViewportBelowMd } from "../hooks/useViewportBelowMd";
 import {
-  getSupportedLanguage,
   mapShopLocaleToSupported,
 } from "../lib/supportedLanguages.js";
 import { useDashboardLoaderData } from "../lib/DashboardDataContext";
@@ -112,68 +112,75 @@ export default function PreferencesPage() {
           padding: isMobileLayout ? "12px" : "10px",
         }}
       >
-        <BlockStack gap="400">
-          <InlineStack align="space-between" blockAlign="start" wrap>
-            <BlockStack gap="100">
-              <h4
-                style={{
-                  fontFamily:
-                    'Baskerville, "Palatino Linotype", Palatino, "Times New Roman", Times, serif',
-                  fontSize: "1.75rem",
-                  fontWeight: 400,
-                  margin: 0,
-                  color: "#1a1a1a",
-                }}
+        <div className="flex flex-col gap-5">
+          <StepFrame compact>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3.5">
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-white text-[#1e40af] shadow-sm ring-1 ring-blue-100">
+                  <SlidersHorizontal size={22} aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <h1 className="m-0 text-[1.4rem] font-bold leading-tight tracking-tight text-slate-900 sm:text-[1.65rem]">
+                    <GradientText>Preferences</GradientText>
+                  </h1>
+                  <p className="m-0 mt-0.5 text-sm text-slate-600">
+                    Market, country and generation language for Entire Store.
+                  </p>
+                </div>
+              </div>
+              <PrimaryButton
+                onClick={handleSave}
+                loading={saving}
+                disabled={!canSave || loading}
+                className={isMobileLayout ? "w-full" : ""}
               >
-                Preferences
-              </h4>
-              <Text as="p" variant="bodyMd" tone="subdued">
-                Market, country, and generation language for Entire Store.
-              </Text>
-            </BlockStack>
-            <Button
-              variant="primary"
-              onClick={handleSave}
-              loading={saving}
-              disabled={!canSave || loading}
-            >
-              Save
-            </Button>
-          </InlineStack>
+                Save changes
+              </PrimaryButton>
+            </div>
+          </StepFrame>
 
-          <Card>
-            <Box padding="400">
-              {loading ? (
-                <Text as="p" tone="subdued">
-                  Loading preferences…
-                </Text>
-              ) : (
-                <MarketPreferencesForm
-                  marketType={marketType}
-                  countryCode={countryCode}
-                  language={effectiveLanguage}
-                  onMarketTypeChange={setMarketType}
-                  onCountryCodeChange={setCountryCode}
-                  onLanguageChange={setLanguage}
-                  shopLocales={locales}
-                  title="Store market preferences"
-                  subtitle={`Current language: ${getSupportedLanguage(effectiveLanguage).name}. Changes apply the next time you generate an Entire Store — existing pages are not rewritten until you regenerate.`}
-                />
-              )}
-            </Box>
-          </Card>
+          <section className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70 sm:p-6">
+            {loading ? (
+              <div className="space-y-3" aria-busy="true" aria-live="polite">
+                <div className="h-5 w-48 animate-pulse rounded-md bg-slate-100" />
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="h-[60px] animate-pulse rounded-xl bg-slate-50 ring-1 ring-inset ring-slate-100" />
+                ))}
+                <span className="sr-only">Loading preferences…</span>
+              </div>
+            ) : (
+              <MarketPreferencesForm
+                marketType={marketType}
+                countryCode={countryCode}
+                language={effectiveLanguage}
+                onMarketTypeChange={setMarketType}
+                onCountryCodeChange={setCountryCode}
+                onLanguageChange={setLanguage}
+                shopLocales={locales}
+                title="Store market preferences"
+              />
+            )}
+          </section>
 
           {message ? (
-            <Text as="p" tone="success">
+            <p
+              role="status"
+              className="m-0 flex items-center gap-2.5 rounded-2xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-900 ring-1 ring-inset ring-emerald-200"
+            >
+              <CircleCheck size={18} className="flex-none text-emerald-600" aria-hidden />
               {message}
-            </Text>
+            </p>
           ) : null}
           {error ? (
-            <Text as="p" tone="critical">
+            <p
+              role="alert"
+              className="m-0 flex items-center gap-2.5 rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-900 ring-1 ring-inset ring-red-200"
+            >
+              <CircleAlert size={18} className="flex-none text-red-600" aria-hidden />
               {error}
-            </Text>
+            </p>
           ) : null}
-        </BlockStack>
+        </div>
       </div>
     </s-page>
   );

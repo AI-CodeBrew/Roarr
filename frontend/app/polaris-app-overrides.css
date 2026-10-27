@@ -38,3 +38,73 @@
     transform: translateY(-130px);
   }
 }
+/*
+ * Roarr blue theme for Polaris inside onboarding + the generate flows (`.roarr-theme` wrapper).
+ * Portaled modals/popovers render outside the wrapper, so they get the same tokens while a
+ * themed screen is mounted.
+ */
+.roarr-theme,
+body:has(.roarr-theme) .Polaris-PolarisPortalsContainer {
+  --p-color-bg-fill-brand: #1e3a8a;
+  --p-color-bg-fill-brand-hover: #172554;
+  --p-color-bg-fill-brand-active: #172554;
+  --p-color-bg-fill-brand-selected: #1e3a8a;
+  --p-shadow-button-primary: 0rem -0.0625rem 0rem 0.0625rem rgba(23, 37, 84, 0.85) inset,
+    0rem 0rem 0rem 0.0625rem #1e3a8a inset, 0rem 0.03125rem 0rem 0.09375rem rgba(255, 255, 255, 0.22) inset;
+  --p-shadow-button-primary-hover: 0rem 0.0625rem 0rem 0rem rgba(255, 255, 255, 0.24) inset,
+    0.0625rem 0rem 0rem 0rem rgba(255, 255, 255, 0.2) inset,
+    -0.0625rem 0rem 0rem 0rem rgba(255, 255, 255, 0.2) inset, 0rem -0.0625rem 0rem 0rem #0b1640 inset,
+    0rem -0.0625rem 0rem 0.0625rem #172554;
+  --p-shadow-button-primary-inset: 0rem 0.1875rem 0rem 0rem #0b1640 inset;
+  --p-color-text-brand: #1e40af;
+  --p-color-text-brand-hover: #1e3a8a;
+  --p-color-icon-brand: #1e3a8a;
+  --p-color-bg-surface-brand-selected: #eff4ff;
+  --p-color-bg-surface-brand-hover: #e0e9ff;
+  --p-color-bg-surface-brand-active: #eff4ff;
+  --p-color-bg-fill-inverse: #1e3a8a;
+  --p-color-bg-fill-inverse-hover: #1e40af;
+  --p-color-bg-fill-inverse-active: #172554;
+  --p-color-border-emphasis: #1e40af;
+  --p-color-border-focus: #4f46e5;
+  --p-color-text-link: #1e40af;
+  --p-color-text-link-hover: #1e3a8a;
+  --p-color-bg-fill-emphasis: #1e40af;
+  --p-color-bg-fill-emphasis-hover: #1e3a8a;
+  --p-color-text-emphasis: #1e40af;
+}
+
+/* Slightly rounder Polaris buttons to match the Tailwind panels. */
+.roarr-theme .Polaris-Button,
+body:has(.roarr-theme) .Polaris-PolarisPortalsContainer .Polaris-Button {
+  border-radius: 0.625rem;
+}
+
+/*
+ * Blue hover for clickable Polaris controls, app-wide. Raised specificity (doubled class) so
+ * these beat Polaris' own variant rules regardless of stylesheet order.
+ */
+.Polaris-Button.Polaris-Button--variantSecondary:not(.Polaris-Button--toneCritical, .Polaris-Button--toneSuccess),
+.Polaris-Button.Polaris-Button--variantTertiary:not(.Polaris-Button--toneCritical, .Polaris-Button--toneSuccess) {
+  --pc-button-bg_hover: #eff4ff;
+  --pc-button-bg_active: #e0e9ff;
+  --pc-button-color_hover: #1e40af;
+  --pc-button-icon-fill_hover: #1e40af;
+}
+
+.Polaris-Button.Polaris-Button--variantPrimary:not(.Polaris-Button--toneCritical, .Polaris-Button--toneSuccess) {
+  --pc-button-bg_hover: #1e3a8a;
+  --pc-button-bg_active: #172554;
+}
+
+.Polaris-Button.Polaris-Button--variantPlain:not(.Polaris-Button--toneCritical, .Polaris-Button--toneSuccess),
+.Polaris-Button.Polaris-Button--variantMonochromePlain {
+  --pc-button-color_hover: #1e40af;
+  --pc-button-icon-fill_hover: #1e40af;
+}
+
+/* Clickable table rows (pages lists) tint blue instead of grey. */
+.Polaris-IndexTable__TableRow:hover,
+.Polaris-IndexTable__TableRow:hover .Polaris-IndexTable__TableCell {
+  background-color: #eff4ff;
+}

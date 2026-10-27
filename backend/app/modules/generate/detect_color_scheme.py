@@ -6,7 +6,7 @@ import logging
 import mimetypes
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field, field_validator
-from ...clients import gemini_client
+from ...clients.gemini_client import client as gemini_client
 from google.genai import types as gatypes
 import json
 import re  # Still needed for field_validator

@@ -54,11 +54,11 @@ const BASE_LEFT_MENU_ITEMS = [
 ];
 
 const LEFT_MENU_BUTTON_BASE_CLASS =
-    "relative flex items-center justify-center w-9 h-9 rounded-lg transition-colors group";
-const LEFT_MENU_BUTTON_SELECTED_CLASS = "bg-gray-100 text-blue-600";
-const LEFT_MENU_BUTTON_UNSELECTED_CLASS = "text-gray-600 hover:bg-gray-200";
+    "relative flex items-center justify-center w-9 h-9 rounded-xl transition-colors group";
+const LEFT_MENU_BUTTON_SELECTED_CLASS = "bg-blue-50 text-[#1e40af] ring-1 ring-inset ring-blue-200";
+const LEFT_MENU_BUTTON_UNSELECTED_CLASS = "text-slate-500 hover:bg-blue-50 hover:text-[#1e40af]";
 const LEFT_MENU_TOOLTIP_CLASS =
-    "absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1.5 bg-gray-900 text-white text-xs font-medium rounded whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity z-[100] pointer-events-none";
+    "absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1.5 bg-[#1e3a8a] text-white text-xs font-medium rounded whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity z-[100] pointer-events-none";
 
 const TAILWIND_COLORS = {
     rose: { 400: "#fb7185" },
@@ -148,7 +148,7 @@ function ThemeAccordionRow({ title, expanded, onToggle, children }) {
                 type="button"
                 onClick={onToggle}
                 aria-expanded={expanded}
-                className="w-full flex items-center justify-between gap-2 px-4 py-3 text-left bg-white hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between gap-2 px-4 py-3 text-left bg-white hover:bg-blue-50 transition-colors"
             >
                 <span className="text-sm font-semibold text-gray-900">{title}</span>
                 <ChevronDown
@@ -449,7 +449,7 @@ export default function LiquidPreviewSettingsPanel({
                             <button
                                 type="button"
                                 onClick={() => onSectionSelect?.(null)}
-                                className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors shrink-0"
+                                className="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-blue-50 hover:text-[#1e40af] transition-colors shrink-0"
                                 title="Back to sections"
                                 aria-label="Back to sections"
                             >
@@ -489,7 +489,7 @@ export default function LiquidPreviewSettingsPanel({
                                 </p>
                                 <button
                                     type="button"
-                                    className="w-full flex items-center gap-2 px-3 py-2 rounded text-left text-sm text-blue-600 hover:bg-gray-50 transition-colors"
+                                    className="w-full flex items-center gap-2 px-3 py-2 rounded text-left text-sm text-blue-600 hover:bg-blue-50 transition-colors"
                                 >
                                     <span className="w-4 h-4 rounded-full border-2 border-blue-600 flex items-center justify-center shrink-0">
                                         <Plus size={10} strokeWidth={2.5} />
@@ -517,7 +517,7 @@ export default function LiquidPreviewSettingsPanel({
                                                         onClick={() => onSectionSelect?.(isSelected ? null : sectionId)}
                                                         className={`w-full flex items-center gap-1.5 px-3 py-1 rounded-lg text-left text-xs transition-colors ${isSelected
                                                             ? "bg-blue-600 text-white"
-                                                            : "text-gray-900 hover:bg-gray-50"
+                                                            : "text-gray-900 hover:bg-blue-50"
                                                             }`}
                                                     >
                                                         <span className={`shrink-0 ${isSelected ? "text-white" : "text-gray-500"}`}>

@@ -6,9 +6,10 @@ The context is generated from product title and description, and provides
 additional insights that will be used in the final content generation.
 """
 
+import os
 from pydantic import BaseModel, Field
 from typing import List
-from .....clients import openai_client as client
+from .....clients.openai_client import client
 
 
 class HealthBeautyProductContext(BaseModel):
@@ -125,7 +126,7 @@ Be DETAILED, specific, persuasive, and use industry-standard health & beauty ter
 
     # Use structured output with the Pydantic schema
     response = client.beta.chat.completions.parse(
-        model="gpt-4.1-nano",
+        model=os.getenv("OPENAI_TEXT_MODEL", "gpt-4o-mini"),  # gpt-4.1-nano was shut down by OpenAI
         messages=messages,
         response_format=HealthBeautyProductContext,
         temperature=1,  # Higher temperature for more creativity

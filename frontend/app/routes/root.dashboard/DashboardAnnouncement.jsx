@@ -102,7 +102,7 @@ export default function DashboardAnnouncement({ shop }) {
             lineHeight: 1.5,
           }}
         >
-          Store revamps now generate mobile-optimised layouts in the same generation.{" "}
+          Store redesigns now generate mobile-optimised layouts in the same generation.{" "}
           <span style={{ color: accent, fontWeight: 600 }}>50% faster</span> for all plans.
         </p>
         <div
@@ -128,7 +128,7 @@ export default function DashboardAnnouncement({ shop }) {
               border: "1px solid #ffffff",
             }}
           >
-            Start a store revamp
+            Start a store redesign
           </button>
           <button
             type="button"

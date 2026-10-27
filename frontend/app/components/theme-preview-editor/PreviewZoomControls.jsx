@@ -49,7 +49,7 @@ export default function PreviewZoomControls({ scale, onScaleChange }) {
 
   return (
     <div
-      className="flex items-center rounded-full border border-black/15 bg-white px-0.5 py-0.5 gap-0.5"
+      className="flex items-center gap-0.5 rounded-full bg-white px-0.5 py-0.5 shadow-sm ring-1 ring-slate-200"
       role="group"
       aria-label="Preview zoom"
     >
@@ -59,15 +59,15 @@ export default function PreviewZoomControls({ scale, onScaleChange }) {
         disabled={atMin}
         className={`flex h-7 min-w-[1.75rem] items-center justify-center rounded-full text-sm font-medium transition-colors ${
           atMin
-            ? "text-black/25 cursor-not-allowed"
-            : "text-black/70 hover:bg-black/5 hover:text-black"
+            ? "text-slate-300 cursor-not-allowed"
+            : "text-slate-600 hover:bg-blue-50 hover:text-[#1e3a8a]"
         }`}
         aria-label="Zoom out preview"
       >
         −
       </button>
       <span
-        className="tabular-nums text-[11px] font-medium text-black/65 min-w-[2.75rem] text-center select-none"
+        className="tabular-nums text-[11px] font-medium text-slate-600 min-w-[2.75rem] text-center select-none"
         title="Preview zoom"
       >
         {ZOOM_DISPLAY_PERCENTS[i]}%
@@ -78,8 +78,8 @@ export default function PreviewZoomControls({ scale, onScaleChange }) {
         disabled={atMax}
         className={`flex h-7 min-w-[1.75rem] items-center justify-center rounded-full text-sm font-medium transition-colors ${
           atMax
-            ? "text-black/25 cursor-not-allowed"
-            : "text-black/70 hover:bg-black/5 hover:text-black"
+            ? "text-slate-300 cursor-not-allowed"
+            : "text-slate-600 hover:bg-blue-50 hover:text-[#1e3a8a]"
         }`}
         aria-label="Zoom in preview"
       >

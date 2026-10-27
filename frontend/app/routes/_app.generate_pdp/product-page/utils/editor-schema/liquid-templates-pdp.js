@@ -587,6 +587,112 @@ export const PDP_TEMPLATE_SCHEMAS = {
             { type: "text", key: "answer_4", formKey: "text.faq_answer_4", label: "Answer 4", placeholder: "", productMetafield: "kluck_ai.faq_answer_4" }
         ]
     },
+    "lumen-hero": {
+        displayName: "Hero",
+        useForm: true,
+        fields: [
+            { type: "text", key: "title", formKey: "text.product_title", label: "Title", placeholder: "", productMetafield: "kluck_ai.product_title" },
+            { type: "text", key: "eyebrow", formKey: "text.lumen_eyebrow", label: "Product type", placeholder: "", productMetafield: "kluck_ai.lumen_eyebrow" },
+            { type: "text", key: "subtitle", formKey: "text.product_subtitle", label: "Subtitle", placeholder: "", productMetafield: "kluck_ai.product_subtitle" },
+            { type: "text", key: "price_note", formKey: "text.lumen_price_note", label: "Price note", placeholder: "", productMetafield: "kluck_ai.lumen_price_note" },
+            { type: "text", key: "delivery_heading", formKey: "text.lumen_delivery_heading", label: "Delivery heading", placeholder: "", productMetafield: "kluck_ai.lumen_delivery_heading" },
+            { type: "text", key: "delivery", formKey: "text.delivery_line", label: "Delivery line", placeholder: "", productMetafield: "kluck_ai.delivery_line" },
+            { type: "text", key: "badge_1", formKey: "text.badge_text_1", label: "Trust 1", placeholder: "", productMetafield: "kluck_ai.badge_text_1" },
+            { type: "text", key: "badge_2", formKey: "text.badge_text_2", label: "Trust 2", placeholder: "", productMetafield: "kluck_ai.badge_text_2" },
+            { type: "text", key: "badge_3", formKey: "text.badge_text_3", label: "Trust 3", placeholder: "", productMetafield: "kluck_ai.badge_text_3" },
+            { type: "text", key: "badge_4", formKey: "text.badge_text_4", label: "Trust 4", placeholder: "", productMetafield: "kluck_ai.badge_text_4" },
+            { type: "text", key: "acc_1_title", formKey: "text.lumen_acc_1_title", label: "Tab 1 label", placeholder: "", productMetafield: "kluck_ai.lumen_acc_1_title" },
+            { type: "text", key: "acc_1_body", formKey: "text.lumen_acc_1_body", label: "Tab 1 text", placeholder: "", productMetafield: "kluck_ai.lumen_acc_1_body" },
+            { type: "text", key: "acc_2_title", formKey: "text.lumen_acc_2_title", label: "Tab 2 label", placeholder: "", productMetafield: "kluck_ai.lumen_acc_2_title" },
+            { type: "text", key: "acc_2_body", formKey: "text.lumen_acc_2_body", label: "Tab 2 text", placeholder: "", productMetafield: "kluck_ai.lumen_acc_2_body" },
+            { type: "text", key: "acc_3_title", formKey: "text.lumen_acc_3_title", label: "Tab 3 label", placeholder: "", productMetafield: "kluck_ai.lumen_acc_3_title" },
+            { type: "text", key: "acc_3_body", formKey: "text.lumen_acc_3_body", label: "Tab 3 text", placeholder: "", productMetafield: "kluck_ai.lumen_acc_3_body" },
+            { type: "text", key: "acc_4_title", formKey: "text.lumen_acc_4_title", label: "Tab 4 label", placeholder: "", productMetafield: "kluck_ai.lumen_acc_4_title" },
+            { type: "text", key: "acc_4_body", formKey: "text.lumen_acc_4_body", label: "Tab 4 text", placeholder: "", productMetafield: "kluck_ai.lumen_acc_4_body" },
+            { type: "image", key: "product_image_1", formKey: "images.product_images.product_image_1", label: "Product image 1", productMetafield: "kluck_ai.product_image_1" },
+            { type: "image", key: "product_image_2", formKey: "images.product_images.product_image_2", label: "Product image 2", productMetafield: "kluck_ai.product_image_2" },
+            { type: "image", key: "product_image_3", formKey: "images.product_images.product_image_3", label: "Product image 3", productMetafield: "kluck_ai.product_image_3" },
+            { type: "image", key: "product_image_4", formKey: "images.product_images.product_image_4", label: "Product image 4", productMetafield: "kluck_ai.product_image_4" },
+            { type: "image", key: "product_image_5", formKey: "images.product_images.product_image_5", label: "Product image 5", productMetafield: "kluck_ai.product_image_5" }
+        ]
+    },
+    "lumen-detail": {
+        displayName: "In detail",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.lumen_detail_eyebrow", label: "Label", placeholder: "", productMetafield: "kluck_ai.lumen_detail_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.lumen_detail_heading", label: "Heading", placeholder: "", productMetafield: "kluck_ai.lumen_detail_heading" },
+            { type: "text", key: "text", formKey: "text.lumen_detail_text", label: "Text", placeholder: "", productMetafield: "kluck_ai.lumen_detail_text" }
+        ]
+    },
+    "lumen-feature": {
+        displayName: "Feature",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.lumen_feature_eyebrow", label: "Label", placeholder: "", productMetafield: "kluck_ai.lumen_feature_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.lumen_feature_heading", label: "Heading", placeholder: "", productMetafield: "kluck_ai.lumen_feature_heading" },
+            { type: "image", key: "feature_image", formKey: "images.body_images.feature_image", label: "Image", productMetafield: "kluck_ai.feature_image" },
+            { type: "text", key: "point_1", formKey: "text.lumen_point_1_title", label: "Point 1", placeholder: "", productMetafield: "kluck_ai.lumen_point_1_title" },
+            { type: "text", key: "point_1_text", formKey: "text.lumen_point_1_text", label: "Point 1 text", placeholder: "", productMetafield: "kluck_ai.lumen_point_1_text" },
+            { type: "text", key: "point_2", formKey: "text.lumen_point_2_title", label: "Point 2", placeholder: "", productMetafield: "kluck_ai.lumen_point_2_title" },
+            { type: "text", key: "point_2_text", formKey: "text.lumen_point_2_text", label: "Point 2 text", placeholder: "", productMetafield: "kluck_ai.lumen_point_2_text" },
+            { type: "text", key: "point_3", formKey: "text.lumen_point_3_title", label: "Point 3", placeholder: "", productMetafield: "kluck_ai.lumen_point_3_title" },
+            { type: "text", key: "point_3_text", formKey: "text.lumen_point_3_text", label: "Point 3 text", placeholder: "", productMetafield: "kluck_ai.lumen_point_3_text" },
+            { type: "text", key: "point_4", formKey: "text.lumen_point_4_title", label: "Point 4", placeholder: "", productMetafield: "kluck_ai.lumen_point_4_title" },
+            { type: "text", key: "point_4_text", formKey: "text.lumen_point_4_text", label: "Point 4 text", placeholder: "", productMetafield: "kluck_ai.lumen_point_4_text" },
+            { type: "text", key: "point_5", formKey: "text.lumen_point_5_title", label: "Point 5", placeholder: "", productMetafield: "kluck_ai.lumen_point_5_title" },
+            { type: "text", key: "point_5_text", formKey: "text.lumen_point_5_text", label: "Point 5 text", placeholder: "", productMetafield: "kluck_ai.lumen_point_5_text" },
+            { type: "text", key: "point_6", formKey: "text.lumen_point_6_title", label: "Point 6", placeholder: "", productMetafield: "kluck_ai.lumen_point_6_title" },
+            { type: "text", key: "point_6_text", formKey: "text.lumen_point_6_text", label: "Point 6 text", placeholder: "", productMetafield: "kluck_ai.lumen_point_6_text" }
+        ]
+    },
+    "lumen-details": {
+        displayName: "The details",
+        useForm: true,
+        fields: [
+            { type: "text", key: "heading", formKey: "text.lumen_details_heading", label: "Heading", placeholder: "", productMetafield: "kluck_ai.lumen_details_heading" },
+            { type: "image", key: "image_1", formKey: "images.body_images.product_highlight_1", label: "Row 1 image", productMetafield: "kluck_ai.product_highlight_1" },
+            { type: "text", key: "title_1", formKey: "text.lumen_detail_1_title", label: "Row 1 title", placeholder: "", productMetafield: "kluck_ai.lumen_detail_1_title" },
+            { type: "text", key: "text_1", formKey: "text.lumen_detail_1_text", label: "Row 1 text", placeholder: "", productMetafield: "kluck_ai.lumen_detail_1_text" },
+            { type: "image", key: "image_2", formKey: "images.body_images.product_highlight_2", label: "Row 2 image", productMetafield: "kluck_ai.product_highlight_2" },
+            { type: "text", key: "title_2", formKey: "text.lumen_detail_2_title", label: "Row 2 title", placeholder: "", productMetafield: "kluck_ai.lumen_detail_2_title" },
+            { type: "text", key: "text_2", formKey: "text.lumen_detail_2_text", label: "Row 2 text", placeholder: "", productMetafield: "kluck_ai.lumen_detail_2_text" },
+            { type: "image", key: "image_3", formKey: "images.body_images.product_highlight_3", label: "Row 3 image", productMetafield: "kluck_ai.product_highlight_3" },
+            { type: "text", key: "title_3", formKey: "text.lumen_detail_3_title", label: "Row 3 title", placeholder: "", productMetafield: "kluck_ai.lumen_detail_3_title" },
+            { type: "text", key: "text_3", formKey: "text.lumen_detail_3_text", label: "Row 3 text", placeholder: "", productMetafield: "kluck_ai.lumen_detail_3_text" }
+        ]
+    },
+    "lumen-circle": {
+        displayName: "Chosen with care",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.lumen_circle_eyebrow", label: "Label", placeholder: "", productMetafield: "kluck_ai.lumen_circle_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.lumen_circle_heading", label: "Heading", placeholder: "", productMetafield: "kluck_ai.lumen_circle_heading" },
+            { type: "text", key: "title_1", formKey: "text.lumen_circle_1_title", label: "Line 1", placeholder: "", productMetafield: "kluck_ai.lumen_circle_1_title" },
+            { type: "text", key: "text_1", formKey: "text.lumen_circle_1_text", label: "Line 1 text", placeholder: "", productMetafield: "kluck_ai.lumen_circle_1_text" },
+            { type: "text", key: "title_2", formKey: "text.lumen_circle_2_title", label: "Line 2", placeholder: "", productMetafield: "kluck_ai.lumen_circle_2_title" },
+            { type: "text", key: "text_2", formKey: "text.lumen_circle_2_text", label: "Line 2 text", placeholder: "", productMetafield: "kluck_ai.lumen_circle_2_text" },
+            { type: "text", key: "title_3", formKey: "text.lumen_circle_3_title", label: "Line 3", placeholder: "", productMetafield: "kluck_ai.lumen_circle_3_title" },
+            { type: "text", key: "text_3", formKey: "text.lumen_circle_3_text", label: "Line 3 text", placeholder: "", productMetafield: "kluck_ai.lumen_circle_3_text" },
+            { type: "text", key: "title_4", formKey: "text.lumen_circle_4_title", label: "Line 4", placeholder: "", productMetafield: "kluck_ai.lumen_circle_4_title" },
+            { type: "text", key: "text_4", formKey: "text.lumen_circle_4_text", label: "Line 4 text", placeholder: "", productMetafield: "kluck_ai.lumen_circle_4_text" },
+            { type: "text", key: "title_5", formKey: "text.lumen_circle_5_title", label: "Line 5", placeholder: "", productMetafield: "kluck_ai.lumen_circle_5_title" },
+            { type: "text", key: "text_5", formKey: "text.lumen_circle_5_text", label: "Line 5 text", placeholder: "", productMetafield: "kluck_ai.lumen_circle_5_text" },
+            { type: "text", key: "title_6", formKey: "text.lumen_circle_6_title", label: "Line 6", placeholder: "", productMetafield: "kluck_ai.lumen_circle_6_title" },
+            { type: "text", key: "text_6", formKey: "text.lumen_circle_6_text", label: "Line 6 text", placeholder: "", productMetafield: "kluck_ai.lumen_circle_6_text" }
+        ]
+    },
+    "lumen-mood": {
+        displayName: "Mood",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.lumen_mood_eyebrow", label: "Label", placeholder: "", productMetafield: "kluck_ai.lumen_mood_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.lumen_mood_heading", label: "Heading", placeholder: "", productMetafield: "kluck_ai.lumen_mood_heading" },
+            { type: "text", key: "text", formKey: "text.lumen_mood_text", label: "Text", placeholder: "", productMetafield: "kluck_ai.lumen_mood_text" },
+            { type: "text", key: "cta", formKey: "text.lumen_mood_cta", label: "Link text", placeholder: "", productMetafield: "kluck_ai.lumen_mood_cta" },
+            { type: "image", key: "image", formKey: "images.body_images.product_impact_image", label: "Image", productMetafield: "kluck_ai.product_impact_image" }
+        ]
+    },
     "kluck-ai-faq-section": {
         displayName: "FAQ",
         useForm: true,

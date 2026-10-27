@@ -27,3 +27,12 @@
     @apply sr-only;
   }
 }
+/* Settings drawers (Preferences): body eases in when a drawer opens. */
+@keyframes market-drawer-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.market-drawer-in { animation: market-drawer-in 0.22s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .market-drawer-in { animation: none; }
+}

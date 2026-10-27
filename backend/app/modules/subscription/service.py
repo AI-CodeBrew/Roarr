@@ -1,11 +1,18 @@
 """
-Subscription Service: Business logic for Shopify subscription management
+Subscription Service: Business logic for Shopify subscription management (Admin GraphQL billing)
 """
 import os
-import requests
 import logging
 from typing import Dict, Optional, Any
 from dotenv import load_dotenv
+
+from ..shopify.graphql_client import (
+    gid_to_id,
+    normalize_shop_domain,
+    raise_on_user_errors,
+    shopify_graphql,
+    to_gid,
+)
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -58,19 +65,8 @@ class ShopifySubscriptionManager:
                 price = yearly_price  # Use the discounted yearly price
                 logger.info(f"Yearly billing requested for {plan_name}: Monthly ${monthly_price}, Yearly ${yearly_price} ({discount_percentage}% discount)")
             
-            # Clean shop_url to ensure proper format
-            if not shop_url.startswith('https://'):
-                shop_url = f"https://{shop_url}"
-            
-            # Remove .myshopify.com if already present to avoid duplication
-            if shop_url.endswith('.myshopify.com'):
-                shop_domain = shop_url.replace('https://', '').replace('.myshopify.com', '')
-            else:
-                shop_domain = shop_url.replace('https://', '')
-            
-            # Construct the API URL for app subscriptions
-            api_url = f"https://{shop_domain}.myshopify.com/admin/api/{self.api_version}/recurring_application_charges.json"
-            
+            shop_domain = normalize_shop_domain(shop_url).replace('.myshopify.com', '')
+
             # Create subscription payload
             if billing_cycle.lower() == 'yearly':
                 # For yearly billing, use the discounted yearly price
@@ -80,55 +76,66 @@ class ShopifySubscriptionManager:
                 subscription_name = f"{plan_details['name']} (Monthly)"
                 subscription_terms = f"Monthly subscription to {plan_details['name']} - {plan_details['description']}. Billed monthly at ${price}/month."
             
-            subscription_data = {
-                "recurring_application_charge": {
-                    "name": subscription_name,
-                    "price": price,
-                    "return_url": f"{os.getenv('FRONTEND_URL', 'http://localhost:5173')}/dashboard?subscription=success",
-                    "test": os.getenv('SHOPIFY_TEST_MODE', 'false').lower() == 'true',
-                    "trial_days": 0,  # No free trial
-                    "capped_amount": "100.00" if plan_name.lower() == "pro" else None,  # Usage-based billing for Pro
-                    "terms": subscription_terms
+            is_test = os.getenv('SHOPIFY_TEST_MODE', 'false').lower() == 'true'
+            line_items = [
+                {
+                    "plan": {
+                        "appRecurringPricingDetails": {
+                            "price": {"amount": str(price), "currencyCode": "USD"},
+                            "interval": "EVERY_30_DAYS",
+                        }
+                    }
                 }
-            }
-            
-            headers = {
-                'X-Shopify-Access-Token': access_token,
-                'Content-Type': 'application/json'
-            }
-            
+            ]
+            if plan_name.lower() == "pro":
+                # Usage-based billing for Pro
+                line_items.append(
+                    {
+                        "plan": {
+                            "appUsagePricingDetails": {
+                                "cappedAmount": {"amount": "100.00", "currencyCode": "USD"},
+                                "terms": subscription_terms,
+                            }
+                        }
+                    }
+                )
+
             logger.info(f"Creating subscription for {shop_domain}: {plan_details['name']} - ${price}/{billing_cycle}")
-            logger.info(f"Subscription data: {subscription_data}")
-            
-            response = requests.post(
-                api_url,
-                json=subscription_data,
-                headers=headers,
-                timeout=30
+
+            data = shopify_graphql(
+                shop_url,
+                access_token,
+                """
+                mutation appSubscriptionCreate($name: String!, $returnUrl: URL!, $lineItems: [AppSubscriptionLineItemInput!]!, $test: Boolean, $trialDays: Int) {
+                  appSubscriptionCreate(name: $name, returnUrl: $returnUrl, lineItems: $lineItems, test: $test, trialDays: $trialDays) {
+                    appSubscription { id status }
+                    confirmationUrl
+                    userErrors { field message }
+                  }
+                }
+                """,
+                {
+                    "name": subscription_name,
+                    "returnUrl": f"{os.getenv('FRONTEND_URL', 'http://localhost:5173')}/dashboard?subscription=success",
+                    "lineItems": line_items,
+                    "test": is_test,
+                    "trialDays": 0,  # No free trial
+                },
             )
-            
-            if response.status_code == 201:
-                subscription_info = response.json()
-                subscription = subscription_info['recurring_application_charge']
-                
-                logger.info(f"Successfully created subscription for {shop_domain}")
-                return {
-                    'success': True,
-                    'subscription_id': subscription['id'],
-                    'confirmation_url': subscription['confirmation_url'],
-                    'plan_name': plan_details['name'],
-                    'price': price,
-                    'billing_cycle': billing_cycle,
-                    'shop_domain': shop_domain
-                }
-            else:
-                logger.error(f"Failed to create subscription for {shop_domain}: {response.status_code} - {response.text}")
-                return {
-                    'success': False,
-                    'error': f"HTTP {response.status_code}: {response.text}",
-                    'shop_domain': shop_domain
-                }
-                
+            result = data.get("appSubscriptionCreate") or {}
+            raise_on_user_errors(result)
+
+            logger.info(f"Successfully created subscription for {shop_domain}")
+            return {
+                'success': True,
+                'subscription_id': gid_to_id((result.get("appSubscription") or {}).get("id")),
+                'confirmation_url': result.get("confirmationUrl"),
+                'plan_name': plan_details['name'],
+                'price': price,
+                'billing_cycle': billing_cycle,
+                'shop_domain': shop_domain
+            }
+
         except Exception as e:
             logger.error(f"Error creating subscription for {shop_url}: {e}")
             return {
@@ -160,68 +167,45 @@ class ShopifySubscriptionManager:
             addon_details = get_addon_details(addon_name)
             price = addon_details['price']
             
-            # Clean shop_url to ensure proper format
-            if not shop_url.startswith('https://'):
-                shop_url = f"https://{shop_url}"
-            
-            # Remove .myshopify.com if already present to avoid duplication
-            if shop_url.endswith('.myshopify.com'):
-                shop_domain = shop_url.replace('https://', '').replace('.myshopify.com', '')
-            else:
-                shop_domain = shop_url.replace('https://', '')
-            
-            # Construct the API URL for one-time application charges
-            api_url = f"https://{shop_domain}.myshopify.com/admin/api/{self.api_version}/application_charges.json"
-            
-            # Create one-time charge payload (this doesn't cancel existing subscriptions)
-            charge_data = {
-                "application_charge": {
-                    "name": f"{addon_details['name']} Add-on",
-                    "price": price,
-                    "return_url": f"{os.getenv('FRONTEND_URL', 'http://localhost:5173')}/dashboard?addon=success",
-                    "test": os.getenv('SHOPIFY_TEST_MODE', 'false').lower() == 'true',
-                    "description": f"{addon_details['description']} - One-time purchase"
-                }
-            }
-            
-            headers = {
-                'X-Shopify-Access-Token': access_token,
-                'Content-Type': 'application/json'
-            }
-            
+            shop_domain = normalize_shop_domain(shop_url).replace('.myshopify.com', '')
+
             logger.info(f"Creating add-on purchase for {shop_domain}: {addon_details['name']} - ${price}")
-            logger.info(f"Add-on data: {charge_data}")
-            
-            response = requests.post(
-                api_url,
-                json=charge_data,
-                headers=headers,
-                timeout=30
+
+            # One-time charge (this doesn't cancel existing subscriptions)
+            data = shopify_graphql(
+                shop_url,
+                access_token,
+                """
+                mutation appPurchaseOneTimeCreate($name: String!, $price: MoneyInput!, $returnUrl: URL!, $test: Boolean) {
+                  appPurchaseOneTimeCreate(name: $name, price: $price, returnUrl: $returnUrl, test: $test) {
+                    appPurchaseOneTime { id status }
+                    confirmationUrl
+                    userErrors { field message }
+                  }
+                }
+                """,
+                {
+                    "name": f"{addon_details['name']} Add-on",
+                    "price": {"amount": str(price), "currencyCode": "USD"},
+                    "returnUrl": f"{os.getenv('FRONTEND_URL', 'http://localhost:5173')}/dashboard?addon=success",
+                    "test": os.getenv('SHOPIFY_TEST_MODE', 'false').lower() == 'true',
+                },
             )
-            
-            if response.status_code == 201:
-                charge_info = response.json()
-                charge = charge_info['application_charge']
-                
-                logger.info(f"Successfully created add-on purchase for {shop_domain}")
-                return {
-                    'success': True,
-                    'charge_id': charge['id'],
-                    'confirmation_url': charge['confirmation_url'],
-                    'addon_name': addon_details['name'],
-                    'price': price,
-                    'pages_added': addon_details['pages_added'],
-                    'shop_domain': shop_domain,
-                    'is_addon': True
-                }
-            else:
-                logger.error(f"Failed to create add-on purchase for {shop_domain}: {response.status_code} - {response.text}")
-                return {
-                    'success': False,
-                    'error': f"HTTP {response.status_code}: {response.text}",
-                    'shop_domain': shop_domain
-                }
-                
+            result = data.get("appPurchaseOneTimeCreate") or {}
+            raise_on_user_errors(result)
+
+            logger.info(f"Successfully created add-on purchase for {shop_domain}")
+            return {
+                'success': True,
+                'charge_id': gid_to_id((result.get("appPurchaseOneTime") or {}).get("id")),
+                'confirmation_url': result.get("confirmationUrl"),
+                'addon_name': addon_details['name'],
+                'price': price,
+                'pages_added': addon_details['pages_added'],
+                'shop_domain': shop_domain,
+                'is_addon': True
+            }
+
         except Exception as e:
             logger.error(f"Error creating add-on purchase for {shop_url}: {e}")
             return {
@@ -243,47 +227,65 @@ class ShopifySubscriptionManager:
             Dict with subscription status
         """
         try:
-            # Clean shop_url to ensure proper format
-            if not shop_url.startswith('https://'):
-                shop_url = f"https://{shop_url}"
-            
-            # Remove .myshopify.com if already present to avoid duplication
-            if shop_url.endswith('.myshopify.com'):
-                shop_domain = shop_url.replace('https://', '').replace('.myshopify.com', '')
-            else:
-                shop_domain = shop_url.replace('https://', '')
-            
-            # Construct the API URL
-            api_url = f"https://{shop_domain}.myshopify.com/admin/api/{self.api_version}/recurring_application_charges/{subscription_id}.json"
-            
-            headers = {
-                'X-Shopify-Access-Token': access_token,
-                'Content-Type': 'application/json'
-            }
-            
-            response = requests.get(api_url, headers=headers, timeout=30)
-            
-            if response.status_code == 200:
-                subscription_info = response.json()
-                subscription = subscription_info['recurring_application_charge']
-                
-                return {
-                    'success': True,
-                    'subscription': subscription,
-                    'status': subscription.get('status'),
-                    'name': subscription.get('name'),
-                    'price': subscription.get('price'),
-                    'created_at': subscription.get('created_at'),
-                    'updated_at': subscription.get('updated_at')
+            shop_domain = normalize_shop_domain(shop_url).replace('.myshopify.com', '')
+
+            data = shopify_graphql(
+                shop_url,
+                access_token,
+                """
+                query appSubscription($id: ID!) {
+                  node(id: $id) {
+                    ... on AppSubscription {
+                      id
+                      name
+                      status
+                      test
+                      createdAt
+                      lineItems {
+                        plan {
+                          pricingDetails {
+                            ... on AppRecurringPricing { price { amount currencyCode } }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
-            else:
-                logger.error(f"Failed to get subscription status for {shop_domain}: {response.status_code} - {response.text}")
+                """,
+                {"id": to_gid("AppSubscription", subscription_id)},
+            )
+            node = data.get("node")
+            if not node:
                 return {
                     'success': False,
-                    'error': f"HTTP {response.status_code}: {response.text}",
+                    'error': 'Subscription not found',
                     'shop_domain': shop_domain
                 }
-                
+
+            price = None
+            for item in node.get("lineItems") or []:
+                details = ((item or {}).get("plan") or {}).get("pricingDetails") or {}
+                if details.get("price"):
+                    price = details["price"].get("amount")
+                    break
+            subscription = {
+                'id': gid_to_id(node.get("id")),
+                'name': node.get("name"),
+                'status': (node.get("status") or "").lower(),
+                'price': price,
+                'created_at': node.get("createdAt"),
+                'test': bool(node.get("test")),
+            }
+            return {
+                'success': True,
+                'subscription': subscription,
+                'status': subscription['status'],
+                'name': subscription['name'],
+                'price': subscription['price'],
+                'created_at': subscription['created_at'],
+                'updated_at': None
+            }
+
         except Exception as e:
             logger.error(f"Error getting subscription status for {shop_url}: {e}")
             return {
@@ -305,42 +307,30 @@ class ShopifySubscriptionManager:
             Dict with cancellation result
         """
         try:
-            # Clean shop_url to ensure proper format
-            if not shop_url.startswith('https://'):
-                shop_url = f"https://{shop_url}"
-            
-            # Remove .myshopify.com if already present to avoid duplication
-            if shop_url.endswith('.myshopify.com'):
-                shop_domain = shop_url.replace('https://', '').replace('.myshopify.com', '')
-            else:
-                shop_domain = shop_url.replace('https://', '')
-            
-            # Construct the API URL
-            api_url = f"https://{shop_domain}.myshopify.com/admin/api/{self.api_version}/recurring_application_charges/{subscription_id}.json"
-            
-            headers = {
-                'X-Shopify-Access-Token': access_token,
-                'Content-Type': 'application/json'
+            shop_domain = normalize_shop_domain(shop_url).replace('.myshopify.com', '')
+
+            data = shopify_graphql(
+                shop_url,
+                access_token,
+                """
+                mutation appSubscriptionCancel($id: ID!) {
+                  appSubscriptionCancel(id: $id) {
+                    appSubscription { id status }
+                    userErrors { field message }
+                  }
+                }
+                """,
+                {"id": to_gid("AppSubscription", subscription_id)},
+            )
+            raise_on_user_errors(data.get("appSubscriptionCancel"))
+
+            logger.info(f"Successfully cancelled subscription {subscription_id} for {shop_domain}")
+            return {
+                'success': True,
+                'message': 'Subscription cancelled successfully',
+                'shop_domain': shop_domain
             }
-            
-            # Delete the subscription
-            response = requests.delete(api_url, headers=headers, timeout=30)
-            
-            if response.status_code == 200:
-                logger.info(f"Successfully cancelled subscription {subscription_id} for {shop_domain}")
-                return {
-                    'success': True,
-                    'message': 'Subscription cancelled successfully',
-                    'shop_domain': shop_domain
-                }
-            else:
-                logger.error(f"Failed to cancel subscription for {shop_domain}: {response.status_code} - {response.text}")
-                return {
-                    'success': False,
-                    'error': f"HTTP {response.status_code}: {response.text}",
-                    'shop_domain': shop_domain
-                }
-                
+
         except Exception as e:
             logger.error(f"Error cancelling subscription for {shop_url}: {e}")
             return {

@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "lumen-marquee": {
+      "type": "kluck-ai-lumen-home-marquee",
+      "settings": {}
+    },
+    "lumen-hero": {
+      "type": "kluck-ai-lumen-home-hero",
+      "settings": {}
+    },
+    "lumen-collections": {
+      "type": "kluck-ai-lumen-home-collections",
+      "settings": {}
+    },
+    "lumen-products": {
+      "type": "kluck-ai-lumen-home-products",
+      "settings": {}
+    },
+    "lumen-split": {
+      "type": "kluck-ai-lumen-home-split",
+      "settings": {}
+    },
+    "lumen-promise": {
+      "type": "kluck-ai-lumen-home-promise",
+      "settings": {}
+    },
+    "lumen-quote": {
+      "type": "kluck-ai-lumen-home-quote",
+      "settings": {}
+    },
+    "lumen-faq": {
+      "type": "kluck-ai-lumen-home-faq",
+      "settings": {}
+    }
+  },
+  "order": [
+    "lumen-marquee",
+    "lumen-hero",
+    "lumen-collections",
+    "lumen-products",
+    "lumen-split",
+    "lumen-promise",
+    "lumen-quote",
+    "lumen-faq"
+  ]
+}

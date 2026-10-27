@@ -1796,7 +1796,7 @@ class DocumentStore:
                 template_category = "general"
 
             # Key: per (category, template) when template is provided; else category only
-            if template is not None and template in (1, 2, 3):
+            if template is not None and template in (1, 2, 3, 4):
                 metadata_key = f"{template_category}_{template}"
             else:
                 metadata_key = template_category

@@ -29,7 +29,7 @@ from ....constants.credits import PURCHASE_STATUS_ACTIVE, shop_skips_credit_gate
 from ...credits import wallet_service
 from ...database import document_store
 from ...generate.generate_images import upload_images_to_cdn
-from ..shopify_utils import shopify_utils
+from ..shopify_utils import ThemeWriteBlockedError, shopify_utils
 from ..font_mapping import SHOPIFY_FONTS
 from ..collections_agent_service import run_collections_agent
 from .image_upload_handler import ImageUploadHandler
@@ -155,6 +155,7 @@ def _should_force_update_section(liquid_file: str) -> bool:
         or name.startswith("kluck-ai-play-")
         or name.startswith("kluck-ai-glow-")
         or name.startswith("kluck-ai-amour-")
+        or name.startswith("kluck-ai-lumen-")
     )
 
 
@@ -290,7 +291,7 @@ def _get_product_template_suffix_for_view(
 
 
 def _parse_template_number(selected_template):
-    """Return 1, 2, or 3. Accepts ints and strings like '3' or 'template_3'."""
+    """Return 1, 2, 3 or 4 (Lumenook). Accepts ints and strings like '3' or 'template_3'."""
     raw = selected_template
     if isinstance(raw, str):
         raw = raw.strip().lower()
@@ -300,7 +301,7 @@ def _parse_template_number(selected_template):
         number = int(raw)
     except (TypeError, ValueError):
         return None
-    return number if number in (1, 2, 3) else None
+    return number if number in (1, 2, 3, 4) else None
 
 
 def _layout_template_number(selected_template) -> int:
@@ -320,7 +321,7 @@ def _unique_product_template_names(category: str, product_id, selected_template)
     """
     One Shopify template per product.
 
-    The layout comes from template 1, 2, or 3. The uploaded file is
+    The layout comes from template 1, 2, 3, or 4. The uploaded file is
     product.kluck-{category}-{productId}.json so two products never share a suffix.
     """
     layout = _layout_template_number(selected_template)
@@ -334,7 +335,7 @@ def _unique_product_template_names(category: str, product_id, selected_template)
         / folder
         / source_filename
     )
-    if layout == 3 and not source_path.is_file():
+    if layout in (3, 4) and not source_path.is_file():
         layout = 2
         _, folder, source_filename = _get_template_paths(category, layout)
     suffix = f"kluck-{folder}-{_numeric_product_id(product_id)}"
@@ -1663,23 +1664,18 @@ def _execute_publish_store(user_id, data):
             market_type = "prepaid"
 
         from app.modules.generate.store.pack_utils import (
-            SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS,
-            normalize_store_template_pack,
             resolve_store_templates_dir,
+            store_template_pack_for_mode,
         )
 
-        store_template_pack = normalize_store_template_pack(
+        # Cinematic and Amour are single-product only; Lumenook is multi-product only.
+        store_template_pack = store_template_pack_for_mode(
             data.get("storeTemplatePack")
             or data.get("store_template_pack")
             or generation_data.get("storeTemplatePack")
-            or generation_data.get("store_template_pack")
+            or generation_data.get("store_template_pack"),
+            mode,
         )
-        # Cinematic and Amour packs are single-product only (COD + prepaid).
-        if (
-            store_template_pack in SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS
-            and mode != "single_product"
-        ):
-            store_template_pack = "classic"
 
         # STEP 1: Live theme = duplication source. Reuse store.duplicated_theme_id
         # when that theme still exists; otherwise duplicate once and persist the id.
@@ -1834,6 +1830,19 @@ def _execute_publish_store(user_id, data):
                     if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
                     and not p.name.startswith("kluck-ai-amour-")
                 ]
+            elif store_template_pack == "lumenook":
+                liquid_files = [
+                    p
+                    for p in liquid_files
+                    if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
+                    and not p.name.startswith("kluck-ai-cinematic-")
+                    and not p.name.startswith("kluck-ai-amour-")
+                ]
+                logger.info(
+                    "publish-store: lumenook pack — uploading %s section liquids "
+                    "(lumenook home + shared pages)",
+                    len(liquid_files),
+                )
                 logger.info(
                     "publish-store: cinematic pack — uploading %s section liquids "
                     "(cinematic home + premium PDP + shared pages)",
@@ -4098,6 +4107,10 @@ def publish_page():
                                 )
                                 uploaded_files.append(liquid_file)
                             else:
+                                if upload_result.get("theme_write_blocked"):
+                                    # Shopify refuses theme writes for this app, so every other
+                                    # file would fail the same way: stop with a clear reason.
+                                    raise ThemeWriteBlockedError(upload_result.get("error"))
                                 logger.warning(
                                     f"⚠️ Failed to upload {liquid_file}: {upload_result.get('error')}"
                                 )
@@ -4154,6 +4167,9 @@ def publish_page():
                             logger.error(
                                 f"Error storing template upload metadata: {str(db_error)}"
                             )
+                except ThemeWriteBlockedError:
+                    # Not a one-off file problem: nothing can be published, so say why.
+                    raise
                 except Exception as upload_error:
                     logger.error(f"Error uploading theme files: {str(upload_error)}")
                     # Continue execution even if file upload fails
@@ -4280,7 +4296,7 @@ def publish_page():
                     logger.info(
                         f"Storing theme_id={live_theme_numeric_id} in page metadata (live theme)"
                     )
-                if selected_template in (1, 2, 3):
+                if selected_template in (1, 2, 3, 4):
                     update_params["selectedTemplate"] = selected_template
                     update_params["template"] = f"template_{selected_template}"
 
@@ -6362,7 +6378,7 @@ def publish_generated_content():
                 "success"
             ):
                 page_update["kluck_template_suffix"] = template_suffix
-            if selected_template in (1, 2, 3):
+            if selected_template in (1, 2, 3, 4):
                 page_update["selectedTemplate"] = selected_template
                 page_update["template"] = f"template_{selected_template}"
             document_store.update_generated_page(**page_update)

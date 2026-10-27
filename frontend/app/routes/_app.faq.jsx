@@ -2,12 +2,13 @@ import { useState, useMemo, useCallback } from "react";
 import { useRouteError, useOutletContext, useNavigate, useSearchParams } from "react-router";
 import { buildEmbeddedHref } from "../lib/embeddedNavigation";
 import { boundary } from "@shopify/shopify-app-react-router/server";
-import { BlockStack, Text, Box, InlineStack, ButtonGroup, Button, Card } from "@shopify/polaris";
+import { Check, CircleHelp, Copy, CreditCard, Mail, Palette, Sparkles, Wrench } from "lucide-react";
 import { SettingsIcon, CreditCardIcon, EditIcon, AdjustIcon } from "@shopify/polaris-icons";
 import { FaqAccordionList } from "../components/FaqAccordionList";
 import { usePageTracking } from "../hooks/usePageTracking";
 import { useViewportBelowMd } from "../hooks/useViewportBelowMd";
 import { CreditWalletWidget } from "../components/CreditWalletWidget";
+import { GradientText, SecondaryButton, StepFrame } from "../components/RoarrUI";
 
 const FAQ_CATEGORIES = {
     ALL: "all",
@@ -205,6 +206,18 @@ const faqs = [
     },
 ];
 
+const CATEGORY_TABS = [
+    { id: FAQ_CATEGORIES.GENERAL, label: "General", icon: Sparkles },
+    { id: FAQ_CATEGORIES.CUSTOMIZATION, label: "Features and Customization", icon: Palette },
+    { id: FAQ_CATEGORIES.BILLING, label: "Billing & Account", icon: CreditCard },
+    { id: FAQ_CATEGORIES.TROUBLESHOOTING, label: "Troubleshooting", icon: Wrench },
+];
+
+const SUPPORT_EMAIL = "fynktech1@gmail.com";
+// Gmail compose opens in a browser tab with no mail app set up (a bare mailto link is blocked in the
+// Shopify admin iframe and leaves a blank tab when no handler is registered).
+const SUPPORT_COMPOSE_URL = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(SUPPORT_EMAIL)}&su=${encodeURIComponent("Roarr support")}`;
+
 export default function FAQPage() {
     const [searchParams] = useSearchParams();
     const shop = searchParams.get("shop");
@@ -219,15 +232,34 @@ export default function FAQPage() {
         return faqs.filter((faq) => faq.category === selectedCategory);
     }, [selectedCategory]);
 
-    const categories = [
-        { id: FAQ_CATEGORIES.GENERAL, label: "General" },
-        { id: FAQ_CATEGORIES.CUSTOMIZATION, label: "Features and Customization" },
-        { id: FAQ_CATEGORIES.BILLING, label: "Billing & Account" },
-        { id: FAQ_CATEGORIES.TROUBLESHOOTING, label: "Troubleshooting" },
-    ];
     const selectCategory = useCallback((categoryId) => {
         setSelectedCategory((cur) => (cur === categoryId ? cur : categoryId));
     }, []);
+
+    const [copied, setCopied] = useState(false);
+    // Copying the address always works, so it backs up the Gmail link for people who use another
+    // mail provider.
+    const copyEmail = useCallback(async () => {
+        try {
+            await navigator.clipboard.writeText(SUPPORT_EMAIL);
+        } catch {
+            const field = document.createElement("textarea");
+            field.value = SUPPORT_EMAIL;
+            field.style.position = "fixed";
+            field.style.opacity = "0";
+            document.body.appendChild(field);
+            field.select();
+            try {
+                document.execCommand("copy");
+            } finally {
+                document.body.removeChild(field);
+            }
+        }
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    }, []);
+
+    const openDashboard = () => navigate(buildEmbeddedHref("/", searchParams, shop));
 
     return (
         <s-page heading="Frequently Asked Questions" inlineSize="large">
@@ -239,70 +271,53 @@ export default function FAQPage() {
                     padding: isMobileLayout ? "12px" : "10px",
                 }}
             >
-                <BlockStack gap="300">
-                    <h4
-                        style={{
-                            fontFamily:
-                                'Baskerville, "Palatino Linotype", Palatino, "Times New Roman", Times, serif',
-                            fontSize: "1.75rem",
-                            fontWeight: 400,
-                            margin: 0,
-                            marginBlockEnd: "var(--p-space-500)",
-                            color: "#1a1a1a",
-                            textAlign: "center",
-                        }}
-                    >
-                        Answer to most of your{" "}
-                        <span
-                            style={{
-                                color: "#2f6f63",
-                                fontStyle: "italic",
-                                display: "inline-flex",
-                                flexDirection: "column",
-                                alignItems: "stretch",
-                            }}
-                        >
-                            <span>questions</span>
-                            <span
-                                style={{
-                                    marginTop: 4,
-                                    height: 3,
-                                    background:
-                                        "linear-gradient(to right, rgba(47, 111, 99, 0.95) 0%, rgba(47, 111, 99, 0.5) 45%, rgba(47, 111, 99, 0.1) 100%)",
-                                    borderRadius: 999,
-                                    width: "100%",
-                                }}
-                            />
-                        </span>
-                    </h4>
-                    <Box
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            width: "100%",
-                        }}
-                    >
-                        <Box
-                            style={{
-                                maxWidth: "min(100%, 640px)",
-                                ...(isMobileLayout
-                                    ? { overflowX: "auto", WebkitOverflowScrolling: "touch" }
-                                    : {}),
-                            }}
-                        >
-                            <ButtonGroup variant="segmented" noWrap={isMobileLayout}>
-                                {categories.map((category) => (
-                                    <Button
-                                        key={category.id}
-                                        pressed={selectedCategory === category.id}
-                                        onClick={() => selectCategory(category.id)}
-                                    >
-                                        {category.label}
-                                    </Button>
-                                ))}
-                            </ButtonGroup>
-                        </Box>
-                    </Box>
+                <div className="flex flex-col gap-5">
+                    <StepFrame>
+                        <div className="flex flex-col items-center text-center">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-[#1e40af] ring-1 ring-inset ring-blue-200">
+                                <CircleHelp size={14} aria-hidden />
+                                Help center
+                            </span>
+                            <h1
+                                className="m-0 mt-3 font-bold leading-[1.15] tracking-tight text-slate-900"
+                                style={{ fontSize: "clamp(1.5rem, 3vw, 2.1rem)" }}
+                            >
+                                Answers to most of your <GradientText>questions</GradientText>
+                            </h1>
+                            <p className="m-0 mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
+                                Quick answers about creating pages, customizing them, billing and
+                                publishing.
+                            </p>
+
+                            <div
+                                role="tablist"
+                                aria-label="FAQ categories"
+                                className="mt-5 flex max-w-full gap-1 overflow-x-auto rounded-full bg-white/90 p-1 shadow-sm ring-1 ring-slate-200/70"
+                            >
+                                {CATEGORY_TABS.map(({ id, label, icon: TabIcon }) => {
+                                    const active = selectedCategory === id;
+                                    return (
+                                        <button
+                                            key={id}
+                                            type="button"
+                                            role="tab"
+                                            aria-selected={active}
+                                            onClick={() => selectCategory(id)}
+                                            className={`inline-flex flex-none items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-2 text-[13px] font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a] ${
+                                                active
+                                                    ? "bg-[#1e3a8a] text-white shadow-[0_8px_18px_-10px_rgba(30,58,138,0.8)]"
+                                                    : "text-slate-600 hover:bg-blue-50 hover:text-[#1e3a8a]"
+                                            }`}
+                                        >
+                                            <TabIcon size={15} aria-hidden />
+                                            {label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </StepFrame>
+
                     <FaqAccordionList
                         key={selectedCategory}
                         items={filteredFaqs.map((faq) => ({
@@ -312,54 +327,55 @@ export default function FAQPage() {
                         }))}
                     />
 
-                    <Box
-                        style={{ alignSelf: "center", width: "100%", maxWidth: "min(100%, 520px)" }}
-                    >
-                        <Card roundedAbove="sm" padding="0">
-                            <Box background="bg-surface" padding="400">
-                                <BlockStack gap="100">
-                                    <Text as="h3" variant="headingSm" fontWeight="semibold">
-                                        Still have questions?
-                                    </Text>
-                                    <Text as="p" variant="bodyMd" tone="subdued">
-                                        If you can't find the answer you're looking for, please reach out to our support team at growth@kluck.ai. We're here to help!
-                                    </Text>
-                                </BlockStack>
-                            </Box>
-                        </Card>
-                    </Box>
-
-                    <Box paddingBlockStart="200">
-                        {isMobileLayout ? (
-                            <Button
-                                variant="primary"
-                                fullWidth
-                                onClick={() =>
-                                    navigate(
-                                        buildEmbeddedHref("/", searchParams, shop)
-                                    )
-                                }
-                                disabled={isAuthenticating}
-                            >
-                                Open Dashboard
-                            </Button>
-                        ) : (
-                            <InlineStack align="center" blockAlign="center">
-                                <Button
-                                    variant="primary"
-                                    onClick={() =>
-                                        navigate(
-                                            buildEmbeddedHref("/", searchParams, shop)
-                                        )
-                                    }
-                                    disabled={isAuthenticating}
+                    <section className="relative mx-auto w-full max-w-[860px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#1e3a8a] via-[#3b3fc4] to-[#7c3aed] p-5 text-white shadow-[0_24px_48px_-30px_rgba(30,58,138,0.9)] sm:p-6">
+                        <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-fuchsia-400/30 blur-3xl" />
+                        <div className="pointer-events-none absolute -bottom-24 left-10 h-48 w-48 rounded-full bg-sky-300/25 blur-3xl" />
+                        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="flex items-start gap-3.5">
+                                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-white/15 ring-1 ring-inset ring-white/25">
+                                    <Mail size={20} aria-hidden />
+                                </span>
+                                <div className="min-w-0">
+                                    <h3 className="m-0 text-base font-semibold">Still have questions?</h3>
+                                    <p className="m-0 mt-1 text-[13px] leading-relaxed text-white/80">
+                                        Can&apos;t find the answer you&apos;re looking for? Our support team at{" "}
+                                        <span className="font-semibold text-white">{SUPPORT_EMAIL}</span> is here to help.
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex flex-none flex-col gap-2 sm:flex-row">
+                                <a
+                                    href={SUPPORT_COMPOSE_URL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-[#1e3a8a] no-underline shadow-sm transition hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#3b3fc4]"
                                 >
-                                    Open Dashboard
-                                </Button>
-                            </InlineStack>
-                        )}
-                    </Box>
-                </BlockStack>
+                                    <Mail size={15} aria-hidden />
+                                    Email support
+                                </a>
+                                <button
+                                    type="button"
+                                    onClick={copyEmail}
+                                    aria-live="polite"
+                                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/15 px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-white/30 transition hover:bg-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                                >
+                                    {copied ? <Check size={15} aria-hidden /> : <Copy size={15} aria-hidden />}
+                                    {copied ? "Copied" : "Copy email"}
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div className="flex justify-center">
+                        <SecondaryButton
+                            onClick={openDashboard}
+                            disabled={isAuthenticating}
+                            className={isMobileLayout ? "w-full" : ""}
+                        >
+                            Open Dashboard
+                        </SecondaryButton>
+                    </div>
+                </div>
             </div>
         </s-page>
     );

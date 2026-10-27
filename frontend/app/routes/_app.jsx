@@ -10,8 +10,7 @@ import { CreditsProvider } from "../lib/CreditsContext";
 
 import Onboarding from "../components/onboarding/Onboarding";
 import { EmbeddedNavLink } from "../components/EmbeddedNavLink";
-import { InsufficientCreditsModal } from "../components/InsufficientCreditsModal";
-import { useAppBridge } from "@shopify/app-bridge-react";
+import { InsufficientCreditsModal } from "../components/InsufficientCreditsModal";import { useAppBridge } from "@shopify/app-bridge-react";
 import { stripShopifyEphemeralFromSearch } from "../lib/embeddedNavigation";
 import { syncPosthogMarketType } from "../lib/posthogMarketType";
 
@@ -378,9 +377,6 @@ function AppContent({ apiKey, crispWebsiteId, shop: shopFromLoader }) {
                         </EmbeddedNavLink>
                         <EmbeddedNavLink to="/bundles" shop={shop}>
                           Bundles
-                        </EmbeddedNavLink>
-                        <EmbeddedNavLink to="/brand-ads" shop={shop}>
-                          Brand ads
                         </EmbeddedNavLink>
                         <EmbeddedNavLink to="/credits" shop={shop}>
                           Credits

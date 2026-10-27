@@ -9,20 +9,20 @@ embedded = true
 api_version = "2026-01"
 
   [[webhooks.subscriptions]]
-  topics = [ "app_subscriptions/update" ]
   uri = "/webhook/subscription-update"
+  topics = [ "app_subscriptions/update" ]
 
   [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
   uri = "/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
   uri = "/webhooks/compliance"
   compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
 
   [[webhooks.subscriptions]]
-  topics = [ "app/uninstalled" ]
   uri = "/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -35,12 +35,12 @@ redirect_urls = [
   "https://fynktech-roarr.vercel.app/api/auth/callback"
 ]
 
-[build]
-automatically_update_urls_on_dev = true
-
 [shop.metafields.app.block_control]
 name = "Internal Block Render"
 type = "boolean"
 
   [shop.metafields.app.block_control.access]
   storefront = "public_read"
+
+[build]
+automatically_update_urls_on_dev = true

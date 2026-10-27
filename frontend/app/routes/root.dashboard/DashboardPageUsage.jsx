@@ -1,96 +1,103 @@
 import { useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router";
-import { BlockStack, Box, Button, InlineStack, Text } from "@shopify/polaris";
-import { EmbeddedNavLink } from "../../components/EmbeddedNavLink";
+import { ArrowRight } from "lucide-react";
+import { buildEmbeddedHref } from "../../lib/embeddedNavigation";
 import { useCredits } from "../../lib/CreditsContext";
 import { formatCredits } from "../../lib/credits";
-import { buildEmbeddedHref } from "../../lib/embeddedNavigation";
+import { countPagesByGenerationType } from "../../lib/pageCounts";
 
-function countPagesByGenerationType(pages) {
-  const list = Array.isArray(pages) ? pages : [];
-  let product = 0;
-  let store = 0;
-  for (const p of list) {
-    if (p?.generation_type === "store") store += 1;
-    else product += 1;
-  }
-  return { product, store };
+/** Same cut-offs as the wallet pill (`CreditWalletWidget`). */
+const LOW_THRESHOLD = 200;
+const VERY_LOW_THRESHOLD = 50;
+
+function plural(count, word) {
+  return `${count} ${word}${count === 1 ? "" : "s"}`;
 }
 
-/** Dashboard summary: credit balance + saved page breakdown (no plan slots). */
-export default function DashboardPageUsage({ shop, pages = [], isInternalStore = false }) {
+/** One row of the usage card: label with its footnote underneath, arrow on the right. Opens its hub. */
+function UsageStat({ label, footer, footerTone, onClick, ariaLabel }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={ariaLabel}
+      className="group flex w-full min-w-0 items-center justify-between gap-3 px-4 py-2 text-left transition hover:bg-slate-50/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1e3a8a]"
+    >
+      <span className="min-w-0">
+        <span className="block text-[13px] font-semibold text-slate-900">{label}</span>
+        <span className={`mt-0.5 block text-xs ${footerTone || "text-slate-500"}`}>{footer}</span>
+      </span>
+      <ArrowRight
+        size={14}
+        aria-hidden
+        className="flex-none text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-[#1e40af]"
+      />
+    </button>
+  );
+}
+
+/**
+ * Dashboard usage card (stacked vertically): product pages, stores and AI credits.
+ * Each row opens its hub (product pages, entire store, credits).
+ */
+export default function DashboardPageUsage({ shop, pages = [], loading = false }) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { balance, loading: creditsLoading } = useCredits();
-  const { product: productPageCount, store: storePageCount } = useMemo(
-    () => countPagesByGenerationType(pages),
-    [pages],
-  );
-  const balanceLabel =
-    creditsLoading && balance == null
-      ? "…"
-      : balance != null
-        ? formatCredits(balance)
-        : "—";
+  const { balance } = useCredits();
+  const { product, store } = useMemo(() => countPagesByGenerationType(pages), [pages]);
+
+  const pagesReady = !(loading && !pages?.length);
+  const creditsReady = typeof balance === "number";
+  const creditTone =
+    !creditsReady || balance >= LOW_THRESHOLD
+      ? null
+      : balance < VERY_LOW_THRESHOLD
+        ? "critical"
+        : "attention";
 
   return (
-    <Box
-      background="bg-surface"
-      borderWidth="025"
-      borderColor="border"
-      borderRadius="300"
-      padding="400"
+    <section
+      aria-label="Usage"
+      className="flex flex-col divide-y divide-slate-100 overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(16,24,40,0.04),0_8px_24px_-12px_rgba(30,58,138,0.18)] ring-1 ring-slate-200/70"
     >
-      <BlockStack gap="300">
-        <InlineStack align="space-between" blockAlign="start" gap="300" wrap>
-          <BlockStack gap="100">
-            <Text as="h3" variant="headingSm">
-              Credits &amp; pages
-            </Text>
-            <Text as="p" variant="bodySm" tone="subdued">
-              {isInternalStore
-                ? "Internal store — credit balance may be hidden."
-                : `Wallet balance: ${balanceLabel}. Spend credits when you run AI generation.`}
-            </Text>
-          </BlockStack>
-          {!isInternalStore ? (
-            <EmbeddedNavLink to="/credits" shop={shop}>
-              <Text
-                as="span"
-                variant="bodySm"
-                style={{ color: "var(--p-color-text-link, #005bd3)" }}
-              >
-                Buy credits
-              </Text>
-            </EmbeddedNavLink>
-          ) : null}
-        </InlineStack>
-
-        <BlockStack gap="200">
-          <InlineStack gap="200" blockAlign="center" wrap>
-            <Text as="p" variant="bodySm">
-              {`See your generated product pages from here (${productPageCount}).`}
-            </Text>
-            <Button
-              variant="secondary"
-              onClick={() => navigate(buildEmbeddedHref("/product-page", searchParams, shop))}
-            >
-              Product page
-            </Button>
-          </InlineStack>
-          <InlineStack gap="200" blockAlign="center" wrap>
-            <Text as="p" variant="bodySm">
-              {`See your generated stores from here (${storePageCount}).`}
-            </Text>
-            <Button
-              variant="secondary"
-              onClick={() => navigate(buildEmbeddedHref("/entire-store", searchParams, shop))}
-            >
-              Entire store
-            </Button>
-          </InlineStack>
-        </BlockStack>
-      </BlockStack>
-    </Box>
+      <UsageStat
+        label="Product pages"
+        footer={pagesReady ? plural(product.total - product.published, "unpublished page") : "Loading…"}
+        onClick={() => navigate(buildEmbeddedHref("/product-page", searchParams, shop))}
+        ariaLabel={`Product pages: ${product.published} of ${product.total} published. Open product pages.`}
+      />
+      <UsageStat
+        label="Stores"
+        footer={pagesReady ? plural(store.total - store.published, "unpublished store") : "Loading…"}
+        onClick={() => navigate(buildEmbeddedHref("/entire-store", searchParams, shop))}
+        ariaLabel={`Stores: ${store.published} of ${store.total} published. Open entire store.`}
+      />
+      <UsageStat
+        label="AI credits"
+        footer={
+          creditsReady ? (
+            <>
+              {formatCredits(balance)} left ·{" "}
+              <span className="font-semibold text-[#1e40af] group-hover:underline">Get more</span>
+            </>
+          ) : (
+            "Loading…"
+          )
+        }
+        footerTone={
+          creditTone === "critical"
+            ? "text-red-600"
+            : creditTone === "attention"
+              ? "text-amber-700"
+              : null
+        }
+        onClick={() => navigate("/credits")}
+        ariaLabel={
+          creditsReady
+            ? `AI credits: ${formatCredits(balance)} left. Open credits.`
+            : "AI credits loading. Open credits."
+        }
+      />
+    </section>
   );
 }

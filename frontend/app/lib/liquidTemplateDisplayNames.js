@@ -139,6 +139,12 @@ const LIQUID_TEMPLATE_DISPLAY_NAMES = {
     "glow-ingredients": "Ingredients",
     "glow-steps": "How to use",
     "glow-faq": "FAQs",
+    "lumen-hero": "Hero",
+    "lumen-detail": "In detail",
+    "lumen-feature": "Feature",
+    "lumen-details": "The details",
+    "lumen-circle": "Chosen with care",
+    "lumen-mood": "Mood",
 };
 
 /**

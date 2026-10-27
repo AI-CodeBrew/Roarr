@@ -5,7 +5,7 @@ Translates product title and description to English if needed.
 
 from typing import Union, List
 from pydantic import BaseModel, Field
-from ...clients import openai_client as client
+from ...clients.openai_client import client
 
 
 class LanguageCheck(BaseModel):
