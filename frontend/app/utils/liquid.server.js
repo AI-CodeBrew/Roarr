@@ -1,8 +1,19 @@
 import { Liquid } from "liquidjs";
-import path from "path";
+
+// The Liquid sources are compiled into the server build instead of being read from app/liquid at
+// request time: a serverless host (Vercel) only ships the bundled code, so reading the folder
+// failed there with ENOENT and the preview never rendered.
+const bundledTemplates = import.meta.glob("../liquid/**/*.liquid", {
+    query: "?raw",
+    import: "default",
+    eager: true,
+});
+const templates = Object.fromEntries(
+    Object.entries(bundledTemplates).map(([file, source]) => [file.replace("../liquid/", ""), source]),
+);
 
 export const engine = new Liquid({
-    root: path.resolve("app/liquid"),
+    templates,
     extname: ".liquid",
     // Always re-read templates so CSS/layout edits show in demo preview without a full restart.
     cache: false,

@@ -90,11 +90,7 @@ export async function action({ request }) {
             );
         }
 
-        const html = await renderTemplate(templateName, ctx, {
-            cssContent,
-            jsContent: JS_CONTENT,
-            reinitHooks: REINIT_HOOKS,
-        });
+        const html = await renderTemplate(templateName, ctx, renderOptions);
         return Response.json({ html });
     } catch (error) {
         console.error("[liquid-preview] Render error:", error);

@@ -127,6 +127,8 @@ export default function LiquidRenderer({
     // Spin until HTML is fetched (and until iframe paints for eye/full previews).
     const [isLoading, setIsLoading] = useState(() => !initialCachedHtml);
     const [iframeLoaded, setIframeLoaded] = useState(false);
+    // Set when the render API answers without HTML, so the spinner can stop and say why.
+    const [renderError, setRenderError] = useState(null);
 
     const iframeRef = useRef(null);
     const abortRef = useRef(null);
@@ -192,6 +194,7 @@ export default function LiquidRenderer({
         const mySeq = ++requestSeqRef.current;
         setIsLoading(true);
         setIframeLoaded(false);
+        setRenderError(null);
 
         try {
             if (prebuiltHtmlUrl) {
@@ -235,6 +238,10 @@ export default function LiquidRenderer({
                     }
                 }
                 setIsLoading(false);
+            } else if (mySeq === requestSeqRef.current) {
+                console.error("[LiquidRenderer] Preview API returned no HTML:", res.status, data?.error);
+                setRenderError(data?.error || `Preview failed (${res.status})`);
+                setIsLoading(false);
             }
         } catch (err) {
             if (err?.name === "AbortError") return;
@@ -256,17 +263,27 @@ export default function LiquidRenderer({
                             setLiquidPreviewCache(effectiveCacheKey, data.html);
                         }
                         setIsLoading(false);
+                    } else if (mySeq === requestSeqRef.current) {
+                        console.error("[LiquidRenderer] Preview API returned no HTML:", res.status, data?.error);
+                        setRenderError(data?.error || `Preview failed (${res.status})`);
+                        setIsLoading(false);
                     }
                 } catch (err2) {
                     if (err2?.name !== "AbortError") {
                         console.error("[LiquidRenderer] Render failed:", err2);
-                        if (mySeq === requestSeqRef.current) setIsLoading(false);
+                        if (mySeq === requestSeqRef.current) {
+                            setRenderError(err2?.message || "Preview failed");
+                            setIsLoading(false);
+                        }
                     }
                 }
                 return;
             }
             console.error("[LiquidRenderer] Render failed:", err);
-            if (mySeq === requestSeqRef.current) setIsLoading(false);
+            if (mySeq === requestSeqRef.current) {
+                setRenderError(err?.message || "Preview failed");
+                setIsLoading(false);
+            }
         }
     }, [applyCachedHtml, fetchPayload, effectiveCacheKey, prebuiltHtmlUrl]);
 
@@ -614,6 +631,27 @@ export default function LiquidRenderer({
                     </div>
                 </div>
             )}
+            {renderError && !html ? (
+                <div
+                    role="alert"
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                        padding: 24,
+                        minHeight: 240,
+                        textAlign: "center",
+                        color: "#5c5f62",
+                        fontSize: 13,
+                    }}
+                >
+                    <strong style={{ color: "#202223", fontSize: 14 }}>The preview could not load</strong>
+                    <span>Your page is saved. Reload the app to try again.</span>
+                    <span style={{ fontSize: 12, opacity: 0.8 }}>{String(renderError).slice(0, 160)}</span>
+                </div>
+            ) : null}
             {iframeDoc ? (
                 <iframe
                     ref={iframeRef}
