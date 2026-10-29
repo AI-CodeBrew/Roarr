@@ -1,6 +1,5 @@
 /** Product page templates offered by the product flow and showcased on the Product pages hub. */
 
-import { getDemoPreviewEyeThumbUrl, getDemoPreviewThumbUrl } from "../../../lib/demoPreviewUrls.js";
 import { getLumenookProductPreview } from "../../../lib/lumenookPreviews.js";
 
 export const PRODUCT_TEMPLATE_OPTIONS = [
@@ -9,16 +8,27 @@ export const PRODUCT_TEMPLATE_OPTIONS = [
     title: "Aura",
     badge: { label: "Top rated", tone: "top" },
     blurb: "Serif headlines and a cream, results-led layout",
-    thumbVariant: "glow",
-    thumbCategory: "health_beauty",
-    shot: "20261010-glow-faq",
-    eyeShot: "20261010-glow-faq",
+    preview: "aura",
   },
   {
     id: 4,
     title: "Lumenook",
     badge: { label: "New", tone: "new" },
     blurb: "Warm ivory and brass with editorial serif type",
+  },
+  {
+    id: 5,
+    title: "Noir",
+    badge: { label: "Premium", tone: "new" },
+    blurb: "Black and champagne gold with high-contrast serif type",
+    preview: "noir",
+  },
+  {
+    id: 6,
+    title: "Frost",
+    badge: { label: "New", tone: "new" },
+    blurb: "Crisp white and cobalt with a bold, modern sans",
+    preview: "frost",
   },
 ];
 
@@ -32,13 +42,13 @@ export function getProductTemplateCardMedia(option) {
     // per-category prebuilt demos on S3 yet.
     return { ...getLumenookProductPreview(), demoVariant: "lumenook" };
   }
-  if (!option.thumbVariant) {
-    return { thumbUrl: null, hoverImageUrl: null, demoVariant: null };
+  if (option.preview) {
+    // Fixed screenshots in public/demo-previews/<preview>/, built by scripts/build-product-previews.mjs.
+    return {
+      thumbUrl: `/demo-previews/${option.preview}/product.jpg`,
+      hoverImageUrl: `/demo-previews/${option.preview}/product.eye.jpg`,
+      demoVariant: option.preview,
+    };
   }
-  const source = { family: "pdp", variant: option.thumbVariant, category: option.thumbCategory };
-  return {
-    thumbUrl: `${getDemoPreviewThumbUrl(source)}&shot=${option.shot}`,
-    hoverImageUrl: `${getDemoPreviewEyeThumbUrl(source)}&shot=${option.eyeShot}`,
-    demoVariant: option.thumbVariant,
-  };
+  return { thumbUrl: null, hoverImageUrl: null, demoVariant: null };
 }

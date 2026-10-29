@@ -1,9 +1,9 @@
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
-{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+{% assign store_gen = shop.metafields.roarr.store_generation.value %}
 {% assign home = store_gen.home_page %}
 {% assign ht = home.text %}
 {% assign hi = home.images %}
-{% assign use_mf = section.settings.use_kluck_ai_metafields %}
+{% assign use_mf = section.settings.use_roarr_metafields %}
 {% assign homeData = section.settings.homeData %}
 {% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
 {% if hi == blank and homeData.images != blank %}{% assign hi = homeData.images %}{% endif %}
@@ -21,7 +21,7 @@
 {% assign hero_marquee_3 = section.settings.hero_marquee_3 %}
 {% if use_mf and ht.hero_marquee_3 != blank %}{% assign hero_marquee_3 = ht.hero_marquee_3 %}{% endif %}
 {% assign banner_image = section.settings.banner_image %}
-{% if use_mf %}{% if shop.metafields.kluck_ai.banner_image.value != blank %}{% assign banner_image = shop.metafields.kluck_ai.banner_image.value %}{% elsif hi.banner_image != blank %}{% assign banner_image = hi.banner_image %}{% endif %}{% endif %}
+{% if use_mf %}{% if shop.metafields.roarr.banner_image.value != blank %}{% assign banner_image = shop.metafields.roarr.banner_image.value %}{% elsif hi.banner_image != blank %}{% assign banner_image = hi.banner_image %}{% endif %}{% endif %}
 
 {% assign amour_product = blank %}
 {% if section.settings.product != blank %}

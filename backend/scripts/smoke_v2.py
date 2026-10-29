@@ -68,9 +68,9 @@ def main() -> int:
     else:
         try:
             with tempfile.NamedTemporaryFile(suffix=".txt", delete=False) as f:
-                f.write(b"kluck-v2-smoke")
+                f.write(b"roarr-smoke")
                 path = f.name
-            url = bunny_client.upload_file(path, "smoke/kluck-v2-smoke.txt")
+            url = bunny_client.upload_file(path, "smoke/roarr-smoke.txt")
             os.unlink(path)
             ok = bool(url and url.startswith("http"))
             check("bunny upload", ok, url or "")

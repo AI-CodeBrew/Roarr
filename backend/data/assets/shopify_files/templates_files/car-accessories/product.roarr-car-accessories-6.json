@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "frost-hero": {
+      "type": "roarr-frost-hero",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
+    "frost-bento": {
+      "type": "roarr-frost-bento",
+      "settings": {}
+    },
+    "frost-steps": {
+      "type": "roarr-frost-steps",
+      "settings": {}
+    },
+    "frost-specs": {
+      "type": "roarr-frost-specs",
+      "settings": {}
+    },
+    "frost-faq": {
+      "type": "roarr-frost-faq",
+      "settings": {}
+    },
+    "frost-promise": {
+      "type": "roarr-frost-promise",
+      "settings": {}
+    },
+    "frost-closing": {
+      "type": "roarr-frost-closing",
+      "settings": {}
+    }
+  },
+  "order": [
+    "frost-hero",
+    "frost-bento",
+    "frost-steps",
+    "frost-specs",
+    "frost-faq",
+    "frost-promise",
+    "frost-closing"
+  ]
+}

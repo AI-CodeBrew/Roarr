@@ -2,7 +2,7 @@
 /**
  * Prebuild demo Liquid HTML for theme cards / eye modals.
  *
- * Usage (from kluck-embeded):
+ * Usage (from frontend/):
  *   npx vite-node scripts/prebuild-demo-previews.mjs
  *   npx vite-node scripts/prebuild-demo-previews.mjs --category general
  *   npx vite-node scripts/prebuild-demo-previews.mjs --dry-run

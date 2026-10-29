@@ -496,7 +496,7 @@ class ShopifyUtils:
                     # Generate UUID-based filename
                     unique_id = str(uuid.uuid4().hex[:8])
                     file_extension = os.path.splitext(url_filename)[1]
-                    filename = f"{unique_id}_kluck_ai_generated_image{file_extension}"
+                    filename = f"{unique_id}_roarr_generated_image{file_extension}"
 
             detected_ext = _detect_image_extension_from_url(image_url)
             if detected_ext:
@@ -1347,6 +1347,10 @@ class ShopifyUtils:
         Returns:
             Dict containing success status and new theme details (id, name, role, createdAt) if successful
         """
+        # Local development: the Admin API's themeDuplicate needs the Theme API exemption, so go
+        # through the logged-in Shopify CLI, like the theme file writes do.
+        if THEME_WRITE_VIA_CLI:
+            return self._duplicate_theme_via_cli(theme_id, new_name, user_id)
         try:
             # Convert theme_id to GID format if needed
             theme_gid = self._to_gid("OnlineStoreTheme", theme_id)
@@ -1431,6 +1435,9 @@ class ShopifyUtils:
         Returns:
             Dict with success, optional theme payload, and error on failure.
         """
+        # Local development: themePublish needs the Theme API exemption too (see duplicate_theme).
+        if THEME_WRITE_VIA_CLI:
+            return self._publish_theme_via_cli(theme_id, user_id)
         try:
             theme_gid = self._to_gid("OnlineStoreTheme", theme_id)
             mutation = """
@@ -1522,7 +1529,7 @@ class ShopifyUtils:
         product_id: str,
         fields: Dict[str, Any],
         user_id: str,
-        namespace: str = "kluck_ai",
+        namespace: str = "roarr",
     ) -> Dict:
         """
         Create or update multiple metafields on a single product.
@@ -1532,7 +1539,7 @@ class ShopifyUtils:
             product_id: Shopify product ID (numeric or gid://shopify/Product/...)
             fields: Dict of { key: value } for metafields
             user_id: Authenticated user ID
-            namespace: Metafield namespace to use (default: 'kluck_ai')
+            namespace: Metafield namespace to use (default: 'roarr')
         """
         try:
             if not product_id or not fields:
@@ -1681,7 +1688,7 @@ class ShopifyUtils:
         product_id: str,
         file_references: Dict[str, str],
         user_id: str,
-        namespace: str = "kluck_ai",
+        namespace: str = "roarr",
     ) -> Dict:
         """
         Create or update multiple file_reference metafields on a single product.
@@ -1691,7 +1698,7 @@ class ShopifyUtils:
             product_id: Shopify product ID (numeric or gid://shopify/Product/...)
             file_references: Dict of { key: file_id } where file_id is a GID (e.g., "gid://shopify/File/123")
             user_id: Authenticated user ID
-            namespace: Metafield namespace to use (default: 'kluck_ai')
+            namespace: Metafield namespace to use (default: 'roarr')
         """
         try:
             if not product_id or not file_references:
@@ -1849,7 +1856,7 @@ class ShopifyUtils:
 
         Args:
             theme_id: The Shopify theme ID
-            asset_key: Path in theme (e.g., "sections/kluck-ai-section-1.liquid")
+            asset_key: Path in theme (e.g., "sections/roarr-section-1.liquid")
             user_id: User ID for authentication
 
         Returns:
@@ -2028,8 +2035,8 @@ class ShopifyUtils:
         Shopify returns REST 404 (Not Found) when write_themes / Theme API
         exemption is missing — even though GET assets still works.
         """
-        probe_key = "snippets/kluck-ai-write-probe.liquid"
-        probe_value = "{% comment %}kluck write probe{% endcomment %}\n"
+        probe_key = "snippets/roarr-write-probe.liquid"
+        probe_value = "{% comment %}roarr write probe{% endcomment %}\n"
         scopes_info = self.get_access_scopes(user_id)
         scopes = scopes_info.get("scopes") or []
         has_write_themes = "write_themes" in scopes
@@ -2073,14 +2080,106 @@ class ShopifyUtils:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(cache), "utf-8")
 
-    def _run_theme_cli_push(self, shop_domain: str, theme_id: str, work_dir: Path, only: List[str]):
-        """`shopify theme push` of just the files matching `only`. Returns (ok, output tail)."""
+    def _find_shopify_cli(self) -> Optional[str]:
         exe = None
         if os.name == "nt":
             # npm installs `shopify` (a shell script Windows can't run) next to `shopify.cmd`;
             # shutil.which("shopify") can return the script, so ask for the runnable ones first.
             exe = shutil.which("shopify.cmd") or shutil.which("shopify.exe")
-        exe = exe or shutil.which("shopify")
+        return exe or shutil.which("shopify")
+
+    def _cli_shop_domain(self, user_id: str) -> str:
+        shop_url = self._get_user_credentials(user_id).get("shop_url", "")
+        shop_domain = shop_url.replace("https://", "").replace("http://", "")
+        if not shop_domain.endswith(".myshopify.com"):
+            shop_domain = f"{shop_domain}.myshopify.com"
+        return shop_domain
+
+    @staticmethod
+    def _parse_theme_cli_json(stdout: str) -> Dict[str, Any]:
+        """The CLI's `--json` result: one JSON document, or JSON lines with the result last."""
+        text = (stdout or "").strip()
+        try:
+            payload = json.loads(text)
+        except ValueError:
+            payload = None
+            for line in reversed(text.splitlines()):
+                try:
+                    candidate = json.loads(line)
+                except ValueError:
+                    continue
+                if isinstance(candidate, dict) and ("theme" in candidate or "error" in candidate):
+                    payload = candidate
+                    break
+        return payload if isinstance(payload, dict) else {}
+
+    def _run_theme_cli_json(self, user_id: str, args: List[str]) -> Dict[str, Any]:
+        """
+        Run `shopify theme <args> --store <shop> --force --json` with your CLI login.
+        Returns {"success": True, "theme": {...}} or {"success": False, "error": ...}.
+        """
+        exe = self._find_shopify_cli()
+        if not exe:
+            return {
+                "success": False,
+                "error": "Shopify CLI not found on PATH (install it: npm i -g @shopify/cli)",
+            }
+        shop_domain = self._cli_shop_domain(user_id)
+        cmd = [exe, "theme", *args, "--store", shop_domain, "--force", "--json", "--no-color"]
+        try:
+            result = subprocess.run(
+                cmd, capture_output=True, text=True, encoding="utf-8", errors="replace",
+                timeout=THEME_CLI_TIMEOUT_SECONDS, stdin=subprocess.DEVNULL,
+            )
+        except subprocess.TimeoutExpired:
+            return {
+                "success": False,
+                "error": (
+                    "Shopify CLI timed out. Log in once in a terminal: "
+                    f"shopify theme list --store {shop_domain}"
+                ),
+            }
+        except OSError as e:
+            return {"success": False, "error": f"Could not start the Shopify CLI ({exe}): {e}"}
+
+        payload = self._parse_theme_cli_json(result.stdout)
+        theme = payload.get("theme") if isinstance(payload.get("theme"), dict) else {}
+        if result.returncode == 0 and theme.get("id"):
+            return {
+                "success": True,
+                "theme": {"id": str(theme["id"]), "name": theme.get("name"), "role": theme.get("role")},
+            }
+        error = payload.get("error") if isinstance(payload.get("error"), dict) else {}
+        output = ((result.stdout or "") + (result.stderr or "")).strip()
+        return {
+            "success": False,
+            "error": error.get("message") or output[-1500:] or f"Shopify CLI theme {args[0]} failed",
+        }
+
+    def _duplicate_theme_via_cli(self, theme_id: str, new_name: str, user_id: str) -> Dict[str, Any]:
+        """`shopify theme duplicate`, in the shape `duplicate_theme` returns."""
+        result = self._run_theme_cli_json(
+            user_id, ["duplicate", "--theme", str(theme_id).split("/")[-1], "--name", new_name]
+        )
+        if result.get("success"):
+            theme = result["theme"]
+            theme["name"] = theme.get("name") or new_name
+            theme["createdAt"] = None
+            logger.info("Theme CLI: duplicated theme %s as %s (ID: %s)", theme_id, theme["name"], theme["id"])
+        return result
+
+    def _publish_theme_via_cli(self, theme_id: str, user_id: str) -> Dict[str, Any]:
+        """`shopify theme publish`, in the shape `publish_theme_live` returns."""
+        result = self._run_theme_cli_json(
+            user_id, ["publish", "--theme", str(theme_id).split("/")[-1]]
+        )
+        if result.get("success"):
+            logger.info("Theme CLI: published theme %s live", result["theme"]["id"])
+        return result
+
+    def _run_theme_cli_push(self, shop_domain: str, theme_id: str, work_dir: Path, only: List[str]):
+        """`shopify theme push` of just the files matching `only`. Returns (ok, output tail)."""
+        exe = self._find_shopify_cli()
         if not exe:
             return False, "Shopify CLI not found on PATH (install it: npm i -g @shopify/cli)"
         cmd = [
@@ -2103,7 +2202,8 @@ class ShopifyUtils:
         except OSError as e:
             return False, f"Could not start the Shopify CLI ({exe}): {e}"
         output = ((result.stdout or "") + (result.stderr or "")).strip()
-        return result.returncode == 0, output[-1500:]
+        # Keep enough of the tail to list every rejected file, not just the last one.
+        return result.returncode == 0, output[-6000:]
 
     def _theme_cli_bulk_sync(self, shop_domain: str, theme_id: str, cache: Dict[str, Any]):
         """First CLI write for a theme: push every Roarr section/snippet in one CLI call."""
@@ -2119,7 +2219,10 @@ class ShopifyUtils:
                 for liquid in src.glob("*.liquid"):
                     data = liquid.read_bytes()
                     (work / folder / liquid.name).write_bytes(data)
-                    digests[f"{folder}/{liquid.name}"] = hashlib.sha256(data).hexdigest()
+                    # Per-file writes read the source in text mode (CRLF -> LF), so hash the same form.
+                    digests[f"{folder}/{liquid.name}"] = hashlib.sha256(
+                        data.replace(b"\r\n", b"\n")
+                    ).hexdigest()
             if not digests:
                 cache["__bulk__"] = True
                 return True, ""
@@ -2136,11 +2239,7 @@ class ShopifyUtils:
         self, theme_id: str, asset_key: str, user_id: str,
         text_value: Optional[str], base64_value: Optional[str],
     ) -> Dict[str, Any]:
-        credentials = self._get_user_credentials(user_id)
-        shop_url = credentials.get("shop_url", "")
-        shop_domain = shop_url.replace("https://", "").replace("http://", "")
-        if not shop_domain.endswith(".myshopify.com"):
-            shop_domain = f"{shop_domain}.myshopify.com"
+        shop_domain = self._cli_shop_domain(user_id)
         theme_id_cleaned = str(theme_id).split("/")[-1]
 
         failed_until = self._theme_cli_failed_until.get(shop_domain, 0.0)

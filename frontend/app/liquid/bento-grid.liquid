@@ -8,9 +8,9 @@
 {%- if render_flag == true -%}
   {%- liquid
     assign s = block.settings
-    assign m = product.metafields.kluck_ai
+    assign m = product.metafields.roarr
     assign color_schema = m.color_schema.value | default: m.color_schema | default: '#a34e4e'
-    assign kai = product.metafields.kluck_ai
+    assign kai = product.metafields.roarr
     assign p2_heading = kai.bento_stat_1.value | default: kai.bento_stat_1 | default: s.p2_heading
     assign p2_text = kai.bento_stat_description_1.value | default: kai.bento_stat_description_1 | default: s.p2_text
     assign p3_heading = kai.bento_stat_2.value | default: kai.bento_stat_2 | default: s.p3_heading

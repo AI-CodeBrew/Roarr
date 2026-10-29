@@ -2,7 +2,7 @@
 Amour image prompts — category-agnostic templated system.
 
 Keys and ratios must stay in sync with packs/amour/image_keys.json and the
-kluck-ai-amour-*.liquid sections that read them.
+roarr-amour-*.liquid sections that read them.
 
 Edit TEMPLATES / STYLE / NEGATIVE / CATEGORY_DEFAULTS here; do not hardcode
 per-category prompt lists elsewhere.

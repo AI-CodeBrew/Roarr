@@ -1,7 +1,7 @@
 {
   "sections": {
-    "kluck-ai-product-hero-section-2": {
-      "type": "kluck-ai-product-hero-section-2",
+    "roarr-product-hero-section-2": {
+      "type": "roarr-product-hero-section-2",
       "blocks": {
         "badges_b6TqUW": {
           "type": "badges",
@@ -121,8 +121,8 @@
         "padding_bottom_mobile": 40
       }
     },
-    "kluck-ai-trust-badge-2-section": {
-      "type": "kluck-ai-trust-badge-2-section",
+    "roarr-trust-badge-2-section": {
+      "type": "roarr-trust-badge-2-section",
       "blocks": {
         "badge_fML8BB": {
           "type": "badge",
@@ -181,11 +181,11 @@
         "item_pad_y_m": 8
       }
     },
-    "kluck-ai-image-with-text-3-section-product": {
-      "type": "kluck-ai-image-with-text-3-section-product",
+    "roarr-image-with-text-3-section-product": {
+      "type": "roarr-image-with-text-3-section-product",
       "name": "Split Feature Banner",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "section_width": 1400,
         "text_column_width": 50,
         "border_radius": 20,
@@ -203,8 +203,8 @@
         "padding_bottom": 60
       }
     },
-    "kluck-ai-faq-section": {
-      "type": "kluck-ai-faq-section",
+    "roarr-faq-section": {
+      "type": "roarr-faq-section",
       "blocks": {
         "faq_npkJYR": {
           "type": "faq",
@@ -266,9 +266,9 @@
     }
   },
   "order": [
-    "kluck-ai-product-hero-section-2",
-    "kluck-ai-trust-badge-2-section",
-    "kluck-ai-image-with-text-3-section-product",
-    "kluck-ai-faq-section"
+    "roarr-product-hero-section-2",
+    "roarr-trust-badge-2-section",
+    "roarr-image-with-text-3-section-product",
+    "roarr-faq-section"
   ]
 }

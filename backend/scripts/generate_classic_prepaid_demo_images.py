@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generate Classic prepaid single-product demo images for every store category,
-upload them to the public Zambeel S3 bucket, and write a JSON manifest.
+upload them to the Roarr Bunny storage zone, and write a JSON manifest.
 
 These products/scenes are intentionally distinct from:
   - COD classic SINGLE_HOME demos
@@ -50,37 +50,37 @@ CATEGORY_REFERENCES = {
         "title": "Soft Felt Activity Cube",
         "subcategory": "toys_games",
         "description": "A soft felt activity cube with six sides of quiet play for little hands.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6a8a7377_classic_prepaid_kids_toys_ref.png",
+        "reference": "",
     },
     "general": {
         "title": "Minimal Bamboo Wireless Charger Pad",
         "subcategory": "electronics_tech",
         "description": "A minimal bamboo wireless charger pad for a clean desk.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/06cbeee6_classic_prepaid_general_ref.png",
+        "reference": "",
     },
     "fashion": {
         "title": "Natural Canvas Weekend Tote",
         "subcategory": "fashion_apparel",
         "description": "A natural canvas weekend tote with easy leather handles.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/269d16d1_classic_prepaid_fashion_ref.png",
+        "reference": "",
     },
     "health_beauty": {
         "title": "Amber Glass Face Oil Dropper",
         "subcategory": "skincare",
         "description": "An amber glass face oil dropper for a simple nightly ritual.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f63a3b6d_classic_prepaid_health_beauty_ref.png",
+        "reference": "",
     },
     "home_kitchen": {
         "title": "Matte Black Gooseneck Pour-Over Kettle",
         "subcategory": "kitchen",
         "description": "A matte black gooseneck pour-over kettle for a precise home pour.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e37f0c20_classic_prepaid_home_kitchen_ref.png",
+        "reference": "",
     },
     "car_accessories": {
         "title": "Leather Seat Gap Organizer",
         "subcategory": "car_accessories",
         "description": "A leather seat-gap organizer that catches phones, keys, and coins.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/618f6e11_classic_prepaid_car_accessories_ref.png",
+        "reference": "",
     },
 }
 
@@ -165,7 +165,7 @@ MANIFEST_PATH = backend_dir / "scripts" / "classic_prepaid_demo_images_manifest.
 
 
 def upload_public(path: str, category: str, key: str) -> str | None:
-    bucket = os.getenv("BUNNY_STORAGE_ZONE", "kluck-v2")
+    bucket = os.getenv("BUNNY_STORAGE_ZONE", "roarr")
     ext = os.path.splitext(path)[1] or ".png"
     filename = f"classic_prepaid_demo_{category}_{key}_{uuid.uuid4().hex[:8]}{ext}"
     return StorageUtils.upload_public(path, filename)

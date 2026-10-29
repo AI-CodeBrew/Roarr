@@ -25,6 +25,20 @@ export async function action({ request }) {
     const { productId, category, magicResponse, selectedColor, pageId, selectedTemplate } =
       body || {};
 
+    // Sent by the client once a background publish has completed.
+    if (body?.intent === "seed_bundle") {
+      const authHeader = request.headers.get("authorization");
+      await seedDefaultBundleIfNeeded(admin, {
+        scope: "products",
+        productIds: [productId],
+        shopifyJwtToken: authHeader?.replace("Bearer ", "") || null,
+      }).catch((e) => console.error("[SeedDefaultBundle] failed:", e?.message));
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     if (!magicResponse) {
       return new Response(
         JSON.stringify({
@@ -70,9 +84,9 @@ export async function action({ request }) {
         pageId: pageId || null,
         page_id: pageId || null,
         selectedTemplate:
-          [1, 2, 3, 4].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : null,
+          [1, 2, 3, 4, 5, 6].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : null,
         selected_template:
-          [1, 2, 3, 4].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : null,
+          [1, 2, 3, 4, 5, 6].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : null,
         shop: session.shop,
       }),
     });
@@ -93,20 +107,23 @@ export async function action({ request }) {
       );
     }
 
-    // Only this product gets the premium template, so scope the default to it —
-    // otherwise the cart discount would fire on pages with no bundle UI.
-    void seedDefaultBundleIfNeeded(admin, {
-      scope: "products",
-      productIds: [productId],
-      shopifyJwtToken,
-    }).catch((e) => console.error("[SeedDefaultBundle] failed:", e?.message));
+    // 202: Python publishes in the background; the client seeds the bundle when it finishes.
+    if (pythonRes.status !== 202) {
+      // Only this product gets the premium template, so scope the default to it —
+      // otherwise the cart discount would fire on pages with no bundle UI.
+      void seedDefaultBundleIfNeeded(admin, {
+        scope: "products",
+        productIds: [productId],
+        shopifyJwtToken,
+      }).catch((e) => console.error("[SeedDefaultBundle] failed:", e?.message));
+    }
 
     return new Response(
       JSON.stringify({
         success: true,
         ...data,
       }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
+      { status: pythonRes.status, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
     console.error(

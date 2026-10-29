@@ -10,13 +10,12 @@
 import { getHomeDataForPreview } from "../routes/_app.generate_store/store/utils/default-magic-responses/home-data.js";
 import { getProductImages } from "../routes/_app.generate_pdp/product-page/utils/default-magic-responses/index.js";
 
-export const DEMO_PREVIEW_VERSION = "2026-09-20";
+export const DEMO_PREVIEW_VERSION = "2026-10-28";
 
 /** Bust browser cache for demo thumbs/HTML after S3 overwrite (immutable Cache-Control). */
 export const DEMO_THUMB_CACHE_BUST = "20261021-amour-imgs2";
 
-export const DEMO_PREVIEW_BUCKET =
-  "https://product-images-zambeel.s3.eu-west-3.amazonaws.com";
+export const DEMO_PREVIEW_BUCKET = "https://roarr.b-cdn.net/assets";
 
 export const DEMO_PREVIEW_PREFIX = `demo-previews/${DEMO_PREVIEW_VERSION}`;
 

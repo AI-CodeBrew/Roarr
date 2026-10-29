@@ -1,0 +1,238 @@
+{%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
+{% assign store_gen = shop.metafields.roarr.store_generation.value %}
+{% assign home = store_gen.home_page %}
+{% assign ht = home.text %}
+{% assign hi = home.images %}
+{% assign use_mf = section.settings.use_roarr_metafields %}
+{% assign homeData = section.settings.homeData %}
+{% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
+{% if hi == blank and homeData.images != blank %}{% assign hi = homeData.images %}{% endif %}
+
+{% assign story_accent = section.settings.story_accent %}
+{% if use_mf and ht.story_accent != blank %}{% assign story_accent = ht.story_accent %}{% endif %}
+{% assign story_heading = section.settings.story_heading %}
+{% if use_mf and ht.story_heading != blank %}{% assign story_heading = ht.story_heading %}{% endif %}
+{% assign story_body = section.settings.story_body %}
+{% if use_mf and ht.story_body != blank %}{% assign story_body = ht.story_body %}{% endif %}
+{% assign story_cta = section.settings.story_cta %}
+{% if use_mf and ht.story_cta != blank %}{% assign story_cta = ht.story_cta %}{% endif %}
+{% assign story_caption_title = section.settings.story_caption_title %}
+{% if use_mf and ht.story_caption_title != blank %}{% assign story_caption_title = ht.story_caption_title %}{% endif %}
+{% assign story_caption_line = section.settings.story_caption_line %}
+{% if use_mf and ht.story_caption_line != blank %}{% assign story_caption_line = ht.story_caption_line %}{% endif %}
+{% assign story_image = section.settings.story_image %}
+{% if use_mf %}{% if shop.metafields.roarr.story_image.value != blank %}{% assign story_image = shop.metafields.roarr.story_image.value %}{% elsif hi.story_image != blank %}{% assign story_image = hi.story_image %}{% endif %}{% endif %}
+{% assign product_image_1 = section.settings.product_image_1 %}
+{% if use_mf %}{% if shop.metafields.roarr.product_image_1.value != blank %}{% assign product_image_1 = shop.metafields.roarr.product_image_1.value %}{% elsif hi.product_image_1 != blank %}{% assign product_image_1 = hi.product_image_1 %}{% endif %}{% endif %}
+
+{% assign amour_product = blank %}
+{% if section.settings.product != blank %}
+  {% assign amour_product = section.settings.product %}
+{% elsif ht.selected_product != blank %}
+  {% assign amour_product = all_products[ht.selected_product] %}
+{% endif %}
+{% if amour_product == blank and collections.all.products.first != blank %}
+  {% assign amour_product = collections.all.products.first %}
+{% endif %}
+{% assign amour_product_url = routes.all_products_collection_url %}
+{% assign amour_product_title = section.settings.fallback_title %}
+{% assign amour_product_price = section.settings.fallback_price %}
+{% if amour_product != blank and amour_product.title != blank %}
+  {% assign amour_product_url = amour_product.url %}
+  {% assign amour_product_title = amour_product.title %}
+  {% assign amour_product_price = amour_product.price | money %}
+{% endif %}
+
+
+{% if shop.metafields.app.block_control.value %}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap">
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  #amour-{{ section.id }} {
+  --a-ink: var(--color-foreground, #111111);
+  --a-paper: var(--color-background, #ffffff);
+  --a-wine: {{ section.settings.accent_color | default: '#6b0808' }};
+  --a-on-wine: #ffffff;
+  --a-blush: {{ section.settings.blush_color | default: '#ffe3de' }};
+  --a-mist: #f2f1ef;
+  --a-head: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+  --a-body: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --a-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  font-family: var(--a-body); color: var(--a-ink); background: var(--a-paper);
+  }
+
+  #amour-{{ section.id }}, #amour-{{ section.id }} * { box-sizing: border-box; }
+  #amour-{{ section.id }} img { display: block; max-width: 100%; }
+  #amour-{{ section.id }} .a-wrap { max-width: 1340px; margin: 0 auto; padding: 0 20px; }
+  #amour-{{ section.id }} .a-h2 { margin: 0; font-family: var(--a-head); font-weight: 700; text-transform: uppercase; font-size: 40px; line-height: 1.2; letter-spacing: -0.01em; }
+  #amour-{{ section.id }} .a-serif { font-family: var(--a-serif); font-style: italic; font-weight: 400; }
+  #amour-{{ section.id }} .a-serif span, #amour-{{ section.id }} .a-serif p { font-family: inherit; font-style: inherit; font-weight: inherit; }
+  #amour-{{ section.id }} .a-link { display: inline-block; font-size: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; padding: 0 0 4px; }
+  #amour-{{ section.id }} .a-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 32px; font-family: var(--a-body); font-size: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: none; transition: background .2s, color .2s; }
+  #amour-{{ section.id }} .a-btn--light { background: #fff; color: #000; border: 1px solid #fff; }
+  #amour-{{ section.id }} .a-btn--light:hover { background: transparent; color: #fff; }
+  #amour-{{ section.id }} .a-btn--outline { background: transparent; color: var(--a-ink); border: 1px solid var(--a-ink); }
+  #amour-{{ section.id }} .a-btn--outline:hover { background: var(--a-ink); color: var(--a-paper); }
+  #amour-{{ section.id }} .a-media { position: relative; overflow: hidden; background: var(--a-mist); }
+  #amour-{{ section.id }} .a-media img, #amour-{{ section.id }} .a-media svg { width: 100%; height: 100%; object-fit: cover; }
+  #amour-{{ section.id }} .a-ph { width: 100%; height: 100%; fill: rgba(0,0,0,.18); background: var(--a-mist); }
+  @media (max-width: 767px) {
+    #amour-{{ section.id }} .a-h2 { font-size: 28px; }
+  }
+
+  #amour-{{ section.id }} .ast { padding: 100px 0; }
+  #amour-{{ section.id }} .ast__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 114px; }
+  #amour-{{ section.id }} .ast__left { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 64px; }
+  #amour-{{ section.id }} .ast__copy { width: 100%; }
+  #amour-{{ section.id }} .ast__accent { margin: 0; font-size: 56px; line-height: 1.15; }
+  #amour-{{ section.id }} .ast__heading { margin: 0; font-family: var(--a-head); font-weight: 700; font-size: 48px; line-height: 1.16; text-transform: uppercase; }
+  #amour-{{ section.id }} .ast__body { margin: 20px 0 0; font-size: 16px; line-height: 1.6; max-width: 520px; }
+  #amour-{{ section.id }} .ast__product { width: min(373px, 100%); display: flex; flex-direction: column; gap: 12px; color: inherit; text-decoration: none; }
+  #amour-{{ section.id }} .ast__product .a-media { aspect-ratio: 3 / 4; }
+  #amour-{{ section.id }} .ast__ptitle { margin: 4px 0 0; font-size: 16px; font-weight: 500; }
+  #amour-{{ section.id }} .ast__price { margin: 0; font-size: 15px; opacity: .75; }
+  #amour-{{ section.id }} .ast__right { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+  #amour-{{ section.id }} .ast__right .a-media { width: 100%; aspect-ratio: 4 / 5; }
+  #amour-{{ section.id }} .ast__caption { width: min(380px, 100%); }
+  #amour-{{ section.id }} .ast__ctitle { margin: 0; font-size: 56px; line-height: 1.15; }
+  #amour-{{ section.id }} .ast__cline { margin: 4px 0 0; font-size: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; }
+  @media (max-width: 989px) {
+    #amour-{{ section.id }} .ast__grid { gap: 32px 48px; }
+    #amour-{{ section.id }} .ast__accent, #amour-{{ section.id }} .ast__ctitle { font-size: 44px; }
+    #amour-{{ section.id }} .ast__heading { font-size: 36px; }
+  }
+  @media (max-width: 767px) {
+    #amour-{{ section.id }} .ast { padding: 64px 0; }
+    #amour-{{ section.id }} .ast__grid { grid-template-columns: 1fr; }
+    #amour-{{ section.id }} .ast__left { align-items: stretch; gap: 32px; }
+    #amour-{{ section.id }} .ast__product { width: 100%; }
+    #amour-{{ section.id }} .ast__heading { font-size: 30px; }
+  }
+
+</style>
+<div id="amour-{{ section.id }}" class="roarr-amour color-{{ section_scheme }}">
+<section class="ast"><div class="a-wrap"><div class="ast__grid">
+  <div class="ast__left">
+    <div class="ast__copy">
+      {% if story_accent != blank %}<p class="ast__accent a-serif">{{ story_accent }}</p>{% endif %}
+      {% if story_heading != blank %}<h2 class="ast__heading">{{ story_heading }}</h2>{% endif %}
+      {% if story_body != blank %}<p class="ast__body">{{ story_body }}</p>{% endif %}
+    </div>
+    <a class="ast__product" href="{{ amour_product_url }}">
+      <div class="a-media">{%- if product_image_1 != blank -%}{%- if product_image_1 contains 'http' or product_image_1 contains '//' -%}<img src="{{ product_image_1 }}" alt="{{ amour_product_title | escape }}" loading="lazy" class="">{%- else -%}<img src="{{ product_image_1 | image_url: width: 800 }}" alt="{{ amour_product_title | escape }}" loading="lazy" class="">{%- endif -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'a-ph' }}{%- endif -%}</div>
+      <p class="ast__ptitle">{{ amour_product_title }}</p>
+      {% if amour_product_price != blank %}<p class="ast__price">{{ amour_product_price }}</p>{% endif %}
+      {% if story_cta != blank %}<span class="a-btn a-btn--outline">{{ story_cta }}</span>{% endif %}
+    </a>
+  </div>
+  <div class="ast__right">
+    <div class="a-media">{%- if story_image != blank -%}{%- if story_image contains 'http' or story_image contains '//' -%}<img src="{{ story_image }}" alt="{{ story_heading | escape }}" loading="lazy" class="">{%- else -%}<img src="{{ story_image | image_url: width: 1300 }}" alt="{{ story_heading | escape }}" loading="lazy" class="">{%- endif -%}{%- else -%}{{ 'image' | placeholder_svg_tag: 'a-ph' }}{%- endif -%}</div>
+    <div class="ast__caption">
+      {% if story_caption_title != blank %}<p class="ast__ctitle a-serif">{{ story_caption_title }}</p>{% endif %}
+      {% if story_caption_line != blank %}<p class="ast__cline">{{ story_caption_line }}</p>{% endif %}
+    </div>
+  </div>
+</div></div></section>
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Roarr - Amour Story",
+  "tag": "section",
+  "class": "roarr-amour-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr metafields",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#6b0808"
+    },
+    {
+      "type": "color",
+      "id": "blush_color",
+      "label": "Soft background color",
+      "default": "#ffe3de"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Large image (4:5)"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_1",
+      "label": "Product card image (3:4)"
+    },
+    {
+      "type": "text",
+      "id": "story_accent",
+      "label": "Accent line",
+      "default": "Our story"
+    },
+    {
+      "type": "text",
+      "id": "story_heading",
+      "label": "Heading",
+      "default": "Made for the moments that matter"
+    },
+    {
+      "type": "textarea",
+      "id": "story_body",
+      "label": "Text",
+      "default": "Every detail is chosen with care, so it feels as good as it looks. It is the piece you will keep coming back to."
+    },
+    {
+      "type": "text",
+      "id": "story_cta",
+      "label": "Product button",
+      "default": "Shop now"
+    },
+    {
+      "type": "text",
+      "id": "story_caption_title",
+      "label": "Photo caption",
+      "default": "Worn with love"
+    },
+    {
+      "type": "text",
+      "id": "story_caption_line",
+      "label": "Photo caption line",
+      "default": "Part of every day"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Product title fallback",
+      "default": "Signature piece"
+    },
+    {
+      "type": "text",
+      "id": "fallback_price",
+      "label": "Product price fallback"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Roarr - Amour Story"
+    }
+  ]
+}
+{% endschema %}

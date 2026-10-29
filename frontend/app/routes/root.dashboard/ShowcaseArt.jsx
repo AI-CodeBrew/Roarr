@@ -1,4 +1,4 @@
-import { ChartColumnIncreasing, Layers, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useFlowTemplate } from "../../lib/useFlowTemplate";
 
 /*
@@ -53,17 +53,6 @@ export function Plant({ pot = "#ece7df", className = "" }) {
 /** Rounded grey text placeholder line. */
 export function Line({ className = "" }) {
   return <span className={`block h-1 rounded-full bg-slate-200 ${className}`} />;
-}
-
-function FloatingChip({ icon: IconComponent, children, className = "" }) {
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 text-[11px] font-medium shadow-md ring-1 ring-black/5 ${className}`}
-    >
-      <IconComponent size={13} />
-      {children}
-    </span>
-  );
 }
 
 /** Illustrated storefront body (placeholder lines, hero copy, products). */
@@ -121,7 +110,7 @@ function HeroImageBody({ src }) {
 }
 
 /**
- * Hero illustration: tilted storefront window with feature chips. With `image` the window shows
+ * Hero illustration: tilted storefront window on a card. With `image` the window shows
  * that screenshot instead of the illustrated storefront.
  */
 export function HeroShowcase({ image }) {
@@ -138,18 +127,6 @@ export function HeroShowcase({ image }) {
           <span className="h-1.5 w-1.5 rounded-full bg-white/30" />
         </div>
         {image ? <HeroImageBody src={image} /> : <HeroMockBody />}
-      </div>
-
-      <div className="absolute -right-4 top-[48px] flex flex-col items-end gap-2.5">
-        <FloatingChip icon={Sparkles} className="text-[#1e40af]">
-          <span className="text-slate-700">AI-Powered Design</span>
-        </FloatingChip>
-        <FloatingChip icon={Layers} className="mr-4 text-[#1e40af]">
-          <span className="text-slate-700">Customizable Sections</span>
-        </FloatingChip>
-        <FloatingChip icon={ChartColumnIncreasing} className="text-[#1e40af]">
-          <span className="text-slate-700">High Converting Pages</span>
-        </FloatingChip>
       </div>
     </div>
   );

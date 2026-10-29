@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "lumen-hero": {
+      "type": "roarr-lumen-hero",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
+    "lumen-detail": {
+      "type": "roarr-lumen-detail",
+      "settings": {}
+    },
+    "lumen-feature": {
+      "type": "roarr-lumen-feature",
+      "settings": {}
+    },
+    "lumen-details": {
+      "type": "roarr-lumen-details",
+      "settings": {}
+    },
+    "lumen-circle": {
+      "type": "roarr-lumen-circle",
+      "settings": {}
+    },
+    "lumen-mood": {
+      "type": "roarr-lumen-mood",
+      "settings": {}
+    }
+  },
+  "order": [
+    "lumen-hero",
+    "lumen-detail",
+    "lumen-feature",
+    "lumen-details",
+    "lumen-circle",
+    "lumen-mood"
+  ]
+}

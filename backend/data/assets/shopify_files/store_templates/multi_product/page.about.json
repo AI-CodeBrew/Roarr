@@ -1,7 +1,7 @@
 {
   "sections": {
-    "kluck-ai-about-us-h1-section": {
-      "type": "kluck-ai-about-us-h1-section",
+    "roarr-about-us-h1-section": {
+      "type": "roarr-about-us-h1-section",
       "name": "Roarr - About",
       "settings": {
         "color_scheme": "scheme-1",
@@ -26,8 +26,8 @@
         "padding_bottom_mobile": 60
       }
     },
-    "kluck-ai-about-us-h2-section": {
-      "type": "kluck-ai-about-us-h2-section",
+    "roarr-about-us-h2-section": {
+      "type": "roarr-about-us-h2-section",
       "blocks": {
         "tab_start": {
           "type": "tab",
@@ -79,5 +79,5 @@
       }
     }
   },
-  "order": ["kluck-ai-about-us-h1-section", "kluck-ai-about-us-h2-section"]
+  "order": ["roarr-about-us-h1-section", "roarr-about-us-h2-section"]
 }

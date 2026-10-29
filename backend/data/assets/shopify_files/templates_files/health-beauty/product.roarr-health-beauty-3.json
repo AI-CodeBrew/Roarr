@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "glow-hero": {
+      "type": "roarr-glow-hero",
+      "blocks": {
+        "roarr_bundle": {
+          "type": "shopify://apps/roarr/blocks/bundle/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {}
+        }
+      },
+      "block_order": ["roarr_bundle"],
+      "settings": {}
+    },
+    "glow-special": { "type": "roarr-glow-special", "settings": {} },
+    "glow-stats": { "type": "roarr-glow-stats", "settings": {} },
+    "glow-ingredients": { "type": "roarr-glow-ingredients", "settings": {} },
+    "glow-steps": { "type": "roarr-glow-steps", "settings": {} },
+    "glow-faq": { "type": "roarr-glow-faq", "settings": {} }
+  },
+  "order": ["glow-hero", "glow-special", "glow-stats", "glow-ingredients", "glow-steps", "glow-faq"]
+}

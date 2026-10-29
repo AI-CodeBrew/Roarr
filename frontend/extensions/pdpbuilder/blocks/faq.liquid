@@ -1,6 +1,6 @@
 {%- liquid
     assign s = block.settings
-    assign color_schema = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#A34E4E'
+    assign color_schema = product.metafields.roarr.color_schema.value | default: product.metafields.roarr.color_schema | default: '#A34E4E'
   -%}
   
   {%- assign render_flag = shop.metafields.app.block_control.value -%}
@@ -30,8 +30,8 @@
             assign question_meta_key = 'faq_question_' | append: i
             assign answer_meta_key = 'faq_answer_' | append: i
   
-            assign question_meta = product.metafields.kluck_ai[question_meta_key]
-            assign answer_meta = product.metafields.kluck_ai[answer_meta_key]
+            assign question_meta = product.metafields.roarr[question_meta_key]
+            assign answer_meta = product.metafields.roarr[answer_meta_key]
   
             assign question = question_meta.value | default: question_meta | default: s[question_key]
             assign answer = answer_meta.value | default: answer_meta | default: s[answer_key]
@@ -59,12 +59,12 @@
       {%- endfor -%}
     </div>
   
-    {%- unless s.hide_kluck_credit -%}
+    {%- unless s.hide_roarr_credit -%}
       <div class="tae-faq-credit">
-        Built using <a href="https://kluck.ai" target="_blank" rel="noopener noreferrer">kluck.ai</a>
+        Built using <a href="https://apps.shopify.com/roarr" target="_blank" rel="noopener noreferrer">Roarr</a>
       </div>
     {%- endunless -%}
   </div>
   {%- endif -%}
   
-  {% schema %} { "name": "FAQ", "target": "section", "settings": [ { "type": "checkbox", "id": "use_metafields", "label": "Use Roarr metafields", "default": true, "info": "When enabled, content will be pulled from product metafields created by Roarr. When disabled, you can manually enter text." }, { "type": "header", "content": "FAQ Item 1" }, { "type": "text", "id": "question_1", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_1", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 2" }, { "type": "text", "id": "question_2", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_2", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 3" }, { "type": "text", "id": "question_3", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_3", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 4" }, { "type": "text", "id": "question_4", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_4", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 5" }, { "type": "text", "id": "question_5", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_5", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "checkbox", "id": "hide_kluck_credit", "label": "Hide kluck.ai", "default": false, "info": "Hide the 'Built using kluck.ai' text at the bottom right" }, ] } {% endschema %}
+  {% schema %} { "name": "FAQ", "target": "section", "settings": [ { "type": "checkbox", "id": "use_metafields", "label": "Use Roarr metafields", "default": true, "info": "When enabled, content will be pulled from product metafields created by Roarr. When disabled, you can manually enter text." }, { "type": "header", "content": "FAQ Item 1" }, { "type": "text", "id": "question_1", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_1", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 2" }, { "type": "text", "id": "question_2", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_2", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 3" }, { "type": "text", "id": "question_3", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_3", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 4" }, { "type": "text", "id": "question_4", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_4", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "header", "content": "FAQ Item 5" }, { "type": "text", "id": "question_5", "label": "Question", "default": "Enter your question" }, { "type": "richtext", "id": "answer_5", "label": "Answer", "default": "<p>Enter your answer here.</p>" }, { "type": "checkbox", "id": "hide_roarr_credit", "label": "Hide Roarr credit", "default": false, "info": "Hide the 'Built using Roarr' text at the bottom right" }, ] } {% endschema %}

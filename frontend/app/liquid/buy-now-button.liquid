@@ -1,7 +1,7 @@
 {%- liquid
   assign s = block.settings
   assign instance_id = block.id | replace: '_', '-' | downcase
-  assign m = product.metafields.kluck_ai
+  assign m = product.metafields.roarr
   assign color_schema = m.color_schema.value | default: m.color_schema | default: '#a34e4e'
 
   assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0

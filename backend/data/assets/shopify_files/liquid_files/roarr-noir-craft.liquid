@@ -1,0 +1,94 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.noir_craft_eyebrow.value | default: m.noir_craft_eyebrow | default: 'The craft' -%}
+{%- assign heading = m.noir_craft_heading.value | default: m.noir_craft_heading | default: 'Every detail, considered' -%}
+{%- assign text = m.noir_craft_text.value | default: m.noir_craft_text | default: 'Chosen materials, careful finishing and a design that earns its place in your day.' -%}
+{%- assign c1 = m.noir_craft_1_title.value | default: m.noir_craft_1_title | default: 'Chosen materials' -%}
+{%- assign c1t = m.noir_craft_1_text.value | default: m.noir_craft_1_text | default: 'Selected for how they look, feel and hold up to everyday use.' -%}
+{%- assign c2 = m.noir_craft_2_title.value | default: m.noir_craft_2_title | default: 'Careful finish' -%}
+{%- assign c2t = m.noir_craft_2_text.value | default: m.noir_craft_2_text | default: 'Every edge and surface is finished so it looks right up close.' -%}
+{%- assign c3 = m.noir_craft_3_title.value | default: m.noir_craft_3_title | default: 'Made for use' -%}
+{%- assign c3t = m.noir_craft_3_text.value | default: m.noir_craft_3_text | default: 'Designed around the way you will actually reach for it.' -%}
+{%- assign i1 = m.product_highlight_1.value | default: m.product_highlight_1 | default: m.product_image_2.value | default: m.product_image_2 -%}
+{%- assign i2 = m.product_highlight_2.value | default: m.product_highlight_2 | default: m.product_image_3.value | default: m.product_image_3 -%}
+{%- assign i3 = m.product_highlight_3.value | default: m.product_highlight_3 | default: m.product_image_4.value | default: m.product_image_4 -%}
+{%- if product.media.size > 0 -%}
+  {%- if i1 == blank -%}{%- assign i1 = product.media.first.preview_image | default: product.media.first -%}{%- endif -%}
+  {%- if i2 == blank -%}{%- assign i2 = product.media.last.preview_image | default: product.media.last -%}{%- endif -%}
+  {%- if i3 == blank -%}{%- assign i3 = product.media.first.preview_image | default: product.media.first -%}{%- endif -%}
+{%- endif -%}
+<section class="nr-craft">
+  <div class="nr-craft__wrap">
+    <header class="nr-craft__head">
+      <div>
+        <p class="nr-eyebrow">{{ eyebrow }}</p>
+        <h2 class="nr-craft__heading">{{ heading }}</h2>
+      </div>
+      <p class="nr-craft__text">{{ text }}</p>
+    </header>
+    <ol class="nr-craft__grid" role="list">
+      <li class="nr-craft__card">
+        <div class="nr-craft__img">{%- if i1 != blank -%}<img src="{{ i1 | image_url: width: 900 }}" alt="{{ c1 | escape }}" loading="lazy">{%- endif -%}</div>
+        <span class="nr-craft__num">01</span><h3>{{ c1 }}</h3><p>{{ c1t }}</p>
+      </li>
+      <li class="nr-craft__card">
+        <div class="nr-craft__img">{%- if i2 != blank -%}<img src="{{ i2 | image_url: width: 900 }}" alt="{{ c2 | escape }}" loading="lazy">{%- endif -%}</div>
+        <span class="nr-craft__num">02</span><h3>{{ c2 }}</h3><p>{{ c2t }}</p>
+      </li>
+      <li class="nr-craft__card">
+        <div class="nr-craft__img">{%- if i3 != blank -%}<img src="{{ i3 | image_url: width: 900 }}" alt="{{ c3 | escape }}" loading="lazy">{%- endif -%}</div>
+        <span class="nr-craft__num">03</span><h3>{{ c3 }}</h3><p>{{ c3t }}</p>
+      </li>
+    </ol>
+  </div>
+</section>
+<style>
+  .nr-craft { --nr-ink: #0D0C0B; --nr-coal: #161412; --nr-line: #2E2A25; --nr-gold: #C9A96E; --nr-gold-soft: #E4D2AA; --nr-ivory: #F2ECE2; --nr-muted: #A79E90; --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; background: var(--nr-ink); color: var(--nr-ivory); font-family: "Manrope", sans-serif; padding: clamp(56px, 8vw, 120px) 0; }
+  .nr-craft *, .nr-craft *::before, .nr-craft *::after { box-sizing: border-box; }
+  .nr-craft__wrap { width: min(1320px, calc(100% - 48px)); margin: 0 auto; }
+  .nr-craft__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 32px; align-items: end; margin-bottom: clamp(32px, 4vw, 56px); }
+  .nr-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--nr-gold); }
+  .nr-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+  .nr-craft__heading { margin: 14px 0 0; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(34px, 4vw, 56px); line-height: 1.06; }
+  .nr-craft__text { margin: 0; font-size: 15px; line-height: 1.7; color: var(--nr-muted); }
+  .nr-craft__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); list-style: none; margin: 0; padding: 0; }
+  .nr-craft__card { display: grid; align-content: start; gap: 8px; }
+  .nr-craft__img { aspect-ratio: 3 / 4; background: var(--nr-coal); overflow: hidden; margin-bottom: 12px; }
+  .nr-craft__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 700ms ease; }
+  .nr-craft__card:hover .nr-craft__img img { transform: scale(1.04); }
+  .nr-craft__num { font-size: 12px; font-weight: 600; letter-spacing: .2em; color: var(--nr-gold); }
+  .nr-craft__card h3 { margin: 0; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(22px, 2vw, 28px); line-height: 1.2; }
+  .nr-craft__card p { margin: 0; font-size: 15px; line-height: 1.65; color: var(--nr-muted); }
+  @media (max-width: 989px) {
+    .nr-craft__wrap { width: calc(100% - 32px); }
+    .nr-craft__head { grid-template-columns: 1fr; gap: 16px; }
+    .nr-craft__grid { grid-template-columns: 1fr; gap: 36px; }
+    .nr-craft__img { aspect-ratio: 4 / 5; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--noir" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Manrope", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Noir Craft",
+  "tag": "section",
+  "class": "roarr-noir-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Noir Craft" }]
+}
+{% endschema %}

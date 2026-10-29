@@ -1,0 +1,99 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.lumen_feature_eyebrow.value | default: m.lumen_feature_eyebrow | default: 'Why you will love it' -%}
+{%- assign heading = m.lumen_feature_heading.value | default: m.lumen_feature_heading | default: 'Made to be seen' -%}
+{%- assign p1 = m.lumen_point_1_title.value | default: m.lumen_point_1_title | default: 'Real scale' -%}
+{%- assign p1t = m.lumen_point_1_text.value | default: m.lumen_point_1_text | default: 'Sized to sit comfortably on a desk, shelf or bedside.' -%}
+{%- assign p2 = m.lumen_point_2_title.value | default: m.lumen_point_2_title | default: 'True colour' -%}
+{%- assign p2t = m.lumen_point_2_text.value | default: m.lumen_point_2_text | default: 'The finish looks the way it does in the photos.' -%}
+{%- assign p3 = m.lumen_point_3_title.value | default: m.lumen_point_3_title | default: 'Shown in use' -%}
+{%- assign p3t = m.lumen_point_3_text.value | default: m.lumen_point_3_text | default: 'Pictured the way you would use it every day.' -%}
+{%- assign p4 = m.lumen_point_4_title.value | default: m.lumen_point_4_title | default: 'Easy to place' -%}
+{%- assign p4t = m.lumen_point_4_text.value | default: m.lumen_point_4_text | default: 'Works with the pieces you already own.' -%}
+{%- assign p5 = m.lumen_point_5_title.value | default: m.lumen_point_5_title | default: 'Made to last' -%}
+{%- assign p5t = m.lumen_point_5_text.value | default: m.lumen_point_5_text | default: 'Chosen materials that keep their look over time.' -%}
+{%- assign p6 = m.lumen_point_6_title.value | default: m.lumen_point_6_title | default: 'Delivered with care' -%}
+{%- assign p6t = m.lumen_point_6_text.value | default: m.lumen_point_6_text | default: 'Packed carefully and sent to your door.' -%}
+{%- assign feature_img = m.feature_image.value | default: m.feature_image -%}
+{%- assign video = product.media | where: 'media_type', 'video' | first -%}
+<section class="lmk-feature">
+  <div class="lmk-feature__layout">
+    <div class="lmk-feature__media">
+      <div class="lmk-feature__frame">
+        <div class="lmk-feature__screen">
+          {%- if video -%}
+            {{ video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'lmk-feature__fill' }}
+          {%- elsif feature_img != blank -%}
+            <img class="lmk-feature__fill" src="{{ feature_img | image_url: width: 900 }}" alt="{{ product.title | escape }}" loading="lazy">
+          {%- elsif product.media.size > 0 -%}
+            {%- assign src = product.media.first.preview_image | default: product.media.first -%}
+            <img class="lmk-feature__fill" src="{{ src | image_url: width: 900 }}" alt="{{ product.title | escape }}" loading="lazy">
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+    <div class="lmk-feature__copy">
+      <p class="lmk-eyebrow">{{ eyebrow }}</p>
+      <h2 class="lmk-feature__heading">{{ heading }}</h2>
+      <ol class="lmk-feature__points">
+        <li><span class="lmk-feature__title">{{ p1 }}</span><span class="lmk-feature__text">{{ p1t }}</span></li>
+        <li><span class="lmk-feature__title">{{ p2 }}</span><span class="lmk-feature__text">{{ p2t }}</span></li>
+        <li><span class="lmk-feature__title">{{ p3 }}</span><span class="lmk-feature__text">{{ p3t }}</span></li>
+        <li><span class="lmk-feature__title">{{ p4 }}</span><span class="lmk-feature__text">{{ p4t }}</span></li>
+        <li><span class="lmk-feature__title">{{ p5 }}</span><span class="lmk-feature__text">{{ p5t }}</span></li>
+        <li><span class="lmk-feature__title">{{ p6 }}</span><span class="lmk-feature__text">{{ p6t }}</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+<style>
+  .lmk-feature { --lmk-ivory: #F6F1EA; --lmk-sand: #E6DCCF; --lmk-stone: #D9CFC2; --lmk-brass-dark: #775A2C; --lmk-espresso: #2B2320; --lmk-night: #1C1917; --lmk-muted: #6B5F58; background: var(--lmk-sand); border-block: 1px solid var(--lmk-stone); color: var(--lmk-espresso); font-family: "Jost", sans-serif; padding: clamp(32px, 4vw, 56px) 0; }
+  .lmk-feature *, .lmk-feature *::before, .lmk-feature *::after { box-sizing: border-box; }
+  .lmk-feature__layout { width: min(1180px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: stretch; gap: 56px; }
+  .lmk-feature__media { align-self: center; }
+  .lmk-feature__frame { width: 296px; padding: 8px; background: #FFFDF9; border: 1px solid var(--lmk-stone); border-radius: 20px; box-shadow: 0 20px 44px rgb(28 25 23 / .10); }
+  .lmk-feature__screen { aspect-ratio: 9 / 16; overflow: hidden; border-radius: 13px; background: var(--lmk-night); }
+  .lmk-feature__fill { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lmk-feature__copy { display: flex; flex-direction: column; justify-content: center; }
+  .lmk-eyebrow { margin: 0 0 6px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--lmk-muted); }
+  .lmk-feature__heading { margin: 0 0 18px; font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(30px, 3.2vw, 42px); line-height: 1.12; }
+  .lmk-feature__points { flex: 1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 16px; counter-reset: lmk-point; }
+  .lmk-feature__points li { counter-increment: lmk-point; display: grid; gap: 4px; align-content: center; padding: 18px 22px; background: #FFFDF9; border: 1px solid var(--lmk-stone); border-radius: 12px; }
+  .lmk-feature__points li::before { content: counter(lmk-point, decimal-leading-zero); font-size: 12px; letter-spacing: .16em; color: var(--lmk-brass-dark); }
+  .lmk-feature__title { font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(20px, 2vw, 26px); line-height: 1.2; }
+  .lmk-feature__text { font-size: 15px; line-height: 1.6; color: var(--lmk-muted); }
+  @media (max-width: 989px) {
+    .lmk-feature__layout { grid-template-columns: 1fr; justify-items: center; gap: 28px; width: calc(100% - 32px); }
+    .lmk-feature__frame { width: min(70vw, 280px); }
+    .lmk-feature__copy { width: 100%; }
+  }
+  @media (max-width: 599px) {
+    .lmk-feature__points { grid-template-columns: 1fr; grid-auto-rows: auto; gap: 12px; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--lumen" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Jost", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Cormorant Garamond", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Lumenook Feature",
+  "tag": "section",
+  "class": "roarr-lumen-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Lumenook Feature" }]
+}
+{% endschema %}

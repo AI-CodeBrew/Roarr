@@ -13,7 +13,7 @@ USAGE
 
        cd backend
        ./VENV/bin/python scripts/grant_credits_to_existing_free_users.py \\
-           --test-shop rafay-dev-store-for-kluck.myshopify.com \\
+           --test-shop your-dev-store.myshopify.com \\
            --test-token shpat_xxx \\
            --dry-run
 

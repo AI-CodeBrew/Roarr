@@ -443,6 +443,7 @@ def get_generation_status(page_id):
             "published": bool(page.get("published")),
             "publish_status": page.get("publish_status"),
             "publish_error": page.get("publish_error") or None,
+            "publish_started_at": page.get("publish_started_at"),
             "theme_id": page.get("theme_id"),
             "preview_link": page.get("preview_link"),
         }

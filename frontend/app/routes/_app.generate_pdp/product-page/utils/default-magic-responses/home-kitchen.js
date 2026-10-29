@@ -83,28 +83,28 @@ export const HOME_KITCHEN_DEFAULT_MAGIC_RESPONSES = {
     images: {
         body_images: {
             // Happy Customer Images
-            happy_customer_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0d8227cd_zambeel_ai_generated_image.jpg",
-            happy_customer_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/48bafe3e_zambeel_ai_generated_image.jpg",
-            happy_customer_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/08fc0b2c_zambeel_ai_generated_image.jpg",
+            happy_customer_image_1: "",
+            happy_customer_image_3: "",
+            happy_customer_image_2: "",
 
             // Feature & Impact Images
-            feature_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/35b74c2b_zambeel_ai_generated_image.png",
-            product_impact_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/afe2cd9f_zambeel_ai_generated_image.png",
-            problem_solving_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/29bfd06a_zambeel_ai_generated_image.png",
+            feature_image: "",
+            product_impact_image: "",
+            problem_solving_image: "",
 
             // Product Highlights
-            product_highlight_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6659bb97_zambeel_ai_generated_image.png",
-            product_highlight_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6659bb97_zambeel_ai_generated_image.png",
-            product_highlight_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6659bb97_zambeel_ai_generated_image.png",
-            product_highlight_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6659bb97_zambeel_ai_generated_image.png"
+            product_highlight_1: "",
+            product_highlight_2: "",
+            product_highlight_3: "",
+            product_highlight_4: ""
         },
 
         product_images: {
-            product_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/15774af8_zambeel_ai_generated_image.jpg",
-            product_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a33c1695_zambeel_ai_generated_image.jpg",
-            product_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fecc5d6d_zambeel_ai_generated_image.jpg",
-            product_image_5: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c8699e21_zambeel_ai_generated_image.jpg",  
-            product_image_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a8ca1060_zambeel_ai_generated_image.jpg",
+            product_image_1: "",
+            product_image_2: "",
+            product_image_3: "",
+            product_image_5: "",  
+            product_image_4: "",
         }
     },
 

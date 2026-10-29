@@ -2,7 +2,7 @@
 {%- if render_flag == true -%}
   {%- liquid
     assign s = block.settings
-    assign m = product.metafields.kluck_ai
+    assign m = product.metafields.roarr
     assign color = m.color_schema.value | default: m.color_schema | default: '#111'
     assign layout = s.layout | default: 'layout_1'
     assign align = s.text_align | default: 'center'

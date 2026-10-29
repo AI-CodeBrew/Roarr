@@ -1,0 +1,371 @@
+{% comment %}
+  Section: Roarr - Empty Section
+  - Purpose: Container for App Blocks.
+  - Fix: Fonts load immediately, consistent structure with Hero section.
+  - Update: Added adjustable Vertical and Horizontal Padding.
+{% endcomment %}
+
+{%- assign heading_font = section.settings.heading_font_family -%}
+{%- assign body_font = section.settings.body_font_family -%}
+
+{% comment %} 
+  1. LOAD FONTS (Immediate loading for Editor)
+{% endcomment %}
+<style>
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+</style>
+
+{% comment %} 
+  2. MAIN CONTENT WRAPPER 
+{% endcomment %}
+{% if shop.metafields.app.block_control.value %}
+
+  {% assign use_metafields = section.settings.use_metafields %}
+  {% assign opacity = section.settings.background_opacity | divided_by: 100.0 %}
+  {% assign bg_color = section.settings.background_color %}
+
+  {% unless section.settings.use_metafields_bg == false %}
+  {% if use_metafields
+    and product != blank
+    and product.metafields.roarr.color_schema != blank
+  %}
+    {% assign bg_color = product.metafields.roarr.color_schema %}
+  {% endif %}
+  {% endunless %}
+
+  <div class="empty-app-blocks-section empty-app-blocks-section-{{ section.id }}">
+    <div class="inner-container-{{ section.id }}">
+      {% for block in section.blocks %}
+        {% render block %}
+      {% endfor %}
+    </div>
+  </div>
+
+{% endif %}
+{% comment %} END IF METAFIELDS {% endcomment %}
+
+
+<!-- 3. CSS STYLES & VARIABLES -->
+<style>
+  .empty-app-blocks-section-{{ section.id }} {
+    /* --- Layout & Background Variables --- */
+    --bg-color: {{ bg_color }};
+    --bg-opacity: {{ opacity }};
+    --container-width: {{ section.settings.container_max_width }}px;
+
+    /* --- Padding Variables --- */
+    --pad-v-desktop: {{ section.settings.padding_vertical_desktop }}px;
+    --pad-h-desktop: {{ section.settings.padding_horizontal_desktop }}px;
+    --pad-v-mobile: {{ section.settings.padding_vertical_mobile }}px;
+    --pad-h-mobile: {{ section.settings.padding_horizontal_mobile }}px;
+
+    /* --- FONT FAMILIES --- */
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+
+    /* --- TYPOGRAPHY: HEADINGS (H1-H6) --- */
+    --h1-size: {{ section.settings.h1_size }}px; --h1-weight: {{ section.settings.h1_weight }};
+    --h2-size: {{ section.settings.h2_size }}px; --h2-weight: {{ section.settings.h2_weight }};
+    --h3-size: {{ section.settings.h3_size }}px; --h3-weight: {{ section.settings.h3_weight }};
+    --h4-size: {{ section.settings.h4_size }}px; --h4-weight: {{ section.settings.h4_weight }};
+    --h5-size: {{ section.settings.h5_size }}px; --h5-weight: {{ section.settings.h5_weight }};
+    --h6-size: {{ section.settings.h6_size }}px; --h6-weight: {{ section.settings.h6_weight }};
+
+    /* --- TYPOGRAPHY: BODY --- */
+    --body-size: {{ section.settings.body_size }}px;
+    --body-weight: {{ section.settings.body_weight }};
+  }
+
+  /* --- Section Styling --- */
+  
+  /* Outer full-width section with background */
+  .empty-app-blocks-section-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    min-height: 20px;
+    
+    /* Ensure typography variables cascade down to children */
+    font-family: var(--font-body-family); 
+    color: inherit;
+  }
+
+  /* Overlay for opacity */
+  .empty-app-blocks-section-{{ section.id }}::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--bg-color);
+    opacity: var(--bg-opacity);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Inner container with max width, content above overlay */
+  .inner-container-{{ section.id }} {
+    position: relative;
+    z-index: 1;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    /* Apply Desktop Padding Variables */
+    padding: var(--pad-v-desktop) var(--pad-h-desktop);
+  }
+
+  @media (max-width: 768px) {
+    .inner-container-{{ section.id }} {
+      /* Apply Mobile Padding Variables */
+      padding: var(--pad-v-mobile) var(--pad-h-mobile);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Roarr - Empty Section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background & Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_metafields",
+      "label": "Use Roarr metafields",
+      "default": true,
+      "info": "When enabled, background color is pulled from the product metafield roarr.color_schema."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_metafields_bg",
+      "label": "Use product color for background",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Manual background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "background_opacity",
+      "label": "Background opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 800,
+      "max": 1800,
+      "step": 50,
+      "unit": "px",
+      "label": "Container Max Width",
+      "default": 1250
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop Vertical Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop Horizontal Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Vertical Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Horizontal Padding",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Fonts"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font_family",
+      "label": "Heading Font Family",
+      "default": "abel_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font_family",
+      "label": "Body Font Family",
+      "default": "abel_n4"
+    },
+    {
+      "type": "header",
+      "content": "Body"
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "min": 10, "max": 60, "step": 1, "unit": "px",
+      "label": "Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_weight",
+      "min": 100, "max": 900, "step": 100,
+      "label": "Font Weight",
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Heading 1 (H1)"
+    },
+    {
+      "type": "range",
+      "id": "h1_size",
+      "min": 10, "max": 100, "step": 1, "unit": "px",
+      "label": "H1 Font Size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "h1_weight",
+      "min": 100, "max": 900, "step": 100,
+      "label": "H1 Font Weight",
+      "default": 700
+    },
+    {
+      "type": "header",
+      "content": "Heading 2 (H2)"
+    },
+    {
+      "type": "range",
+      "id": "h2_size",
+      "min": 10, "max": 100, "step": 1, "unit": "px",
+      "label": "H2 Font Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "h2_weight",
+      "min": 100, "max": 900, "step": 100,
+      "label": "H2 Font Weight",
+      "default": 700
+    },
+    {
+      "type": "header",
+      "content": "Heading 3 (H3)"
+    },
+    {
+      "type": "range",
+      "id": "h3_size",
+      "min": 10, "max": 100, "step": 1, "unit": "px",
+      "label": "H3 Font Size",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "h3_weight",
+      "min": 100, "max": 900, "step": 100,
+      "label": "H3 Font Weight",
+      "default": 600
+    },
+    {
+      "type": "header",
+      "content": "Heading 4 (H4)"
+    },
+    {
+      "type": "range",
+      "id": "h4_size",
+      "min": 10, "max": 100, "step": 1, "unit": "px",
+      "label": "H4 Font Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "h4_weight",
+      "min": 100, "max": 900, "step": 100,
+      "label": "H4 Font Weight",
+      "default": 600
+    },
+    {
+      "type": "header",
+      "content": "Heading 5 (H5)"
+    },
+    {
+      "type": "range",
+      "id": "h5_size",
+      "min": 10, "max": 100, "step": 1, "unit": "px",
+      "label": "H5 Font Size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "h5_weight",
+      "min": 100, "max": 900, "step": 100,
+      "label": "H5 Font Weight",
+      "default": 500
+    },
+    {
+      "type": "header",
+      "content": "Heading 6 (H6)"
+    },
+    {
+      "type": "range",
+      "id": "h6_size",
+      "min": 10, "max": 100, "step": 1, "unit": "px",
+      "label": "H6 Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "h6_weight",
+      "min": 100, "max": 900, "step": 100,
+      "label": "H6 Font Weight",
+      "default": 500
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "@theme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Roarr - Empty Section"
+    }
+  ]
+}
+{% endschema %}

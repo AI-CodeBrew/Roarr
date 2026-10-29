@@ -1,7 +1,7 @@
 {%- liquid
   assign s = block.settings
   assign de_id = block.id | replace: '_', '' | downcase
-  assign color_schema = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#a34e4e'
+  assign color_schema = product.metafields.roarr.color_schema.value | default: product.metafields.roarr.color_schema | default: '#a34e4e'
   assign processing_days = s.processing_days | default: 2 | plus: 0
   assign delivery_days_after_processing = s.delivery_days_after_processing | default: 3 | plus: 0
   assign total_delivered_days = processing_days | plus: delivery_days_after_processing

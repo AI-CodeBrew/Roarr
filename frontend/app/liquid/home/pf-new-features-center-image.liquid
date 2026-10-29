@@ -4,15 +4,15 @@
   - Layout: pf-new-features-center-image.css | Scroll animation: pf-new-features-center-image.js
 {% endcomment %}
 
-{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
 {%- assign section_scheme = section.settings.section_color_scheme | default: 'scheme-1' -%}
 {%- assign card_scheme = section.settings.card_color_scheme | default: 'scheme-2' -%}
-{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
-{%- assign kluck_feature_image = shop.metafields.kluck_ai.feature_image.value -%}
+{%- assign use_roarr = section.settings.use_roarr_metafields | default: false -%}
+{%- assign roarr_feature_image = shop.metafields.roarr.feature_image.value -%}
 
-{%- assign kluck_section_heading = blank -%}
+{%- assign roarr_section_heading = blank -%}
 {%- if store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
-  {%- assign kluck_section_heading = store_gen.home_page.text.feature_section_heading -%}
+  {%- assign roarr_section_heading = store_gen.home_page.text.feature_section_heading -%}
 {%- endif -%}
 
 {% if shop.metafields.app.block_control.value %}
@@ -58,10 +58,10 @@
 
   <div class="fci-wrapper fci-wrapper--{{ section.id }}">
 
-    {% if use_kluck_ai %}
-      {% assign hs = kluck_section_heading | strip %}
+    {% if use_roarr %}
+      {% assign hs = roarr_section_heading | strip %}
       {% if hs != blank %}
-        <h2 class="fci-heading fci-heading--{{ section.id }}">{{ kluck_section_heading | strip }}</h2>
+        <h2 class="fci-heading fci-heading--{{ section.id }}">{{ roarr_section_heading | strip }}</h2>
       {% elsif section.settings.heading != blank %}
         <h2 class="fci-heading fci-heading--{{ section.id }}">{{ section.settings.heading }}</h2>
       {% endif %}
@@ -78,7 +78,7 @@
           {%- if block.settings.position == 'left' -%}
             {%- assign kname = blank -%}
             {%- assign kdesc = blank -%}
-            {%- if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+            {%- if use_roarr and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
               {%- assign _t = store_gen.home_page.text -%}
               {%- case forloop.index -%}
                 {%- when 1 -%}
@@ -112,7 +112,7 @@
                 </div>
               {%- endif -%}
 
-              {%- if use_kluck_ai -%}
+              {%- if use_roarr -%}
                 {%- assign ns = kname | strip -%}
                 {%- if ns != blank -%}
                   <h4 class="fci-item-title">{{ kname | strip }}</h4>
@@ -125,7 +125,7 @@
                 {%- endif -%}
               {%- endif -%}
 
-              {%- if use_kluck_ai -%}
+              {%- if use_roarr -%}
                 {%- assign ds = kdesc | strip -%}
                 {%- if ds != blank -%}
                   <div class="fci-item-text">{{ kdesc }}</div>
@@ -144,11 +144,11 @@
       </div>
 
       <div class="fci-center-image">
-        {%- if use_kluck_ai and kluck_feature_image != blank -%}
-          {{ kluck_feature_image | image_url: width: 800 | image_tag: 'fci-center-img', 'lazy' }}
-        {%- elsif use_kluck_ai and section.settings.center_image != blank -%}
+        {%- if use_roarr and roarr_feature_image != blank -%}
+          {{ roarr_feature_image | image_url: width: 800 | image_tag: 'fci-center-img', 'lazy' }}
+        {%- elsif use_roarr and section.settings.center_image != blank -%}
           {{ section.settings.center_image | image_url: width: 800 | image_tag: 'fci-center-img', 'lazy' }}
-        {%- elsif use_kluck_ai -%}
+        {%- elsif use_roarr -%}
           {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
         {%- elsif section.settings.center_image != blank -%}
           {{ section.settings.center_image | image_url: width: 800 | image_tag: 'fci-center-img', 'lazy' }}
@@ -162,7 +162,7 @@
           {%- if block.settings.position == 'right' -%}
             {%- assign kname = blank -%}
             {%- assign kdesc = blank -%}
-            {%- if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+            {%- if use_roarr and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
               {%- assign _t = store_gen.home_page.text -%}
               {%- case forloop.index -%}
                 {%- when 1 -%}
@@ -196,7 +196,7 @@
                 </div>
               {%- endif -%}
 
-              {%- if use_kluck_ai -%}
+              {%- if use_roarr -%}
                 {%- assign ns = kname | strip -%}
                 {%- if ns != blank -%}
                   <h4 class="fci-item-title">{{ kname | strip }}</h4>
@@ -209,7 +209,7 @@
                 {%- endif -%}
               {%- endif -%}
 
-              {%- if use_kluck_ai -%}
+              {%- if use_roarr -%}
                 {%- assign ds = kdesc | strip -%}
                 {%- if ds != blank -%}
                   <div class="fci-item-text">{{ kdesc }}</div>

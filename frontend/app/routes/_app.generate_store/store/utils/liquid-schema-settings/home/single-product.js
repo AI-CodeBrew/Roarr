@@ -19,7 +19,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
             {
                 type: "slide",
                 settings: {
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ea49d599_zambeel_ai_generated_image.jpg",
+                    image: "",
                     overlay: 0,
                     product: "",
                     slide_color_scheme: "scheme-1",
@@ -44,7 +44,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
 
     /* marquee-scrolling-banner: Marquee Banner */
     "marquee-scrolling-banner": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         direction: "left",
         pause_hover: false,
         show_border_top: true,
@@ -70,14 +70,14 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
             {
                 type: "image",
                 settings: {
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d547c605_zambeel_ai_generated_image.png",
+                    image: "",
                 }
             },
             { type: "text", settings: { text: "New Season Essential" } },
             {
                 type: "image",
                 settings: {
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d547c605_zambeel_ai_generated_image.png",
+                    image: "",
                 }
             },
             { type: "text", settings: { text: "Pure & Natural" } }
@@ -86,12 +86,12 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
 
     /* pf-custom-new-image-with-text: Custom Image with Text */
     "pf-custom-new-image-with-text": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         layout: "image_right",
         max_width: 1250,
         desktop_gap: 80,
         color_scheme: "scheme-1",
-        image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ea49d599_zambeel_ai_generated_image.jpg",
+        image_1: "",
         image_ratio: "1 / 1",
         image_border_radius: 30,
         heading: "THE IDEAL SHAPE OF THE EYEBROWS IS YOUR OWN",
@@ -126,10 +126,10 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
 
     /* pf-new-features-center-image: Features Center Image */
     "pf-new-features-center-image": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         // Main Settings
         heading: "Reasons to be fussy",
-        center_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ea49d599_zambeel_ai_generated_image.jpg",
+        center_image: "",
         max_width: 1250,
         section_color_scheme: "scheme-1",
         card_color_scheme: "scheme-1",
@@ -269,7 +269,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
             {
                 type: "image_pill",
                 settings: {
-                    image: "shopify://shop_images/47b414ab_zambeel_ai_generated_image.jpg",
+                    image: "",
                     link: ""
                 }
             },
@@ -298,7 +298,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
             {
                 type: "image_pill",
                 settings: {
-                    image: "shopify://shop_images/3b4e7efe_zambeel_ai_generated_image.jpg",
+                    image: "",
                     link: ""
                 }
             },
@@ -314,7 +314,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
             {
                 type: "image_pill",
                 settings: {
-                    image: "shopify://shop_images/b2330184_zambeel_ai_generated_image.jpg",
+                    image: "",
                     link: ""
                 }
             }
@@ -323,7 +323,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
 
     /* pf-new-ingreds-features: Multi-Purpose Image Accordion */
     "pf-new-ingreds-features": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         // Layout Settings
         desktop_layout: "image_left",
         max_width: 1250,
@@ -632,7 +632,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
 
     /* pf-split-feature: Split Feature Banner */
     "pf-split-feature": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         // Section Layout
         section_width: 1300,
         text_column_width: 50,
@@ -660,7 +660,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
         btn_link: "shopify://products/benvoro™-pro-ear-cleaner",
 
         // Media
-        image: "shopify://shop_images/4a7419d2_zambeel_ai_generated_image.jpg",
+        image: "",
 
         // Spacing
         padding_top: 60,
@@ -669,7 +669,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
 
     /* pf-faq-splitimage: FAQ & Showcase */
     "pf-faq-splitimage": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         // Layout & Sizing
         section_full_width: false,
         section_max_width: 1240,
@@ -686,7 +686,7 @@ export const SINGLE_PRODUCT_HOME_SETTINGS = {
         btn_link: "shopify://pages/faqs",
 
         // Image Showcase
-        image: "shopify://shop_images/3b4e7efe_zambeel_ai_generated_image.png",
+        image: "",
 
         // Spacing
         padding_top: 60,

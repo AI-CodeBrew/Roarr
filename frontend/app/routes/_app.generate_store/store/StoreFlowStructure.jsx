@@ -115,7 +115,7 @@ const CATEGORY_OPTIONS = [
   { label: "General", value: "general" },
 ];
 const IMAGE_REGENERATE_FALLBACK_URL =
-  "https://cdn.shopify.com/s/files/1/0670/3438/2430/files/ChatGPT_Image_Aug_7_2026_05_45_30_PM.png?v=1786106870";
+  "";
 
 function resolveStoreTypeFromMode(mode, fallbackStoreType) {
   if (mode === "multi_product") return "multi";

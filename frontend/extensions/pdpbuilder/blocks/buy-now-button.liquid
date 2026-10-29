@@ -11,7 +11,7 @@
   assign show_add_to_cart=s.show_add_to_cart|default:false
   assign hide_quantity_selector=s.hide_quantity_selector|default:false
   if s.use_metafields != false
-    assign color_schema=product.metafields.kluck_ai.color_schema.value|default:product.metafields.kluck_ai.color_schema|default:'#a34e4e'
+    assign color_schema=product.metafields.roarr.color_schema.value|default:product.metafields.roarr.color_schema|default:'#a34e4e'
   else
     assign color_schema=s.button_color|default:'#a34e4e'
   endif

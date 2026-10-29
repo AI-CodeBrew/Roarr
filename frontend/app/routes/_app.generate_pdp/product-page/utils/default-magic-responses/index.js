@@ -19,6 +19,8 @@ import { KIDS_TOYS_VIBE_DEFAULT_MAGIC_RESPONSES } from './kids-toys-vibe.js';
 import { GENERAL_DEFAULT_MAGIC_RESPONSES } from './general.js';
 import { GENERAL_VIBE_DEFAULT_MAGIC_RESPONSES } from './general-vibe.js';
 import { LUMENOOK_DEFAULT_MAGIC_RESPONSES } from './lumenook.js';
+import { NOIR_DEFAULT_MAGIC_RESPONSES } from './noir.js';
+import { FROST_DEFAULT_MAGIC_RESPONSES } from './frost.js';
 
 /**
  * Map of category names to their default magic responses
@@ -55,12 +57,18 @@ export function getDefaultMagicResponses(category, options = {}) {
         .replaceAll(" ", "_")
         .replaceAll("-", "_");
     const template = Number(options?.template);
-    // Template 3 = Aura and template 4 = Lumenook, for all categories (Play demos retired in v2).
+    // Template 3 = Aura, 4 = Lumenook, 5 = Noir and 6 = Frost, for all categories (Play demos retired in v2).
     if (template === 3) {
         return HEALTH_BEAUTY_GLOW_DEFAULT_MAGIC_RESPONSES;
     }
     if (template === 4) {
         return LUMENOOK_DEFAULT_MAGIC_RESPONSES;
+    }
+    if (template === 5) {
+        return NOIR_DEFAULT_MAGIC_RESPONSES;
+    }
+    if (template === 6) {
+        return FROST_DEFAULT_MAGIC_RESPONSES;
     }
     if (template === 2 && VIBE_MAGIC_RESPONSES_BY_CATEGORY[cat]) {
         return VIBE_MAGIC_RESPONSES_BY_CATEGORY[cat];

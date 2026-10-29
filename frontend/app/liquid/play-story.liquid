@@ -1,10 +1,10 @@
 {%- capture kl_rtl_html -%}
 {% render 'snippets/play-fonts' %}
-{%- assign m = product.metafields.kluck_ai -%}
-{%- assign i1 = m.product_highlight_1.value | default: m.product_highlight_1 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-1_bf88d73e-47ac-4511-b9b4-94fca069ec43.png?v=1726197308' -%}
-{%- assign i2 = m.product_highlight_2.value | default: m.product_highlight_2 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-2.png?v=1726197308' -%}
-{%- assign i3 = m.product_highlight_3.value | default: m.product_highlight_3 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-3.png?v=1726197308' -%}
-{%- assign i4 = m.product_highlight_4.value | default: m.product_highlight_4 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-4.png?v=1726197308' -%}
+{%- assign m = product.metafields.roarr -%}
+{%- assign i1 = m.product_highlight_1.value | default: m.product_highlight_1 | default: '' -%}
+{%- assign i2 = m.product_highlight_2.value | default: m.product_highlight_2 | default: '' -%}
+{%- assign i3 = m.product_highlight_3.value | default: m.product_highlight_3 | default: '' -%}
+{%- assign i4 = m.product_highlight_4.value | default: m.product_highlight_4 | default: '' -%}
 {%- assign p1 = m.pill_1.value | default: m.pill_1 | default: '10% Giving back' -%}
 {%- assign p2 = m.pill_2.value | default: m.pill_2 | default: 'Free Shipping over $100 order' -%}
 {%- assign p3 = m.pill_3.value | default: m.pill_3 | default: '90 Days free return' -%}

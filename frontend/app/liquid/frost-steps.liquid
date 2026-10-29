@@ -1,0 +1,75 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.frost_steps_eyebrow.value | default: m.frost_steps_eyebrow | default: 'How it works' -%}
+{%- assign heading = m.frost_steps_heading.value | default: m.frost_steps_heading | default: 'Simple from day one' -%}
+{%- assign s1 = m.frost_step_1_title.value | default: m.frost_step_1_title | default: 'Unbox' -%}
+{%- assign s1t = m.frost_step_1_text.value | default: m.frost_step_1_text | default: 'It arrives ready to go, with everything you need in the box.' -%}
+{%- assign s2 = m.frost_step_2_title.value | default: m.frost_step_2_title | default: 'Use it' -%}
+{%- assign s2t = m.frost_step_2_text.value | default: m.frost_step_2_text | default: 'Set up in seconds. No learning curve, no fuss.' -%}
+{%- assign s3 = m.frost_step_3_title.value | default: m.frost_step_3_title | default: 'Enjoy' -%}
+{%- assign s3t = m.frost_step_3_text.value | default: m.frost_step_3_text | default: 'A small upgrade you will notice every single day.' -%}
+{%- assign i1 = m.product_highlight_1.value | default: m.product_highlight_1 | default: m.product_image_2.value | default: m.product_image_2 -%}
+{%- assign i2 = m.product_highlight_2.value | default: m.product_highlight_2 | default: m.product_image_3.value | default: m.product_image_3 -%}
+{%- assign i3 = m.product_highlight_3.value | default: m.product_highlight_3 | default: m.product_image_4.value | default: m.product_image_4 -%}
+{%- if product.media.size > 0 -%}
+  {%- if i1 == blank -%}{%- assign i1 = product.media.first.preview_image | default: product.media.first -%}{%- endif -%}
+  {%- if i2 == blank -%}{%- assign i2 = product.media.last.preview_image | default: product.media.last -%}{%- endif -%}
+  {%- if i3 == blank -%}{%- assign i3 = product.media.first.preview_image | default: product.media.first -%}{%- endif -%}
+{%- endif -%}
+<section class="fr-steps">
+  <div class="fr-wrap">
+    <header class="fr-intro">
+      <p class="fr-label"><b>02</b>{{ eyebrow }}</p>
+      <h2 class="fr-display">{{ heading }}</h2>
+    </header>
+    <ol class="fr-steps__list" role="list">
+      <li class="fr-steps__item"><div class="fr-steps__top"><span class="fr-steps__num">01</span></div><div class="fr-steps__img">{%- if i1 != blank -%}<img src="{{ i1 | image_url: width: 900 }}" alt="{{ s1 | escape }}" loading="lazy">{%- endif -%}</div><h3>{{ s1 }}</h3><p>{{ s1t }}</p></li>
+      <li class="fr-steps__item"><div class="fr-steps__top"><span class="fr-steps__num">02</span></div><div class="fr-steps__img">{%- if i2 != blank -%}<img src="{{ i2 | image_url: width: 900 }}" alt="{{ s2 | escape }}" loading="lazy">{%- endif -%}</div><h3>{{ s2 }}</h3><p>{{ s2t }}</p></li>
+      <li class="fr-steps__item"><div class="fr-steps__top"><span class="fr-steps__num">03</span></div><div class="fr-steps__img">{%- if i3 != blank -%}<img src="{{ i3 | image_url: width: 900 }}" alt="{{ s3 | escape }}" loading="lazy">{%- endif -%}</div><h3>{{ s3 }}</h3><p>{{ s3t }}</p></li>
+    </ol>
+  </div>
+</section>
+<style>
+  .fr-steps { --fr-white: #FFFFFF; --fr-mist: #F3F6FA; --fr-ice: #E7EEFB; --fr-line: #E2E7EF; --fr-ink: #0B1324; --fr-muted: #586377; --fr-blue: #2F5BFF; --fr-blue-dark: #1C3CD6; --fr-blue-soft: #E8EEFF; --fr-night: #0A0F1E; --font-heading-family: "Plus Jakarta Sans", sans-serif; --font-body-family: "Plus Jakarta Sans", sans-serif; background: var(--fr-mist); color: var(--fr-ink); font-family: "Plus Jakarta Sans", sans-serif; padding: clamp(64px, 9vw, 128px) 0; }
+  .fr-steps *, .fr-steps *::before, .fr-steps *::after { box-sizing: border-box; }
+  .fr-wrap { width: min(1240px, calc(100% - 48px)); margin: 0 auto; }
+  .fr-intro { max-width: 760px; margin-bottom: clamp(36px, 5vw, 64px); }
+  .fr-intro--center { margin-inline: auto; text-align: center; }
+  .fr-intro--center .fr-label { justify-content: center; }
+  .fr-label { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .01em; color: var(--fr-blue); }
+  .fr-label b { display: inline-grid; place-items: center; min-width: 32px; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--fr-blue-soft); color: var(--fr-blue); font-size: 11px; font-weight: 800; letter-spacing: .04em; }
+  .fr-display { margin: 16px 0 0; font-weight: 800; font-size: clamp(38px, 5.4vw, 76px); line-height: 1; letter-spacing: -0.045em; color: var(--fr-ink); text-wrap: balance; }
+  .fr-display .fr-grad, .fr-hero__title .fr-grad { font-size: inherit; font-weight: inherit; line-height: inherit; letter-spacing: inherit; background: linear-gradient(100deg, var(--fr-ink) 0%, var(--fr-ink) 30%, var(--fr-blue) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .fr-lead { margin: 18px 0 0; font-size: clamp(16px, 1.3vw, 18px); line-height: 1.6; color: var(--fr-muted); }
+  @media (max-width: 749px) { .fr-wrap { width: calc(100% - 32px); } }
+  .fr-steps__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 32px); list-style: none; margin: 0; padding: 0; }
+  .fr-steps__item { display: grid; align-content: start; gap: 10px; }
+  .fr-steps__top { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .fr-steps__top::after { content: ""; flex: 1; height: 1.5px; background: linear-gradient(90deg, var(--fr-blue) 0%, rgb(47 91 255 / 0) 100%); opacity: .5; }
+  .fr-steps__top .fr-steps__num { font-size: clamp(48px, 4.6vw, 64px); font-weight: 800; line-height: 1; letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 1.5px var(--fr-blue); }
+  .fr-steps__img { aspect-ratio: 4 / 5; border-radius: 28px; overflow: hidden; background: var(--fr-ice); box-shadow: 0 20px 50px rgb(11 19 36 / .07); }
+  .fr-steps__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 900ms cubic-bezier(.2, .8, .2, 1); }
+  .fr-steps__item:hover .fr-steps__img img { transform: scale(1.04); }
+  .fr-steps__item h3 { margin: 14px 0 0; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
+  .fr-steps__item p { margin: 0; max-width: 340px; font-size: 15px; line-height: 1.6; color: var(--fr-muted); }
+  @media (max-width: 849px) {
+    .fr-steps__list { grid-template-columns: 1fr; gap: 40px; }
+    .fr-steps__img { aspect-ratio: 1; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--frost" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, dt, dd, blockquote, div) { font-family: "Plus Jakarta Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Plus Jakarta Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

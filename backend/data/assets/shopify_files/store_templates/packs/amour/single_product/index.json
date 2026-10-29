@@ -1,110 +1,110 @@
 {
   "sections": {
-    "kluck-ai-amour-hero": {
-      "type": "kluck-ai-amour-hero",
+    "roarr-amour-hero": {
+      "type": "roarr-amour-hero",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-showcase": {
-      "type": "kluck-ai-amour-showcase",
+    "roarr-amour-showcase": {
+      "type": "roarr-amour-showcase",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-countdown": {
-      "type": "kluck-ai-amour-countdown",
+    "roarr-amour-countdown": {
+      "type": "roarr-amour-countdown",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-lookbook": {
-      "type": "kluck-ai-amour-lookbook",
+    "roarr-amour-lookbook": {
+      "type": "roarr-amour-lookbook",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-ribbons": {
-      "type": "kluck-ai-amour-ribbons",
+    "roarr-amour-ribbons": {
+      "type": "roarr-amour-ribbons",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-split": {
-      "type": "kluck-ai-amour-split",
+    "roarr-amour-split": {
+      "type": "roarr-amour-split",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-editorial": {
-      "type": "kluck-ai-amour-editorial",
+    "roarr-amour-editorial": {
+      "type": "roarr-amour-editorial",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-banner": {
-      "type": "kluck-ai-amour-banner",
+    "roarr-amour-banner": {
+      "type": "roarr-amour-banner",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-story": {
-      "type": "kluck-ai-amour-story",
+    "roarr-amour-story": {
+      "type": "roarr-amour-story",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-reviews": {
-      "type": "kluck-ai-amour-reviews",
+    "roarr-amour-reviews": {
+      "type": "roarr-amour-reviews",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-tabs": {
-      "type": "kluck-ai-amour-tabs",
+    "roarr-amour-tabs": {
+      "type": "roarr-amour-tabs",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-promise": {
-      "type": "kluck-ai-amour-promise",
+    "roarr-amour-promise": {
+      "type": "roarr-amour-promise",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-amour-gallery": {
-      "type": "kluck-ai-amour-gallery",
+    "roarr-amour-gallery": {
+      "type": "roarr-amour-gallery",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     }
   },
   "order": [
-    "kluck-ai-amour-hero",
-    "kluck-ai-amour-showcase",
-    "kluck-ai-amour-countdown",
-    "kluck-ai-amour-lookbook",
-    "kluck-ai-amour-ribbons",
-    "kluck-ai-amour-split",
-    "kluck-ai-amour-editorial",
-    "kluck-ai-amour-banner",
-    "kluck-ai-amour-story",
-    "kluck-ai-amour-reviews",
-    "kluck-ai-amour-tabs",
-    "kluck-ai-amour-promise",
-    "kluck-ai-amour-gallery"
+    "roarr-amour-hero",
+    "roarr-amour-showcase",
+    "roarr-amour-countdown",
+    "roarr-amour-lookbook",
+    "roarr-amour-ribbons",
+    "roarr-amour-split",
+    "roarr-amour-editorial",
+    "roarr-amour-banner",
+    "roarr-amour-story",
+    "roarr-amour-reviews",
+    "roarr-amour-tabs",
+    "roarr-amour-promise",
+    "roarr-amour-gallery"
   ]
 }

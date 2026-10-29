@@ -5,7 +5,7 @@
  * Converts a Shopify extension Liquid file into:
  * 1. A simplified Liquid template for app/liquid/ (no schema, preview-ready)
  * 2. Block settings object (from schema)
- * 3. Product metafields object (from product.metafields.kluck_ai references)
+ * 3. Product metafields object (from product.metafields.roarr references)
  *
  * Usage:
  *   node scripts/liquid-to-app.mjs <liquid-file-name>
@@ -22,8 +22,8 @@ const ROOT = path.resolve(__dirname, "..");
 
 const SCHEMA_RE = /\{%\s*schema\s*%\}\s*([\s\S]*?)\s*\{%\s*endschema\s*%\}/i;
 const BLOCK_SETTINGS_RE = /block\.settings\.(\w+)|s\.(\w+)(?=\s*[|\s,})])/g;
-const PRODUCT_METAFIELD_RE = /product\.metafields\.kluck_ai\.(\w+)/g;
-const PRODUCT_METAFIELD_DYNAMIC_RE = /product\.metafields\.kluck_ai\[[\w\s'"]+\]/g;
+const PRODUCT_METAFIELD_RE = /product\.metafields\.roarr\.(\w+)/g;
+const PRODUCT_METAFIELD_DYNAMIC_RE = /product\.metafields\.roarr\[[\w\s'"]+\]/g;
 const SHOP_METAFIELD_RE = /shop\.metafields\.app\.(\w+)/g;
 
 /** Default value by schema type */
@@ -69,14 +69,14 @@ function buildBlockSettings(schema) {
     return settings;
 }
 
-/** Extract product.metafields.kluck_ai keys from Liquid */
+/** Extract product.metafields.roarr keys from Liquid */
 function extractProductMetafields(liquidContent) {
     const keys = new Set();
     let m;
     const re = new RegExp(PRODUCT_METAFIELD_RE.source, "g");
     while ((m = re.exec(liquidContent))) keys.add(m[1]);
 
-    // Handle dynamic keys like product.metafields.kluck_ai['happy_customer_image_' | append: i]
+    // Handle dynamic keys like product.metafields.roarr['happy_customer_image_' | append: i]
     const dynamicMatch = liquidContent.match(/assign\s+meta_key\s*=\s*['"]([^'"]+)['"]/);
     if (dynamicMatch) {
         const prefix = dynamicMatch[1];
@@ -163,7 +163,7 @@ function toJsBlock(blockId, settings) {
 }
 
 function toJsProduct(metafields) {
-    const s = JSON.stringify({ kluck_ai: metafields }, null, 2);
+    const s = JSON.stringify({ roarr: metafields }, null, 2);
     return `const PRODUCT = {
   metafields: ${s.replace(/^/gm, "  ")}
 };`;
@@ -211,7 +211,7 @@ const metafieldKeys = extractProductMetafields(raw);
 const productMetafields = buildProductMetafields(metafieldKeys);
 const product = {
     metafields: {
-        kluck_ai: productMetafields
+        roarr: productMetafields
     }
 };
 

@@ -10,7 +10,7 @@ const SHOP_QUERY = `#graphql
   query getShopBundlesAndCurrency {
     shop {
       id
-      metafield(namespace: "kluck_bundle", key: "bundles") {
+      metafield(namespace: "roarr_bundle", key: "bundles") {
         id
         value
       }

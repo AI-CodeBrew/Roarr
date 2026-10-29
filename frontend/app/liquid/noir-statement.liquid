@@ -1,0 +1,63 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.noir_statement_eyebrow.value | default: m.noir_statement_eyebrow | default: 'The standard' -%}
+{%- assign heading = m.noir_statement_heading.value | default: m.noir_statement_heading | default: 'Built for those who notice' -%}
+{%- assign f1v = m.noir_fact_1_value.value | default: m.noir_fact_1_value | default: '2 yr' -%}
+{%- assign f1l = m.noir_fact_1_label.value | default: m.noir_fact_1_label | default: 'Warranty included' -%}
+{%- assign f2v = m.noir_fact_2_value.value | default: m.noir_fact_2_value | default: '48h' -%}
+{%- assign f2l = m.noir_fact_2_label.value | default: m.noir_fact_2_label | default: 'Dispatch time' -%}
+{%- assign f3v = m.noir_fact_3_value.value | default: m.noir_fact_3_value | default: '30-day' -%}
+{%- assign f3l = m.noir_fact_3_label.value | default: m.noir_fact_3_label | default: 'Easy returns' -%}
+{%- assign bg = m.feature_image.value | default: m.feature_image -%}
+{%- if bg == blank and product.media.size > 0 -%}
+  {%- assign bg = product.media.first.preview_image | default: product.media.first -%}
+{%- endif -%}
+<section class="nr-statement">
+  {%- if bg != blank -%}<img class="nr-statement__bg" src="{{ bg | image_url: width: 2000 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
+  <div class="nr-statement__shade" aria-hidden="true"></div>
+  <div class="nr-statement__inner">
+    <p class="nr-eyebrow">{{ eyebrow }}</p>
+    <h2 class="nr-statement__heading">{{ heading }}</h2>
+    <ul class="nr-statement__facts" role="list">
+      <li><strong>{{ f1v }}</strong><span>{{ f1l }}</span></li>
+      <li><strong>{{ f2v }}</strong><span>{{ f2l }}</span></li>
+      <li><strong>{{ f3v }}</strong><span>{{ f3l }}</span></li>
+    </ul>
+  </div>
+</section>
+<style>
+  .nr-statement { --nr-ink: #0D0C0B; --nr-coal: #161412; --nr-line: #2E2A25; --nr-gold: #C9A96E; --nr-gold-soft: #E4D2AA; --nr-ivory: #F2ECE2; --nr-muted: #A79E90; --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; position: relative; display: flex; align-items: flex-end; min-height: clamp(520px, 72vh, 760px); background: var(--nr-ink); color: var(--nr-ivory); font-family: "Manrope", sans-serif; overflow: hidden; }
+  .nr-statement *, .nr-statement *::before, .nr-statement *::after { box-sizing: border-box; }
+  .nr-statement__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .nr-statement__shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(13 12 11 / .96) 0%, rgb(13 12 11 / .8) 38%, rgb(13 12 11 / .1) 78%); }
+  .nr-statement__inner { position: relative; width: min(1320px, calc(100% - 48px)); margin: 0 auto; padding: clamp(48px, 7vw, 96px) 0; display: grid; gap: 20px; }
+  .nr-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--nr-gold); }
+  .nr-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+  .nr-statement__heading { margin: 0; max-width: 620px; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(38px, 5vw, 72px); line-height: 1.04; letter-spacing: -0.01em; }
+  .nr-statement__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 180px)); gap: 28px; list-style: none; margin: 24px 0 0; padding: 24px 0 0; border-top: 1px solid rgb(201 169 110 / .35); max-width: 620px; }
+  .nr-statement__facts li { display: grid; gap: 6px; }
+  .nr-statement__facts strong { font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(30px, 3vw, 44px); line-height: 1; color: var(--nr-gold); }
+  .nr-statement__facts span { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--nr-muted); }
+  @media (max-width: 749px) {
+    .nr-statement { min-height: 640px; }
+    .nr-statement__shade { background: linear-gradient(0deg, rgb(13 12 11 / .98) 0%, rgb(13 12 11 / .75) 55%, rgb(13 12 11 / .15) 100%); }
+    .nr-statement__inner { width: calc(100% - 32px); }
+    .nr-statement__facts { gap: 16px; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--noir" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Manrope", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

@@ -14,7 +14,7 @@ const SHOP_QUERY = `#graphql
   query getShop {
     shop {
       id
-      metafield(namespace: "kluck_bundle", key: "bundles") {
+      metafield(namespace: "roarr_bundle", key: "bundles") {
         id
         value
       }
@@ -79,7 +79,7 @@ async function saveBundlesToMetafield(admin, ownerId, bundles) {
     metafields: [
       {
         ownerId,
-        namespace: "kluck_bundle",
+        namespace: "roarr_bundle",
         key: "bundles",
         value: JSON.stringify({ bundles }),
         type: "json",

@@ -6,11 +6,11 @@ import { KIDS_TOYS_DEFAULT_MAGIC_RESPONSES } from "./kids-toys.js";
 import { KIDS_TOYS_VIBE_DEFAULT_MAGIC_RESPONSES } from "./kids-toys-vibe.js";
 
 const jeepImages = {
-  product_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7949735e_zambeel_ai_generated_image.jpg",
-  product_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/32c5f914_zambeel_ai_generated_image.jpg",
-  product_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c8cc2700_zambeel_ai_generated_image.jpg",
-  product_image_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/66d229eb_zambeel_ai_generated_image.jpg",
-  product_image_5: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/18605e30_zambeel_ai_generated_image.jpg",
+  product_image_1: "",
+  product_image_2: "",
+  product_image_3: "",
+  product_image_4: "",
+  product_image_5: "",
 };
 
 export const KIDS_TOYS_PLAY_DEFAULT_MAGIC_RESPONSES = {
@@ -63,15 +63,15 @@ export const KIDS_TOYS_PLAY_DEFAULT_MAGIC_RESPONSES = {
     product_images: jeepImages,
     body_images: {
       ...KIDS_TOYS_DEFAULT_MAGIC_RESPONSES.images.body_images,
-      feature_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/633a8133_zambeel_ai_generated_image.png",
-      problem_solving_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/24d152e9_zambeel_ai_generated_image.png",
-      product_highlight_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/dbaf502e_zambeel_ai_generated_image.png",
-      product_highlight_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0412b413_zambeel_ai_generated_image.png",
-      product_highlight_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f4237a3d_zambeel_ai_generated_image.png",
-      product_highlight_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/33db1f56_zambeel_ai_generated_image.png",
-      happy_customer_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/aa767057_zambeel_ai_generated_image.jpg",
-      happy_customer_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ef598182_zambeel_ai_generated_image.jpg",
-      happy_customer_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1be56fd1_zambeel_ai_generated_image.jpg",
+      feature_image: "",
+      problem_solving_image: "",
+      product_highlight_1: "",
+      product_highlight_2: "",
+      product_highlight_3: "",
+      product_highlight_4: "",
+      happy_customer_image_1: "",
+      happy_customer_image_2: "",
+      happy_customer_image_3: "",
     },
   },
   color: "#6F2424",

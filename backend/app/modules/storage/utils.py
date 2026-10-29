@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 class StorageUtils:
     def __init__(self) -> None:
-        self.zone = os.getenv("BUNNY_STORAGE_ZONE", "kluck-v2")
+        self.zone = os.getenv("BUNNY_STORAGE_ZONE", "roarr")
 
     def upload_file_to_bucket_folder(
         self, file_path: str, user_id: str, file_name: str = None

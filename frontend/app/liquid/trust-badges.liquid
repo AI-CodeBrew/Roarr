@@ -17,7 +17,7 @@
 {% if shop.metafields.app.block_control.value %}
   {%- liquid
     assign s = block.settings
-    assign m = product.metafields.kluck_ai
+    assign m = product.metafields.roarr
     assign color_schema = m.color_schema.value | default: m.color_schema | default: '#fcb105'
     assign opacity_val = s.background_opacity | default: 100 | divided_by: 100.0
     if s.show_background == false
@@ -94,7 +94,7 @@
             assign badge_text = s[text_key] | default: s[alt_text_key]
             assign badge_icon = s[icon_key] | default: s[alt_icon_key]
             if product != blank
-              assign meta_raw = product.metafields.kluck_ai[meta_key]
+              assign meta_raw = product.metafields.roarr[meta_key]
               if meta_raw.value != blank
                 assign badge_text = meta_raw.value
               elsif meta_raw != blank
@@ -137,7 +137,7 @@
               assign badge_text = s[text_key] | default: s[alt_text_key]
               assign badge_icon = s[icon_key] | default: s[alt_icon_key]
               if product != blank
-                assign meta_raw = product.metafields.kluck_ai[meta_key]
+                assign meta_raw = product.metafields.roarr[meta_key]
                 if meta_raw.value != blank
                   assign badge_text = meta_raw.value
                 elsif meta_raw != blank

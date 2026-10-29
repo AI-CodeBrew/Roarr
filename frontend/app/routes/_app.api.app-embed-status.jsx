@@ -1,8 +1,8 @@
 import { authenticate } from "../shopify.server";
 
-const THEME_EXTENSION_UID = "019b183d-746c-7391-a5b6-6ac9f26fa6b4";
-const APP_EMBED_BLOCK_KEY = "kluck-ai-theme-app-embed";
-const APP_EMBED_BLOCK_TYPE = `shopify://apps/kluck-ai-store-builder/blocks/app-embed/${THEME_EXTENSION_UID}`;
+const THEME_EXTENSION_UID = "01a1603e-9aab-7970-8b2b-ce92b2515051";
+const APP_EMBED_BLOCK_KEY = "roarr-theme-app-embed";
+const APP_EMBED_BLOCK_TYPE = `shopify://apps/roarr/blocks/app-embed/${THEME_EXTENSION_UID}`;
 const API_VERSION = "2026-01";
 
 // Cache embed status for 60 s — it changes only when the merchant edits their theme.

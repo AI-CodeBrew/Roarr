@@ -114,14 +114,14 @@ const LIQUID_TEMPLATE_DISPLAY_NAMES = {
     "about-us/pf-aboutus-page-H1": "About Us",
     "about-us/pf-aboutus-page-H2": "About Us (continued)",
 
-    "kluck-ai-product-hero-section-3": "Custom Product Hero",
-    "kluck-ai-marquee-section-1": "Roarr - Marquee",
-    "kluck-ai-product-feature-details-section": "Custom Details Grid",
+    "roarr-product-hero-section-3": "Custom Product Hero",
+    "roarr-marquee-section-1": "Roarr - Marquee",
+    "roarr-product-feature-details-section": "Custom Details Grid",
 
-    "kluck-ai-product-hero-section-2": "Modern Product Hero",
-    "kluck-ai-trust-badge-2-section": "Trust Badges / Features",
-    "kluck-ai-image-with-text-3-section-product": "Split Feature Banner",
-    "kluck-ai-faq-section": "FAQ",
+    "roarr-product-hero-section-2": "Modern Product Hero",
+    "roarr-trust-badge-2-section": "Trust Badges / Features",
+    "roarr-image-with-text-3-section-product": "Split Feature Banner",
+    "roarr-faq-section": "FAQ",
 
     "play-hero": "Hero",
     "play-marquee": "Ticker",
@@ -145,6 +145,20 @@ const LIQUID_TEMPLATE_DISPLAY_NAMES = {
     "lumen-details": "The details",
     "lumen-circle": "Chosen with care",
     "lumen-mood": "Mood",
+    "noir-hero": "Hero",
+    "noir-ticker": "Ticker",
+    "noir-statement": "Statement",
+    "noir-craft": "The craft",
+    "noir-compare": "Comparison",
+    "noir-faq": "FAQs",
+    "noir-closing": "Closing",
+    "frost-hero": "Hero",
+    "frost-bento": "Highlights",
+    "frost-steps": "How it works",
+    "frost-specs": "Specifications",
+    "frost-promise": "Promise",
+    "frost-faq": "Quick answers",
+    "frost-closing": "Closing",
 };
 
 /**

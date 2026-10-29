@@ -970,7 +970,7 @@ class DocumentStore:
             )
             return False
 
-    def mark_shopify_kluck_uninstalled(self, shop_domain: str) -> bool:
+    def mark_shopify_roarr_uninstalled(self, shop_domain: str) -> bool:
         """Mark Shopify Roarr app as uninstalled on the shop details table with timestamp."""
         try:
             # Shops table uses PK = myshopify domain (see store_shop_details)
@@ -1534,99 +1534,6 @@ class DocumentStore:
         except Exception:
             return None
 
-    def set_store_license(
-        self,
-        *,
-        store_id: Optional[str] = None,
-        fk_user_id: Optional[str] = None,
-        locked: Optional[bool] = None,
-        status: Optional[str] = None,
-        expires_at: Optional[str] = None,
-        reason: Optional[str] = None,
-    ) -> bool:
-        try:
-            if not store_id:
-                stores = self.get_user_stores(fk_user_id) if fk_user_id else []
-                if not stores:
-                    return False
-                store_id = stores[0].get("PK")
-
-            parts = ["updated_at = :u"]
-            vals = {":u": self._get_timestamp()}
-            if locked is not None:
-                parts.append("license_locked = :l")
-                vals[":l"] = bool(locked)
-            if status is not None:
-                parts.append("license_status = :s")
-                vals[":s"] = status
-            if expires_at is not None:
-                parts.append("license_expires_at = :e")
-                vals[":e"] = expires_at
-            if reason is not None:
-                parts.append("license_lock_reason = :r")
-                vals[":r"] = reason
-
-            self.stores_table_ref.update_item(
-                Key={"PK": store_id},
-                UpdateExpression="SET " + ", ".join(parts),
-                ExpressionAttributeValues=vals,
-            )
-            return True
-        except Exception:
-            return False
-
-    def get_store_license_status(
-        self, shop: Optional[str] = None, fk_user_id: Optional[str] = None
-    ) -> Dict[str, Any]:
-        try:
-            store = None
-            if shop:
-                store = self.get_store_by_any_domain(shop)
-            elif fk_user_id:
-                stores = self.get_user_stores(fk_user_id)
-                store = stores[0] if stores else None
-            if not store:
-                return {"exists": False, "locked": True, "status": "unknown"}
-
-            locked = bool(store.get("license_locked", False))
-
-            status = store.get("license_status") or (
-                "active" if not locked else "locked"
-            )
-            expires_at = store.get("license_expires_at")
-
-            expired = False
-            if expires_at:
-                try:
-                    ts = (
-                        expires_at.replace("Z", "+00:00")
-                        if isinstance(expires_at, str)
-                        else expires_at
-                    )
-                    dt = datetime.fromisoformat(ts) if isinstance(ts, str) else ts
-                    expired = datetime.now(timezone.utc) > dt
-                except Exception:
-                    expired = False
-
-            if expired:
-                locked = True
-                status = "expired"
-
-            return {
-                "exists": True,
-                "locked": locked,
-                "status": status,
-                "expires_at": expires_at,
-                "store_id": store.get("PK"),
-            }
-        except Exception as e:
-            return {
-                "exists": False,
-                "locked": True,
-                "status": "error",
-                "reason": str(e),
-            }
-
     def archive_store(self, store_id: str) -> bool:
         try:
             self.stores_table_ref.update_item(
@@ -1704,7 +1611,6 @@ class DocumentStore:
         fk_user_id: str,
         theme_uploaded: bool = True,
         metadata: Dict[str, Any] = None,
-        zambeel_theme_id: str = None,
     ) -> bool:
         # def update_store_metadata(self, user_id: str, metadata: Dict[str, Any]) -> bool:
         """Update store metadata as top-level attributes for the user's store (PK=user_id).
@@ -1796,7 +1702,7 @@ class DocumentStore:
                 template_category = "general"
 
             # Key: per (category, template) when template is provided; else category only
-            if template is not None and template in (1, 2, 3, 4):
+            if template is not None and template in (1, 2, 3, 4, 5, 6):
                 metadata_key = f"{template_category}_{template}"
             else:
                 metadata_key = template_category

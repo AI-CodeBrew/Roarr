@@ -1,10 +1,10 @@
 {%- capture kl_rtl_html -%}
 {% render 'snippets/play-fonts' %}
-{%- assign m = product.metafields.kluck_ai -%}
-{%- assign i1 = m.happy_customer_image_1.value | default: m.happy_customer_image_1 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c1.png?v=1726200609' -%}
-{%- assign i2 = m.happy_customer_image_2.value | default: m.happy_customer_image_2 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c2.png?v=1726200610' -%}
-{%- assign i3 = m.happy_customer_image_3.value | default: m.happy_customer_image_3 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c3.png?v=1726200609' -%}
-{%- assign i4 = m.product_highlight_4.value | default: m.product_highlight_4 | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c4.png?v=1726200609' -%}
+{%- assign m = product.metafields.roarr -%}
+{%- assign i1 = m.happy_customer_image_1.value | default: m.happy_customer_image_1 | default: '' -%}
+{%- assign i2 = m.happy_customer_image_2.value | default: m.happy_customer_image_2 | default: '' -%}
+{%- assign i3 = m.happy_customer_image_3.value | default: m.happy_customer_image_3 | default: '' -%}
+{%- assign i4 = m.product_highlight_4.value | default: m.product_highlight_4 | default: '' -%}
 {%- assign c1 = m.circle_1.value | default: m.circle_1 | default: 'Pieces for the senses' -%}
 {%- assign c2 = m.circle_2.value | default: m.circle_2 | default: 'For anytime, anywhere' -%}
 {%- assign c3 = m.circle_3.value | default: m.circle_3 | default: 'Original die cut' -%}

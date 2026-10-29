@@ -4,24 +4,24 @@
   - Optional Roarr metafields; layout in pf-split-feature.css.
 {% endcomment %}
 
-{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
 {%- assign card_scheme = section.settings.card_color_scheme | default: 'scheme-2' -%}
 {%- comment -%} Default off when unset so section heading/body always show until Roarr is explicitly enabled. {%- endcomment -%}
-{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+{%- assign use_roarr = section.settings.use_roarr_metafields | default: false -%}
 
-{%- assign kluck_heading = blank -%}
-{%- assign kluck_desc = blank -%}
+{%- assign roarr_heading = blank -%}
+{%- assign roarr_desc = blank -%}
 {%- if store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
   {%- assign _hp = store_gen.home_page.text -%}
   {%- if _hp.highlight_banner_section_heading != blank -%}
-    {%- assign kluck_heading = _hp.highlight_banner_section_heading -%}
+    {%- assign roarr_heading = _hp.highlight_banner_section_heading -%}
   {%- endif -%}
   {%- if _hp.highlight_banner_section_description != blank -%}
-    {%- assign kluck_desc = _hp.highlight_banner_section_description -%}
+    {%- assign roarr_desc = _hp.highlight_banner_section_description -%}
   {%- endif -%}
 {%- endif -%}
-{%- assign kluck_highlight_image = shop.metafields.kluck_ai.highlight_image.value -%}
+{%- assign roarr_highlight_image = shop.metafields.roarr.highlight_image.value -%}
 
 {% if shop.metafields.app.block_control.value %}
 {% render 'snippets/theme-fonts', settings: settings %}
@@ -61,15 +61,15 @@
           <span class="sb-eyebrow">{{ section.settings.eyebrow }}</span>
         {% endif %}
 
-        {%- assign kh = kluck_heading | strip -%}
-        {%- assign kd = kluck_desc | strip -%}
-        {% if use_kluck_ai and kh != blank %}
+        {%- assign kh = roarr_heading | strip -%}
+        {%- assign kd = roarr_desc | strip -%}
+        {% if use_roarr and kh != blank %}
           <h2>{{ kh }}</h2>
         {% elsif section.settings.heading != blank %}
           <h2>{{ section.settings.heading }}</h2>
         {% endif %}
 
-        {% if use_kluck_ai and kd != blank %}
+        {% if use_roarr and kd != blank %}
           <p>{{ kd }}</p>
         {% elsif section.settings.text != blank %}
           <p>{{ section.settings.text }}</p>
@@ -91,8 +91,8 @@
 
         {% if section.settings.image != blank %}
           {{ section.settings.image | image_url: width: 1200 | image_tag: 'sb-img', 'lazy' }}
-        {% elsif use_kluck_ai and kluck_highlight_image != blank %}
-          {{ kluck_highlight_image | image_url: width: 1200 | image_tag: 'sb-img', 'lazy' }}
+        {% elsif use_roarr and roarr_highlight_image != blank %}
+          {{ roarr_highlight_image | image_url: width: 1200 | image_tag: 'sb-img', 'lazy' }}
         {% else %}
           {{ 'lifestyle-1' | placeholder_svg_tag: 'sb-img' }}
         {% endif %}

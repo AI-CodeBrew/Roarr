@@ -1,8 +1,8 @@
 
  {
   "sections": {
-    "kluck-ai-contact-us-section": {
-      "type": "kluck-ai-contact-us-section",
+    "roarr-contact-us-section": {
+      "type": "roarr-contact-us-section",
       "name": "Roarr - Contact Us",
       "settings": {
         "container_width": 1400,
@@ -39,6 +39,6 @@
     }
   },
   "order": [
-    "kluck-ai-contact-us-section"
+    "roarr-contact-us-section"
   ]
 }

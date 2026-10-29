@@ -70,7 +70,7 @@ export const COLLECTION_1_PREVIEW_CONTEXT = {
                 available: true,
                 type: "Skincare",
                 vendor: "Brand",
-                featured_image: "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png",
+                featured_image: "",
                 variants: [{ id: "v1" }]
             },
             {
@@ -81,7 +81,7 @@ export const COLLECTION_1_PREVIEW_CONTEXT = {
                 available: true,
                 type: "Skincare",
                 vendor: "Brand",
-                featured_image: "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png",
+                featured_image: "",
                 variants: [{ id: "v2" }, { id: "v3" }]
             },
             {
@@ -92,7 +92,7 @@ export const COLLECTION_1_PREVIEW_CONTEXT = {
                 available: true,
                 type: "Body",
                 vendor: "Brand",
-                featured_image: "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png",
+                featured_image: "",
                 variants: [{ id: "v4" }]
             },
             {
@@ -114,7 +114,7 @@ export const COLLECTION_1_PREVIEW_CONTEXT = {
                 available: true,
                 type: "Skincare",
                 vendor: "Brand",
-                featured_image: "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png",
+                featured_image: "",
                 variants: [{ id: "v6" }]
             },
             {
@@ -125,7 +125,7 @@ export const COLLECTION_1_PREVIEW_CONTEXT = {
                 available: true,
                 type: "Body",
                 vendor: "Brand",
-                featured_image: "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-image_large.png",
+                featured_image: "",
                 variants: [{ id: "v7" }]
             }
         ]

@@ -1,0 +1,233 @@
+{% assign product_metafield = product.metafields.roarr %}
+{% assign color_schema = product_metafield.color_schema.value | default: m.color_schema | default: '#A34E4E'%}
+
+{% if shop.metafields.app.block_control.value %}
+
+{% style %}
+  #sb-{{ section.id }} {
+    /* LAYOUT */
+    --text-width: {{ section.settings.text_column_width }}%;
+    --section-max-width: {{ section.settings.section_width }}px;
+    
+    /* TEXT SIZES */
+    --h-size: {{ section.settings.heading_size }}px;
+    --p-size: {{ section.settings.body_size }}px;
+    --e-size: {{ section.settings.eyebrow_size }}px;
+    
+    /* SPACING */
+    --pt: {{ section.settings.padding_top }}px;
+    --pb: {{ section.settings.padding_bottom }}px;
+    --radius: {{ section.settings.border_radius }}px;
+  }
+{% endstyle %}
+
+<style>
+  #sb-{{ section.id }} .sb-section {
+    background-color: white;
+    color: #484B4F;
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #sb-{{ section.id }} .sb-container {
+    width: 100%;
+    max-width: var(--section-max-width);
+    background-color: {{ color_schema | color_modify: 'alpha', 0.1 }};
+    color: var(--color-foreground);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    min-height: 500px;
+    position: relative;
+  }
+
+  /* --- TEXT COLUMN --- */
+  #sb-{{ section.id }} .sb-content {
+    flex: 0 0 var(--text-width);
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 2;
+  }
+
+  #sb-{{ section.id }} .sb-eyebrow {
+    font-size: var(--e-size);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    color: #484B4F;
+    opacity: 0.8;
+  }
+
+  #sb-{{ section.id }} h2 {
+    font-size: var(--h-size);
+    line-height: 1.1;
+    color: #484B4F;
+    margin: 0 0 20px 0;
+    max-width: 480px;
+  }
+
+  #sb-{{ section.id }} p {
+    font-size: var(--p-size);
+    line-height: 1.6;
+    color: #484B4F;
+    opacity:0.8;
+    margin: 0 0 30px 0;
+    max-width: 420px;
+  }
+
+  /* --- BUTTON (Untouched) --- */
+  #sb-{{ section.id }} .roarr-button {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 50px;
+    padding: 15px 30px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    color:white;
+    background: {{ color_schema }};
+  }
+  .roarr-button p {
+  color:white;
+}
+  #sb-{{ section.id }} .roarr-button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  /* --- IMAGE COLUMN --- */
+  #sb-{{ section.id }} .sb-image-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+  }
+
+  #sb-{{ section.id }} .sb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* --- WATERMARK --- */
+  #sb-{{ section.id }} .sb-watermark {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 150px;
+    line-height: 0.8;
+    color: {{ section.settings.watermark_color }};
+    opacity: 0.9;
+    z-index: 2;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* --- MOBILE RESPONSIVE --- */
+  @media (max-width: 900px) {
+    #sb-{{ section.id }} .sb-container {
+      flex-direction: column-reverse;
+      height: auto;
+    }
+    #sb-{{ section.id }} .sb-content {
+      flex: auto; width: 100%; padding: 40px 20px;
+    }
+    #sb-{{ section.id }} .sb-image-wrap {
+      flex: auto; width: 100%; height: 350px;
+    }
+    #sb-{{ section.id }} h2 { font-size: calc(var(--h-size) * 0.75); }
+    #sb-{{ section.id }} .sb-watermark { font-size: 90px; top: 5%; }
+  }
+</style>
+
+<div id="sb-{{ section.id }}">
+  <div class="sb-section">
+    <div class="sb-container">
+      
+      <div class="sb-content">
+        {% if section.settings.eyebrow != blank %}
+          <span class="sb-eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        
+        {% assign roarr_h = product_metafield.highlight_banner_section_heading.value %}
+        <h2>
+          {% if section.settings.use_roarr_metafields and roarr_h != blank %}{{ roarr_h }}{% else %}{{ section.settings.heading }}{% endif %}
+        </h2>
+        
+        {% assign roarr_d = product_metafield.highlight_banner_section_description.value %}
+        <p>
+          {% if section.settings.use_roarr_metafields and roarr_d != blank %}{{ roarr_d }}{% else %}{{ section.settings.text }}{% endif %}
+        </p>
+        
+          {% if section.settings.btn_label != blank %}
+            <a href="{{ routes.all_products_collection_url }}" class="roarr-button">
+              {{ section.settings.btn_label }}
+            </a>
+          {% endif %}
+      </div>
+
+      <div class="sb-image-wrap">
+        {% if section.settings.watermark_text != blank %}
+          <div class="sb-watermark">{{ section.settings.watermark_text }}</div>
+        {% endif %}
+
+        {% assign roarr_img = product_metafield.product_impact_image.value | default: product_metafield.product_impact_image %}
+        {% if section.settings.image != blank %}
+          <img src="{{ section.settings.image | img_url: '1200x' }}" alt="{{ section.settings.heading }}" class="sb-img" loading="lazy">
+        {% elsif section.settings.use_roarr_metafields and roarr_img != blank %}
+          <img src="{{ roarr_img | image_url: width: 1200 }}" alt="Banner Image" class="sb-img" loading="lazy">
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'sb-img' }}
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const applySmartContrast = () => {
+      const container = document.querySelector('#sb-{{ section.id }} .sb-container');
+      if (!container) return;
+
+      const style = window.getComputedStyle(container);
+      const bgColor = style.backgroundColor;
+
+      const rgb = bgColor.match(/\d+/g);
+      if (rgb && rgb.length >= 3) {
+        const r = parseInt(rgb[0]);
+        const g = parseInt(rgb[1]);
+        const b = parseInt(rgb[2]);
+
+        // YIQ Brightness Formula
+        const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+        if (yiq >= 128) {
+          container.classList.add('sb-light-bg');
+          container.classList.remove('sb-dark-bg');
+        } else {
+          container.classList.add('sb-dark-bg');
+          container.classList.remove('sb-light-bg');
+        }
+      }
+    };
+
+    applySmartContrast();
+    if (typeof Shopify !== 'undefined' && Shopify.designMode) {
+      document.addEventListener('shopify:section:load', applySmartContrast);
+    }
+  });
+</script>
+
+{% endif %}
+

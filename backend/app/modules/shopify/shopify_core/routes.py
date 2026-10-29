@@ -9,6 +9,7 @@ from flask import Blueprint, request, jsonify
 from pathlib import Path
 import time
 import tempfile
+from contextlib import contextmanager
 import os
 import shutil
 import json
@@ -25,7 +26,7 @@ from urllib.parse import urlencode, quote, urlparse
 from .utils import process_images
 from ...shopify.shopify_auth.webhook_utils import webhook_manager
 from ...auth.utils import require_auth, extract_user_attributes, require_shopify_auth
-from ....constants.credits import PURCHASE_STATUS_ACTIVE, shop_skips_credit_gates
+from ....constants.credits import shop_skips_credit_gates
 from ...credits import wallet_service
 from ...database import document_store
 from ...generate.generate_images import upload_images_to_cdn
@@ -35,6 +36,20 @@ from ..collections_agent_service import run_collections_agent
 from .image_upload_handler import ImageUploadHandler
 
 logger = logging.getLogger(__name__)
+
+
+@contextmanager
+def _temp_asset_file(content: str, suffix: str):
+    """Yield the path of a UTF-8 temp file holding ``content``.
+
+    NamedTemporaryFile(delete=True) can't be reopened by name on Windows while it is open, so
+    update_theme_asset failed there with "Permission denied"; a file in a temp dir works everywhere.
+    """
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        path = os.path.join(tmp_dir, f"asset{suffix}")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
+        yield path
 
 # Create Blueprint for shopify core routes
 shopify_core_bp = Blueprint("shopify_core", __name__)
@@ -99,7 +114,7 @@ def _normalize_publish_category(detected_category: str) -> str:
     return "general"
 
 
-# Actual filenames on disk use hyphen in the suffix, e.g. product.kluck-health-beauty-1.json
+# Actual filenames on disk use hyphen in the suffix, e.g. product.roarr-health-beauty-1.json
 # (not health_beauty). Folder names: health-beauty, home-kitchen, kids-toys, car_accessories, fashion, general.
 # Category -> templates_files subfolder name (as on disk)
 _TEMPLATE_FOLDER_MAP = {
@@ -113,36 +128,36 @@ _TEMPLATE_FOLDER_MAP = {
 
 # Sections re-uploaded on every publish even when the theme already has them.
 # The per-file "skip if present" rule leaves stale copies in themes published
-# before a fix shipped: kluck-ai-product-hero-section rendered its blocks with a
+# before a fix shipped: roarr-product-hero-section rendered its blocks with a
 # `case block.type` that had no `@app` branch, so the bundle app block was
 # silently dropped on Roarr's simple product page.
 _FORCE_UPDATE_SECTIONS = {
-    "kluck-ai-product-hero-section.liquid",
+    "roarr-product-hero-section.liquid",
     # Play keeps per-section colors. Older copies paint every band from color_schema.
-    "kluck-ai-hero-section-1.liquid",
-    "kluck-ai-marquee-section-1.liquid",
-    "kluck-ai-empty-section.liquid",
-    "kluck-ai-faq-section.liquid",
-    "kluck-ai-trust-badge-section.liquid",
+    "roarr-hero-section-1.liquid",
+    "roarr-marquee-section-1.liquid",
+    "roarr-empty-section.liquid",
+    "roarr-faq-section.liquid",
+    "roarr-trust-badge-section.liquid",
 }
 
 
 # Classic homepage sections. Cinematic and Amour stores do not use them.
 _CLASSIC_HOME_ONLY_SECTIONS = {
-    "kluck-ai-home-hero-section.liquid",
-    "kluck-ai-feature-product-section.liquid",
-    "kluck-ai-features-center-section.liquid",
-    "kluck-ai-headline-section.liquid",
-    "kluck-ai-faq-section-home-1.liquid",
-    "kluck-ai-promotion-banner-section.liquid",
-    "kluck-ai-shopable-bundle-section.liquid",
-    "kluck-ai-tabbed-grid-section.liquid",
-    "kluck-ai-testimonials-section.liquid",
-    "kluck-ai-product-column-section.liquid",
-    "kluck-ai-image-with-text-1-section.liquid",
-    "kluck-ai-image-with-text-2-section.liquid",
-    "kluck-ai-image-with-text-3-section.liquid",
-    "kluck-ai-marquee-section-2.liquid",
+    "roarr-home-hero-section.liquid",
+    "roarr-feature-product-section.liquid",
+    "roarr-features-center-section.liquid",
+    "roarr-headline-section.liquid",
+    "roarr-faq-section-home-1.liquid",
+    "roarr-promotion-banner-section.liquid",
+    "roarr-shopable-bundle-section.liquid",
+    "roarr-tabbed-grid-section.liquid",
+    "roarr-testimonials-section.liquid",
+    "roarr-product-column-section.liquid",
+    "roarr-image-with-text-1-section.liquid",
+    "roarr-image-with-text-2-section.liquid",
+    "roarr-image-with-text-3-section.liquid",
+    "roarr-marquee-section-2.liquid",
 }
 
 
@@ -151,11 +166,13 @@ def _should_force_update_section(liquid_file: str) -> bool:
     name = str(liquid_file or "")
     return (
         name in _FORCE_UPDATE_SECTIONS
-        or name.startswith("kluck-ai-cinematic-")
-        or name.startswith("kluck-ai-play-")
-        or name.startswith("kluck-ai-glow-")
-        or name.startswith("kluck-ai-amour-")
-        or name.startswith("kluck-ai-lumen-")
+        or name.startswith("roarr-cinematic-")
+        or name.startswith("roarr-play-")
+        or name.startswith("roarr-glow-")
+        or name.startswith("roarr-amour-")
+        or name.startswith("roarr-lumen-")
+        or name.startswith("roarr-noir-")
+        or name.startswith("roarr-frost-")
     )
 
 
@@ -176,7 +193,7 @@ def _force_reupload_cinematic_section_liquids(user_id, theme_id):
 
         uploaded = []
         failed = []
-        for liquid_path in sorted(liquid_files_dir.glob("kluck-ai-cinematic-*.liquid")):
+        for liquid_path in sorted(liquid_files_dir.glob("roarr-cinematic-*.liquid")):
             asset_key = f"sections/{liquid_path.name}"
             upload_result = shopify_utils.update_theme_asset(
                 theme_id=theme_id,
@@ -207,7 +224,7 @@ def _force_reupload_cinematic_section_liquids(user_id, theme_id):
         return {"success": False, "error": str(err)}
 
 
-def _force_reupload_kluck_color_snippet(user_id, theme_id):
+def _force_reupload_roarr_color_snippet(user_id, theme_id):
     """Push Roarr snippets (color CSS vars + UI i18n) to the live theme."""
     try:
         snippet_dir = (
@@ -218,12 +235,12 @@ def _force_reupload_kluck_color_snippet(user_id, theme_id):
             / "snippet_files"
         )
         for snippet_name in (
-            "kluck-ai-font-and-color.liquid",
-            "kluck-ui-string.liquid",
+            "roarr-font-and-color.liquid",
+            "roarr-ui-string.liquid",
         ):
             snippet_path = snippet_dir / snippet_name
             if not snippet_path.exists():
-                if snippet_name == "kluck-ai-font-and-color.liquid":
+                if snippet_name == "roarr-font-and-color.liquid":
                     return {"success": False, "error": f"missing {snippet_path}"}
                 continue
             upload_result = shopify_utils.update_theme_asset(
@@ -246,12 +263,12 @@ def _force_reupload_kluck_color_snippet(user_id, theme_id):
                 )
                 return {"success": False, "error": upload_result.get("error")}
 
-        hero_path = snippet_dir.parents[0] / "liquid_files" / "kluck-ai-product-hero-section.liquid"
+        hero_path = snippet_dir.parents[0] / "liquid_files" / "roarr-product-hero-section.liquid"
         if hero_path.exists():
             hero_upload = shopify_utils.update_theme_asset(
                 theme_id=theme_id,
                 file_path=str(hero_path),
-                asset_key="sections/kluck-ai-product-hero-section.liquid",
+                asset_key="sections/roarr-product-hero-section.liquid",
                 user_id=user_id,
             )
             if not hero_upload.get("success"):
@@ -273,25 +290,25 @@ def _get_template_paths(category: str, selected_template: int | None):
     folder = _TEMPLATE_FOLDER_MAP.get(
         template_category, _TEMPLATE_FOLDER_MAP["general"]
     )
-    # Filename on disk always has hyphen in suffix, e.g. product.kluck-health-beauty-1.json
+    # Filename on disk always has hyphen in suffix, e.g. product.roarr-health-beauty-1.json
     filename_suffix = folder.replace("_", "-")
     if selected_template:
-        json_filename = f"product.kluck-{filename_suffix}-{selected_template}.json"
+        json_filename = f"product.roarr-{filename_suffix}-{selected_template}.json"
     else:
-        json_filename = f"product.kluck-{filename_suffix}.json"
+        json_filename = f"product.roarr-{filename_suffix}.json"
     return template_category, folder, json_filename
 
 
 def _get_product_template_suffix_for_view(
     category: str, selected_template: int | None
 ) -> str:
-    """Legacy shared suffix (kluck-health-beauty-1). Kept for pages published before per-product templates."""
+    """Legacy shared suffix (roarr-health-beauty-1). Kept for pages published before per-product templates."""
     _, _, json_filename = _get_template_paths(category, selected_template)
     return json_filename.replace("product.", "").replace(".json", "")
 
 
 def _parse_template_number(selected_template):
-    """Return 1, 2, 3 or 4 (Lumenook). Accepts ints and strings like '3' or 'template_3'."""
+    """Return 1, 2, 3, 4 (Lumenook), 5 (Noir) or 6 (Frost). Accepts ints and strings like '3' or 'template_3'."""
     raw = selected_template
     if isinstance(raw, str):
         raw = raw.strip().lower()
@@ -301,7 +318,7 @@ def _parse_template_number(selected_template):
         number = int(raw)
     except (TypeError, ValueError):
         return None
-    return number if number in (1, 2, 3, 4) else None
+    return number if number in (1, 2, 3, 4, 5, 6) else None
 
 
 def _layout_template_number(selected_template) -> int:
@@ -321,8 +338,8 @@ def _unique_product_template_names(category: str, product_id, selected_template)
     """
     One Shopify template per product.
 
-    The layout comes from template 1, 2, 3, or 4. The uploaded file is
-    product.kluck-{category}-{productId}.json so two products never share a suffix.
+    The layout comes from template 1, 2, 3, 4, 5, or 6. The uploaded file is
+    product.roarr-{category}-{productId}.json so two products never share a suffix.
     """
     layout = _layout_template_number(selected_template)
     _, folder, source_filename = _get_template_paths(category, layout)
@@ -335,10 +352,10 @@ def _unique_product_template_names(category: str, product_id, selected_template)
         / folder
         / source_filename
     )
-    if layout in (3, 4) and not source_path.is_file():
+    if layout in (3, 4, 5, 6) and not source_path.is_file():
         layout = 2
         _, folder, source_filename = _get_template_paths(category, layout)
-    suffix = f"kluck-{folder}-{_numeric_product_id(product_id)}"
+    suffix = f"roarr-{folder}-{_numeric_product_id(product_id)}"
     json_filename = f"product.{suffix}.json"
     source_path = (
         Path(__file__).resolve().parents[4]
@@ -448,7 +465,7 @@ def _sync_missing_template_sections(*, generated_page, product_id, user_id) -> d
 def _stored_or_legacy_template_suffix(generated_page, category, selected_template) -> str:
     """Preview uses the suffix saved at publish. Older pages keep the shared slot they already have."""
     if isinstance(generated_page, dict):
-        stored = generated_page.get("kluck_template_suffix")
+        stored = generated_page.get("roarr_template_suffix")
         if isinstance(stored, str) and stored.strip():
             return stored.strip()
     return _get_product_template_suffix_for_view(category, selected_template)
@@ -1393,7 +1410,7 @@ def _upload_templates_index_json(shopify_utils, theme_id, user_id, local_index_p
 
 
 _COD_HOME_PRODUCT_HERO_SECTION_TYPES = {
-    "kluck-ai-product-hero-section",
+    "roarr-product-hero-section",
     "pf-new-default-product-hero",
 }
 
@@ -1529,7 +1546,7 @@ def _bind_cod_premium_product_to_shopify(
             ext = image_url.split("?")[0].split(".")[-1]
             if not ext or len(ext) > 6:
                 ext = "jpg"
-            filename = f"kluck_ai_store_pdp_{product_id}_{image_key}.{ext}"
+            filename = f"roarr_store_pdp_{product_id}_{image_key}.{ext}"
             upload_result = shopify_utils.upload_image_to_shopify(
                 image_url=image_url,
                 filename=filename,
@@ -1550,7 +1567,7 @@ def _bind_cod_premium_product_to_shopify(
                 product_id=product_id,
                 fields=text_content,
                 user_id=user_id,
-                namespace="kluck_ai",
+                namespace="roarr",
             )
         except Exception as meta_err:
             logger.warning(
@@ -1563,7 +1580,7 @@ def _bind_cod_premium_product_to_shopify(
                 product_id=product_id,
                 fields={"color_schema": color},
                 user_id=user_id,
-                namespace="kluck_ai",
+                namespace="roarr",
             )
         except Exception as color_err:
             logger.warning(
@@ -1576,7 +1593,7 @@ def _bind_cod_premium_product_to_shopify(
                 product_id=product_id,
                 file_references=body_image_metafields,
                 user_id=user_id,
-                namespace="kluck_ai",
+                namespace="roarr",
             )
         except Exception as file_err:
             logger.warning(
@@ -1816,7 +1833,7 @@ def _execute_publish_store(user_id, data):
                     p
                     for p in liquid_files
                     if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
-                    and not p.name.startswith("kluck-ai-cinematic-")
+                    and not p.name.startswith("roarr-cinematic-")
                 ]
                 logger.info(
                     "publish-store: amour pack — uploading %s section liquids "
@@ -1828,15 +1845,15 @@ def _execute_publish_store(user_id, data):
                     p
                     for p in liquid_files
                     if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
-                    and not p.name.startswith("kluck-ai-amour-")
+                    and not p.name.startswith("roarr-amour-")
                 ]
             elif store_template_pack == "lumenook":
                 liquid_files = [
                     p
                     for p in liquid_files
                     if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
-                    and not p.name.startswith("kluck-ai-cinematic-")
-                    and not p.name.startswith("kluck-ai-amour-")
+                    and not p.name.startswith("roarr-cinematic-")
+                    and not p.name.startswith("roarr-amour-")
                 ]
                 logger.info(
                     "publish-store: lumenook pack — uploading %s section liquids "
@@ -1886,13 +1903,13 @@ def _execute_publish_store(user_id, data):
         # 2) Always re-upload Roarr snippets (fonts/colors + UI i18n strings).
         # Skipping when they "already exist" left stale CSS / English chrome.
         for snippet_name in (
-            "kluck-ai-font-and-color.liquid",
-            "kluck-ui-string.liquid",
+            "roarr-font-and-color.liquid",
+            "roarr-ui-string.liquid",
         ):
             snippet_path = snippet_files_dir / snippet_name
             if not snippet_path.exists():
                 logger.warning(f"⚠️ Snippet file not found: {snippet_path}")
-                if snippet_name == "kluck-ai-font-and-color.liquid":
+                if snippet_name == "roarr-font-and-color.liquid":
                     upload_success = False
                 continue
             snippet_asset_key = f"snippets/{snippet_name}"
@@ -1938,8 +1955,8 @@ def _execute_publish_store(user_id, data):
                         "layout/theme.liquid has no string 'value' (or base64 'attachment')."
                     )
 
-            render_new = "{% render 'kluck-ai-font-and-color' %}"
-            render_old = "{% render 'kluck-typography' %}"
+            render_new = "{% render 'roarr-font-and-color' %}"
+            render_old = "{% render 'roarr-typography' %}"
             theme_updated = theme_raw_value
             patch_theme_liquid = False
 
@@ -1969,14 +1986,10 @@ def _execute_publish_store(user_id, data):
                 patch_theme_liquid = True
 
             if patch_theme_liquid:
-                with tempfile.NamedTemporaryFile(
-                    "w", suffix=".liquid", delete=True
-                ) as tmp:
-                    tmp.write(theme_updated)
-                    tmp.flush()
+                with _temp_asset_file(theme_updated, ".liquid") as tmp_path:
                     theme_upload_result = shopify_utils.update_theme_asset(
                         theme_id=live_theme_id,
-                        file_path=str(tmp.name),
+                        file_path=tmp_path,
                         asset_key=theme_asset_key,
                         user_id=user_id,
                     )
@@ -2335,25 +2348,25 @@ def _execute_publish_store(user_id, data):
             if not isinstance(schema_data, list):
                 raise ValueError("settings_schema.json must be a JSON array.")
 
-            kluck_typography_name = "Roarr - Typography"
-            kluck_typography_settings = [
+            roarr_typography_name = "Roarr - Typography"
+            roarr_typography_settings = [
                 {"type": "header", "content": "Fonts"},
                 {
                     "type": "font_picker",
-                    "id": "kluck_heading_font",
+                    "id": "roarr_heading_font",
                     "label": "Heading font",
                     "default": schema_heading_default,
                 },
                 {
                     "type": "font_picker",
-                    "id": "kluck_body_font",
+                    "id": "roarr_body_font",
                     "label": "Body font",
                     "default": schema_body_default,
                 },
             ]
 
-            kluck_color_name = "Roarr - Color"
-            kluck_color_settings = [
+            roarr_color_name = "Roarr - Color"
+            roarr_color_settings = [
                 {"type": "header", "content": "Color Schemes"},
                 {
                     "type": "color",
@@ -2383,20 +2396,20 @@ def _execute_publish_store(user_id, data):
 
             typography_idx = None
             for i, block in enumerate(schema_data):
-                if isinstance(block, dict) and block.get("name") == kluck_typography_name:
+                if isinstance(block, dict) and block.get("name") == roarr_typography_name:
                     typography_idx = i
                     break
 
             color_idx = None
             for i, block in enumerate(schema_data):
-                if isinstance(block, dict) and block.get("name") == kluck_color_name:
+                if isinstance(block, dict) and block.get("name") == roarr_color_name:
                     color_idx = i
                     break
 
             if typography_idx is not None:
-                schema_data[typography_idx]["name"] = kluck_typography_name
+                schema_data[typography_idx]["name"] = roarr_typography_name
                 schema_data[typography_idx]["settings"] = copy.deepcopy(
-                    kluck_typography_settings
+                    roarr_typography_settings
                 )
                 logger.info(
                     "publish-store: updated Roarr - Typography schema block (settings refreshed)"
@@ -2405,8 +2418,8 @@ def _execute_publish_store(user_id, data):
                 schema_data.insert(
                     0,
                     {
-                        "name": kluck_typography_name,
-                        "settings": copy.deepcopy(kluck_typography_settings),
+                        "name": roarr_typography_name,
+                        "settings": copy.deepcopy(roarr_typography_settings),
                     },
                 )
                 typography_idx = 0
@@ -2415,8 +2428,8 @@ def _execute_publish_store(user_id, data):
                 )
 
             if color_idx is not None:
-                schema_data[color_idx]["name"] = kluck_color_name
-                schema_data[color_idx]["settings"] = copy.deepcopy(kluck_color_settings)
+                schema_data[color_idx]["name"] = roarr_color_name
+                schema_data[color_idx]["settings"] = copy.deepcopy(roarr_color_settings)
                 logger.info(
                     "publish-store: updated Roarr - Color schema block (settings refreshed)"
                 )
@@ -2427,8 +2440,8 @@ def _execute_publish_store(user_id, data):
                 schema_data.insert(
                     insert_color_at,
                     {
-                        "name": kluck_color_name,
-                        "settings": copy.deepcopy(kluck_color_settings),
+                        "name": roarr_color_name,
+                        "settings": copy.deepcopy(roarr_color_settings),
                     },
                 )
                 logger.info(
@@ -2455,7 +2468,7 @@ def _execute_publish_store(user_id, data):
                     break
 
             if not has_color_scheme_group:
-                kluck_schemes_block = {
+                roarr_schemes_block = {
                     "name": "Roarr - Color Schemes",
                     "settings": [
                         {
@@ -2524,10 +2537,10 @@ def _execute_publish_store(user_id, data):
                 }
                 insert_schemes_at = 0
                 for i, block in enumerate(schema_data):
-                    if isinstance(block, dict) and block.get("name") == kluck_color_name:
+                    if isinstance(block, dict) and block.get("name") == roarr_color_name:
                         insert_schemes_at = i + 1
                         break
-                schema_data.insert(insert_schemes_at, kluck_schemes_block)
+                schema_data.insert(insert_schemes_at, roarr_schemes_block)
                 logger.info(
                     "publish-store: inserted color_scheme_group (scheme-1/scheme-2) "
                     "into settings_schema.json"
@@ -2539,7 +2552,7 @@ def _execute_publish_store(user_id, data):
 
             schema_json = json.dumps(schema_data, ensure_ascii=False, indent=2)
             try:
-                debug_dir = os.path.join(tempfile.gettempdir(), "kluck_publish_store_debug")
+                debug_dir = os.path.join(tempfile.gettempdir(), "roarr_publish_store_debug")
                 os.makedirs(debug_dir, exist_ok=True)
                 debug_page_id = str(page_id) if page_id else "no_page_id"
                 debug_file_path = os.path.join(
@@ -2557,12 +2570,10 @@ def _execute_publish_store(user_id, data):
                     "publish-store: failed writing settings_schema debug dump: %s",
                     dump_err,
                 )
-            with tempfile.NamedTemporaryFile("w", suffix=".json", delete=True) as tmp:
-                tmp.write(schema_json)
-                tmp.flush()
+            with _temp_asset_file(schema_json, ".json") as tmp_path:
                 schema_upload_result = shopify_utils.update_theme_asset(
                     theme_id=live_theme_id,
-                    file_path=str(tmp.name),
+                    file_path=tmp_path,
                     asset_key=asset_key,
                     user_id=user_id,
                 )
@@ -2616,8 +2627,8 @@ def _execute_publish_store(user_id, data):
                     current = {}
                     settings_data_json["current"] = current
 
-                current["kluck_heading_font"] = schema_heading_default
-                current["kluck_body_font"] = schema_body_default
+                current["roarr_heading_font"] = schema_heading_default
+                current["roarr_body_font"] = schema_body_default
                 # Keep both ids for compatibility across snippet/schema revisions.
                 current["color_scheme"] = schema_color_default
                 color_schemes = current.get("color_schemes")
@@ -2721,7 +2732,7 @@ def _execute_publish_store(user_id, data):
                 )
                 try:
                     debug_dir = os.path.join(
-                        tempfile.gettempdir(), "kluck_publish_store_debug"
+                        tempfile.gettempdir(), "roarr_publish_store_debug"
                     )
                     os.makedirs(debug_dir, exist_ok=True)
                     debug_page_id = str(page_id) if page_id else "no_page_id"
@@ -2741,12 +2752,10 @@ def _execute_publish_store(user_id, data):
                         dump_err,
                     )
 
-                with tempfile.NamedTemporaryFile("w", suffix=".json", delete=True) as tmp:
-                    tmp.write(settings_data_out)
-                    tmp.flush()
+                with _temp_asset_file(settings_data_out, ".json") as tmp_path:
                     settings_data_upload_result = shopify_utils.update_theme_asset(
                         theme_id=live_theme_id,
-                        file_path=str(tmp.name),
+                        file_path=tmp_path,
                         asset_key=settings_data_key,
                         user_id=user_id,
                     )
@@ -2888,7 +2897,7 @@ def _execute_publish_store(user_id, data):
                                 ext = image_url.split("?")[0].split(".")[-1]
                                 if not ext or len(ext) > 6:
                                     ext = "jpg"
-                                filename = f"kluck_ai_store_{image_key}.{ext}"
+                                filename = f"roarr_store_{image_key}.{ext}"
                                 upload_result = shopify_utils.upload_image_to_shopify(
                                     image_url=image_url,
                                     filename=filename,
@@ -2934,7 +2943,7 @@ def _execute_publish_store(user_id, data):
                                 )
                                 try:
                                     shopify_utils.set_shop_metafield(
-                                        namespace="kluck_ai",
+                                        namespace="roarr",
                                         key=safe_key,
                                         mtype="file_reference",
                                         value=file_id,
@@ -2984,7 +2993,7 @@ def _execute_publish_store(user_id, data):
 
                     time.sleep(0.15)
                     metafield_result = shopify_utils.set_shop_metafield(
-                        namespace="kluck_ai",
+                        namespace="roarr",
                         key="store_generation",
                         mtype="json",
                         value=value_str,
@@ -2992,11 +3001,11 @@ def _execute_publish_store(user_id, data):
                     )
                     if metafield_result.get("success"):
                         logger.info(
-                            f"✅ Saved store generation into shop metafield kluck_ai.store_generation for page_id={page_id}"
+                            f"✅ Saved store generation into shop metafield roarr.store_generation for page_id={page_id}"
                         )
                     else:
                         logger.warning(
-                            f"⚠️ Failed saving shop metafield kluck_ai.store_generation for page_id={page_id}: {metafield_result.get('error')}"
+                            f"⚠️ Failed saving shop metafield roarr.store_generation for page_id={page_id}: {metafield_result.get('error')}"
                         )
                 else:
                     logger.warning(
@@ -3041,7 +3050,7 @@ def _execute_publish_store(user_id, data):
                 )
                 if cod_pages:
                     # Store jobs persist `store_category` (not `category`). Prefer that
-                    # so premium PDPs get the matching kluck-{category}-{N} template
+                    # so premium PDPs get the matching roarr-{category}-{N} template
                     # (Four Blocks lives on those templates, not always on general-1).
                     page_category = (
                         (
@@ -3413,10 +3422,11 @@ def publish_store():
             skip_publish_store_purchase_gate = False
 
         if not skip_publish_store_purchase_gate:
-            active_purchases = wallet_service.list_purchases_for_user(
-                user_id, limit=1, status=PURCHASE_STATUS_ACTIVE
-            )
-            if not active_purchases:
+            # Unspent credits (signup, promo or support grants) are enough to publish. A
+            # pack is only required once the wallet is empty. get_wallet is a read-only
+            # lookup, so this never creates a wallet or grants the signup bonus.
+            has_credits = ((wallet_service.get_wallet(user_id) or {}).get("balance") or 0) > 0
+            if not (has_credits or wallet_service.has_active_purchase(user_id)):
                 return (
                     jsonify(
                         {
@@ -3495,20 +3505,14 @@ def publish_store():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-@shopify_core_bp.route("/api/publish-page", methods=["POST"])
-@require_shopify_auth
-def publish_page():
+def _execute_publish_page(user_id, data):
     """
-    Publish store with all configuration details from the store setup flow
+    Push a generated product page to the live theme. Returns (payload, status_code).
+    Runs on a background thread started by publish_page.
     """
     try:
-        user_id = request.user_id
-
-        # Get all the data from the request
-        data = request.get_json()
-
         if not data:
-            return jsonify({"success": False, "error": "No data provided"}), 400
+            return {"success": False, "error": "No data provided"}, 400
 
         # Extract key data
         # Prefer explicit product_id from request payload.
@@ -3575,12 +3579,10 @@ def publish_page():
             logger.error(f"Error getting live theme: {str(theme_error)}")
             # This is critical - we cannot proceed without a live theme
             return (
-                jsonify(
-                    {
-                        "success": False,
-                        "error": f"Failed to get live theme: {str(theme_error)}",
-                    }
-                ),
+                {
+                    "success": False,
+                    "error": f"Failed to get live theme: {str(theme_error)}",
+                },
                 500,
             )
 
@@ -3838,7 +3840,7 @@ def publish_page():
                     # Continue with original product_id if new product creation fails
 
             # Clean up temp directory
-            shutil.rmtree(temp_dir)
+            shutil.rmtree(temp_dir, ignore_errors=True)
 
             # Product-page template binding is intentionally skipped.
             # Store publish now focuses only on the homepage template.
@@ -3892,7 +3894,7 @@ def publish_page():
                             try:
                                 # Generate filename based on image key
                                 ext = image_url.split(".")[-1]
-                                filename = f"kluck_ai_{image_key}.{ext}"
+                                filename = f"roarr_{image_key}.{ext}"
 
                                 # Upload image to Shopify
                                 upload_result = shopify_utils.upload_image_to_shopify(
@@ -3945,7 +3947,7 @@ def publish_page():
                             product_id=product_id,
                             fields=text_content,
                             user_id=user_id,
-                            namespace="kluck_ai",
+                            namespace="roarr",
                         )
 
                         if metafields_result.get("success"):
@@ -3981,7 +3983,7 @@ def publish_page():
                         product_id=product_id,
                         fields={"color_schema": selected_color},
                         user_id=user_id,
-                        namespace="kluck_ai",
+                        namespace="roarr",
                     )
 
                     if color_metafield_result.get("success"):
@@ -4015,7 +4017,7 @@ def publish_page():
                             product_id=product_id,
                             file_references=body_image_metafields,
                             user_id=user_id,
-                            namespace="kluck_ai",
+                            namespace="roarr",
                         )
                     )
 
@@ -4122,25 +4124,25 @@ def publish_page():
 
                     # UI i18n snippet (Add to cart / review blanks follow store locale).
                     ui_snippet = (
-                        shopify_files_dir / "snippet_files" / "kluck-ui-string.liquid"
+                        shopify_files_dir / "snippet_files" / "roarr-ui-string.liquid"
                     )
                     if ui_snippet.exists():
                         ui_upload = shopify_utils.update_theme_asset(
                             theme_id=live_theme_numeric_id,
                             file_path=str(ui_snippet),
-                            asset_key="snippets/kluck-ui-string.liquid",
+                            asset_key="snippets/roarr-ui-string.liquid",
                             user_id=user_id,
                         )
                         if ui_upload.get("success"):
-                            uploaded_files.append("kluck-ui-string.liquid")
+                            uploaded_files.append("roarr-ui-string.liquid")
                         else:
                             logger.warning(
-                                "⚠️ Failed to upload kluck-ui-string: %s",
+                                "⚠️ Failed to upload roarr-ui-string: %s",
                                 ui_upload.get("error"),
                             )
 
                     # Product templates are uploaded per product below.
-                    # Do not write product.kluck-{category}-1.json / -2.json here:
+                    # Do not write product.roarr-{category}-1.json / -2.json here:
                     # those shared files are what made a later product open another
                     # product's template.
 
@@ -4272,9 +4274,10 @@ def publish_page():
                 preview_link = f"https://{shop_domain}" if shop_domain else None
 
         except Exception as e:
-            # Clean up temp directory on error
+            # Clean up temp directory on error. It is already gone once the image step has run, and
+            # a failing cleanup here used to replace the real error with "No such file or directory".
             if "temp_dir" in locals():
-                shutil.rmtree(temp_dir)
+                shutil.rmtree(temp_dir, ignore_errors=True)
             raise e
 
         # Update page_id to mark it as published
@@ -4292,11 +4295,11 @@ def publish_page():
                         "theme_id": str(live_theme_numeric_id)
                     }
                 if assigned_template_suffix:
-                    update_params["kluck_template_suffix"] = assigned_template_suffix
+                    update_params["roarr_template_suffix"] = assigned_template_suffix
                     logger.info(
                         f"Storing theme_id={live_theme_numeric_id} in page metadata (live theme)"
                     )
-                if selected_template in (1, 2, 3, 4):
+                if selected_template in (1, 2, 3, 4, 5, 6):
                     update_params["selectedTemplate"] = selected_template
                     update_params["template"] = f"template_{selected_template}"
 
@@ -4415,22 +4418,118 @@ def publish_page():
             )
 
         return (
-            jsonify(
-                {
-                    "success": True,
-                    "message": "Store published successfully",
-                    "preview_link": (
-                        preview_link if "preview_link" in locals() else None
-                    ),
-                }
-            ),
+            {
+                "success": True,
+                "message": "Store published successfully",
+                "preview_link": (
+                    preview_link if "preview_link" in locals() else None
+                ),
+            },
             200,
         )
 
     except Exception as e:
         err_msg = str(e)
         logger.error(f"Error in publish-page: {err_msg}")
-        return jsonify({"success": False, "error": err_msg}), 500
+        return {"success": False, "error": err_msg}, 500
+
+
+# A publish still marked in_progress after this long died with its process; allow a new one.
+_PUBLISH_PAGE_STALE_SECONDS = 15 * 60
+
+
+def _run_publish_page_task(user_id, data, page_id):
+    payload, status_code = _execute_publish_page(user_id, data)
+    if status_code < 400 and payload.get("success"):
+        extra = {}
+        if payload.get("preview_link"):
+            extra["preview_link"] = payload["preview_link"]
+        _set_page_publish_status(page_id, "completed", extra=extra)
+    else:
+        _set_page_publish_status(
+            page_id, "failed", error=payload.get("error") or "Publish failed"
+        )
+
+
+@shopify_core_bp.route("/api/publish-page", methods=["POST"])
+@require_shopify_auth
+def publish_page():
+    """
+    Start publishing a product page and return 202 right away.
+
+    A publish takes minutes, longer than the proxies in front of us keep a request
+    open (Cloudflare tunnel: 100s, Vercel function limits). The client polls
+    /api/generation-status/<page_id> until publish_status is completed or failed.
+    """
+    try:
+        user_id = request.user_id
+        data = request.get_json()
+        if not data:
+            return jsonify({"success": False, "error": "No data provided"}), 400
+
+        page_id = data.get("page_id")
+        if not page_id:
+            # Nowhere to record progress, so publish inline.
+            payload, status_code = _execute_publish_page(user_id, data)
+            return jsonify(payload), status_code
+        page_id = str(page_id)
+
+        existing_page = document_store.get_generated_page_by_id(page_id)
+        if not existing_page:
+            return jsonify({"success": False, "error": "Generated page not found"}), 404
+
+        started_at = existing_page.get("publish_started_at")
+        if (
+            str(existing_page.get("publish_status") or "").lower() == "in_progress"
+            and started_at
+            and time.time() - float(started_at) < _PUBLISH_PAGE_STALE_SECONDS
+        ):
+            return (
+                jsonify(
+                    {
+                        "success": True,
+                        "started": True,
+                        "page_id": page_id,
+                        "publish_started_at": int(started_at),
+                        "message": "Publish already in progress",
+                    }
+                ),
+                202,
+            )
+
+        started_at = int(time.time())
+        if not document_store.update_generated_page(
+            page_id=page_id,
+            publish_status="in_progress",
+            publish_error="",
+            publish_started_at=started_at,
+        ):
+            return jsonify({"success": False, "error": "Could not start publish"}), 500
+
+        threading.Thread(
+            target=_run_publish_page_task,
+            args=(user_id, data, page_id),
+            daemon=True,
+        ).start()
+        logger.info(
+            "Started background publish-page task for page_id=%s user=%s",
+            page_id,
+            user_id,
+        )
+        return (
+            jsonify(
+                {
+                    "success": True,
+                    "started": True,
+                    "page_id": page_id,
+                    "publish_started_at": started_at,
+                }
+            ),
+            202,
+        )
+    except Exception as e:
+        logger.error(f"Error starting publish-page: {str(e)}")
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 @shopify_core_bp.route("/api/update-publish-page", methods=["POST"])
@@ -4553,7 +4652,7 @@ def update_publish_page():
                         continue
                     try:
                         ext = image_url.split(".")[-1]
-                        filename = f"kluck_ai_{image_key}.{ext}"
+                        filename = f"roarr_{image_key}.{ext}"
                         upload_result = shopify_utils.upload_image_to_shopify(
                             image_url=image_url,
                             filename=filename,
@@ -4587,7 +4686,7 @@ def update_publish_page():
                     product_id=product_id,
                     fields=text_content,
                     user_id=user_id,
-                    namespace="kluck_ai",
+                    namespace="roarr",
                 )
                 report["steps"]["text_metafields"] = metafields_result
             else:
@@ -4606,7 +4705,7 @@ def update_publish_page():
                     product_id=product_id,
                     fields={"color_schema": selected_color},
                     user_id=user_id,
-                    namespace="kluck_ai",
+                    namespace="roarr",
                 )
                 report["steps"]["color_metafield"] = color_result
             except Exception as color_err:
@@ -4625,7 +4724,7 @@ def update_publish_page():
                     product_id=product_id,
                     file_references=body_image_metafields,
                     user_id=user_id,
-                    namespace="kluck_ai",
+                    namespace="roarr",
                 )
                 report["steps"]["file_metafields"] = file_result
             except Exception as file_err:
@@ -4736,7 +4835,7 @@ def update_publish_page():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-def _map_font_for_kluck_settings(font_value):
+def _map_font_for_roarr_settings(font_value):
     """Map UI font labels to Shopify settings_data font ids."""
     if font_value is None:
         return None
@@ -4747,7 +4846,7 @@ def _map_font_for_kluck_settings(font_value):
     return None
 
 
-def _valid_hex_color_for_kluck(value):
+def _valid_hex_color_for_roarr(value):
     if not isinstance(value, str):
         return None
     raw = value.strip()
@@ -4768,7 +4867,7 @@ def _valid_hex_color_for_kluck(value):
     return None
 
 
-def _pick_kluck_accent_color(*objs):
+def _pick_roarr_accent_color(*objs):
     """First valid accent hex from request / style preference shapes (incl. dynamicColor)."""
     keys = (
         "dynamicColor",
@@ -4789,7 +4888,7 @@ def _pick_kluck_accent_color(*objs):
         if not isinstance(obj, dict):
             continue
         for key in keys:
-            c = _valid_hex_color_for_kluck(obj.get(key))
+            c = _valid_hex_color_for_roarr(obj.get(key))
             if c:
                 return c
     return None
@@ -4819,13 +4918,13 @@ def _patch_amour_section_accents(
     category=None,
 ):
     """
-    Write accent_color / blush_color onto every kluck-ai-amour-* section in
+    Write accent_color / blush_color onto every roarr-amour-* section in
     templates/index.json. Amour chrome uses section.settings.accent_color
     (--a-wine), not only Shopify color_scheme.
     """
     theme = _amour_theme_for_category(category)
-    accent = _valid_hex_color_for_kluck(accent_hex) or theme["accent"]
-    blush = _valid_hex_color_for_kluck(blush_hex) or theme["blush"]
+    accent = _valid_hex_color_for_roarr(accent_hex) or theme["accent"]
+    blush = _valid_hex_color_for_roarr(blush_hex) or theme["blush"]
     try:
         index_key = "templates/index.json"
         index_asset = shopify_utils.get_theme_asset(
@@ -4855,7 +4954,7 @@ def _patch_amour_section_accents(
             if not isinstance(section, dict):
                 continue
             stype = str(section.get("type") or "")
-            if not stype.startswith("kluck-ai-amour-"):
+            if not stype.startswith("roarr-amour-"):
                 continue
             settings = section.get("settings")
             if not isinstance(settings, dict):
@@ -4867,12 +4966,10 @@ def _patch_amour_section_accents(
         if not updated:
             return {"success": True, "updated": [], "skipped": True}
         index_out = json.dumps(index_json, ensure_ascii=False, indent=2)
-        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=True) as tmp:
-            tmp.write(index_out)
-            tmp.flush()
+        with _temp_asset_file(index_out, ".json") as tmp_path:
             up = shopify_utils.update_theme_asset(
                 theme_id=theme_id,
-                file_path=str(tmp.name),
+                file_path=tmp_path,
                 asset_key=index_key,
                 user_id=user_id,
             )
@@ -4896,57 +4993,57 @@ def _patch_amour_section_accents(
 # Preview section key → live theme section `type` (templates/index.json).
 # Keep in sync with frontend sectionColorUtils.PREVIEW_SECTION_KEY_TO_LIVE_TYPES.
 _PREVIEW_SECTION_KEY_TO_LIVE_TYPES = {
-    "pf-k-hero-peek-slider": ["kluck-ai-home-hero-section"],
-    "pf-inline-headline": ["kluck-ai-headline-section"],
-    "pf-collection-showcase": ["kluck-ai-collection-showcase-section"],
-    "pf-feature-product-section": ["kluck-ai-feature-product-section"],
-    "pf-testimonials01": ["kluck-ai-testimonials-section"],
-    "pf-product-grid1x1": ["kluck-ai-tabbed-grid-section"],
-    "marquee-scrolling-banner": ["kluck-ai-marquee-section-2"],
-    "pf-split-feature": ["kluck-ai-image-with-text-3-section"],
+    "pf-k-hero-peek-slider": ["roarr-home-hero-section"],
+    "pf-inline-headline": ["roarr-headline-section"],
+    "pf-collection-showcase": ["roarr-collection-showcase-section"],
+    "pf-feature-product-section": ["roarr-feature-product-section"],
+    "pf-testimonials01": ["roarr-testimonials-section"],
+    "pf-product-grid1x1": ["roarr-tabbed-grid-section"],
+    "marquee-scrolling-banner": ["roarr-marquee-section-2"],
+    "pf-split-feature": ["roarr-image-with-text-3-section"],
     "pf-trust-badges": [
-        "kluck-ai-trust-badge-2-section",
-        "kluck-ai-trust-badge-section",
+        "roarr-trust-badge-2-section",
+        "roarr-trust-badge-section",
     ],
-    "pf-selected-prod-3in1": ["kluck-ai-product-column-section"],
-    "pf-faq-splitimage": ["kluck-ai-faq-section-home-1"],
+    "pf-selected-prod-3in1": ["roarr-product-column-section"],
+    "pf-faq-splitimage": ["roarr-faq-section-home-1"],
     "pf-custom-new-image-with-text": [
-        "kluck-ai-image-with-text-section",
-        "kluck-ai-image-with-text-1-section",
+        "roarr-image-with-text-section",
+        "roarr-image-with-text-1-section",
     ],
-    "pf-new-features-center-image": ["kluck-ai-features-center-section"],
-    "pf-new-ingreds-features": ["kluck-ai-image-with-text-2-section"],
-    "pf-new-default-product-hero": ["kluck-ai-product-hero-section"],
-    "infinite-marquee": ["kluck-ai-infinite-marquee-section"],
-    "pf-product-lookbook": ["kluck-ai-product-lookbook-section"],
-    "collection-list": ["kluck-ai-collection-list-section"],
-    "pf-cinematic-hero": ["kluck-ai-cinematic-hero", "kluck-ai-home-hero-section"],
-    "pf-cinematic-announcement": ["kluck-ai-cinematic-announcement"],
-    "pf-cinematic-trust": ["kluck-ai-cinematic-trust"],
-    "pf-cinematic-product-story": ["kluck-ai-cinematic-product-story"],
-    "pf-cinematic-inspiration": ["kluck-ai-cinematic-inspiration"],
-    "pf-cinematic-feature-ticker": ["kluck-ai-cinematic-feature-ticker"],
-    "pf-cinematic-why-shop": ["kluck-ai-cinematic-why-shop"],
-    "pf-cinematic-feature-orbit": ["kluck-ai-cinematic-feature-orbit"],
+    "pf-new-features-center-image": ["roarr-features-center-section"],
+    "pf-new-ingreds-features": ["roarr-image-with-text-2-section"],
+    "pf-new-default-product-hero": ["roarr-product-hero-section"],
+    "infinite-marquee": ["roarr-infinite-marquee-section"],
+    "pf-product-lookbook": ["roarr-product-lookbook-section"],
+    "collection-list": ["roarr-collection-list-section"],
+    "pf-cinematic-hero": ["roarr-cinematic-hero", "roarr-home-hero-section"],
+    "pf-cinematic-announcement": ["roarr-cinematic-announcement"],
+    "pf-cinematic-trust": ["roarr-cinematic-trust"],
+    "pf-cinematic-product-story": ["roarr-cinematic-product-story"],
+    "pf-cinematic-inspiration": ["roarr-cinematic-inspiration"],
+    "pf-cinematic-feature-ticker": ["roarr-cinematic-feature-ticker"],
+    "pf-cinematic-why-shop": ["roarr-cinematic-why-shop"],
+    "pf-cinematic-feature-orbit": ["roarr-cinematic-feature-orbit"],
     "pf-cinematic-reviews": [
-        "kluck-ai-cinematic-reviews",
-        "kluck-ai-testimonials-section",
+        "roarr-cinematic-reviews",
+        "roarr-testimonials-section",
     ],
-    "pf-cinematic-faq": ["kluck-ai-cinematic-faq", "kluck-ai-faq-section-home-1"],
-    "pf-cinematic-sticky-bar": ["kluck-ai-cinematic-sticky-bar"],
-    "pf-amour-hero": ["kluck-ai-amour-hero"],
-    "pf-amour-showcase": ["kluck-ai-amour-showcase"],
-    "pf-amour-countdown": ["kluck-ai-amour-countdown"],
-    "pf-amour-lookbook": ["kluck-ai-amour-lookbook"],
-    "pf-amour-ribbons": ["kluck-ai-amour-ribbons"],
-    "pf-amour-split": ["kluck-ai-amour-split"],
-    "pf-amour-editorial": ["kluck-ai-amour-editorial"],
-    "pf-amour-banner": ["kluck-ai-amour-banner"],
-    "pf-amour-story": ["kluck-ai-amour-story"],
-    "pf-amour-reviews": ["kluck-ai-amour-reviews"],
-    "pf-amour-tabs": ["kluck-ai-amour-tabs"],
-    "pf-amour-promise": ["kluck-ai-amour-promise"],
-    "pf-amour-gallery": ["kluck-ai-amour-gallery"],
+    "pf-cinematic-faq": ["roarr-cinematic-faq", "roarr-faq-section-home-1"],
+    "pf-cinematic-sticky-bar": ["roarr-cinematic-sticky-bar"],
+    "pf-amour-hero": ["roarr-amour-hero"],
+    "pf-amour-showcase": ["roarr-amour-showcase"],
+    "pf-amour-countdown": ["roarr-amour-countdown"],
+    "pf-amour-lookbook": ["roarr-amour-lookbook"],
+    "pf-amour-ribbons": ["roarr-amour-ribbons"],
+    "pf-amour-split": ["roarr-amour-split"],
+    "pf-amour-editorial": ["roarr-amour-editorial"],
+    "pf-amour-banner": ["roarr-amour-banner"],
+    "pf-amour-story": ["roarr-amour-story"],
+    "pf-amour-reviews": ["roarr-amour-reviews"],
+    "pf-amour-tabs": ["roarr-amour-tabs"],
+    "pf-amour-promise": ["roarr-amour-promise"],
+    "pf-amour-gallery": ["roarr-amour-gallery"],
 }
 
 
@@ -4981,7 +5078,7 @@ def _apply_section_colors_to_live_theme(
 ):
     """
     Write home_page.section_colors into:
-      1) config/settings_data.json color_schemes (scheme-kluck-*)
+      1) config/settings_data.json color_schemes (scheme-roarr-*)
       2) templates/index.json section settings.color_scheme / *_color_scheme
     """
     section_report = {"schemes_added": [], "sections_updated": []}
@@ -4998,9 +5095,9 @@ def _apply_section_colors_to_live_theme(
         )
 
     # Live colors only render if the font/color snippet emits CSS for
-    # scheme-kluck-* (not just scheme-1 / scheme-2).
+    # scheme-roarr-* (not just scheme-1 / scheme-2).
     try:
-        _force_reupload_kluck_color_snippet(user_id, theme_id)
+        _force_reupload_roarr_color_snippet(user_id, theme_id)
     except Exception as snip_err:
         logger.warning(
             "section_colors: color snippet reupload skipped: %s", snip_err
@@ -5090,7 +5187,7 @@ def _apply_section_colors_to_live_theme(
         for section_key, color_raw in section_colors.items():
             slot_overrides = {}
             if isinstance(color_raw, str):
-                btn = _valid_hex_color_for_kluck(color_raw)
+                btn = _valid_hex_color_for_roarr(color_raw)
                 if btn:
                     slot_overrides["color_scheme"] = {
                         "primary_button_background": btn
@@ -5111,18 +5208,18 @@ def _apply_section_colors_to_live_theme(
                             continue
                         cleaned = {}
                         for fk, fv in fields.items():
-                            hx = _valid_hex_color_for_kluck(fv)
+                            hx = _valid_hex_color_for_roarr(fv)
                             if hx:
                                 cleaned[str(fk)] = hx
                         if cleaned:
                             slot_overrides[str(slot_key)] = cleaned
                 else:
                     cleaned = {}
-                    bg = _valid_hex_color_for_kluck(color_raw.get("background"))
-                    btn = _valid_hex_color_for_kluck(
+                    bg = _valid_hex_color_for_roarr(color_raw.get("background"))
+                    btn = _valid_hex_color_for_roarr(
                         color_raw.get("button") or color_raw.get("accent")
                     )
-                    tx = _valid_hex_color_for_kluck(color_raw.get("text"))
+                    tx = _valid_hex_color_for_roarr(color_raw.get("text"))
                     if bg:
                         cleaned["background"] = bg
                     if btn:
@@ -5154,9 +5251,9 @@ def _apply_section_colors_to_live_theme(
                     .replace(" ", "-")[:24]
                 )
                 if slot_key in ("color_scheme", "section_color_scheme"):
-                    scheme_id = f"scheme-kluck-{slug}"
+                    scheme_id = f"scheme-roarr-{slug}"
                 else:
-                    scheme_id = f"scheme-kluck-{slug}-{slot_slug or 'slot'}"
+                    scheme_id = f"scheme-roarr-{slug}-{slot_slug or 'slot'}"
 
                 accent = (
                     fields.get("primary_button_background")
@@ -5219,12 +5316,10 @@ def _apply_section_colors_to_live_theme(
         settings_data_out = json.dumps(
             settings_data_json, ensure_ascii=False, indent=2
         )
-        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=True) as tmp:
-            tmp.write(settings_data_out)
-            tmp.flush()
+        with _temp_asset_file(settings_data_out, ".json") as tmp_path:
             reupload = shopify_utils.update_theme_asset(
                 theme_id=theme_id,
-                file_path=str(tmp.name),
+                file_path=tmp_path,
                 asset_key=settings_data_key,
                 user_id=user_id,
             )
@@ -5300,9 +5395,9 @@ def _apply_section_colors_to_live_theme(
                                     touched = True
 
                                 # Amour chrome reads accent_color (--a-wine).
-                                if str(stype).startswith("kluck-ai-amour-"):
+                                if str(stype).startswith("roarr-amour-"):
                                     accent_for_section = (
-                                        _valid_hex_color_for_kluck(
+                                        _valid_hex_color_for_roarr(
                                             accent_fallback
                                         )
                                         or "#6B0808"
@@ -5318,14 +5413,10 @@ def _apply_section_colors_to_live_theme(
                             index_out = json.dumps(
                                 index_json, ensure_ascii=False, indent=2
                             )
-                            with tempfile.NamedTemporaryFile(
-                                "w", suffix=".json", delete=True
-                            ) as tmp:
-                                tmp.write(index_out)
-                                tmp.flush()
+                            with _temp_asset_file(index_out, ".json") as tmp_path:
                                 index_up = shopify_utils.update_theme_asset(
                                     theme_id=theme_id,
-                                    file_path=str(tmp.name),
+                                    file_path=tmp_path,
                                     asset_key=index_key,
                                     user_id=user_id,
                                 )
@@ -5355,7 +5446,7 @@ def _apply_section_colors_to_live_theme(
         }
 
 
-def _patch_kluck_theme_style_settings(user_id, theme_id, data, generation_data=None):
+def _patch_roarr_theme_style_settings(user_id, theme_id, data, generation_data=None):
     """
     Patch live theme config/settings_data.json with Roarr fonts + accent color schemes.
     Mirrors publish-store settings_data step so Edit generation → Save updates the online store.
@@ -5396,14 +5487,14 @@ def _patch_kluck_theme_style_settings(user_id, theme_id, data, generation_data=N
         )
 
         schema_heading_default = (
-            _map_font_for_kluck_settings(heading_font) or "barlow_condensed_n4"
+            _map_font_for_roarr_settings(heading_font) or "barlow_condensed_n4"
         )
         schema_body_default = (
-            _map_font_for_kluck_settings(body_font) or "barlow_n4"
+            _map_font_for_roarr_settings(body_font) or "barlow_n4"
         )
 
         schema_color_default = (
-            _pick_kluck_accent_color(
+            _pick_roarr_accent_color(
                 data,
                 style_preferences_payload,
                 magic_style,
@@ -5457,8 +5548,8 @@ def _patch_kluck_theme_style_settings(user_id, theme_id, data, generation_data=N
             current = {}
             settings_data_json["current"] = current
 
-        current["kluck_heading_font"] = schema_heading_default
-        current["kluck_body_font"] = schema_body_default
+        current["roarr_heading_font"] = schema_heading_default
+        current["roarr_body_font"] = schema_body_default
         current["color_scheme"] = schema_color_default
 
         color_schemes = current.get("color_schemes")
@@ -5545,12 +5636,10 @@ def _patch_kluck_theme_style_settings(user_id, theme_id, data, generation_data=N
         settings_data_out = json.dumps(
             settings_data_json, ensure_ascii=False, indent=2
         )
-        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=True) as tmp:
-            tmp.write(settings_data_out)
-            tmp.flush()
+        with _temp_asset_file(settings_data_out, ".json") as tmp_path:
             settings_data_upload_result = shopify_utils.update_theme_asset(
                 theme_id=theme_id,
-                file_path=str(tmp.name),
+                file_path=tmp_path,
                 asset_key=settings_data_key,
                 user_id=user_id,
             )
@@ -5652,14 +5741,14 @@ def update_publish_store():
             if isinstance(magic_response, dict) and magic_response
             else (generated_page.get("generation_data") or {})
         )
-        report["steps"]["theme_settings"] = _patch_kluck_theme_style_settings(
+        report["steps"]["theme_settings"] = _patch_roarr_theme_style_settings(
             user_id=user_id,
             theme_id=theme_id,
             data=data,
             generation_data=style_source if isinstance(style_source, dict) else None,
         )
 
-        # Shop metafield kluck_ai.store_generation + optional DynamoDB (mirrors publish-store / update-publish-page)
+        # Shop metafield roarr.store_generation + optional DynamoDB (mirrors publish-store / update-publish-page)
         if page_id or (isinstance(magic_response, dict) and magic_response):
             generation_data = None
             # Deep copy so uploads + Shopify GIDs in home_page.images apply only to metafield payload,
@@ -5702,7 +5791,7 @@ def update_publish_store():
                             ext = image_url.split("?")[0].split(".")[-1]
                             if not ext or len(ext) > 6:
                                 ext = "jpg"
-                            filename = f"kluck_ai_store_{image_key}.{ext}"
+                            filename = f"roarr_store_{image_key}.{ext}"
                             upload_result = shopify_utils.upload_image_to_shopify(
                                 image_url=image_url,
                                 filename=filename,
@@ -5746,7 +5835,7 @@ def update_publish_store():
                             )
                             try:
                                 shopify_utils.set_shop_metafield(
-                                    namespace="kluck_ai",
+                                    namespace="roarr",
                                     key=safe_key,
                                     mtype="file_reference",
                                     value=file_id,
@@ -5785,7 +5874,7 @@ def update_publish_store():
 
                     time.sleep(0.15)
                     metafield_result = shopify_utils.set_shop_metafield(
-                        namespace="kluck_ai",
+                        namespace="roarr",
                         key="store_generation",
                         mtype="json",
                         value=value_str,
@@ -5794,7 +5883,7 @@ def update_publish_store():
                     report["steps"]["shop_metafield"] = metafield_result
                     if metafield_result.get("success"):
                         logger.info(
-                            f"✅ update-publish-store: saved kluck_ai.store_generation (page_id={page_id})"
+                            f"✅ update-publish-store: saved roarr.store_generation (page_id={page_id})"
                         )
                 except Exception as mf_err:
                     logger.error(
@@ -6377,8 +6466,8 @@ def publish_generated_content():
             if template_suffix and publish_report["steps"].get("template", {}).get(
                 "success"
             ):
-                page_update["kluck_template_suffix"] = template_suffix
-            if selected_template in (1, 2, 3, 4):
+                page_update["roarr_template_suffix"] = template_suffix
+            if selected_template in (1, 2, 3, 4, 5, 6):
                 page_update["selectedTemplate"] = selected_template
                 page_update["template"] = f"template_{selected_template}"
             document_store.update_generated_page(**page_update)
@@ -6572,7 +6661,7 @@ def generate_preview_link():
                     400,
                 )
 
-            # Template suffix for preview: use category + selectedTemplate (e.g. kluck-health-beauty-1)
+            # Template suffix for preview: use category + selectedTemplate (e.g. roarr-health-beauty-1)
             selected_template = _parse_template_number(
                 generated_page.get("selectedTemplate")
             )
@@ -6609,7 +6698,7 @@ def generate_preview_link():
             if (
                 should_use_generated_template
                 and isinstance(live_template_suffix, str)
-                and live_template_suffix.strip().startswith("kluck-")
+                and live_template_suffix.strip().startswith("roarr-")
             ):
                 preview_template_suffix = live_template_suffix.strip()
             # Extract theme ID (handle both numeric and GID formats)

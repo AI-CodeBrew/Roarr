@@ -3,7 +3,7 @@
 Generate Amour homepage demo images for every store category (all 12 slots),
 using the category-aware templated prompts (kids/fashion bright; beauty dark).
 
-Uploads to the public Zambeel S3 bucket and writes a JSON manifest. Paste the
+Uploads to the Roarr Bunny storage zone and writes a JSON manifest. Paste the
 manifest into frontend/.../home-data.js → AMOUR_HOME_IMAGES_BY_CATEGORY
 (keeping each category's existing product_base_image as the reference).
 
@@ -58,32 +58,32 @@ CATEGORY_REFERENCES = {
     "health_beauty": {
         "title": "Noir Rose Eau de Parfum",
         "description": "A dark glass perfume bottle with rose-gold accents and a soft floral scent.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3e293a6f_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "fashion": {
         "title": "Bordeaux Leather Crossbody Bag",
         "description": "A structured leather crossbody bag with polished hardware.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a24f68bd_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "home_kitchen": {
         "title": "Amber Glow Soy Candle",
         "description": "A soy candle in an amber glass jar with a warm wooden lid.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/10fac164_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "kids_toys": {
         "title": "Twirling Ballerina Music Box",
         "description": "A pastel music box with a twirling ballerina figure.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/74192ec1_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "car_accessories": {
         "title": "Aura Car Vent Diffuser",
         "description": "A compact car vent fragrance diffuser with a clean modern finish.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8d681d84_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "general": {
         "title": "Heritage Leather Strap Watch",
         "description": "A classic wristwatch with a leather strap and minimal dial.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/eb7e5688_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
 }
 

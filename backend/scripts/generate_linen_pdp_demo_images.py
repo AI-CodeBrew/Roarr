@@ -41,37 +41,37 @@ CATEGORY_REFERENCES = {
     "kids_toys": {
         "title": "Snuggly Bunny plush",
         "description": "A soft fluffy cream plush bunny toy for children.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ae324494_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a sunny child's bedroom with a soft rug and wooden toys",
     },
     "general": {
         "title": "smart fingerprint padlock",
         "description": "A compact black smart padlock with a fingerprint reader.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1a60ba8b_zambeel_ai_generated_image.png",
+        "reference": "",
         "place": "a gym locker and outdoor gate setting with natural daylight",
     },
     "fashion": {
         "title": "classic plaid flannel shirt",
         "description": "A soft cotton plaid flannel shirt in classic earth tones.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/93d23377_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a lived-in bedroom with a wooden chair and warm window light",
     },
     "health_beauty": {
         "title": "glossy lip balm",
         "description": "A small buttery lip balm tube with a soft glossy finish.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fde2d960_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a bright vanity with marble, a mirror, and soft morning light",
     },
     "home_kitchen": {
         "title": "display bookshelf",
         "description": "A sturdy open display bookshelf for books and decor.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/93739898_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a real living room with books, a plant, and afternoon light",
     },
     "car_accessories": {
         "title": "emergency window breaker and seatbelt cutter",
         "description": "A compact car safety tool with a window breaker and seatbelt cutter.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5f3b8df1_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a modern car cabin and center console in daylight",
     },
 }

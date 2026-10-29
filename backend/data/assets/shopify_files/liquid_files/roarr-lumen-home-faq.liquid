@@ -1,0 +1,75 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign heading = section.settings.heading | default: 'Good to know' -%}
+<section class="lmk-faq">
+  <div class="lmk-faq__inner">
+    <h2 class="lmk-faq__heading">{{ heading }}</h2>
+    <div class="lmk-faq__list">
+      {%- for i in (1..3) -%}
+        {%- assign q_key = 'faq_question_' | append: i -%}
+        {%- assign a_key = 'faq_answer_' | append: i -%}
+        {%- if ht[q_key] != blank -%}
+          <details class="lmk-faq__item"{% if forloop.first %} open{% endif %}>
+            <summary>{{ ht[q_key] }}</summary>
+            <p>{{ ht[a_key] }}</p>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>
+  .lmk-faq { background: #F6F1EA; color: #2B2320; font-family: "Jost", sans-serif; padding: clamp(56px, 8vw, 112px) 0; }
+  .lmk-faq *, .lmk-faq *::before, .lmk-faq *::after { box-sizing: border-box; }
+  .lmk-faq__inner { width: min(860px, calc(100% - 48px)); margin: 0 auto; }
+  .lmk-faq__heading { margin: 0 0 clamp(24px, 3vw, 40px); text-align: center; font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: clamp(28px, 3vw, 38px); line-height: 1.15; }
+  .lmk-faq__list { border-top: 1px solid #D9CFC2; }
+  .lmk-faq__item { border-bottom: 1px solid #D9CFC2; }
+  .lmk-faq__item summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 60px; font-family: "Cormorant Garamond", serif; font-size: 21px; font-weight: 500; }
+  .lmk-faq__item summary::-webkit-details-marker { display: none; }
+  .lmk-faq__item summary::after { content: "+"; flex: none; font-family: "Jost", sans-serif; font-size: 20px; font-weight: 300; }
+  .lmk-faq__item[open] > summary::after { content: "\2013"; }
+  .lmk-faq__item p { margin: 0; padding-bottom: 22px; font-size: 15px; line-height: 1.7; color: #6B5F58; }
+  @media (max-width: 749px) { .lmk-faq__inner { width: calc(100% - 32px); } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--lumen" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Jost", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Cormorant Garamond", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Lumenook FAQ",
+  "tag": "section",
+  "class": "roarr-lumen-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Good to know"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Roarr Lumenook FAQ"
+    }
+  ]
+}
+{% endschema %}

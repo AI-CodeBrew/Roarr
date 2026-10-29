@@ -1,0 +1,346 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign tag = m.frost_tag.value | default: m.frost_tag -%}
+{%- assign subtitle = m.product_subtitle.value | default: m.product_subtitle -%}
+{%- assign price_note = m.frost_price_note.value | default: m.frost_price_note | default: 'Taxes included. Shipping calculated at checkout.' -%}
+{%- assign delivery = m.delivery_line.value | default: m.delivery_line | default: 'Order today and it ships within 1 to 2 working days.' -%}
+{%- assign c1 = m.frost_chip_1.value | default: m.frost_chip_1 | default: 'Thoughtfully designed' -%}
+{%- assign c2 = m.frost_chip_2.value | default: m.frost_chip_2 | default: 'Built to last' -%}
+{%- assign c3 = m.frost_chip_3.value | default: m.frost_chip_3 | default: 'Easy every day' -%}
+{%- assign t1 = m.badge_text_1.value | default: m.badge_text_1 | default: '2-year warranty' -%}
+{%- assign t2 = m.badge_text_2.value | default: m.badge_text_2 | default: '30-day returns' -%}
+{%- assign t3 = m.badge_text_3.value | default: m.badge_text_3 | default: 'Secure checkout' -%}
+{%- assign a1_title = m.frost_acc_1_title.value | default: m.frost_acc_1_title | default: 'Overview' -%}
+{%- assign a1_body = m.frost_acc_1_body.value | default: m.frost_acc_1_body -%}
+{%- assign a2_title = m.frost_acc_2_title.value | default: m.frost_acc_2_title | default: "What's included" -%}
+{%- assign a2_body = m.frost_acc_2_body.value | default: m.frost_acc_2_body -%}
+{%- assign a3_title = m.frost_acc_3_title.value | default: m.frost_acc_3_title | default: 'Shipping & Returns' -%}
+{%- assign a3_body = m.frost_acc_3_body.value | default: m.frost_acc_3_body -%}
+{%- assign img1 = m.product_image_1.value | default: m.product_image_1 -%}
+{%- assign img2 = m.product_image_2.value | default: m.product_image_2 -%}
+{%- assign img3 = m.product_image_3.value | default: m.product_image_3 -%}
+{%- assign img4 = m.product_image_4.value | default: m.product_image_4 -%}
+{%- assign img5 = m.product_image_5.value | default: m.product_image_5 -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign shots = 0 -%}
+{%- if product.media.size > 0 -%}
+  {%- assign shots = product.media.size | at_most: 6 -%}
+  {%- assign main = product.media.first.preview_image | default: product.media.first -%}
+{%- else -%}
+  {%- assign main = img1 -%}
+  {%- if img1 != blank -%}{%- assign shots = shots | plus: 1 -%}{%- endif -%}
+  {%- if img2 != blank -%}{%- assign shots = shots | plus: 1 -%}{%- endif -%}
+  {%- if img3 != blank -%}{%- assign shots = shots | plus: 1 -%}{%- endif -%}
+  {%- if img4 != blank -%}{%- assign shots = shots | plus: 1 -%}{%- endif -%}
+  {%- if img5 != blank -%}{%- assign shots = shots | plus: 1 -%}{%- endif -%}
+{%- endif -%}
+<section class="fr-hero" id="fr-hero">
+  <div class="fr-hero__grid">
+    <div class="fr-hero__media">
+      {%- if shots > 1 -%}
+      <div class="fr-hero__thumbs">
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media limit: 6 -%}
+            {%- assign src = media.preview_image | default: media -%}
+            <button type="button" class="fr-hero__thumb{% if forloop.first %} is-on{% endif %}" aria-label="{{ product.title | escape }} {{ forloop.index }}"><img src="{{ src | image_url: width: 200 }}" alt=""></button>
+          {%- endfor -%}
+        {%- else -%}
+          {%- if img1 != blank -%}<button type="button" class="fr-hero__thumb is-on" aria-label="{{ product.title | escape }} 1"><img src="{{ img1 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img2 != blank -%}<button type="button" class="fr-hero__thumb" aria-label="{{ product.title | escape }} 2"><img src="{{ img2 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img3 != blank -%}<button type="button" class="fr-hero__thumb" aria-label="{{ product.title | escape }} 3"><img src="{{ img3 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img4 != blank -%}<button type="button" class="fr-hero__thumb" aria-label="{{ product.title | escape }} 4"><img src="{{ img4 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img5 != blank -%}<button type="button" class="fr-hero__thumb" aria-label="{{ product.title | escape }} 5"><img src="{{ img5 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+        {%- endif -%}
+      </div>
+      {%- endif -%}
+      <div class="fr-hero__stage" data-fr-stage>
+        <div class="fr-hero__track" data-fr-track>
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media limit: 6 -%}
+              {%- assign src = media.preview_image | default: media -%}
+              <div class="fr-hero__slide"><img src="{{ src | image_url: width: 1600 }}" alt="{{ product.title | escape }}"{% unless forloop.first %} loading="lazy"{% endunless %} draggable="false"></div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- if img1 != blank -%}<div class="fr-hero__slide"><img src="{{ img1 | image_url: width: 1600 }}" alt="{{ product.title | escape }}" draggable="false"></div>{%- endif -%}
+            {%- if img2 != blank -%}<div class="fr-hero__slide"><img src="{{ img2 | image_url: width: 1600 }}" alt="{{ product.title | escape }}" loading="lazy" draggable="false"></div>{%- endif -%}
+            {%- if img3 != blank -%}<div class="fr-hero__slide"><img src="{{ img3 | image_url: width: 1600 }}" alt="{{ product.title | escape }}" loading="lazy" draggable="false"></div>{%- endif -%}
+            {%- if img4 != blank -%}<div class="fr-hero__slide"><img src="{{ img4 | image_url: width: 1600 }}" alt="{{ product.title | escape }}" loading="lazy" draggable="false"></div>{%- endif -%}
+            {%- if img5 != blank -%}<div class="fr-hero__slide"><img src="{{ img5 | image_url: width: 1600 }}" alt="{{ product.title | escape }}" loading="lazy" draggable="false"></div>{%- endif -%}
+          {%- endif -%}
+        </div>
+        {%- if shots > 1 -%}
+          <button type="button" class="fr-hero__arrow fr-hero__arrow--prev" data-fr-prev aria-label="Previous image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button type="button" class="fr-hero__arrow fr-hero__arrow--next" data-fr-next aria-label="Next image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        {%- endif -%}
+        {%- if tag != blank -%}<p class="fr-hero__chip"><span class="fr-hero__chip-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.9 6.5l14.2 11M19.1 6.5L4.9 17.5"/><path d="M9.5 3.5L12 6l2.5-2.5M9.5 20.5L12 18l2.5 2.5"/></svg></span>{{ tag }}</p>{%- endif -%}
+        {%- if shots > 1 -%}<p class="fr-hero__count" aria-hidden="true"><span data-fr-index>01</span><i></i>{% if shots < 10 %}0{% endif %}{{ shots }}</p>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="fr-hero__card">
+      <div class="fr-hero__top">
+        {%- if product.type != blank -%}<p class="fr-hero__type">{{ product.type }}</p>{%- endif -%}
+        {%- if product.compare_at_price > product.price -%}
+          {%- assign saving = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round -%}
+          <p class="fr-save">-{{ saving }}%</p>
+        {%- endif -%}
+      </div>
+      <h1 class="fr-hero__title">{{ product.title }}</h1>
+      {%- if subtitle != blank -%}<p class="fr-hero__subtitle">{{ subtitle }}</p>{%- endif -%}
+      <div class="fr-hero__price">
+        <strong>{{ product.price | money }}</strong>
+        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+      </div>
+      {%- if price_note != blank -%}<p class="fr-hero__note">{{ price_note }}</p>{%- endif -%}
+      <ul class="fr-hero__chips" role="list">
+        <li><span class="fr-hero__check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>{{ c1 }}</li>
+        <li><span class="fr-hero__check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>{{ c2 }}</li>
+        <li><span class="fr-hero__check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>{{ c3 }}</li>
+      </ul>
+      <div id="fr-form" class="fr-hero__form">
+        {%- if product.variants.size > 1 -%}
+          <label class="fr-hero__label" for="fr-variant-{{ section.id }}">{{ product.options | join: ' / ' }}</label>
+          <select class="fr-hero__select" id="fr-variant-{{ section.id }}" name="id">
+            {%- for v in product.variants -%}
+              <option value="{{ v.id }}"{% if v.id == variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }} · {{ v.price | money }}</option>
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ variant.id }}">
+        {%- endif -%}
+        <div class="fr-hero__buy" data-fr-buy>
+          <div class="fr-hero__qty">
+            <button type="button" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+            <input type="hidden" name="quantity" value="1" data-qty-input>
+            <b data-qty>1</b>
+            <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
+          </div>
+          <button class="fr-btn" type="button"{% if variant.available == false %} disabled{% endif %}>{%- if variant.available != false -%}{% render 'snippets/roarr-ui-string', key: 'add_to_cart' %}{%- else -%}{% render 'snippets/roarr-ui-string', key: 'sold_out' %}{%- endif -%}</button>
+        </div>
+        <div class="fr-checkout"><button class="fr-buynow" type="button">Buy it now</button></div>
+      </div>
+      <div class="fr-hero__delivery"><span class="fr-hero__delivery-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg></span><p>{{ delivery }}</p></div>
+      <ul class="fr-hero__trust" role="list">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>{{ t1 }}</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg><span>{{ t2 }}</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><span>{{ t3 }}</span></li>
+      </ul>
+      <div class="fr-hero__accordions">
+        {%- if product.description != blank or a1_body != blank -%}
+          <details class="fr-acc">
+            <summary>{{ a1_title }}</summary>
+            <div class="fr-acc__body">{%- if product.description != blank -%}{{ product.description }}{%- else -%}<p>{{ a1_body }}</p>{%- endif -%}</div>
+          </details>
+        {%- endif -%}
+        {%- if a2_body != blank -%}<details class="fr-acc"><summary>{{ a2_title }}</summary><div class="fr-acc__body"><p>{{ a2_body }}</p></div></details>{%- endif -%}
+        {%- if a3_body != blank -%}<details class="fr-acc"><summary>{{ a3_title }}</summary><div class="fr-acc__body"><p>{{ a3_body }}</p></div></details>{%- endif -%}
+      </div>
+    </div>
+  </div>
+  <div class="fr-dock" data-fr-sticky aria-hidden="true">
+    {%- if main != blank -%}<img class="fr-dock__img" src="{{ main | image_url: width: 120 }}" alt="">{%- endif -%}
+    <div class="fr-dock__info"><strong>{{ product.title }}</strong><span class="fr-dock__price">{{ product.price | money }}</span></div>
+    <button class="fr-dock__btn" type="button" form="fr-form" tabindex="-1"{% if variant.available == false %} disabled{% endif %}>{%- if variant.available != false -%}{% render 'snippets/roarr-ui-string', key: 'add_to_cart' %}{%- else -%}{% render 'snippets/roarr-ui-string', key: 'sold_out' %}{%- endif -%}</button>
+  </div>
+</section>
+<style>
+  .fr-hero { --fr-white: #FFFFFF; --fr-mist: #F3F6FA; --fr-ice: #E7EEFB; --fr-line: #E2E7EF; --fr-ink: #0B1324; --fr-muted: #586377; --fr-blue: #2F5BFF; --fr-blue-dark: #1C3CD6; --fr-blue-soft: #E8EEFF; --fr-night: #0A0F1E; --font-heading-family: "Plus Jakarta Sans", sans-serif; --font-body-family: "Plus Jakarta Sans", sans-serif; background: linear-gradient(180deg, var(--fr-mist) 0%, #FFFFFF 100%); color: var(--fr-ink); font-family: "Plus Jakarta Sans", sans-serif; padding: clamp(20px, 3vw, 48px) 0 clamp(48px, 6vw, 96px); }
+  .fr-hero *, .fr-hero *::before, .fr-hero *::after { box-sizing: border-box; }
+  .fr-hero__grid { width: min(1320px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr); gap: clamp(24px, 3.4vw, 56px); align-items: start; }
+  .fr-hero__media { position: sticky; top: 24px; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 14px; align-items: start; }
+  .fr-hero__media:not(:has(.fr-hero__thumbs)) { grid-template-columns: minmax(0, 1fr); }
+  .fr-hero__thumbs { position: relative; display: flex; flex-direction: column; gap: 10px; max-height: 252px; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; padding: 2px; margin: -2px; }
+  .fr-hero__thumbs::-webkit-scrollbar { display: none; }
+  .fr-hero__thumb { flex: none; scroll-snap-align: start; padding: 0; border: 2px solid transparent; border-radius: 18px; background: var(--fr-white); cursor: pointer; line-height: 0; overflow: hidden; box-shadow: 0 4px 14px rgb(11 19 36 / .07); transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease; }
+  .fr-hero__thumb:hover { transform: translateY(-2px); }
+  .fr-hero__thumb.is-on { border-color: var(--fr-blue); box-shadow: 0 0 0 4px rgb(47 91 255 / .14), 0 8px 20px rgb(47 91 255 / .18); }
+  .fr-hero__thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .fr-hero__stage { position: relative; aspect-ratio: 1; border-radius: 36px; overflow: hidden; background: var(--fr-ice); box-shadow: 0 40px 90px rgb(11 19 36 / .10); }
+  .fr-hero__track { display: flex; height: 100%; touch-action: pan-y; cursor: grab; transition: transform 480ms cubic-bezier(.2, .8, .2, 1); }
+  .fr-hero__track.is-dragging { cursor: grabbing; transition: none; }
+  .fr-hero__slide { flex: 0 0 100%; height: 100%; }
+  .fr-hero__slide img { width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; -webkit-user-drag: none; }
+  .fr-hero__arrow { position: absolute; top: 50%; z-index: 2; width: 46px; height: 46px; display: grid; place-items: center; padding: 0; border: 1px solid rgb(255 255 255 / .85); border-radius: 50%; background: rgb(255 255 255 / .78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: var(--fr-ink); cursor: pointer; box-shadow: 0 10px 24px rgb(11 19 36 / .12); transform: translateY(-50%); opacity: 0; transition: opacity 200ms ease, background 200ms ease, transform 200ms ease; }
+  .fr-hero__arrow--prev { left: 16px; }
+  .fr-hero__arrow--next { right: 16px; }
+  .fr-hero__stage:hover .fr-hero__arrow, .fr-hero__arrow:focus-visible { opacity: 1; }
+  .fr-hero__arrow:hover { background: #FFFFFF; transform: translateY(-50%) scale(1.06); }
+  .fr-hero__arrow:focus-visible { outline: 2px solid var(--fr-blue); outline-offset: 2px; }
+  @media (hover: none) { .fr-hero__arrow { opacity: 1; } }
+  .fr-hero__chip { position: absolute; left: 20px; bottom: 20px; display: inline-flex; align-items: center; gap: 10px; margin: 0; padding: 8px 16px 8px 8px; border: 1px solid rgb(255 255 255 / .85); border-radius: 999px; background: rgb(255 255 255 / .72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 12px 30px rgb(11 19 36 / .12); font-size: 14px; font-weight: 700; color: var(--fr-ink); }
+  .fr-hero__chip .fr-hero__chip-icon { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: var(--fr-blue); color: #FFFFFF; }
+  .fr-hero__count { position: absolute; top: 20px; right: 20px; display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 7px 14px; border-radius: 999px; background: rgb(255 255 255 / .72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); font-size: 12px; font-weight: 800; letter-spacing: .06em; font-variant-numeric: tabular-nums; color: var(--fr-ink); }
+  .fr-hero__count span { font-size: 12px; font-weight: 800; }
+  .fr-hero__count i { width: 18px; height: 1.5px; background: currentColor; opacity: .35; }
+  .fr-hero__card { display: grid; gap: 20px; padding: clamp(24px, 2.8vw, 40px); background: var(--fr-white); border: 1px solid rgb(226 231 239 / .8); border-radius: 32px; box-shadow: 0 30px 80px rgb(11 19 36 / .07); }
+  .fr-hero__top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .fr-hero__top:empty { display: none; }
+  .fr-hero__type { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--fr-muted); }
+  .fr-save { margin: 0 0 0 auto; padding: 5px 11px; border-radius: 999px; background: var(--fr-blue); color: #FFFFFF; font-size: 12px; font-weight: 800; }
+  .fr-hero__title { margin: -4px 0 0; font-weight: 800; font-size: clamp(36px, 3.6vw, 56px); line-height: 1; letter-spacing: -0.045em; text-wrap: balance; }
+  .fr-hero__subtitle { margin: -4px 0 0; font-size: 16px; line-height: 1.6; color: var(--fr-muted); }
+  .fr-hero__price { display: flex; gap: 12px; align-items: baseline; }
+  .fr-hero__price strong { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; }
+  .fr-hero__price s { color: var(--fr-muted); font-size: 16px; }
+  .fr-hero__note { margin: -16px 0 0; font-size: 12px; color: var(--fr-muted); }
+  .fr-hero__chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+  .fr-hero__chips li { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px 7px 7px; border: 1px solid var(--fr-line); border-radius: 999px; background: var(--fr-mist); font-size: 13px; font-weight: 600; }
+  .fr-hero__chips .fr-hero__check { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: var(--fr-blue); color: #FFFFFF; }
+  .fr-hero__form { display: grid; gap: 12px; }
+  .fr-hero__label { font-size: 13px; font-weight: 700; color: var(--fr-muted); }
+  .fr-hero__select { width: 100%; min-height: 54px; padding: 0 16px; border: 1px solid var(--fr-line); border-radius: 16px; background: var(--fr-mist); font: inherit; font-size: 15px; color: var(--fr-ink); }
+  .fr-hero__buy { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; }
+  .fr-hero__qty { display: inline-flex; align-items: center; border: 1px solid var(--fr-line); border-radius: 999px; background: var(--fr-mist); padding: 0 4px; }
+  .fr-hero__qty button, .fr-hero__qty b { width: 42px; height: 56px; display: grid; place-items: center; font-weight: 700; }
+  .fr-hero__qty button { border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 18px; color: inherit; }
+  .fr-hero .fr-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 58px; padding: 0 34px; border: 0; border-radius: 999px; background: linear-gradient(180deg, #4D74FF 0%, var(--fr-blue) 55%, var(--fr-blue-dark) 100%); color: #FFFFFF; font: 700 15px "Plus Jakarta Sans", sans-serif; text-decoration: none; cursor: pointer; box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), 0 14px 30px rgb(47 91 255 / .32); transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease; }
+  .fr-hero .fr-btn:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), 0 18px 36px rgb(47 91 255 / .38); }
+  .fr-hero .fr-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .fr-checkout .shopify-payment-button__button { min-height: 58px; border-radius: 999px; font-family: "Plus Jakarta Sans", sans-serif; }
+  .fr-checkout .shopify-payment-button__button--unbranded, .fr-buynow { width: 100%; min-height: 58px; border-radius: 999px; cursor: pointer; background: var(--fr-white); color: var(--fr-ink); border: 1.5px solid var(--fr-ink); font: 700 15px "Plus Jakarta Sans", sans-serif; transition: background 200ms ease, color 200ms ease; }
+  .fr-checkout .shopify-payment-button__button--unbranded:hover, .fr-buynow:hover { background: var(--fr-ink); color: #FFFFFF; }
+  .fr-checkout .shopify-payment-button__more-options { color: var(--fr-muted); font-size: 12px; }
+  .fr-hero__delivery { display: flex; gap: 12px; align-items: center; padding: 12px 16px 12px 12px; border-radius: 18px; background: linear-gradient(135deg, var(--fr-blue-soft), #F7F9FF); }
+  .fr-hero__delivery .fr-hero__delivery-icon { flex: none; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; background: var(--fr-white); color: var(--fr-blue); box-shadow: 0 4px 12px rgb(47 91 255 / .12); }
+  .fr-hero__delivery p { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.45; color: var(--fr-ink); }
+  .fr-hero__trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
+  .fr-hero__trust li { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--fr-muted); }
+  .fr-hero__trust li span { font-size: 12px; font-weight: 600; }
+  .fr-hero__trust svg { flex: none; color: var(--fr-blue); }
+  .fr-hero__accordions { border-top: 1px solid var(--fr-line); }
+  .fr-acc { border-bottom: 1px solid var(--fr-line); }
+  .fr-acc summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 56px; font-size: 15px; font-weight: 700; }
+  .fr-acc summary::-webkit-details-marker { display: none; }
+  .fr-acc summary::after { content: ""; width: 8px; height: 8px; margin-inline-end: 6px; border-right: 2px solid var(--fr-blue); border-bottom: 2px solid var(--fr-blue); transform: rotate(45deg); transition: transform 200ms ease; }
+  .fr-acc[open] > summary::after { transform: rotate(-135deg); }
+  .fr-acc__body { padding-bottom: 18px; font-size: 15px; line-height: 1.65; color: var(--fr-muted); }
+  .fr-acc__body :is(p, li, span, a) { font-size: inherit; }
+  .fr-acc__body p { margin: 0 0 10px; }
+  .fr-dock { position: fixed; left: 50%; bottom: 20px; z-index: 50; display: flex; align-items: center; gap: 14px; width: min(620px, calc(100% - 24px)); padding: 8px 8px 8px 10px; border: 1px solid rgb(226 231 239 / .9); border-radius: 999px; background: rgb(255 255 255 / .86); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 20px 50px rgb(11 19 36 / .16); transform: translate(-50%, 180%); transition: transform 320ms cubic-bezier(.2, .8, .2, 1); }
+  .fr-dock.is-on { transform: translate(-50%, 0); }
+  .fr-dock__img { flex: none; width: 46px; height: 46px; border-radius: 50%; object-fit: cover; background: var(--fr-ice); }
+  .fr-dock__info { display: grid; min-width: 0; flex: 1; }
+  .fr-dock__info strong { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fr-dock__info .fr-dock__price { font-size: 13px; font-weight: 600; color: var(--fr-muted); }
+  .fr-dock__btn { flex: none; min-height: 48px; padding: 0 26px; border: 0; border-radius: 999px; background: var(--fr-blue); color: #FFFFFF; font: 700 14px "Plus Jakarta Sans", sans-serif; cursor: pointer; box-shadow: 0 8px 20px rgb(47 91 255 / .3); }
+  @media (max-width: 989px) {
+    .fr-hero__grid { grid-template-columns: 1fr; width: calc(100% - 32px); gap: 20px; }
+    .fr-hero__media { position: static; grid-template-columns: 1fr; }
+    .fr-hero__stage { border-radius: 28px; }
+    .fr-hero__thumbs { order: 2; flex-direction: row; max-height: none; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; padding: 4px; margin: 0; }
+    .fr-hero__thumb { flex: 0 0 calc((100% - 20px) / 3); }
+  }
+  @media (max-width: 749px) {
+    .fr-hero__trust { grid-template-columns: 1fr; }
+    .fr-dock { bottom: 12px; }
+    .fr-dock__img { display: none; }
+    .fr-dock { padding-left: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fr-dock { transition: none; } }
+</style>
+<script>
+  (function () {
+    var root = document.getElementById("fr-hero");
+    if (!root) return;
+    var stage = root.querySelector("[data-fr-stage]");
+    var track = root.querySelector("[data-fr-track]");
+    var thumbs = root.querySelectorAll(".fr-hero__thumb");
+    var counter = root.querySelector("[data-fr-index]");
+    var total = track ? track.children.length : 0;
+    var current = 0;
+    var rtl = getComputedStyle(root).direction === "rtl";
+    function offset(i) { return (rtl ? 100 : -100) * i + "%"; }
+    function goTo(i) {
+      if (!total) return;
+      current = (i + total) % total;
+      track.style.transform = "translateX(" + offset(current) + ")";
+      thumbs.forEach(function (thumb, n) { thumb.classList.toggle("is-on", n === current); });
+      if (counter) counter.textContent = (current < 9 ? "0" : "") + (current + 1);
+      // Keep the active thumbnail inside the three-thumbnail window without scrolling the page.
+      var active = thumbs[current];
+      var list = active && active.parentElement;
+      if (list) {
+        if (list.scrollWidth > list.clientWidth) list.scrollTo({ left: active.offsetLeft - (list.clientWidth - active.offsetWidth) / 2, behavior: "smooth" });
+        else list.scrollTo({ top: active.offsetTop - (list.clientHeight - active.offsetHeight) / 2, behavior: "smooth" });
+      }
+    }
+    thumbs.forEach(function (thumb, n) {
+      thumb.addEventListener("click", function (event) { event.stopPropagation(); goTo(n); });
+    });
+    var prev = root.querySelector("[data-fr-prev]");
+    var next = root.querySelector("[data-fr-next]");
+    if (prev) prev.addEventListener("click", function (event) { event.stopPropagation(); goTo(current - 1); });
+    if (next) next.addEventListener("click", function (event) { event.stopPropagation(); goTo(current + 1); });
+    if (stage && track && total > 1) {
+      // Drag or swipe the photo left / right; it follows the pointer and snaps to the nearest image.
+      var startX = null;
+      function release(event) {
+        if (startX === null) return;
+        var dx = (event && event.clientX != null ? event.clientX : startX) - startX;
+        startX = null;
+        track.classList.remove("is-dragging");
+        if (Math.abs(dx) > stage.clientWidth * 0.12) goTo(current + ((dx < 0) !== rtl ? 1 : -1));
+        else goTo(current);
+      }
+      stage.addEventListener("pointerdown", function (event) {
+        if (event.target.closest("button")) return;
+        startX = event.clientX;
+        track.classList.add("is-dragging");
+      });
+      window.addEventListener("pointermove", function (event) {
+        if (startX === null) return;
+        track.style.transform = "translateX(calc(" + offset(current) + " + " + (event.clientX - startX) + "px))";
+      });
+      window.addEventListener("pointerup", release);
+      window.addEventListener("pointercancel", function () { release(null); });
+    }
+    root.querySelectorAll(".fr-hero__qty").forEach(function (qty) {
+      var label = qty.querySelector("[data-qty]");
+      var input = qty.querySelector("[data-qty-input]");
+      function setQty(next) {
+        var value = Math.max(1, next);
+        if (label) label.textContent = String(value);
+        if (input) input.value = String(value);
+      }
+      var minus = qty.querySelector("[data-qty-minus]");
+      var plus = qty.querySelector("[data-qty-plus]");
+      if (minus) minus.addEventListener("click", function (event) { event.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) - 1); });
+      if (plus) plus.addEventListener("click", function (event) { event.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) + 1); });
+    });
+    var buy = root.querySelector("[data-fr-buy]");
+    var bar = root.querySelector("[data-fr-sticky]");
+    if (buy && bar) {
+      // Show the dock once the buy buttons have scrolled above the viewport. A scroll check rather than
+      // an IntersectionObserver: a fast fling can jump past the buttons without them ever intersecting.
+      var button = bar.querySelector("button");
+      var queued = false;
+      function update() {
+        queued = false;
+        var show = buy.getBoundingClientRect().bottom < 0;
+        bar.classList.toggle("is-on", show);
+        bar.setAttribute("aria-hidden", show ? "false" : "true");
+        if (button) button.tabIndex = show ? 0 : -1;
+      }
+      window.addEventListener("scroll", function () {
+        if (!queued) { queued = true; window.requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
+    }
+  })();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--frost" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, dt, dd, blockquote, div) { font-family: "Plus Jakarta Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Plus Jakarta Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

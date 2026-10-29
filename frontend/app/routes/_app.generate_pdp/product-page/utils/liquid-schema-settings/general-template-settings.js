@@ -6,8 +6,8 @@
 
 export const GENERAL_TEMPLATE_SETTINGS = {
     1: {
-        /* hero-section: kluck-ai-hero-section - skipped, user will handle */
-        /* text-marquee: kluck-ai-marquee-section-1 */
+        /* hero-section: roarr-hero-section - skipped, user will handle */
+        /* text-marquee: roarr-marquee-section-1 */
         "hero-section": {
             "use_metafields": true,
             "background_color": "#0540be",
@@ -134,7 +134,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             h6_size: 16,
             h6_weight: 500
         },
-        /* text-marquee-2: kluck-ai-marquee-section-2 */
+        /* text-marquee-2: roarr-marquee-section-2 */
         "text-marquee-2": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -172,7 +172,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             h6_size: 16,
             h6_weight: 500
         },
-        /* bento-grid: kluck-ai-empty-section-1 */
+        /* bento-grid: roarr-empty-section-1 */
         "bento-grid": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -220,7 +220,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             cell_3_heading: "",
             cell_3_text: ""
         },
-        /* image-with-text: kluck-ai-empty-section-2 */
+        /* image-with-text: roarr-empty-section-2 */
         "image-with-text": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -259,7 +259,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             subheading_4: "",
             subheading_4_desc: ""
         },
-        /* trust-badges: kluck-ai-trust-badge-section */
+        /* trust-badges: roarr-trust-badge-section */
         "trust-badges": {
             use_metafields: true,
             use_metafield_text: false,
@@ -299,7 +299,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             badge_3_icon: null,
             badge_4_icon: null
         },
-        /* circular-feature-ring: kluck-ai-empty-section-3 */
+        /* circular-feature-ring: roarr-empty-section-3 */
         "circular-feature-ring": {
             use_metafields: true,
             background_color: "#0540be",
@@ -340,7 +340,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             feature4_title: "Tranquility",
             feature4_text: "Helps you unwind and clear your mind after a long day."
         },
-        /* impact-stat: kluck-ai-empty-section-4 */
+        /* impact-stat: roarr-empty-section-4 */
         "impact-stat": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -378,7 +378,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             row3_percent: 88,
             image: null
         },
-        /* pillow-banner: kluck-ai-pillow-banner-section */
+        /* pillow-banner: roarr-pillow-banner-section */
         "pillow-banner": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -415,7 +415,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             h6_size: 16,
             h6_weight: 500
         },
-        /* comparison-table: kluck-ai-empty-section-5 */
+        /* comparison-table: roarr-empty-section-5 */
         "comparison-table": {
             "use_metafields": true,
             "background_color": "#0540be",
@@ -467,7 +467,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             row4_feature: "Feature 4",
             row5_feature: "Feature 5"
         },
-        /* new-faq: kluck-ai-faq-section */
+        /* new-faq: roarr-faq-section */
         "new-faq": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -505,7 +505,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
         }
     },
     2: {
-        /* hero-section: kluck-ai-hero-section - skipped, user will handle */
+        /* hero-section: roarr-hero-section - skipped, user will handle */
         "hero-section": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -606,7 +606,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             heading_4: "Enter your text!",
             content_4: "<p>Enter your text!</p>"
         },
-        /* text-marquee: kluck-ai-marquee-section */
+        /* text-marquee: roarr-marquee-section */
         "text-marquee": {
             use_metafields: true,
             background_color: "#ffdde7",
@@ -644,7 +644,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             h6_size: 16,
             h6_weight: 500
         },
-        /* loved-by-everyone: kluck-ai-empty-section-1 */
+        /* loved-by-everyone: roarr-empty-section-1 */
         "loved-by-everyone": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -672,7 +672,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             h6_weight: 500,
             heading: "Loved by Everyone!"
         },
-        /* circular-feature-ring: kluck-ai-empty-section-2 */
+        /* circular-feature-ring: roarr-empty-section-2 */
         "circular-feature-ring": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -713,7 +713,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             feature4_title: "Tranquility",
             feature4_text: "Helps you unwind and clear your mind after a long day."
         },
-        /* trust-badges: kluck-ai-trust-badge-section */
+        /* trust-badges: roarr-trust-badge-section */
         "trust-badges": {
             use_metafields: true,
             use_metafield_text: false,
@@ -753,7 +753,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             badge_3_icon: null,
             badge_4_icon: null
         },
-        /* image-with-text: kluck-ai-empty-section-3 */
+        /* image-with-text: roarr-empty-section-3 */
         "image-with-text": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -792,7 +792,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             subheading_4: "Subheading 4",
             subheading_4_desc: "Description for subheading 4"
         },
-        /* four-blocks: kluck-ai-empty-section-4 */
+        /* four-blocks: roarr-empty-section-4 */
         "four-blocks": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -833,7 +833,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             block_4_heading: "Heading 4",
             block_4_subheading: "Subheading 4"
         },
-        /* impact-stat: kluck-ai-empty-section-5 */
+        /* impact-stat: roarr-empty-section-5 */
         "impact-stat": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -871,7 +871,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             row3_percent: 88,
             image: null
         },
-        /* comparison-table: kluck-ai-empty-section-6 */
+        /* comparison-table: roarr-empty-section-6 */
         "comparison-table": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -923,7 +923,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             row4_feature: "Feature 4",
             row5_feature: "Feature 5"
         },
-        /* faq: kluck-ai-faq-section */
+        /* faq: roarr-faq-section */
         "faq": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -962,7 +962,7 @@ export const GENERAL_TEMPLATE_SETTINGS = {
             answer_4: "",
             question_5: "",
             answer_5: "",
-            hide_kluck_credit: false
+            hide_roarr_credit: false
         }
     }
 };

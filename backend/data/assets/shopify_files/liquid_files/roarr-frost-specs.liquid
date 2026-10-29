@@ -1,0 +1,92 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.frost_specs_eyebrow.value | default: m.frost_specs_eyebrow | default: 'Specs' -%}
+{%- assign heading = m.frost_specs_heading.value | default: m.frost_specs_heading | default: 'The numbers that matter' -%}
+{%- assign l1 = m.frost_spec_1_label.value | default: m.frost_spec_1_label | default: 'Material' -%}
+{%- assign v1 = m.frost_spec_1_value.value | default: m.frost_spec_1_value | default: 'Premium, durable build' -%}
+{%- assign l2 = m.frost_spec_2_label.value | default: m.frost_spec_2_label | default: 'Finish' -%}
+{%- assign v2 = m.frost_spec_2_value.value | default: m.frost_spec_2_value | default: 'Smooth, easy to clean' -%}
+{%- assign l3 = m.frost_spec_3_label.value | default: m.frost_spec_3_label | default: 'Size' -%}
+{%- assign v3 = m.frost_spec_3_value.value | default: m.frost_spec_3_value | default: 'See product details' -%}
+{%- assign l4 = m.frost_spec_4_label.value | default: m.frost_spec_4_label | default: 'In the box' -%}
+{%- assign v4 = m.frost_spec_4_value.value | default: m.frost_spec_4_value | default: 'Everything to get started' -%}
+{%- assign l5 = m.frost_spec_5_label.value | default: m.frost_spec_5_label | default: 'Care' -%}
+{%- assign v5 = m.frost_spec_5_value.value | default: m.frost_spec_5_value | default: 'Wipe clean' -%}
+{%- assign l6 = m.frost_spec_6_label.value | default: m.frost_spec_6_label | default: 'Warranty' -%}
+{%- assign v6 = m.frost_spec_6_value.value | default: m.frost_spec_6_value | default: '2 years' -%}
+{%- assign img = m.product_image_5.value | default: m.product_image_5 | default: m.product_image_1.value | default: m.product_image_1 -%}
+{%- if img == blank and product.media.size > 0 -%}
+  {%- assign last_media = product.media | last -%}
+  {%- assign img = last_media.preview_image | default: last_media -%}
+{%- endif -%}
+<section class="fr-specs">
+  <div class="fr-wrap fr-specs__grid">
+    <div class="fr-specs__body">
+      <p class="fr-label"><b>03</b>{{ eyebrow }}</p>
+      <h2 class="fr-display">{{ heading }}</h2>
+      <dl class="fr-specs__list">
+        {%- if v1 != blank -%}<div class="fr-specs__row"><dt>{{ l1 }}</dt><dd>{{ v1 }}</dd></div>{%- endif -%}
+        {%- if v2 != blank -%}<div class="fr-specs__row"><dt>{{ l2 }}</dt><dd>{{ v2 }}</dd></div>{%- endif -%}
+        {%- if v3 != blank -%}<div class="fr-specs__row"><dt>{{ l3 }}</dt><dd>{{ v3 }}</dd></div>{%- endif -%}
+        {%- if v4 != blank -%}<div class="fr-specs__row"><dt>{{ l4 }}</dt><dd>{{ v4 }}</dd></div>{%- endif -%}
+        {%- if v5 != blank -%}<div class="fr-specs__row"><dt>{{ l5 }}</dt><dd>{{ v5 }}</dd></div>{%- endif -%}
+        {%- if v6 != blank -%}<div class="fr-specs__row"><dt>{{ l6 }}</dt><dd>{{ v6 }}</dd></div>{%- endif -%}
+      </dl>
+    </div>
+    <div class="fr-specs__media">{%- if img != blank -%}<img src="{{ img | image_url: width: 1200 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}</div>
+  </div>
+</section>
+<style>
+  .fr-specs { --fr-white: #FFFFFF; --fr-mist: #F3F6FA; --fr-ice: #E7EEFB; --fr-line: #E2E7EF; --fr-ink: #0B1324; --fr-muted: #586377; --fr-blue: #2F5BFF; --fr-blue-dark: #1C3CD6; --fr-blue-soft: #E8EEFF; --fr-night: #0A0F1E; --font-heading-family: "Plus Jakarta Sans", sans-serif; --font-body-family: "Plus Jakarta Sans", sans-serif; position: relative; overflow: hidden; background: radial-gradient(55% 75% at 88% 18%, rgb(47 91 255 / .38) 0%, rgb(47 91 255 / 0) 70%), radial-gradient(40% 60% at 0% 100%, rgb(47 91 255 / .16) 0%, rgb(47 91 255 / 0) 70%), var(--fr-night); color: #FFFFFF; font-family: "Plus Jakarta Sans", sans-serif; padding: clamp(64px, 9vw, 128px) 0; }
+  .fr-specs *, .fr-specs *::before, .fr-specs *::after { box-sizing: border-box; }
+  .fr-wrap { width: min(1240px, calc(100% - 48px)); margin: 0 auto; }
+  .fr-intro { max-width: 760px; margin-bottom: clamp(36px, 5vw, 64px); }
+  .fr-intro--center { margin-inline: auto; text-align: center; }
+  .fr-intro--center .fr-label { justify-content: center; }
+  .fr-label { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .01em; color: var(--fr-blue); }
+  .fr-label b { display: inline-grid; place-items: center; min-width: 32px; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--fr-blue-soft); color: var(--fr-blue); font-size: 11px; font-weight: 800; letter-spacing: .04em; }
+  .fr-display { margin: 16px 0 0; font-weight: 800; font-size: clamp(38px, 5.4vw, 76px); line-height: 1; letter-spacing: -0.045em; color: var(--fr-ink); text-wrap: balance; }
+  .fr-display .fr-grad, .fr-hero__title .fr-grad { font-size: inherit; font-weight: inherit; line-height: inherit; letter-spacing: inherit; background: linear-gradient(100deg, var(--fr-ink) 0%, var(--fr-ink) 30%, var(--fr-blue) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .fr-lead { margin: 18px 0 0; font-size: clamp(16px, 1.3vw, 18px); line-height: 1.6; color: var(--fr-muted); }
+  @media (max-width: 749px) { .fr-wrap { width: calc(100% - 32px); } }
+  .fr-specs .fr-label { color: #A9BCFF; }
+  .fr-specs .fr-label b { background: rgb(47 91 255 / .3); color: #FFFFFF; }
+  .fr-specs .fr-display { color: #FFFFFF; font-size: clamp(36px, 4.6vw, 64px); }
+  .fr-specs__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(36px, 6vw, 96px); align-items: center; }
+  .fr-specs__list { margin: clamp(28px, 4vw, 44px) 0 0; border-top: 1px solid rgb(255 255 255 / .12); }
+  .fr-specs__row { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding: 20px 0; border-bottom: 1px solid rgb(255 255 255 / .12); }
+  .fr-specs__row dt { font-size: 15px; font-weight: 600; color: #9DA8BF; }
+  .fr-specs__row dd { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; text-align: end; color: #FFFFFF; }
+  .fr-specs__media { position: relative; aspect-ratio: 4 / 5; border-radius: 36px; overflow: hidden; background: #16203A; border: 1px solid rgb(255 255 255 / .08); box-shadow: 0 40px 120px rgb(47 91 255 / .35); }
+  .fr-specs__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (max-width: 849px) {
+    .fr-specs__grid { grid-template-columns: 1fr; }
+    .fr-specs__media { order: -1; aspect-ratio: 1; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--frost" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, dt, dd, blockquote, div) { font-family: "Plus Jakarta Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Plus Jakarta Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Frost Specifications",
+  "tag": "section",
+  "class": "roarr-frost-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Frost Specifications" }]
+}
+{% endschema %}

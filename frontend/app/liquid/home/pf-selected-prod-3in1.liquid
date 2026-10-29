@@ -5,12 +5,12 @@
   - Layout: pf-selected-prod-3in1.css
 {% endcomment %}
 
-{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
 {%- assign col_2_scheme = section.settings.col_2_color_scheme | default: 'scheme-2' -%}
 {%- assign col_3_scheme = section.settings.col_3_color_scheme | default: 'scheme-3' -%}
-{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
-{%- assign kluck_star_image = shop.metafields.kluck_ai.star_image.value -%}
+{%- assign use_roarr = section.settings.use_roarr_metafields | default: false -%}
+{%- assign roarr_star_image = shop.metafields.roarr.star_image.value -%}
 
 {% if shop.metafields.app.block_control.value %}
 {% render 'snippets/theme-fonts', settings: settings %}
@@ -41,13 +41,13 @@
     <div class="ps-grid">
 
       <div class="ps-col-media">
-        {% if use_kluck_ai %}
+        {% if use_roarr %}
           {% if section.settings.video_url != blank %}
             <video class="ps-media-item" autoplay muted loop playsinline>
               <source src="{{ section.settings.video_url }}" type="video/mp4">
             </video>
-          {% elsif kluck_star_image != blank %}
-            {{ kluck_star_image | image_url: width: 800 | image_tag: 'ps-media-item', 'lazy' }}
+          {% elsif roarr_star_image != blank %}
+            {{ roarr_star_image | image_url: width: 800 | image_tag: 'ps-media-item', 'lazy' }}
           {% elsif section.settings.image_media != blank %}
             {{ section.settings.image_media | image_url: width: 800 | image_tag: 'ps-media-item', 'lazy' }}
           {% else %}
@@ -137,7 +137,7 @@
           {% for block in section.blocks %}
             {% assign kf = blank %}
             {% assign kfd = blank %}
-            {% if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank %}
+            {% if use_roarr and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank %}
               {% assign _t = store_gen.home_page.text %}
               {% case forloop.index %}
                 {% when 1 %}
@@ -171,7 +171,7 @@
               <div class="ps-feat-content">
                 <h4>
                   {% assign kf_stripped = kf | strip %}
-                  {% if use_kluck_ai and kf_stripped != blank %}
+                  {% if use_roarr and kf_stripped != blank %}
                     {{ kf | strip }}
                   {% else %}
                     {{ block.settings.heading }}
@@ -179,7 +179,7 @@
                 </h4>
                 <p>
                   {% assign kfd_stripped = kfd | strip %}
-                  {% if use_kluck_ai and kfd_stripped != blank %}
+                  {% if use_roarr and kfd_stripped != blank %}
                     {{ kfd | strip }}
                   {% else %}
                     {{ block.settings.text }}

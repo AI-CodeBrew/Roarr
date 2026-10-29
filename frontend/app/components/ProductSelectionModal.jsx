@@ -14,6 +14,7 @@ import {
   Checkbox,
 } from "@shopify/polaris";
 import { SearchIcon } from "@shopify/polaris-icons";
+import { EMPTY_STATE_IMAGE } from "../lib/emptyStateImage";
 
 // Helper functions
 const stripHtml = (html) => {
@@ -332,7 +333,7 @@ export default function ProductSelectionModal({
         ) : filteredProducts.length === 0 ? (
           <EmptyState
             heading="No products found"
-            image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
+            image={EMPTY_STATE_IMAGE}
           >
             <Text as="p" variant="bodySm" tone="subdued">
               {searchQuery?.trim()

@@ -102,7 +102,7 @@ function PublishStep({
   }
 
 
-  const REVIEW_DISMISSED_KEY = "kluck_review_dismissed_v1";
+  const REVIEW_DISMISSED_KEY = "roarr_review_dismissed_v1";
 
   const publishSteps = [
     "Preparing Page Data",
@@ -136,6 +136,24 @@ function PublishStep({
   };
 
   const previewUrl = getPreviewUrlFromResult(publishResult);
+
+  // The backend publishes in the background (it takes minutes, longer than proxies
+  // keep a request open). Poll the page until the publish started at `startedAt` ends.
+  const waitForPublish = async (startedAt) => {
+    const deadline = Date.now() + 15 * 60 * 1000;
+    while (Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 3000));
+      const res = await fetch(`/api/generation-status/${pageId}`).catch(() => null);
+      const status = res?.ok ? await res.json().catch(() => null) : null;
+      // Skip transient errors and a finished state left over from an earlier publish.
+      if (!status || Number(status.publish_started_at) !== Number(startedAt)) continue;
+      if (status.publish_status === "completed") return status;
+      if (status.publish_status === "failed") {
+        throw new Error(status.publish_error || "Publish failed");
+      }
+    }
+    throw new Error("Publishing is taking longer than expected. Refresh in a minute to check.");
+  };
 
   const handlePublish = async () => {
     // Prevent double calls
@@ -211,7 +229,7 @@ function PublishStep({
 
     try {
       const normalizedSelectedTemplate =
-        [1, 2, 3, 4].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : undefined;
+        [1, 2, 3, 4, 5, 6].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : undefined;
 
       const res = await fetch("/api/publish-page", {
         method: "POST",
@@ -228,13 +246,23 @@ function PublishStep({
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data?.success === false) {
-        throw new Error(data?.error || "Publish failed");
+        throw new Error(data?.error || `Publish failed (HTTP ${res.status})`);
+      }
+
+      let result = data;
+      if (data?.started) {
+        result = await waitForPublish(data.publish_started_at);
+        void fetch("/api/publish-page", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ intent: "seed_bundle", productId }),
+        }).catch(() => {});
       }
 
       // Complete all steps
       setCurrentPublishStep(totalSteps);
       setIsPublishComplete(true);
-      setPublishResult(data);
+      setPublishResult(result);
 
       // Show review modal after a short delay (only if not previously dismissed).
       // - On onboarding flow: after the first published page.

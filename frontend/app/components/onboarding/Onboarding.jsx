@@ -140,7 +140,7 @@ export default function Onboarding({ onComplete, shop, locales: localesProp = []
   return (
     <s-page heading="Roarr - Onboarding" inlineSize="large">
       <CreditWalletWidget floating={false} slot="secondary-actions" usage={false} />
-      <div className="roarr-theme flex justify-center px-3 pb-8 pt-4 md:min-h-[calc(100vh-100px)] md:items-center md:px-4 md:py-6">
+      <div className="roarr-theme flex justify-center px-3 pb-8 md:px-4 md:pb-6">
         <div className="w-full max-w-[1100px]">
           <div
             key={activeStep}

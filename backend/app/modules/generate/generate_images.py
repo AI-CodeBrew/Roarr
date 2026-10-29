@@ -209,8 +209,8 @@ def load_template_image_keys(
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         config = data.get(template_num)
-        # Aura (template 3) and Lumenook (template 4) image keys are shared — fall back to health_beauty when missing.
-        if not config and template_num in ("3", "4") and category != "health_beauty":
+        # Aura (3), Lumenook (4), Noir (5) and Frost (6) image keys are shared — fall back to health_beauty when missing.
+        if not config and template_num in ("3", "4", "5", "6") and category != "health_beauty":
             hb_path = os.path.join(
                 os.path.dirname(__file__), "templates", "health_beauty", "image_keys.json"
             )
@@ -358,7 +358,7 @@ def upload_images_to_cdn(image_paths):
         try:
             file_extension = os.path.splitext(image_path)[1]
             unique_id = str(uuid.uuid4().hex[:8])
-            filename = f"{unique_id}_kluck_ai_generated_image{file_extension}"
+            filename = f"{unique_id}_roarr_generated_image{file_extension}"
             url = StorageUtils.upload_public(image_path, filename)
             if url:
                 image_urls.append(url)
@@ -1238,6 +1238,78 @@ def _is_lumenook_template(template) -> bool:
     return raw == "4" or template == 4
 
 
+_NOIR_FRAME = {
+    "product_image_1": " Frame this as a square product photo on a deep charcoal black background with a single soft spotlight. The product fills the frame. No text, logo, or border.",
+    "product_image_2": " Frame this as a square product photo from another angle on a charcoal black background, soft rim light. No text, logo, or border.",
+    "product_image_3": " Frame this as a square macro close-up of the finish and materials, dark background, warm low-key light. No text, logo, or border.",
+    "product_image_4": " Frame this as a square lifestyle photo of the product in a dark, refined interior with warm accent light. No text or border.",
+    "product_image_5": " Frame this as a square product photo, centered and large, on a black background with a subtle warm gold glow behind it. No text, logo, or border.",
+    "product_highlight_1": " Portrait 3:4 low-key editorial close-up of one detail of the product, dark background, warm directional light. No text.",
+    "product_highlight_2": " Portrait 3:4 low-key editorial close-up of a different detail of the product, dark background, warm directional light. No text.",
+    "product_highlight_3": " Portrait 3:4 low-key editorial photo of the product being used, dark refined setting, warm light. No text.",
+    "feature_image": " Wide 16:9 cinematic photo. The product sits in the right third of the frame in a dark, moody setting with warm light; the left half is deep shadow with empty space. No text, no border.",
+    "product_impact_image": " Portrait 4:5 cinematic photo of the product in a dark, luxurious evening setting with warm golden highlights. No text.",
+}
+
+
+def _apply_noir_frame(prompts):
+    if not isinstance(prompts, dict):
+        return prompts
+    framed = {}
+    for key, value in prompts.items():
+        if isinstance(value, dict):
+            framed[key] = _apply_noir_frame(value)
+        elif isinstance(value, str) and key in _NOIR_FRAME:
+            framed[key] = value.rstrip() + _NOIR_FRAME[key]
+        else:
+            framed[key] = value
+    return framed
+
+
+def _is_noir_template(template) -> bool:
+    """Noir is template 5 for all categories."""
+    raw = str(template or "").strip().lower()
+    if raw.startswith("template_"):
+        raw = raw.split("_")[-1]
+    return raw == "5" or template == 5
+
+
+_FROST_FRAME = {
+    "product_image_1": " Frame this as a square product photo on a clean white seamless background in bright, cool daylight. The product fills the frame. No text, logo, or border.",
+    "product_image_2": " Frame this as a square product photo from another angle on a pale cool grey background, soft shadow. No text, logo, or border.",
+    "product_image_3": " Frame this as a square close-up of a key detail of the product, bright and crisp, white background. No text, logo, or border.",
+    "product_image_4": " Frame this as a square lifestyle photo of the product in a bright, minimal, modern space with cool natural light. No text or border.",
+    "product_image_5": " Frame this as a square product photo, centered, on a very light ice blue background. No text, logo, or border.",
+    "product_highlight_1": " Square 1:1 bright photo showing the first step of using the product, clean white setting, cool daylight. No text.",
+    "product_highlight_2": " Square 1:1 bright photo showing the product being used, clean minimal setting, cool daylight. No text.",
+    "product_highlight_3": " Square 1:1 bright photo of the product in everyday life, airy and minimal, cool daylight. No text.",
+    "feature_image": " Portrait 4:5 bright, airy lifestyle photo of the product in a minimal white and pale blue space, soft daylight, product clearly visible. No text, no border.",
+    "product_impact_image": " Wide 16:9 bright photo of the product on a clean white surface with plenty of empty space around it, cool soft daylight. No text, no border.",
+}
+
+
+def _apply_frost_frame(prompts):
+    if not isinstance(prompts, dict):
+        return prompts
+    framed = {}
+    for key, value in prompts.items():
+        if isinstance(value, dict):
+            framed[key] = _apply_frost_frame(value)
+        elif isinstance(value, str) and key in _FROST_FRAME:
+            framed[key] = value.rstrip() + _FROST_FRAME[key]
+        else:
+            framed[key] = value
+    return framed
+
+
+def _is_frost_template(template) -> bool:
+    """Frost is template 6 for all categories."""
+    raw = str(template or "").strip().lower()
+    if raw.startswith("template_"):
+        raw = raw.split("_")[-1]
+    return raw == "6" or template == 6
+
+
 def _apply_glow_frame(prompts):
     if not isinstance(prompts, dict):
         return prompts
@@ -1328,6 +1400,10 @@ def generate_images(
                 product_prompts = _apply_glow_frame(product_prompts)
             elif _is_lumenook_template(template):
                 product_prompts = _apply_lumen_frame(product_prompts)
+            elif _is_noir_template(template):
+                product_prompts = _apply_noir_frame(product_prompts)
+            elif _is_frost_template(template):
+                product_prompts = _apply_frost_frame(product_prompts)
             if product_prompts.get("product_images"):
                 print("Generating product images...")
                 product_images_result = generate_product_images(
@@ -1376,6 +1452,10 @@ def generate_images(
                 body_prompts = _apply_glow_frame(body_prompts)
             elif _is_lumenook_template(template):
                 body_prompts = _apply_lumen_frame(body_prompts)
+            elif _is_noir_template(template):
+                body_prompts = _apply_noir_frame(body_prompts)
+            elif _is_frost_template(template):
+                body_prompts = _apply_frost_frame(body_prompts)
             if body_prompts:
                 print("Generating body images...")
                 # Determine body image generation function based on subcategory
@@ -1570,7 +1650,7 @@ def _generate_image_openai(
         if not b64:
             print(f"  {OPENAI_IMAGE_MODEL} returned no image for {label}")
             return None
-        name = filename_base or f"{uuid.uuid4().hex[:8]}_zambeel_ai_generated_image"
+        name = filename_base or f"{uuid.uuid4().hex[:8]}_roarr_generated_image"
         file_path = os.path.join(temp_dir, f"{name}.jpg")
         save_binary_file(file_path, base64.b64decode(b64))
         _crop_to_ratio(file_path, ratio)
@@ -1770,7 +1850,7 @@ def _generate_image_with_model(
                         )
                     else:
                         file_name_base = (
-                            f"{uuid.uuid4().hex[:8]}_zambeel_ai_generated_image"
+                            f"{uuid.uuid4().hex[:8]}_roarr_generated_image"
                         )
                         file_path = os.path.join(
                             temp_dir, f"{file_name_base}{file_extension}"

@@ -7,7 +7,7 @@ import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; KluckBrandAds/1.0)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; RoarrBrandAds/1.0)"}
 
 
 def fetch_html(url: str, timeout: int = 15) -> str:

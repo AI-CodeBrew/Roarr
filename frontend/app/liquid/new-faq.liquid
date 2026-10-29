@@ -7,7 +7,7 @@
 
 {%- liquid
   assign s = block.settings
-  assign m = product.metafields.kluck_ai
+  assign m = product.metafields.roarr
   assign block_slug = block.id | replace: '_', '-' | downcase
 
   assign opacity_val = s.background_opacity | default: 100 | divided_by: 100.0
@@ -53,9 +53,9 @@
   assign body_weight = s.body_weight | default: 400
 
   if s.use_metafields and product != blank
-    assign title_meta = product.metafields.kluck_ai.faq_section_title
+    assign title_meta = product.metafields.roarr.faq_section_title
     assign title_content = title_meta.value | default: title_meta | default: s.title
-    assign subtitle_meta = product.metafields.kluck_ai.faq_section_subtitle
+    assign subtitle_meta = product.metafields.roarr.faq_section_subtitle
     assign subtitle_content = subtitle_meta.value | default: subtitle_meta | default: s.subtitle
   else
     assign title_content = s.title
@@ -137,8 +137,8 @@
             assign question_meta_key = 'faq_question_' | append: i
             assign answer_meta_key = 'faq_answer_' | append: i
 
-            assign question_meta = product.metafields.kluck_ai[question_meta_key]
-            assign answer_meta = product.metafields.kluck_ai[answer_meta_key]
+            assign question_meta = product.metafields.roarr[question_meta_key]
+            assign answer_meta = product.metafields.roarr[answer_meta_key]
 
             assign question = question_meta.value | default: question_meta | default: s[question_key]
             assign answer = answer_meta.value | default: answer_meta | default: s[answer_key]

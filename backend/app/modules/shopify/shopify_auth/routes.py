@@ -257,7 +257,7 @@ def app_uninstall():
             return jsonify({"success": False, "error": "Missing user_id"}), 400
         try:
             shop = document_store.get_shop_details(user_id)
-            document_store.mark_shopify_kluck_uninstalled(user_id)
+            document_store.mark_shopify_roarr_uninstalled(user_id)
             logger.info(f"Marked shop {user_id} as uninstalled")
             if shop:
                 logger.info(f"Sending app_uninstalled posthog event for {user_id}")
@@ -949,7 +949,7 @@ def shopify_uninstall_webhook():
 
             # Mark shop as uninstalled AND wipe token in shops table
             try:
-                document_store.mark_shopify_kluck_uninstalled(store_url)
+                document_store.mark_shopify_roarr_uninstalled(store_url)
             except Exception:
                 pass
 

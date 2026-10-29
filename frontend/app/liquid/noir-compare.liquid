@@ -1,0 +1,72 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.noir_compare_eyebrow.value | default: m.noir_compare_eyebrow | default: 'The difference' -%}
+{%- assign heading = m.noir_compare_heading.value | default: m.noir_compare_heading | default: 'Not all are made equal' -%}
+{%- assign us = m.noir_compare_us.value | default: m.noir_compare_us | default: shop.name -%}
+{%- assign them = m.noir_compare_them.value | default: m.noir_compare_them | default: 'Others' -%}
+{%- assign r1 = m.noir_compare_row_1.value | default: m.noir_compare_row_1 | default: 'Premium materials throughout' -%}
+{%- assign r2 = m.noir_compare_row_2.value | default: m.noir_compare_row_2 | default: 'Finished by hand' -%}
+{%- assign r3 = m.noir_compare_row_3.value | default: m.noir_compare_row_3 | default: 'Designed to last for years' -%}
+{%- assign r4 = m.noir_compare_row_4.value | default: m.noir_compare_row_4 | default: 'Gift-ready packaging' -%}
+{%- assign r5 = m.noir_compare_row_5.value | default: m.noir_compare_row_5 | default: 'Warranty and easy returns' -%}
+<section class="nr-compare">
+  <div class="nr-compare__wrap">
+    <div class="nr-compare__intro">
+      <p class="nr-eyebrow">{{ eyebrow }}</p>
+      <h2 class="nr-compare__heading">{{ heading }}</h2>
+    </div>
+    <table class="nr-compare__table">
+      <thead>
+        <tr><td></td><th scope="col" class="is-us">{{ us }}</th><th scope="col">{{ them }}</th></tr>
+      </thead>
+      <tbody>
+        {%- assign rows = r1 | append: '||' | append: r2 | append: '||' | append: r3 | append: '||' | append: r4 | append: '||' | append: r5 | split: '||' -%}
+        {%- for row in rows -%}
+          {%- if row != blank -%}
+            <tr><th scope="row">{{ row }}</th><td class="is-us"><span class="nr-compare__yes">&#10003;</span></td><td><span class="nr-compare__no">&mdash;</span></td></tr>
+          {%- endif -%}
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</section>
+<style>
+  .nr-compare { --nr-ink: #0D0C0B; --nr-coal: #161412; --nr-line: #2E2A25; --nr-gold: #C9A96E; --nr-gold-soft: #E4D2AA; --nr-ivory: #F2ECE2; --nr-muted: #A79E90; --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; background: var(--nr-coal); border-block: 1px solid var(--nr-line); color: var(--nr-ivory); font-family: "Manrope", sans-serif; padding: clamp(56px, 8vw, 112px) 0; }
+  .nr-compare *, .nr-compare *::before, .nr-compare *::after { box-sizing: border-box; }
+  .nr-compare__wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+  .nr-compare__intro { display: grid; gap: 14px; }
+  .nr-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--nr-gold); }
+  .nr-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+  .nr-compare__heading { margin: 0; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(34px, 4vw, 56px); line-height: 1.06; }
+  .nr-compare__table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .nr-compare__table th, .nr-compare__table td { padding: 18px 16px; border-bottom: 1px solid var(--nr-line); text-align: center; }
+  .nr-compare__table thead th { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--nr-muted); }
+  .nr-compare__table tbody th { text-align: start; font-weight: 500; padding-inline-start: 0; }
+  .nr-compare__table .is-us { width: 120px; background: var(--nr-ink); }
+  .nr-compare__table thead .is-us { color: var(--nr-gold); border-top: 2px solid var(--nr-gold); }
+  .nr-compare__table td:last-child, .nr-compare__table th:last-child { width: 110px; }
+  .nr-compare__yes { font-size: 18px; color: var(--nr-gold); }
+  .nr-compare__no { color: var(--nr-muted); opacity: .6; }
+  @media (max-width: 849px) {
+    .nr-compare__wrap { grid-template-columns: 1fr; width: calc(100% - 32px); }
+    .nr-compare__table { font-size: 14px; }
+    .nr-compare__table th, .nr-compare__table td { padding: 14px 8px; }
+    .nr-compare__table .is-us, .nr-compare__table td:last-child, .nr-compare__table th:last-child { width: 76px; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--noir" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Manrope", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

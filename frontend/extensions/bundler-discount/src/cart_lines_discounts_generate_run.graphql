@@ -34,7 +34,7 @@ query CartInput {
     discountClasses
   }
   shop {
-    metafield(namespace: "kluck_bundle", key: "bundles") {
+    metafield(namespace: "roarr_bundle", key: "bundles") {
       value
     }
   }

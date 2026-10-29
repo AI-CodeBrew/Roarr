@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generate cinematic COD single-product demo images for every store category,
-upload them to the public Zambeel S3 bucket, and write a JSON manifest.
+upload them to the Roarr Bunny storage zone, and write a JSON manifest.
 
 Usage (from backend/backend):
     python scripts/generate_cinematic_demo_images.py
@@ -50,27 +50,27 @@ from app.modules.generate.store.templates.packs.cinematic.hero_prompt import (
 CATEGORY_REFERENCES = {
     "kids_toys": {
         "title": "Wooden Rainbow Stacking Arch",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/9bf447db_velvet_kids_toys_ref.png",
+        "reference": "",
     },
     "general": {
         "title": "Matte Ceramic Desk Lamp",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/24ce94f5_velvet_general_ref.png",
+        "reference": "",
     },
     "fashion": {
         "title": "Structured Leather Crossbody Bag",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c86d6d09_velvet_fashion_ref.png",
+        "reference": "",
     },
     "health_beauty": {
         "title": "Ceramic Facial Roller + Serum Duo",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8babcd92_velvet_health_beauty_ref.png",
+        "reference": "",
     },
     "home_kitchen": {
         "title": "Cast-Iron Enamel Dutch Oven",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c77efcdc_velvet_home_kitchen_ref.png",
+        "reference": "",
     },
     "car_accessories": {
         "title": "LED Dashboard Ambient Light Strip",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b88b89f5_velvet_car_accessories_ref.png",
+        "reference": "",
     },
 }
 
@@ -94,7 +94,7 @@ MANIFEST_PATH = backend_dir / "scripts" / "cinematic_demo_images_manifest.json"
 
 
 def upload_public(path: str, category: str, key: str) -> str | None:
-    bucket = os.getenv("BUNNY_STORAGE_ZONE", "kluck-v2")
+    bucket = os.getenv("BUNNY_STORAGE_ZONE", "roarr")
     ext = os.path.splitext(path)[1] or ".png"
     filename = f"cinematic_demo_{category}_{key}_{uuid.uuid4().hex[:8]}{ext}"
     return StorageUtils.upload_public(path, filename)

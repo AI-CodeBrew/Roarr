@@ -1,8 +1,8 @@
 
 {
   "sections": {
-    "kluck-ai-collections-list-page-section": {
-      "type": "kluck-ai-collections-list-page-section",
+    "roarr-collections-list-page-section": {
+      "type": "roarr-collections-list-page-section",
       "name": "Roarr - Collections Page",
       "settings": {
         "container_width": 1400,
@@ -36,6 +36,6 @@
     }
   },
   "order": [
-    "kluck-ai-collections-list-page-section"
+    "roarr-collections-list-page-section"
   ]
 }

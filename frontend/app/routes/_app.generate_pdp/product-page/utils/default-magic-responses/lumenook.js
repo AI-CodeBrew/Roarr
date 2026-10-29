@@ -4,11 +4,11 @@
  */
 
 const IMG = {
-  front: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/42147457_home-kitchen-vibe-1.png",
-  brewing: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7c04d538_home-kitchen-vibe-2.png",
-  inHand: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a83c6cc6_home-kitchen-vibe-3.png",
-  angle: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/83880b79_home-kitchen-vibe-4.png",
-  detail: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/706a6361_home-kitchen-vibe-5.png",
+  front: "",
+  brewing: "",
+  inHand: "",
+  angle: "",
+  detail: "",
 };
 
 export const LUMENOOK_DEFAULT_MAGIC_RESPONSES = {

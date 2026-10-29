@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, Banknote } from "lucide-react";
 import {
   FlagSearchPicker,
+  SettingRow,
   areMarketPreferencesComplete,
   saveShopMarketPreferences,
   useMarketPickerOptions,
@@ -12,18 +13,14 @@ import FlagIcon from "../FlagIcon.jsx";
 import MarketPreview from "./MarketPreview.jsx";
 import { GradientText, PrimaryButton, StepFrame, StepHeader } from "./OnboardingUI";
 
-/** Numbered section title inside the settings card. */
-function SettingHeading({ number, title, description }) {
+/** Flag and name of the chosen option, shown on a closed row. */
+function OptionSummary({ option }) {
+  if (!option) return null;
   return (
-    <div className="flex items-start gap-3">
-      <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[#1e3a8a] text-xs font-semibold text-white">
-        {number}
-      </span>
-      <div className="min-w-0">
-        <h3 className="m-0 text-[15px] font-semibold leading-6 text-slate-900">{title}</h3>
-        <p className="m-0 text-[13px] leading-snug text-slate-500">{description}</p>
-      </div>
-    </div>
+    <>
+      <FlagIcon flag={option.flag} width={20} />
+      <span className="truncate">{option.label}</span>
+    </>
   );
 }
 
@@ -50,6 +47,10 @@ export default function MarketPreferencesStep({
   const [language, setLanguage] = useState(initialPreferences?.language || primarySupportedValue);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  // Rows are drawers. The language is pre-filled from Shopify, so the country row opens first;
+  // choosing a value closes its row and opens the next one that still needs an answer.
+  const [openStep, setOpenStep] = useState(countryCode ? null : 2);
+  const toggle = (step) => setOpenStep((current) => (current === step ? null : step));
 
   const effectiveLanguage = language || primarySupportedValue;
   const canContinue = areMarketPreferencesComplete({
@@ -59,6 +60,7 @@ export default function MarketPreferencesStep({
   });
   const primaryLanguage = getSupportedLanguage(primarySupportedValue);
   const previewLanguage = getSupportedLanguage(effectiveLanguage);
+  const languageOption = languageOptions.find((o) => o.value === effectiveLanguage) || null;
   const previewCountry = countryOptions.find((c) => c.value === countryCode) || null;
 
   const handleContinue = async () => {
@@ -93,90 +95,103 @@ export default function MarketPreferencesStep({
             Set your <GradientText>market</GradientText>
           </>
         }
-        subtitle="Choose the language and country your store speaks to. You can change this anytime in Preferences."
+        subtitle="Pick your store's language and country. Change them anytime in Preferences."
         step={2}
         completed={1}
         onBack={onBack}
         backDisabled={saving}
       />
 
-      <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-        <section className="flex flex-col rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70 sm:p-6">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <SettingHeading
-                number={1}
-                title="Store language"
-                description="Every headline, description and button is written in it."
-              />
-              <FlagSearchPicker
-                overlay
-                placeholder="Select language"
-                searchPlaceholder="Search languages…"
-                value={effectiveLanguage}
-                options={languageOptions}
-                groups={languageGroups}
-                onChange={(v) => setLanguage(v || null)}
-              />
-            </div>
+      {/* One screen: settings and Continue on the left, preview on the right (stacked on mobile). */}
+      <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:grid-rows-[auto_1fr]">
+        <div className="flex flex-col gap-3 lg:col-start-1 lg:row-start-1 lg:self-start">
+          <SettingRow
+            number={1}
+            done={Boolean(effectiveLanguage)}
+            title="Store language"
+            description="Your page text is written in this language."
+            summary={<OptionSummary option={languageOption} />}
+            open={openStep === 1}
+            onToggle={() => toggle(1)}
+          >
+            <FlagSearchPicker
+              overlay
+              placeholder="Select language"
+              searchPlaceholder="Search languages…"
+              value={effectiveLanguage}
+              options={languageOptions}
+              groups={languageGroups}
+              onChange={(v) => {
+                setLanguage(v || null);
+                setOpenStep(countryCode ? null : 2);
+              }}
+            />
+          </SettingRow>
 
-            <div className="flex flex-col gap-3">
-              <SettingHeading
-                number={2}
-                title="Target audience"
-                description="The primary country you sell to."
-              />
-              <FlagSearchPicker
-                overlay
-                placeholder="Select country"
-                searchPlaceholder="Search countries…"
-                value={countryCode || ""}
-                options={countryOptions}
-                groups={countryGroups}
-                onChange={(v) => setCountryCode(v || null)}
-              />
-            </div>
-          </div>
+          <SettingRow
+            number={2}
+            done={Boolean(countryCode)}
+            title="Country you sell to"
+            description="Where most of your customers are."
+            summary={<OptionSummary option={previewCountry} />}
+            open={openStep === 2}
+            onToggle={() => toggle(2)}
+          >
+            <FlagSearchPicker
+              overlay
+              placeholder="Select country"
+              searchPlaceholder="Search countries…"
+              value={countryCode || ""}
+              options={countryOptions}
+              groups={countryGroups}
+              onChange={(v) => {
+                setCountryCode(v || null);
+                setOpenStep(null);
+              }}
+            />
+          </SettingRow>
 
-          <div className="mt-auto pt-6">
-          <div className="space-y-2.5 border-t border-slate-100 pt-4 text-xs leading-relaxed text-slate-500">
+          <div className="space-y-2 px-1 pt-1 text-xs leading-relaxed text-slate-500">
             <p className="m-0 flex items-start gap-2.5">
               <span className="mt-px flex h-[18px] w-[18px] flex-none items-center justify-center rounded-md bg-blue-50 text-[#1e40af]">
                 <Banknote size={12} aria-hidden />
               </span>
-              <span>
-                <span className="font-medium text-slate-700">COD market.</span> Customers can pay on
-                delivery or prepay online.
-              </span>
+              <span>Customers can pay on delivery or online.</span>
             </p>
-            <p className="m-0 flex items-start gap-2.5">
-              <FlagIcon flag={primaryLanguage.flag} width={18} className="mt-0.5" />
-              <span>
-                Your Shopify store language is{" "}
-                <span className="font-medium text-slate-700">{primaryLanguage.name}</span>. Buttons
-                follow it, and product titles stay as entered in Shopify.
-              </span>
+            {/* Only worth saying when the chosen language differs from the Shopify store's. */}
+            {effectiveLanguage !== primarySupportedValue ? (
+              <p className="m-0 flex items-start gap-2.5">
+                <FlagIcon flag={primaryLanguage.flag} width={18} className="mt-0.5" />
+                <span>
+                  Your Shopify store language is{" "}
+                  <span className="font-medium text-slate-700">{primaryLanguage.name}</span>.
+                  Buttons follow it, and product titles stay as entered in Shopify.
+                </span>
+              </p>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          <MarketPreview language={previewLanguage} country={previewCountry} />
+        </div>
+
+        <div className="flex flex-col gap-2 lg:col-start-1 lg:row-start-2 lg:self-end">
+          {error ? (
+            <p role="alert" className="m-0 text-sm text-red-700">
+              {error}
             </p>
-          </div>
-          </div>
-        </section>
-
-        <MarketPreview language={previewLanguage} country={previewCountry} />
-      </div>
-
-      <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p role={error ? "alert" : undefined} className="m-0 text-sm text-red-700">
-          {error}
-        </p>
-        <PrimaryButton
-          onClick={handleContinue}
-          loading={saving}
-          disabled={!canContinue}
-          className="w-full sm:w-auto"
-        >
-          Continue
-          <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
-        </PrimaryButton>
+          ) : null}
+          <PrimaryButton
+            onClick={handleContinue}
+            loading={saving}
+            disabled={!canContinue}
+            className="w-full sm:w-auto sm:self-start"
+          >
+            Continue
+            <ArrowRight size={16} className="transition group-hover:translate-x-0.5" />
+          </PrimaryButton>
+        </div>
       </div>
     </StepFrame>
   );

@@ -1,9 +1,9 @@
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
-{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+{% assign store_gen = shop.metafields.roarr.store_generation.value %}
 {% assign home = store_gen.home_page %}
 {% assign ht = home.text %}
 {% assign hi = home.images %}
-{% assign use_mf = section.settings.use_kluck_ai_metafields %}
+{% assign use_mf = section.settings.use_roarr_metafields %}
 {% assign homeData = section.settings.homeData %}
 {% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
 {% if hi == blank and homeData.images != blank %}{% assign hi = homeData.images %}{% endif %}
@@ -32,8 +32,8 @@
   {% if ht.why_4_text != blank %}{% assign why_4_text = ht.why_4_text %}{% endif %}
   {% if ht.why_5_title != blank %}{% assign why_5_title = ht.why_5_title %}{% endif %}
   {% if ht.why_5_text != blank %}{% assign why_5_text = ht.why_5_text %}{% endif %}
-  {% if shop.metafields.kluck_ai.why_shop_image.value != blank %}
-    {% assign why_shop_image = shop.metafields.kluck_ai.why_shop_image.value %}
+  {% if shop.metafields.roarr.why_shop_image.value != blank %}
+    {% assign why_shop_image = shop.metafields.roarr.why_shop_image.value %}
   {% elsif hi.why_shop_image != blank %}
     {% assign why_shop_image = hi.why_shop_image %}
   {% endif %}

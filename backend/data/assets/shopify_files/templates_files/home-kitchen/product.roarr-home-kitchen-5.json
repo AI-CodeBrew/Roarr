@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "noir-hero": {
+      "type": "roarr-noir-hero",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
+    "noir-ticker": {
+      "type": "roarr-noir-ticker",
+      "settings": {}
+    },
+    "noir-statement": {
+      "type": "roarr-noir-statement",
+      "settings": {}
+    },
+    "noir-craft": {
+      "type": "roarr-noir-craft",
+      "settings": {}
+    },
+    "noir-compare": {
+      "type": "roarr-noir-compare",
+      "settings": {}
+    },
+    "noir-faq": {
+      "type": "roarr-noir-faq",
+      "settings": {}
+    },
+    "noir-closing": {
+      "type": "roarr-noir-closing",
+      "settings": {}
+    }
+  },
+  "order": [
+    "noir-hero",
+    "noir-ticker",
+    "noir-statement",
+    "noir-craft",
+    "noir-compare",
+    "noir-faq",
+    "noir-closing"
+  ]
+}

@@ -1,5 +1,5 @@
 """
-Plan configuration and limits for Zambeel AI
+Plan configuration and limits for Roarr
 """
 
 # Plan limits configuration

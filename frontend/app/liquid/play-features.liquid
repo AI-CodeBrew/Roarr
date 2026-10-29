@@ -1,13 +1,13 @@
 {%- capture kl_rtl_html -%}
 {% render 'snippets/play-fonts' %}
-{%- assign m = product.metafields.kluck_ai -%}
+{%- assign m = product.metafields.roarr -%}
 {%- assign l1 = m.feature_label_1.value | default: m.feature_label_1 | default: 'Large, canvas pieces' -%}
 {%- assign l2 = m.feature_label_2.value | default: m.feature_label_2 | default: '100% recycled' -%}
 {%- assign l3 = m.feature_label_3.value | default: m.feature_label_3 | default: 'Giving back 10%' -%}
 <section class="pk-features">
-  <div><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-1.png?v=1726124152" alt=""><h2>{{ l1 }}</h2></div>
-  <div><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-2.png?v=1726124153" alt=""><h2>{{ l2 }}</h2></div>
-  <div><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-3.png?v=1726124153" alt=""><h2>{{ l3 }}</h2></div>
+  <div><img src="" alt=""><h2>{{ l1 }}</h2></div>
+  <div><img src="" alt=""><h2>{{ l2 }}</h2></div>
+  <div><img src="" alt=""><h2>{{ l3 }}</h2></div>
 </section>
 <style>
   .pk-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; padding: 48px 24px; text-align: center; background: #FFFCF5; color: #6F2424; font-family: Poppins, sans-serif; }

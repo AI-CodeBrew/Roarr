@@ -10,7 +10,7 @@
   {% endif %}
   {%- liquid
     assign s = block.settings
-    assign m = product.metafields.kluck_ai
+    assign m = product.metafields.roarr
     assign clr = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
     assign use = s.use_metafields
 

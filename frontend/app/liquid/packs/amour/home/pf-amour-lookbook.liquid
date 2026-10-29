@@ -1,9 +1,9 @@
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
-{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+{% assign store_gen = shop.metafields.roarr.store_generation.value %}
 {% assign home = store_gen.home_page %}
 {% assign ht = home.text %}
 {% assign hi = home.images %}
-{% assign use_mf = section.settings.use_kluck_ai_metafields %}
+{% assign use_mf = section.settings.use_roarr_metafields %}
 {% assign homeData = section.settings.homeData %}
 {% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
 {% if hi == blank and homeData.images != blank %}{% assign hi = homeData.images %}{% endif %}
@@ -27,11 +27,11 @@
 {% assign look_3_caption = section.settings.look_3_caption %}
 {% if use_mf and ht.look_3_caption != blank %}{% assign look_3_caption = ht.look_3_caption %}{% endif %}
 {% assign look_image_1 = section.settings.look_image_1 %}
-{% if use_mf %}{% if shop.metafields.kluck_ai.look_image_1.value != blank %}{% assign look_image_1 = shop.metafields.kluck_ai.look_image_1.value %}{% elsif hi.look_image_1 != blank %}{% assign look_image_1 = hi.look_image_1 %}{% endif %}{% endif %}
+{% if use_mf %}{% if shop.metafields.roarr.look_image_1.value != blank %}{% assign look_image_1 = shop.metafields.roarr.look_image_1.value %}{% elsif hi.look_image_1 != blank %}{% assign look_image_1 = hi.look_image_1 %}{% endif %}{% endif %}
 {% assign look_image_2 = section.settings.look_image_2 %}
-{% if use_mf %}{% if shop.metafields.kluck_ai.look_image_2.value != blank %}{% assign look_image_2 = shop.metafields.kluck_ai.look_image_2.value %}{% elsif hi.look_image_2 != blank %}{% assign look_image_2 = hi.look_image_2 %}{% endif %}{% endif %}
+{% if use_mf %}{% if shop.metafields.roarr.look_image_2.value != blank %}{% assign look_image_2 = shop.metafields.roarr.look_image_2.value %}{% elsif hi.look_image_2 != blank %}{% assign look_image_2 = hi.look_image_2 %}{% endif %}{% endif %}
 {% assign look_image_3 = section.settings.look_image_3 %}
-{% if use_mf %}{% if shop.metafields.kluck_ai.look_image_3.value != blank %}{% assign look_image_3 = shop.metafields.kluck_ai.look_image_3.value %}{% elsif hi.look_image_3 != blank %}{% assign look_image_3 = hi.look_image_3 %}{% endif %}{% endif %}
+{% if use_mf %}{% if shop.metafields.roarr.look_image_3.value != blank %}{% assign look_image_3 = shop.metafields.roarr.look_image_3.value %}{% elsif hi.look_image_3 != blank %}{% assign look_image_3 = hi.look_image_3 %}{% endif %}{% endif %}
 
 {% assign amour_product = blank %}
 {% if section.settings.product != blank %}

@@ -1,35 +1,35 @@
 {
   "sections": {
     "lumen-marquee": {
-      "type": "kluck-ai-lumen-home-marquee",
+      "type": "roarr-lumen-home-marquee",
       "settings": {}
     },
     "lumen-hero": {
-      "type": "kluck-ai-lumen-home-hero",
+      "type": "roarr-lumen-home-hero",
       "settings": {}
     },
     "lumen-collections": {
-      "type": "kluck-ai-lumen-home-collections",
+      "type": "roarr-lumen-home-collections",
       "settings": {}
     },
     "lumen-products": {
-      "type": "kluck-ai-lumen-home-products",
+      "type": "roarr-lumen-home-products",
       "settings": {}
     },
     "lumen-split": {
-      "type": "kluck-ai-lumen-home-split",
+      "type": "roarr-lumen-home-split",
       "settings": {}
     },
     "lumen-promise": {
-      "type": "kluck-ai-lumen-home-promise",
+      "type": "roarr-lumen-home-promise",
       "settings": {}
     },
     "lumen-quote": {
-      "type": "kluck-ai-lumen-home-quote",
+      "type": "roarr-lumen-home-quote",
       "settings": {}
     },
     "lumen-faq": {
-      "type": "kluck-ai-lumen-home-faq",
+      "type": "roarr-lumen-home-faq",
       "settings": {}
     }
   },

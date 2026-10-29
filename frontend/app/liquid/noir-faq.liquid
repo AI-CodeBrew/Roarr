@@ -1,0 +1,64 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign heading = m.noir_faq_heading.value | default: m.noir_faq_heading | default: 'Questions, answered' -%}
+{%- assign text = m.noir_faq_text.value | default: m.noir_faq_text | default: 'Something else on your mind? Our team is always happy to help.' -%}
+{%- assign q1 = m.noir_faq_q_1.value | default: m.noir_faq_q_1 | default: 'How do I use it?' -%}
+{%- assign a1 = m.noir_faq_a_1.value | default: m.noir_faq_a_1 | default: 'It is ready to use straight out of the box. Full instructions are included, and our team can help with anything else.' -%}
+{%- assign q2 = m.noir_faq_q_2.value | default: m.noir_faq_q_2 | default: 'Will it suit me?' -%}
+{%- assign a2 = m.noir_faq_a_2.value | default: m.noir_faq_a_2 | default: 'Sizes and specifications are listed above. If you are unsure, send us a message and we will help you choose.' -%}
+{%- assign q3 = m.noir_faq_q_3.value | default: m.noir_faq_q_3 | default: 'How do I care for it?' -%}
+{%- assign a3 = m.noir_faq_a_3.value | default: m.noir_faq_a_3 | default: 'Wipe clean with a soft, dry cloth and store it away from direct heat to keep it looking its best for years.' -%}
+{%- assign q4 = m.noir_faq_q_4.value | default: m.noir_faq_q_4 | default: 'What if it is not right?' -%}
+{%- assign a4 = m.noir_faq_a_4.value | default: m.noir_faq_a_4 | default: 'Return it unused within 30 days for an exchange or a full refund. We will guide you through every step.' -%}
+<section class="nr-faq">
+  <div class="nr-faq__wrap">
+    <div class="nr-faq__intro">
+      <p class="nr-eyebrow">FAQ</p>
+      <h2 class="nr-faq__heading">{{ heading }}</h2>
+      <p class="nr-faq__text">{{ text }}</p>
+    </div>
+    <div class="nr-faq__list">
+      <details class="nr-faq__item" open><summary>{{ q1 }}</summary><p>{{ a1 }}</p></details>
+      <details class="nr-faq__item"><summary>{{ q2 }}</summary><p>{{ a2 }}</p></details>
+      <details class="nr-faq__item"><summary>{{ q3 }}</summary><p>{{ a3 }}</p></details>
+      <details class="nr-faq__item"><summary>{{ q4 }}</summary><p>{{ a4 }}</p></details>
+    </div>
+  </div>
+</section>
+<style>
+  .nr-faq { --nr-ink: #0D0C0B; --nr-coal: #161412; --nr-line: #2E2A25; --nr-gold: #C9A96E; --nr-gold-soft: #E4D2AA; --nr-ivory: #F2ECE2; --nr-muted: #A79E90; --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; background: var(--nr-ink); color: var(--nr-ivory); font-family: "Manrope", sans-serif; padding: clamp(56px, 8vw, 112px) 0; }
+  .nr-faq *, .nr-faq *::before, .nr-faq *::after { box-sizing: border-box; }
+  .nr-faq__wrap { width: min(1180px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+  .nr-faq__intro { display: grid; gap: 14px; position: sticky; top: 24px; }
+  .nr-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--nr-gold); }
+  .nr-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+  .nr-faq__heading { margin: 0; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(34px, 4vw, 56px); line-height: 1.06; }
+  .nr-faq__text { margin: 0; font-size: 15px; line-height: 1.7; color: var(--nr-muted); max-width: 360px; }
+  .nr-faq__list { border-top: 1px solid var(--nr-line); }
+  .nr-faq__item { border-bottom: 1px solid var(--nr-line); }
+  .nr-faq__item summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 0; font-family: "Bodoni Moda", serif; font-size: clamp(19px, 1.7vw, 23px); line-height: 1.3; }
+  .nr-faq__item summary::-webkit-details-marker { display: none; }
+  .nr-faq__item summary::after { content: "+"; flex: none; font-family: "Manrope", sans-serif; font-size: 22px; color: var(--nr-gold); transition: transform 250ms ease; }
+  .nr-faq__item[open] > summary::after { transform: rotate(45deg); }
+  .nr-faq__item p { margin: 0; padding: 0 40px 24px 0; font-size: 15px; line-height: 1.7; color: var(--nr-muted); }
+  @media (max-width: 849px) {
+    .nr-faq__wrap { grid-template-columns: 1fr; width: calc(100% - 32px); }
+    .nr-faq__intro { position: static; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--noir" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Manrope", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

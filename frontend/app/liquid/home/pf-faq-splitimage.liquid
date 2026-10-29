@@ -4,10 +4,10 @@
   - Layout: pf-faq-splitimage.css | Accordion: pf-faq-splitimage.js
 {% endcomment %}
 
-{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
 {%- assign faq_scheme = section.settings.faq_color_scheme | default: 'scheme-2' -%}
-{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+{%- assign use_roarr = section.settings.use_roarr_metafields | default: false -%}
 
 {% if shop.metafields.app.block_control.value %}
 {% render 'snippets/theme-fonts', settings: settings %}
@@ -49,7 +49,7 @@
       {% for block in section.blocks %}
         {% assign kq = blank %}
         {% assign ka = blank %}
-        {% if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank %}
+        {% if use_roarr and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank %}
           {% assign _t = store_gen.home_page.text %}
           {% case forloop.index %}
             {% when 1 %}
@@ -71,7 +71,7 @@
           <div class="fs-faq-header">
             <h3 class="fs-faq-title">
               {% assign kq_stripped = kq | strip %}
-              {% if use_kluck_ai and kq_stripped != blank %}
+              {% if use_roarr and kq_stripped != blank %}
                 {{ kq | strip }}
               {% else %}
                 {{ block.settings.title }}
@@ -87,7 +87,7 @@
           <div class="fs-faq-content">
             <div class="fs-faq-inner">
               {% assign ka_stripped = ka | strip %}
-              {% if use_kluck_ai and ka_stripped != blank %}
+              {% if use_roarr and ka_stripped != blank %}
                 {{ ka | strip }}
               {% else %}
                 {{ block.settings.content }}

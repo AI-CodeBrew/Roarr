@@ -1,8 +1,8 @@
 
 {
     "sections": {
-      "kluck-ai-faq-page-section": {
-        "type": "kluck-ai-faq-page-section",
+      "roarr-faq-page-section": {
+        "type": "roarr-faq-page-section",
         "blocks": {
           "faq_item_KDF6nW": {
             "type": "faq_item",
@@ -56,7 +56,7 @@
       }
     },
     "order": [
-      "kluck-ai-faq-page-section"
+      "roarr-faq-page-section"
     ]
   }
   

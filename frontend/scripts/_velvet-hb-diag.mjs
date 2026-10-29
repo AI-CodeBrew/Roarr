@@ -1,9 +1,13 @@
 import { chromium } from "playwright";
+import { fileURLToPath } from "node:url";
 
-const html =
-  "file:///Users/macbook/Documents/Projects/KluckAI/kluck-embeded/scripts/demo-preview-out/2026-09-20/store/cinematic-home/health_beauty.html";
-const out =
-  "/Users/macbook/Documents/Projects/KluckAI/kluck-embeded/scripts/demo-preview-out/2026-09-20/store/cinematic-home/health_beauty.eye.jpg";
+const html = new URL(
+  "./demo-preview-out/2026-09-20/store/cinematic-home/health_beauty.html",
+  import.meta.url,
+).href;
+const out = fileURLToPath(
+  new URL("./demo-preview-out/2026-09-20/store/cinematic-home/health_beauty.eye.jpg", import.meta.url),
+);
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({

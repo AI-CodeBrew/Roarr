@@ -1,9 +1,9 @@
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
-{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+{% assign store_gen = shop.metafields.roarr.store_generation.value %}
 {% assign home = store_gen.home_page %}
 {% assign ht = home.text %}
 {% assign hi = home.images %}
-{% assign use_mf = section.settings.use_kluck_ai_metafields %}
+{% assign use_mf = section.settings.use_roarr_metafields %}
 {% assign homeData = section.settings.homeData %}
 {% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
 {% if hi == blank and homeData.images != blank %}{% assign hi = homeData.images %}{% endif %}
@@ -21,9 +21,9 @@
 {% assign editorial_2_cta = section.settings.editorial_2_cta %}
 {% if use_mf and ht.editorial_2_cta != blank %}{% assign editorial_2_cta = ht.editorial_2_cta %}{% endif %}
 {% assign editorial_image_1 = section.settings.editorial_image_1 %}
-{% if use_mf %}{% if shop.metafields.kluck_ai.editorial_image_1.value != blank %}{% assign editorial_image_1 = shop.metafields.kluck_ai.editorial_image_1.value %}{% elsif hi.editorial_image_1 != blank %}{% assign editorial_image_1 = hi.editorial_image_1 %}{% endif %}{% endif %}
+{% if use_mf %}{% if shop.metafields.roarr.editorial_image_1.value != blank %}{% assign editorial_image_1 = shop.metafields.roarr.editorial_image_1.value %}{% elsif hi.editorial_image_1 != blank %}{% assign editorial_image_1 = hi.editorial_image_1 %}{% endif %}{% endif %}
 {% assign editorial_image_2 = section.settings.editorial_image_2 %}
-{% if use_mf %}{% if shop.metafields.kluck_ai.editorial_image_2.value != blank %}{% assign editorial_image_2 = shop.metafields.kluck_ai.editorial_image_2.value %}{% elsif hi.editorial_image_2 != blank %}{% assign editorial_image_2 = hi.editorial_image_2 %}{% endif %}{% endif %}
+{% if use_mf %}{% if shop.metafields.roarr.editorial_image_2.value != blank %}{% assign editorial_image_2 = shop.metafields.roarr.editorial_image_2.value %}{% elsif hi.editorial_image_2 != blank %}{% assign editorial_image_2 = hi.editorial_image_2 %}{% endif %}{% endif %}
 
 {% assign amour_product = blank %}
 {% if section.settings.product != blank %}

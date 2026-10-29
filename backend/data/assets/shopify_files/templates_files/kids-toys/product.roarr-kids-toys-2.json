@@ -1,0 +1,661 @@
+
+ {
+  "sections": {
+    "roarr-hero-section": {
+      "type": "roarr-hero-section-1",
+      "blocks": {
+        "roarr_product_details": {
+          "type": "shopify://apps/roarr/blocks/product-details/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "use_metafields": true,
+            "badge_text": "Featured Product",
+            "badge_shape": "ribbon",
+            "badge_align": "center",
+            "content_align": "center",
+            "show_rating": false,
+            "rating_text": "Best Quality",
+            "rating_text_align": "center",
+            "show_price": true,
+            "price_align": "center",
+            "variants_align": "center",
+            "variants_border_radius": 5,
+            "show_features": true,
+            "icon_set": "general",
+            "features_text": "Easy to Use#Safe & Durable#Premium"
+          }
+        },
+        "roarr_bundle": {
+          "type": "shopify://apps/roarr/blocks/bundle/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {}
+        },
+        "roarr_buy_now_button": {
+          "type": "shopify://apps/roarr/blocks/buy-now-button/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "button_text": "Buy Now",
+            "alignment": "center",
+            "container_width": 100,
+            "button_border_radius": 10,
+            "button_height": 48,
+            "quantity_style": "option1",
+            "quantity_border_radius": 10,
+            "quantity_width": 125
+          }
+        },
+        "roarr_delivery_estimator": {
+          "type": "shopify://apps/roarr/blocks/delivery-estimator/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "show_delivery_estimator": true,
+            "show_simple_line": false,
+            "processing_days": 2,
+            "delivery_days_after_processing": 3,
+            "show_service_accordion": false,
+            "title_1": "Guarantee",
+            "content_1": "We Guarantee the effectiveness of our products.",
+            "title_2": "Shipping",
+            "content_2": "All of our orders are shipped through secure and reliable shipping partners.",
+            "title_3": "Support",
+            "content_3": "Our support team is available anytime to help you with your questions."
+          }
+        },
+        "roarr_accordion": {
+          "type": "shopify://apps/roarr/blocks/accordion/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "use_metafields": true,
+            "number_of_items": 4,
+            "show_tick_icon": true,
+            "toggle_icon": "+",
+            "card_style": false,
+            "heading_1": "Enter your text!",
+            "content_1": "<p>Enter your text!</p>",
+            "heading_2": "Enter your text!",
+            "content_2": "<p>Enter your text!</p>",
+            "heading_3": "Enter your text!",
+            "content_3": "<p>Enter your text!</p>",
+            "heading_4": "Enter your text!",
+            "content_4": "<p>Enter your text!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "roarr_product_details",
+        "roarr_bundle",
+        "roarr_buy_now_button",
+        "roarr_delivery_estimator",
+        "roarr_accordion"
+      ],
+      "name": "Roarr - Hero Section",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#187631",
+        "background_opacity": 15,
+        "container_max_width": 1400,
+        "heading_font_family": "comfortaa_n4",
+        "body_font_family": "quicksand_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500,
+        "pad_left_x": 20,
+        "pad_left_y": 40,
+        "pad_right_x": 40,
+        "pad_right_y": 40,
+        "show_thumbs": true,
+        "thumbs_count": 5,
+        "thumb_position": "bottom",
+        "gallery_width": 100,
+        "main_radius": 12,
+        "thumb_radius": 8,
+        "show_faq": false,
+        "faq_margin_top": 20,
+        "faq_bg_color": "#ffffff",
+        "faq_border_color": "#e0e0e0",
+        "faq_color_q": "#000000",
+        "faq_color_a": "#555555",
+        "faq_icon_bg": "#f0f0f0",
+        "faq_icon_color": "#333333",
+        "faq_q1": "Shipping info?",
+        "faq_a1": "Ships in 3 days.",
+        "faq_q2": "Returns?",
+        "faq_a2": "30-day returns.",
+        "faq_q3": "How to Use?",
+        "faq_a3": "Use Easily.",
+        "faq_q4": "",
+        "faq_a4": "",
+        "faq_q5": "",
+        "faq_a5": ""
+      }
+    },
+    "roarr-marquee-section-1": {
+      "type": "roarr-marquee-section-1",
+      "blocks": {
+        "text_hHcRTH": {
+          "type": "text",
+          "settings": {
+            "text": "Roarr Quality"
+          }
+        },
+        "text_dtkJPV": {
+          "type": "text",
+          "settings": {
+            "text": "Roarr Quality"
+          }
+        },
+        "text_zPjiri": {
+          "type": "text",
+          "settings": {
+            "text": "Roarr Quality"
+          }
+        }
+      },
+      "block_order": [
+        "text_hHcRTH",
+        "text_dtkJPV",
+        "text_zPjiri"
+      ],
+      "name": "Roarr - Marquee",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#187631",
+        "background_opacity": 100,
+        "container_max_width": 2000,
+        "padding_v": 20,
+        "direction": "left",
+        "speed_d": 30,
+        "speed_m": 15,
+        "rotation": 0,
+        "mask_width": 50,
+        "pause_hover": true,
+        "gap_d": 60,
+        "gap_m": 30,
+        "img_height_d": 100,
+        "img_height_m": 50,
+        "img_radius": 10,
+        "heading_font_family": "bodoni_moda_n4",
+        "body_font_family": "comfortaa_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "roarr-empty-section-1": {
+      "type": "roarr-empty-section",
+      "blocks": {
+        "roarr_loved_by_everyone": {
+          "type": "shopify://apps/roarr/blocks/loved-by-everyone/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "heading": "Loved by Everyone!"
+          }
+        }
+      },
+      "block_order": [
+        "roarr_loved_by_everyone"
+      ],
+      "name": "Roarr - Loved By Everyone",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1400,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "comfortaa_n4",
+        "body_font_family": "comfortaa_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "roarr-empty-section-2": {
+      "type": "roarr-empty-section",
+      "blocks": {
+        "roarr_image_with_text": {
+          "type": "shopify://apps/roarr/blocks/image-with-text/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "use_metafields": true,
+            "image_position": "right",
+            "container_radius": 18,
+            "container_padding": 0,
+            "heading": "Enter your heading",
+            "subheading_1": "Subheading 1",
+            "subheading_1_desc": "Description for subheading 1",
+            "subheading_2": "Subheading 2",
+            "subheading_2_desc": "Description for subheading 2",
+            "subheading_3": "Subheading 3",
+            "subheading_3_desc": "Description for subheading 3",
+            "subheading_4": "Subheading 4",
+            "subheading_4_desc": "Description for subheading 4"
+          }
+        }
+      },
+      "block_order": [
+        "roarr_image_with_text"
+      ],
+      "name": "Roarr - Image With Text",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1400,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "comfortaa_n4",
+        "body_font_family": "quicksand_n4",
+        "body_size": 14,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 26,
+        "h3_weight": 600,
+        "h4_size": 20,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "roarr-trust-badge-section": {
+      "type": "roarr-trust-badge-section",
+      "blocks": {
+        "badge_i4dR9z": {
+          "type": "badge",
+          "settings": {
+            "text": "Free Shipping"
+          }
+        },
+        "badge_Cbmb99": {
+          "type": "badge",
+          "settings": {
+            "text": "Free Shipping"
+          }
+        },
+        "badge_dThG7T": {
+          "type": "badge",
+          "settings": {
+            "text": "Money Guarantee"
+          }
+        },
+        "badge_eLLUNf": {
+          "type": "badge",
+          "settings": {
+            "text": "Online Support"
+          }
+        }
+      },
+      "block_order": [
+        "badge_i4dR9z",
+        "badge_Cbmb99",
+        "badge_dThG7T",
+        "badge_eLLUNf"
+      ],
+      "name": "Roarr - Badges",
+      "settings": {
+        "use_metafields": false,
+        "use_metafield_text": true,
+        "background_color": "#000000",
+        "background_opacity": 100,
+        "container_max_width": 1400,
+        "padding_v_d": 40,
+        "padding_v_m": 30,
+        "alignment": "center",
+        "item_bg": "rgba(0,0,0,0)",
+        "item_border": "#e5e5e5",
+        "item_text": "#000000",
+        "badge_radius": 50,
+        "gap_d": 20,
+        "gap_m": 15,
+        "icon_bg": "#187631",
+        "icon_color": "#ffffff",
+        "icon_size_d": 32,
+        "icon_size_m": 28,
+        "mobile_auto_scroll": true,
+        "scroll_speed": 20,
+        "heading_font_family": "abel_n4",
+        "body_font_family": "questrial_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700
+      }
+    },
+    "roarr-empty-section-3": {
+      "type": "roarr-empty-section",
+      "blocks": {
+        "roarr_four_blocks": {
+          "type": "shopify://apps/roarr/blocks/four-blocks/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "use_metafields": true,
+            "layout": "layout_1",
+            "text_align": "center",
+            "show_border": true,
+            "image_radius": 50,
+            "heading": "Enter text",
+            "subheading": "",
+            "block_1_heading": "Heading 1",
+            "block_1_subheading": "Subheading 1",
+            "block_2_heading": "Heading 2",
+            "block_2_subheading": "Subheading 2",
+            "block_3_heading": "Heading 3",
+            "block_3_subheading": "Subheading 3",
+            "block_4_heading": "Heading 4",
+            "block_4_subheading": "Subheading 4"
+          }
+        }
+      },
+      "block_order": [
+        "roarr_four_blocks"
+      ],
+      "name": "Roarr - Four Blocks",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1250,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "comfortaa_n4",
+        "body_font_family": "quicksand_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "roarr-empty-section-4": {
+      "type": "roarr-empty-section",
+      "blocks": {
+        "roarr_circular_feature": {
+          "type": "shopify://apps/roarr/blocks/circular-feature-ring/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "use_metafields": true,
+            "image_position": "center",
+            "image_border_radius": 50,
+            "mobile_layout": "cards",
+            "mobile_cards_layout": "stacked",
+            "heading": "Transform Your Routine",
+            "subheading": "The lamp's soft, adjustable glow creates a calming environment.",
+            "feature1_title": "Relaxation",
+            "feature1_text": "Promotes a soothing atmosphere for winding down.",
+            "feature2_title": "Versatility",
+            "feature2_text": "Adjust the light to match any mood or activity.",
+            "feature3_title": "Comfort",
+            "feature3_text": "Creates a cozy space for deeper rest and recovery.",
+            "feature4_title": "Tranquility",
+            "feature4_text": "Helps you unwind and clear your mind after a long day."
+          }
+        }
+      },
+      "block_order": [
+        "roarr_circular_feature"
+      ],
+      "name": "Roarr - Circular Feature",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1400,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "comfortaa_n4",
+        "body_font_family": "quicksand_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "roarr-empty-section-5": {
+      "type": "roarr-empty-section",
+      "blocks": {
+        "roarr_impact_stats": {
+          "type": "shopify://apps/roarr/blocks/impact-stat/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "use_metafields": true,
+            "heading": "Enter your Text",
+            "row1_title": "Enter your text",
+            "row1_body": "<p>Enter your text</p>",
+            "row1_percent": 95,
+            "row2_title": "Enter your text",
+            "row2_body": "<p>Enter your text.</p>",
+            "row2_percent": 92,
+            "row3_title": "Enter your text.",
+            "row3_body": "<p>Enter your text.</p>",
+            "row3_percent": 88
+          }
+        }
+      },
+      "block_order": [
+        "roarr_impact_stats"
+      ],
+      "name": "Roarr - Impact Stats",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1800,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "comfortaa_n4",
+        "body_font_family": "quicksand_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "roarr-empty-section-6": {
+      "type": "roarr-empty-section",
+      "blocks": {
+        "roarr_comparsion_table": {
+          "type": "shopify://apps/roarr/blocks/comparison-table/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {
+            "table_position": "left",
+            "text_align": "left",
+            "table_borders": "horizontal",
+            "table_border_color": "#e5e5e5",
+            "use_metafields": true,
+            "subheading": "<p>Subheading</p>",
+            "show_shop_button": true,
+            "shop_button_label": "Shop now",
+            "shop_button_url": "",
+            "shop_button_radius": 12,
+            "feature_col_label": "Features",
+            "brand_label": "Us",
+            "show_us_header_image": true,
+            "us_column_bg": "#187631",
+            "us_column_text": "",
+            "others_label": "Others",
+            "icon_yes_char": "✓",
+            "icon_no_char": "✕",
+            "mark_circle": true,
+            "number_of_rows": 4,
+            "row1_feature": "Feature 1",
+            "row2_feature": "Feature 2",
+            "row3_feature": "Feature 3",
+            "row4_feature": "Feature 4",
+            "row5_feature": "Feature 5"
+          }
+        }
+      },
+      "block_order": [
+        "roarr_comparsion_table"
+      ],
+      "name": "Roarr - Comparison Table",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 10,
+        "container_max_width": 1250,
+        "padding_vertical_desktop": 10,
+        "padding_horizontal_desktop": 10,
+        "padding_vertical_mobile": 20,
+        "padding_horizontal_mobile": 10,
+        "heading_font_family": "comfortaa_n4",
+        "body_font_family": "quicksand_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    },
+    "roarr-faq-section": {
+      "type": "roarr-faq-section",
+      "blocks": {
+        "faq_NeAbTE": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order ship?",
+            "answer": "<p>We process orders quickly to ensure timely shipping. Once your order is dispatched, you'll receive a confirmation email with tracking details.</p>"
+          }
+        },
+        "faq_x7EdXj": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order ship?",
+            "answer": "<p>We process orders quickly to ensure timely shipping. Once your order is dispatched, you'll receive a confirmation email with tracking details.</p>"
+          }
+        },
+        "faq_QqND4n": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order ship?",
+            "answer": "<p>We process orders quickly to ensure timely shipping. Once your order is dispatched, you'll receive a confirmation email with tracking details.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_NeAbTE",
+        "faq_x7EdXj",
+        "faq_QqND4n"
+      ],
+      "name": "Roarr - FAQ Section",
+      "settings": {
+        "use_metafields": true,
+        "background_color": "#ffffff",
+        "background_opacity": 100,
+        "container_max_width": 900,
+        "title": "Frequently Asked Questions",
+        "subtitle": "Our support team is here to assist with any inquiries.",
+        "text_alignment": "center",
+        "item_bg": "#f7f7f7",
+        "item_radius": 8,
+        "icon_bg": "#ffffff",
+        "icon_color": "#000000",
+        "heading_font_family": "comfortaa_n4",
+        "body_font_family": "quicksand_n4",
+        "body_size": 16,
+        "body_weight": 400,
+        "h1_size": 46,
+        "h1_weight": 700,
+        "h2_size": 34,
+        "h2_weight": 700,
+        "h3_size": 38,
+        "h3_weight": 600,
+        "h4_size": 24,
+        "h4_weight": 600,
+        "h5_size": 20,
+        "h5_weight": 500,
+        "h6_size": 16,
+        "h6_weight": 500
+      }
+    }
+  },
+  "order": [
+    "roarr-hero-section",
+    "roarr-marquee-section-1",
+    "roarr-empty-section-1",
+    "roarr-empty-section-2",
+    "roarr-trust-badge-section",
+    "roarr-empty-section-3",
+    "roarr-empty-section-4",
+    "roarr-empty-section-5",
+    "roarr-empty-section-6",
+    "roarr-faq-section"
+  ]
+}

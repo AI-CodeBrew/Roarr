@@ -20,5 +20,5 @@ if __name__ == '__main__':
     host = os.environ.get('HOST', '0.0.0.0')
     debug = os.environ.get('FLASK_DEBUG', '0') == '1'
     
-    logger.info(f"Starting Zambeel Backend API on {host}:{port}")
+    logger.info(f"Starting Roarr Backend API on {host}:{port}")
     app.run(host=host, port=port, debug=debug)

@@ -12,7 +12,7 @@ Set ENV to "dev" or "prod" to pick DynamoDB tables; prod asks for confirmation.
 
 Set ROARR_ENV to choose tables (default dev):
   ROARR_ENV=dev   → dev_roarr_* credit tables
-  ROARR_ENV=prod  → production kluck_* credit tables
+  ROARR_ENV=prod  → production credit tables (DYNAMO_TABLE_CREDIT_* in prod env)
 
 Must be set before WalletService initializes; this script reads it after
 loading .env and applies DYNAMO_TABLE_CREDIT_* accordingly.

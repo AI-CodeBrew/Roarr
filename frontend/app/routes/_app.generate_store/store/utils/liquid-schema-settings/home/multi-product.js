@@ -2,7 +2,7 @@
 export const MULTI_PRODUCT_HOME_SETTINGS = {
     /* pf-k-hero-peek-slider: Hero Peek Slider */
     "pf-k-hero-peek-slider": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         "height_desktop": 550,
         "height_mobile": 300,
         "border_radius": 0,
@@ -15,7 +15,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
             {
                 type: "slide",
                 settings: {
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b009f66a_zambeel_ai_generated_image.jpg",
+                    image: "",
                     overlay: 0,
                     product: "",
                     slide_color_scheme: "scheme-1",
@@ -34,7 +34,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
             {
                 type: "slide",
                 settings: {
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/759f44d3_zambeel_ai_generated_image.jpg",
+                    image: "",
                     overlay: 0,
                     product: "",
                     slide_color_scheme: "scheme-1",
@@ -89,21 +89,21 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
         // Blocks (order: text_segment, image_pill, text_segment, line_break, text_segment, image_pill, text_segment, image_pill)
         blocks: [
             { type: "text_segment", settings: { text: "Be your ", italic: false, font_family: "heading", text_scale: 100 } },
-            { type: "image_pill", settings: { image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0f1a84aa_zambeel_ai_generated_image.png", link: "" } },
+            { type: "image_pill", settings: { image: "", link: "" } },
             { type: "text_segment", settings: { text: "own eurus", italic: true, font_family: "accent", text_scale: 100 } },
             { type: "text_segment", settings: { text: ". Feeling", italic: false, font_family: "heading", text_scale: 100 } },
             { type: "line_break", settings: {} },
             { type: "text_segment", settings: { text: "confident ", italic: false, font_family: "heading", text_scale: 100 } },
-            { type: "image_pill", settings: { image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/34cd8af6_zambeel_ai_generated_image.jpg", link: "" } },
+            { type: "image_pill", settings: { image: "", link: "" } },
             { type: "text_segment", settings: { text: " in the skin ", italic: false, font_family: "heading", text_scale: 100 } },
-            { type: "image_pill", settings: { image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/81a9537f_zambeel_ai_generated_image.jpg", link: "" } },
+            { type: "image_pill", settings: { image: "", link: "" } },
             { type: "text_segment", settings: { text: " you are in.", italic: false, font_family: "heading", text_scale: 100 } }
         ]
     },
 
     /* pf-feature-product-section: Featured Products Slider */
     "pf-feature-product-section": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         title: "Our Featured Products",
         shop_btn_label: "Shop Now",
         color_scheme: "scheme-2",
@@ -136,12 +136,12 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
             {
                 type: "product_card",
                 settings: {
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e27ca92b_zambeel_ai_generated_image.png",
+                    image: "",
                     heading: "Glowy Warmth Bronzer",
                     text: "Love this sunscreen! It's non-greasy and blends well with makeup.",
                     product: {
                         title: "Glowy Warmth Bronzer",
-                        featured_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e27ca92b_zambeel_ai_generated_image.png",
+                        featured_image: "",
 
                     }
                 }
@@ -149,24 +149,24 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
             {
                 type: "product_card",
                 settings: {
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/aa0bd95e_zambeel_ai_generated_image.png",
+                    image: "",
                     heading: "Summer Essentials",
                     text: "Curated picks for your routine.",
                     product: {
                         title: "Summer Essentials",
-                        featured_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/aa0bd95e_zambeel_ai_generated_image.png",
+                        featured_image: "",
                     }
                 }
             },
             {
                 type: "product_card",
                 settings: {
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f7d895e5_zambeel_ai_generated_image.png",
+                    image: "",
                     heading: "Kitchen & Home",
                     text: "Tools that make everyday cooking easier.",
                     product: {
                         title: "Kitchen & Home",
-                        featured_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f7d895e5_zambeel_ai_generated_image.png",
+                        featured_image: "",
                     }
                 }
             }
@@ -175,7 +175,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
 
     /* pf-collection-showcase: Collection Card Slider (Roarr - Collections) */
     "pf-collection-showcase": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         title: "Shop by Collection",
         main_h_size: 42,
         card_width_d: 85,
@@ -199,7 +199,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
                     collection: "",
                     layout_d: "row",
                     text_align: "center",
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b009f66a_zambeel_ai_generated_image.jpg",
+                    image: "",
                     eyebrow: "Featured",
                     title: "Glowy Warmth Bronzer",
                     text: "Love this sunscreen! It's non-greasy and blends well with makeup.",
@@ -214,7 +214,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
                     collection: "",
                     layout_d: "row",
                     text_align: "center",
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/759f44d3_zambeel_ai_generated_image.jpg",
+                    image: "",
                     eyebrow: "Featured",
                     title: "Summer Essentials",
                     text: "Curated picks for your routine.",
@@ -229,7 +229,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
                     collection: "",
                     layout_d: "row",
                     text_align: "center",
-                    image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/217ae9c8_zambeel_ai_generated_image.jpg",
+                    image: "",
                     eyebrow: "Featured",
                     title: "Kitchen & Home",
                     text: "Tools that make everyday cooking easier.",
@@ -261,7 +261,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
 
     /* pf-product-lookbook: Shoppable Bundle */
     // "pf-product-lookbook": {
-    //     main_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e27ca92b_zambeel_ai_generated_image.png",
+    //     main_image: "",
     //     image_radius: 16,
     //     desktop_layout: "left",
     //     subtitle: "Shop Skincare Set",
@@ -329,7 +329,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
 
     /* marquee-scrolling-banner: Marquee Banner */
     "marquee-scrolling-banner": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         direction: "left",
         pause_hover: false,
         show_border_top: true,
@@ -351,24 +351,24 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
 
         blocks: [
             { type: "text", settings: { text: "Made with love" } },
-            { type: "image", settings: { image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0f1a84aa_zambeel_ai_generated_image.png" } },
+            { type: "image", settings: { image: "" } },
             { type: "text", settings: { text: "New Season Essential" } },
-            { type: "image", settings: { image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/34cd8af6_zambeel_ai_generated_image.jpg" } },
+            { type: "image", settings: { image: "" } },
             { type: "text", settings: { text: "New Season Essential" } },
-            { type: "image", settings: { image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/81a9537f_zambeel_ai_generated_image.jpg" } },
+            { type: "image", settings: { image: "" } },
             { type: "text", settings: { text: "Pure & Natural" } }
         ]
     },
 
     /* pf-split-feature: Split Feature Banner */
     "pf-split-feature": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         section_width: 1300,
         text_column_width: 50,
         border_radius: 20,
         color_scheme: "scheme-1",
         card_color_scheme: "scheme-2",
-        image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/aa0bd95e_zambeel_ai_generated_image.png",
+        image: "",
         eyebrow: "INNOVATIVE SELF-CARE",
         heading: "Elevate Your Daily Rituals",
         text: "We combine smart technology with gentle design to bring you personal care tools that truly understand your body.",
@@ -421,7 +421,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
 
     /* pf-selected-prod-3in1: Product Star 3-Col */
     "pf-selected-prod-3in1": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         heading_part_1: "Star Product",
         heading_part_2: "of this season",
         color_scheme: "scheme-1",
@@ -430,7 +430,7 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
         section_height: 600,
         border_radius: 20,
         video_url: "",
-        image_media: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b009f66a_zambeel_ai_generated_image.jpg",
+        image_media: "",
         product_ref: "24k-gold-eye-patches",
         show_float_badge: true,
         float_badge_text: "BEST SELLER",
@@ -537,12 +537,12 @@ export const MULTI_PRODUCT_HOME_SETTINGS = {
 
     /* pf-faq-splitimage: FAQ & Showcase */
     "pf-faq-splitimage": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         section_full_width: false,
         section_max_width: 1300,
         color_scheme: "scheme-1",
         faq_color_scheme: "scheme-1",
-        image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/34cd8af6_zambeel_ai_generated_image.jpg",
+        image: "",
         heading: "We're answerable!",
         text: "<p>Any question about our products? Check here.</p>",
         btn_label: "Buy Now",

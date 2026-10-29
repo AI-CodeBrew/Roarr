@@ -1,19 +1,15 @@
 import {
   IndexTable,
   Text,
-  Badge,
   Box,
-  Card,
   BlockStack,
   InlineStack,
   IndexFilters,
   useSetIndexFiltersMode,
-  LegacyCard,
-  EmptyState,
-  Spinner,
 } from "@shopify/polaris";
-import { Edit, Trash2 } from "lucide-react";
+import { Boxes, Edit, LoaderCircle, Plus, Trash2 } from "lucide-react";
 import { useState, useMemo } from "react";
+import { PrimaryButton, StatusPill } from "../../components/RoarrUI";
 
 export default function BundleList({
   bundles,
@@ -154,52 +150,43 @@ export default function BundleList({
   if (bundles.length === 0) {
     if (isLoading) {
       return (
-        <LegacyCard sectioned>
-          <Box
-            paddingBlockStart="800"
-            paddingBlockEnd="800"
-            paddingInlineStart="400"
-            paddingInlineEnd="400"
-          >
-            <BlockStack gap="500" inlineAlign="center">
-              <Spinner accessibilityLabel="Loading bundles" size="large" />
-              <Text as="p" variant="bodyMd" tone="subdued">
-                Loading bundles…
-              </Text>
-            </BlockStack>
-          </Box>
-        </LegacyCard>
+        <section
+          className="flex flex-col items-center gap-3 rounded-2xl bg-white px-6 py-14 shadow-sm ring-1 ring-slate-200/70"
+          role="status"
+          aria-live="polite"
+        >
+          <LoaderCircle size={28} className="animate-spin text-[#1e3a8a]" aria-hidden />
+          <p className="m-0 text-sm text-slate-500">Loading bundles…</p>
+        </section>
       );
     }
     return (
-      <Box paddingBlockStart="800">
-        <LegacyCard sectioned>
-          <EmptyState
-            heading="Create your first bundle"
-            action={
-              onCreate
-                ? {
-                    content: "Create bundle",
-                    onAction: onCreate,
-                  }
-                : undefined
-            }
-            image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-          >
-            <p>
-              Use bundles to increase average order value with quantity discounts and upsell offers on your
-              products.
-            </p>
-          </EmptyState>
-        </LegacyCard>
-      </Box>
+      <section className="rounded-2xl bg-white px-6 py-12 text-center shadow-sm ring-1 ring-slate-200/70">
+        <div className="mx-auto flex max-w-md flex-col items-center">
+          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-[#1e40af] ring-1 ring-inset ring-blue-100">
+            <Boxes size={26} aria-hidden />
+          </span>
+          <h3 className="m-0 mt-4 text-lg font-bold tracking-tight text-slate-900">
+            Create your first bundle
+          </h3>
+          <p className="m-0 mt-1.5 text-sm leading-relaxed text-slate-500">
+            Use bundles to increase average order value with quantity discounts and upsell offers on
+            your products.
+          </p>
+          {onCreate ? (
+            <PrimaryButton className="mt-5" onClick={onCreate}>
+              <Plus size={16} aria-hidden />
+              Create bundle
+            </PrimaryButton>
+          ) : null}
+        </div>
+      </section>
     );
   }
 
   return (
     <>
-      <Card roundedAbove="sm" padding="0">
-        <Box background="bg-surface" className="my-4 overflow-hidden">
+      <section className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70">
         <IndexFilters
           tabs={tabs}
           hideFilters={true}
@@ -283,14 +270,15 @@ export default function BundleList({
                   <IndexTable.Cell className="align-middle">
                     <div className="flex w-full items-center justify-start">
                       <InlineStack gap="200" align="center">
-                        <Badge tone={bundle.isActive ? "success" : "subdued"}>
+                        <StatusPill tone={bundle.isActive ? "success" : "neutral"}>
                           {bundle.isActive ? "Published" : "Draft"}
-                        </Badge>
+                        </StatusPill>
 
                         <label className="relative inline-flex h-6 w-11 items-center">
                           <input
                             type="checkbox"
                             checked={bundle.isActive || false}
+                            aria-label={`${bundle.isActive ? "Unpublish" : "Publish"} ${bundle.name}`}
                             onChange={(e) => {
                               if (isAuthenticating) return;
                               if (onToggleStatus) {
@@ -300,24 +288,24 @@ export default function BundleList({
                             disabled={isLoading || isAuthenticating}
                             className="peer sr-only"
                           />
-                          <span className="h-6 w-11 cursor-pointer rounded-full bg-gray-300 transition-colors peer-checked:bg-emerald-600 peer-disabled:cursor-not-allowed peer-disabled:opacity-50" />
-                          <span className="pointer-events-none absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-transform peer-checked:translate-x-5" />
+                          <span className="h-6 w-11 cursor-pointer rounded-full bg-slate-300 transition-colors peer-checked:bg-[#1e3a8a] peer-focus-visible:ring-2 peer-focus-visible:ring-[#1e3a8a] peer-focus-visible:ring-offset-2 peer-disabled:cursor-not-allowed peer-disabled:opacity-50" />
+                          <span className="pointer-events-none absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5" />
                         </label>
                       </InlineStack>
                     </div>
                   </IndexTable.Cell>
                   <IndexTable.Cell className="align-middle">
-                    <Badge tone={bundle.type === "discounted" ? "info" : "success"}>
+                    <StatusPill tone={bundle.type === "discounted" ? "info" : "neutral"}>
                       {bundle.type === "discounted"
                         ? "Quantity Discount"
                         : "Bundles"}
-                    </Badge>
+                    </StatusPill>
                   </IndexTable.Cell>
                   <IndexTable.Cell className="align-middle">
                     <InlineStack gap="100">
                       <button
                         type="button"
-                        className="inline-flex items-center justify-center rounded border border-gray-300 bg-transparent p-1.5 text-gray-500 transition hover:border-gray-400 hover:bg-gray-100 hover:text-gray-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center justify-center rounded-lg bg-white p-1.5 text-slate-500 ring-1 ring-inset ring-slate-200 transition hover:bg-blue-50 hover:text-[#1e40af] hover:ring-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
                         onClick={() => {
                           if (isAuthenticating) return;
                           handleMenuAction(bundle, "edit");
@@ -330,7 +318,7 @@ export default function BundleList({
                       </button>
                       <button
                         type="button"
-                        className="inline-flex items-center justify-center rounded border border-gray-300 bg-transparent p-1.5 text-gray-500 transition hover:border-gray-400 hover:bg-gray-100 hover:text-gray-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex items-center justify-center rounded-lg bg-white p-1.5 text-slate-500 ring-1 ring-inset ring-slate-200 transition hover:bg-red-50 hover:text-red-600 hover:ring-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
                         onClick={() => {
                           if (isAuthenticating) return;
                           handleMenuAction(bundle, "delete");
@@ -348,8 +336,7 @@ export default function BundleList({
             })}
           </IndexTable>
         </Box>
-        </Box>
-      </Card>
+      </section>
     </>
   );
 }

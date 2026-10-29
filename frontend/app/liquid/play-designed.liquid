@@ -1,7 +1,7 @@
 {%- capture kl_rtl_html -%}
 {% render 'snippets/play-fonts' %}
-{%- assign m = product.metafields.kluck_ai -%}
-{%- assign image = m.problem_solving_image.value | default: m.problem_solving_image | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/iwt-2c.png?v=1726197375' -%}
+{%- assign m = product.metafields.roarr -%}
+{%- assign image = m.problem_solving_image.value | default: m.problem_solving_image | default: '' -%}
 {%- assign q1 = m.product_question_1.value | default: m.product_question_1 | default: m.faq_question_1.value | default: m.faq_question_1 | default: 'Description' -%}
 {%- assign a1 = m.product_question_1_answer.value | default: m.product_question_1_answer | default: m.faq_answer_1.value | default: m.faq_answer_1 | default: 'A wooden set for counting, color sorting, and rolling play.' -%}
 {%- assign q2 = m.product_question_2.value | default: m.product_question_2 | default: m.faq_question_2.value | default: m.faq_question_2 | default: 'Details' -%}
@@ -31,7 +31,7 @@
   .pk-designed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
   .pk-arch { position: relative; }
   .pk-arch img { width: 100%; height: auto; display: block; }
-  .pk-recycle { position: absolute; top: 18px; inset-inline-start: 6px; width: 150px; height: 150px; display: grid; place-items: center; text-align: center; color: #fff; background: url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/sale-badge.png?v=1726541080") center / cover no-repeat; font-family: "Caveat Brush", cursive !important; font-size: 30px; line-height: 0.95; transform: rotate(-15deg); }
+  .pk-recycle { position: absolute; top: 18px; inset-inline-start: 6px; width: 150px; height: 150px; display: grid; place-items: center; text-align: center; color: #fff; background: url("") center / cover no-repeat; font-family: "Caveat Brush", cursive !important; font-size: 30px; line-height: 0.95; transform: rotate(-15deg); }
   .pk-designed details { background: #fff; border: 1px solid #6F2424; border-radius: 20px; margin: 0 0 16px; padding: 6px 20px; }
   .pk-designed summary { cursor: pointer; font-family: "Caveat Brush", cursive !important; font-size: 32px; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
   .pk-designed summary::-webkit-details-marker { display: none; }

@@ -3,10 +3,10 @@
   - Roarr preview: featured_product_headline_n, featured_product_subheadline_n, feature_image_n; layout: pf-feature-product-section.css + .js
 {% endcomment %}
 
-{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
 {%- assign card_scheme = section.settings.card_color_scheme | default: 'scheme-2' -%}
-{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
+{%- assign use_roarr = section.settings.use_roarr_metafields | default: false -%}
 
 {% if shop.metafields.app.block_control.value %}
 {% render 'snippets/theme-fonts', settings: settings %}
@@ -67,50 +67,50 @@
           {% assign product = all_products[product] %}
         {% endif %}
 
-        {% assign kluck_punchline = blank %}
-        {% assign kluck_punchline_description = blank %}
-        {% assign kluck_product_impact = blank %}
+        {% assign roarr_punchline = blank %}
+        {% assign roarr_punchline_description = blank %}
+        {% assign roarr_product_impact = blank %}
 
         {% if store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank %}
           {% assign _t = store_gen.home_page.text %}
           {% case forloop.index %}
             {% when 1 %}
-              {% assign kluck_punchline = _t.top_product_punchline_1 %}
-              {% assign kluck_punchline_description = _t.top_product_punchline_1_description %}
+              {% assign roarr_punchline = _t.top_product_punchline_1 %}
+              {% assign roarr_punchline_description = _t.top_product_punchline_1_description %}
             {% when 2 %}
-              {% assign kluck_punchline = _t.top_product_punchline_2 %}
-              {% assign kluck_punchline_description = _t.top_product_punchline_2_description %}
+              {% assign roarr_punchline = _t.top_product_punchline_2 %}
+              {% assign roarr_punchline_description = _t.top_product_punchline_2_description %}
             {% when 3 %}
-              {% assign kluck_punchline = _t.top_product_punchline_3 %}
-              {% assign kluck_punchline_description = _t.top_product_punchline_3_description %}
+              {% assign roarr_punchline = _t.top_product_punchline_3 %}
+              {% assign roarr_punchline_description = _t.top_product_punchline_3_description %}
           {% endcase %}
         {% endif %}
 
         {% case forloop.index %}
           {% when 1 %}
-            {% assign kluck_product_impact = shop.metafields.kluck_ai.product_impact_image_1.value %}
+            {% assign roarr_product_impact = shop.metafields.roarr.product_impact_image_1.value %}
           {% when 2 %}
-            {% assign kluck_product_impact = shop.metafields.kluck_ai.product_impact_image_2.value %}
+            {% assign roarr_product_impact = shop.metafields.roarr.product_impact_image_2.value %}
           {% when 3 %}
-            {% assign kluck_product_impact = shop.metafields.kluck_ai.product_impact_image_3.value %}
+            {% assign roarr_product_impact = shop.metafields.roarr.product_impact_image_3.value %}
         {% endcase %}
 
         <div class="fp-card color-{{ card_scheme }}" {{ block.shopify_attributes }}>
           <div class="fp-card-img-wrap">
             {% if block.settings.image != blank %}
               {{ block.settings.image | image_url: width: 800 | image_tag: 'fp-card-img', 'lazy' }}
-            {% elsif use_kluck_ai and kluck_product_impact != blank %}
-              {{ kluck_product_impact | image_url: width: 800 | image_tag: 'fp-card-img', 'lazy' }}
+            {% elsif use_roarr and roarr_product_impact != blank %}
+              {{ roarr_product_impact | image_url: width: 800 | image_tag: 'fp-card-img', 'lazy' }}
             {% else %}
               {{ 'image' | placeholder_svg_tag: 'fp-card-img' }}
             {% endif %}
           </div>
 
           <div class="fp-card-body">
-            {% if use_kluck_ai %}
-              {% assign ps = kluck_punchline | strip %}
+            {% if use_roarr %}
+              {% assign ps = roarr_punchline | strip %}
               {% if ps != blank %}
-                <h3 class="fp-card-title">{{ kluck_punchline | strip }}</h3>
+                <h3 class="fp-card-title">{{ roarr_punchline | strip }}</h3>
               {% else %}
                 <h3 class="fp-card-title">{{ block.settings.heading }}</h3>
               {% endif %}
@@ -119,10 +119,10 @@
             {% endif %}
 
             <div class="fp-card-text">
-              {% if use_kluck_ai %}
-                {% assign ds = kluck_punchline_description | strip %}
+              {% if use_roarr %}
+                {% assign ds = roarr_punchline_description | strip %}
                 {% if ds != blank %}
-                  {{ kluck_punchline_description }}
+                  {{ roarr_punchline_description }}
                 {% else %}
                   {{ block.settings.text }}
                 {% endif %}

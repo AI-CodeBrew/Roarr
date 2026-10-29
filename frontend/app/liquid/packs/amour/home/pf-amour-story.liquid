@@ -1,9 +1,9 @@
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
-{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+{% assign store_gen = shop.metafields.roarr.store_generation.value %}
 {% assign home = store_gen.home_page %}
 {% assign ht = home.text %}
 {% assign hi = home.images %}
-{% assign use_mf = section.settings.use_kluck_ai_metafields %}
+{% assign use_mf = section.settings.use_roarr_metafields %}
 {% assign homeData = section.settings.homeData %}
 {% if ht == blank and homeData.text != blank %}{% assign ht = homeData.text %}{% endif %}
 {% if hi == blank and homeData.images != blank %}{% assign hi = homeData.images %}{% endif %}
@@ -21,9 +21,9 @@
 {% assign story_caption_line = section.settings.story_caption_line %}
 {% if use_mf and ht.story_caption_line != blank %}{% assign story_caption_line = ht.story_caption_line %}{% endif %}
 {% assign story_image = section.settings.story_image %}
-{% if use_mf %}{% if shop.metafields.kluck_ai.story_image.value != blank %}{% assign story_image = shop.metafields.kluck_ai.story_image.value %}{% elsif hi.story_image != blank %}{% assign story_image = hi.story_image %}{% endif %}{% endif %}
+{% if use_mf %}{% if shop.metafields.roarr.story_image.value != blank %}{% assign story_image = shop.metafields.roarr.story_image.value %}{% elsif hi.story_image != blank %}{% assign story_image = hi.story_image %}{% endif %}{% endif %}
 {% assign product_image_1 = section.settings.product_image_1 %}
-{% if use_mf %}{% if shop.metafields.kluck_ai.product_image_1.value != blank %}{% assign product_image_1 = shop.metafields.kluck_ai.product_image_1.value %}{% elsif hi.product_image_1 != blank %}{% assign product_image_1 = hi.product_image_1 %}{% endif %}{% endif %}
+{% if use_mf %}{% if shop.metafields.roarr.product_image_1.value != blank %}{% assign product_image_1 = shop.metafields.roarr.product_image_1.value %}{% elsif hi.product_image_1 != blank %}{% assign product_image_1 = hi.product_image_1 %}{% endif %}{% endif %}
 
 {% assign amour_product = blank %}
 {% if section.settings.product != blank %}

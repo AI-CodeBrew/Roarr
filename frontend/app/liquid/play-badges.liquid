@@ -1,6 +1,6 @@
 {%- capture kl_rtl_html -%}
 {% render 'snippets/play-fonts' %}
-{%- assign m = product.metafields.kluck_ai -%}
+{%- assign m = product.metafields.roarr -%}
 {%- assign t1 = m.badge_text_1.value | default: m.badge_text_1 | default: 'Kid Safe' -%}
 {%- assign t2 = m.badge_text_2.value | default: m.badge_text_2 | default: 'Free Shipping' -%}
 {%- assign t3 = m.badge_text_3.value | default: m.badge_text_3 | default: '90 Days Returns' -%}
@@ -10,10 +10,10 @@
     {%- for half in (1..2) -%}
       <div class="pk-set">
         {%- for copy in (1..12) -%}
-          <span>{{ t1 }}</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt="">
-          <span>{{ t2 }}</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt="">
-          <span>{{ t3 }}</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt="">
-          <span>{{ t4 }}</span><img src="https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137" alt="">
+          <span>{{ t1 }}</span><img src="" alt="">
+          <span>{{ t2 }}</span><img src="" alt="">
+          <span>{{ t3 }}</span><img src="" alt="">
+          <span>{{ t4 }}</span><img src="" alt="">
         {%- endfor -%}
       </div>
     {%- endfor -%}

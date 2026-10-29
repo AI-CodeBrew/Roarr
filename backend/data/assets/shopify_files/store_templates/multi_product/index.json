@@ -1,8 +1,8 @@
 
  {
   "sections": {
-    "kluck-ai-home-hero-section": {
-      "type": "kluck-ai-home-hero-section",
+    "roarr-home-hero-section": {
+      "type": "roarr-home-hero-section",
       "blocks": {
         "slide_a6PQQB": {
           "type": "slide",
@@ -66,7 +66,7 @@
       ],
       "name": "Roarr - Hero Banner",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "height_desktop": 550,
         "height_mobile": 300,
         "border_radius": 0,
@@ -76,8 +76,8 @@
         "padding_top": 5
       }
     },
-    "kluck-ai-headline-section": {
-      "type": "kluck-ai-headline-section",
+    "roarr-headline-section": {
+      "type": "roarr-headline-section",
       "blocks": {
         "text_segment_jUddaH": {
           "type": "text_segment",
@@ -119,7 +119,7 @@
         "image_pill_TAp6d3": {
           "type": "image_pill",
           "settings": {
-            "image": "shopify://shop_images/5752fd81_zambeel_ai_generated_image.jpg",
+            "image": "",
             "link": ""
           }
         },
@@ -151,7 +151,7 @@
       ],
       "name": "Roarr - Headline",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "",
         "size_desktop": 69,
         "size_mobile": 45,
@@ -159,8 +159,8 @@
         "max_width": 1100
       }
     },
-    "kluck-ai-collection-showcase-section": {
-      "type": "kluck-ai-collection-showcase-section",
+    "roarr-collection-showcase-section": {
+      "type": "roarr-collection-showcase-section",
       "blocks": {
         "collection_card_4c8x8t": {
           "type": "collection_card",
@@ -212,7 +212,7 @@
       ],
       "name": "Roarr - Collections",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "title": "Shop by Collections",
         "main_h_size": 42,
         "card_width_d": 85,
@@ -230,8 +230,8 @@
         "padding_bottom": 60
       }
     },
-    "kluck-ai-feature-product-section": {
-      "type": "kluck-ai-feature-product-section",
+    "roarr-feature-product-section": {
+      "type": "roarr-feature-product-section",
       "blocks": {
         "product_card_ACPRxJ": {
           "type": "product_card",
@@ -265,7 +265,7 @@
       ],
       "name": "Roarr - Featured Products",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "title": "Our Featured Products",
         "container_pl": 95,
         "track_offset": 48,
@@ -295,8 +295,8 @@
         "pb_m": 40
       }
     },
-    "kluck-ai-testimonials-section": {
-      "type": "kluck-ai-testimonials-section",
+    "roarr-testimonials-section": {
+      "type": "roarr-testimonials-section",
       "blocks": {
         "testimonial_t9AwTm": {
           "type": "testimonial",
@@ -348,7 +348,7 @@
       ],
       "name": "Roarr - Testimonials",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "section_full_width": false,
         "section_max_width": 1320,
         "padding_top": 60,
@@ -363,8 +363,8 @@
         "image_border_width": 1
       }
     },
-    "kluck-ai-tabbed-grid-section": {
-      "type": "kluck-ai-tabbed-grid-section",
+    "roarr-tabbed-grid-section": {
+      "type": "roarr-tabbed-grid-section",
       "name": "Roarr - Products Grid",
       "settings": {
         "cols_desktop": 3,
@@ -379,8 +379,8 @@
         "badge_custom_text": "#ffffff"
       }
     },
-    "kluck-ai-marquee-section-2": {
-      "type": "kluck-ai-marquee-section-2",
+    "roarr-marquee-section-2": {
+      "type": "roarr-marquee-section-2",
       "blocks": {
         "image_QCyM8d": {
           "type": "image",
@@ -423,7 +423,7 @@
       ],
       "name": "Roarr - Marquee Banner",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "direction": "left",
         "pause_hover": false,
         "show_border_top": true,
@@ -442,11 +442,11 @@
         "img_radius": 100
       }
     },
-    "kluck-ai-image-with-text-3-section": {
-      "type": "kluck-ai-image-with-text-3-section",
+    "roarr-image-with-text-3-section": {
+      "type": "roarr-image-with-text-3-section",
       "name": "Roarr - AI - Image with Text",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "section_width": 1300,
         "text_column_width": 50,
         "border_radius": 20,
@@ -466,8 +466,8 @@
         "padding_bottom": 60
       }
     },
-    "kluck-ai-trust-badge-2-section": {
-      "type": "kluck-ai-trust-badge-2-section",
+    "roarr-trust-badge-2-section": {
+      "type": "roarr-trust-badge-2-section",
       "blocks": {
         "badge_pMUQ7W": {
           "type": "badge",
@@ -526,8 +526,8 @@
         "item_pad_y_m": 8
       }
     },
-    "kluck-ai-product-column-section": {
-      "type": "kluck-ai-product-column-section",
+    "roarr-product-column-section": {
+      "type": "roarr-product-column-section",
       "blocks": {
         "feature_99Hikm": {
           "type": "feature",
@@ -570,7 +570,7 @@
       ],
       "name": "Roarr - Product Column",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "heading_part_1": "Star Product",
         "heading_part_2": "of this season",
         "color_scheme": "",
@@ -593,8 +593,8 @@
         "feat_p_size": 14
       }
     },
-    "kluck-ai-faq-section-home-1": {
-      "type": "kluck-ai-faq-section-home-1",
+    "roarr-faq-section-home-1": {
+      "type": "roarr-faq-section-home-1",
       "blocks": {
         "faq_item_MnAkKt": {
           "type": "faq_item",
@@ -625,7 +625,7 @@
       ],
       "name": "Roarr - FAQ",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "section_full_width": false,
         "section_max_width": 1300,
         "color_scheme": "",
@@ -640,16 +640,16 @@
     }
   },
   "order": [
-    "kluck-ai-home-hero-section",
-    "kluck-ai-headline-section",
-    "kluck-ai-collection-showcase-section",
-    "kluck-ai-feature-product-section",
-    "kluck-ai-testimonials-section",
-    "kluck-ai-tabbed-grid-section",
-    "kluck-ai-marquee-section-2",
-    "kluck-ai-image-with-text-3-section",
-    "kluck-ai-trust-badge-2-section",
-    "kluck-ai-product-column-section",
-    "kluck-ai-faq-section-home-1"
+    "roarr-home-hero-section",
+    "roarr-headline-section",
+    "roarr-collection-showcase-section",
+    "roarr-feature-product-section",
+    "roarr-testimonials-section",
+    "roarr-tabbed-grid-section",
+    "roarr-marquee-section-2",
+    "roarr-image-with-text-3-section",
+    "roarr-trust-badge-2-section",
+    "roarr-product-column-section",
+    "roarr-faq-section-home-1"
   ]
 }

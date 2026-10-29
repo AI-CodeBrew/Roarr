@@ -1,0 +1,74 @@
+{
+  "sections": {
+    "play-hero": {
+      "type": "roarr-play-hero",
+      "blocks": {
+        "roarr_bundle": {
+          "type": "shopify://apps/roarr/blocks/bundle/01a1603e-9aab-7970-8b2b-ce92b2515051",
+          "settings": {}
+        }
+      },
+      "block_order": ["roarr_bundle"],
+      "settings": {}
+    },
+    "play-marquee-1": {
+      "type": "roarr-play-marquee",
+      "settings": {
+        "text_1": "Sale 50% Off",
+        "text_2": "Giving back 10%",
+        "text_3": "Black Friday",
+        "text_source": "marquee"
+      }
+    },
+    "play-features": {
+      "type": "roarr-play-features",
+      "settings": {}
+    },
+    "play-promo": {
+      "type": "roarr-play-promo",
+      "settings": {}
+    },
+    "play-story": {
+      "type": "roarr-play-story",
+      "settings": {}
+    },
+    "play-designed": {
+      "type": "roarr-play-designed",
+      "settings": {}
+    },
+    "play-marquee-2": {
+      "type": "roarr-play-marquee",
+      "settings": {
+        "text_1": "Kid Safe",
+        "text_2": "Free Shipping",
+        "text_3": "90 Days Returns",
+        "text_4": "Gift Favorite",
+        "text_source": "badges"
+      }
+    },
+    "play-circles": {
+      "type": "roarr-play-circles",
+      "settings": {}
+    },
+    "play-reviews": {
+      "type": "roarr-play-reviews",
+      "settings": {}
+    },
+    "play-instagram": {
+      "type": "roarr-play-instagram",
+      "settings": {}
+    }
+  },
+  "order": [
+    "play-hero",
+    "play-marquee-1",
+    "play-features",
+    "play-promo",
+    "play-story",
+    "play-designed",
+    "play-marquee-2",
+    "play-circles",
+    "play-reviews",
+    "play-instagram"
+  ]
+}

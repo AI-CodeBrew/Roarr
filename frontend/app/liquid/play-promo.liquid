@@ -1,10 +1,10 @@
 {%- capture kl_rtl_html -%}
 {% render 'snippets/play-fonts' %}
-{%- assign m = product.metafields.kluck_ai -%}
+{%- assign m = product.metafields.roarr -%}
 {%- assign heading = m.pillow_banner_heading.value | default: m.pillow_banner_heading | default: 'A brighter way to play, half off this week.' -%}
 {%- assign sub = m.pillow_banner_subheading.value | default: m.pillow_banner_subheading | default: 'Use the code at checkout. It stacks with the sale price.' -%}
 {%- assign code = m.promo_code.value | default: m.promo_code | default: 'BLACKFRIDAY' -%}
-{%- assign image = m.feature_image.value | default: m.feature_image | default: 'https://cdn.shopify.com/s/files/1/0446/8228/1123/files/iwt-1c.png?v=1726197375' -%}
+{%- assign image = m.feature_image.value | default: m.feature_image | default: '' -%}
 <section class="pk-promo">
   <div class="pk-promo-grid">
     <div>

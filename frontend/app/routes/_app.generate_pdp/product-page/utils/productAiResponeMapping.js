@@ -61,7 +61,7 @@ const aiResponseMapping = (magic_response, shopifyProduct) => {
         variants,
         selected_or_first_available_variant: null,
         metafields: {
-            kluck_ai: {
+            roarr: {
                 color_schema: { value: color_schemes },
                 ...body_images,
                 ...product_images,
@@ -82,25 +82,25 @@ const DEFAULT_MAGIC_RESPONSE = {
     ],
     "images": {
         "body_images": {
-            "after_use_image": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "before_use_image": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "feature_image": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "happy_customer_image_1": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "happy_customer_image_2": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "happy_customer_image_3": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "problem_solving_image": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_highlight_1": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_highlight_2": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_highlight_3": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_highlight_4": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_impact_image": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006"
+            "after_use_image": "",
+            "before_use_image": "",
+            "feature_image": "",
+            "happy_customer_image_1": "",
+            "happy_customer_image_2": "",
+            "happy_customer_image_3": "",
+            "problem_solving_image": "",
+            "product_highlight_1": "",
+            "product_highlight_2": "",
+            "product_highlight_3": "",
+            "product_highlight_4": "",
+            "product_impact_image": ""
         },
         "product_images": {
-            "product_image_1": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_image_2": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_image_3": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_image_4": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006",
-            "product_image_5": "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/kluck_ai_store_banner_image_dafbfdfc-234c-4bb0-93ac-97ab523bc3b7.png?v=1776410006"
+            "product_image_1": "",
+            "product_image_2": "",
+            "product_image_3": "",
+            "product_image_4": "",
+            "product_image_5": ""
         }
     },
     "selected_color": "#4A6D7C",

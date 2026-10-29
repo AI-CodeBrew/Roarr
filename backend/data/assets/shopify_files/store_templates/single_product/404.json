@@ -1,7 +1,7 @@
 {
   "sections": {
-    "kluck-ai-404-section": {
-      "type": "kluck-ai-404-section",
+    "roarr-404-section": {
+      "type": "roarr-404-section",
       "name": "Roarr - 404",
       "settings": {
         "container_width": 1400,
@@ -36,5 +36,5 @@
       }
     }
   },
-  "order": ["kluck-ai-404-section"]
+  "order": ["roarr-404-section"]
 }

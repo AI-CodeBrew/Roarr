@@ -39,37 +39,37 @@ CATEGORY_REFERENCES = {
     "kids_toys": {
         "title": "wooden rainbow stacking arch",
         "description": "A wooden rainbow stacking arch toy in soft pastel arches.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4b72961b_zambeel_ai_generated_image.png",
+        "reference": "",
         "place": "a sunny child's playroom with a soft rug and warm wood",
     },
     "general": {
         "title": "matte ceramic desk lamp",
         "description": "A matte ceramic desk lamp with a warm glow and a simple sculptural base.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6a7af4d5_zambeel_ai_generated_image.png",
+        "reference": "",
         "place": "a quiet desk with books, warm evening light, and a plain wall",
     },
     "fashion": {
         "title": "camel leather crossbody bag",
         "description": "A structured camel leather crossbody bag with clean lines.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4ba78aa8_zambeel_ai_generated_image.png",
+        "reference": "",
         "place": "a lived-in room with warm window light and a wooden chair",
     },
     "health_beauty": {
         "title": "ceramic facial roller and serum duo",
         "description": "A ceramic facial roller beside a small serum bottle.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1e186774_zambeel_ai_generated_image.png",
+        "reference": "",
         "place": "a bright spa vanity with marble, linen, and soft morning light",
     },
     "home_kitchen": {
         "title": "matte sage dutch oven",
         "description": "A matte sage enameled cast-iron dutch oven with a lid.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/075573b5_zambeel_ai_generated_image.png",
+        "reference": "",
         "place": "a real kitchen counter with wood, herbs, and afternoon light",
     },
     "car_accessories": {
         "title": "LED dashboard ambient light strip",
         "description": "A slim LED dashboard light strip glowing softly inside a car.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f7340ae4_zambeel_ai_generated_image.png",
+        "reference": "",
         "place": "a modern car cabin at dusk, dashboard and windshield in frame",
     },
 }

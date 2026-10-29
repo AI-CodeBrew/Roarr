@@ -88,28 +88,28 @@ export const FASHION_DEFAULT_MAGIC_RESPONSES = {
     images: {
         body_images: {
             // Happy Customer Images
-            happy_customer_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e93fa633_zambeel_ai_generated_image.jpg",
-            happy_customer_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6e5853de_zambeel_ai_generated_image.jpg",
-            happy_customer_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/010f85ce_zambeel_ai_generated_image.jpg",
+            happy_customer_image_1: "",
+            happy_customer_image_2: "",
+            happy_customer_image_3: "",
 
             // Feature & Impact Images
-            feature_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/27a90cf9_zambeel_ai_generated_image.png",
-            product_impact_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ad480a48_zambeel_ai_generated_image.png",
-            problem_solving_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e7ab6e6c_zambeel_ai_generated_image.png",
+            feature_image: "",
+            product_impact_image: "",
+            problem_solving_image: "",
 
             // Four-blocks / highlight images (Vibe PDP)
-            product_highlight_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/591e37f7_zambeel_ai_generated_image.jpg",
-            product_highlight_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/cae45b25_zambeel_ai_generated_image.jpg",
-            product_highlight_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7579007f_zambeel_ai_generated_image.jpg",
-            product_highlight_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/69935ea5_zambeel_ai_generated_image.jpg",
+            product_highlight_1: "",
+            product_highlight_2: "",
+            product_highlight_3: "",
+            product_highlight_4: "",
         },
 
         product_images: {
-            product_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/591e37f7_zambeel_ai_generated_image.jpg",
-            product_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/cae45b25_zambeel_ai_generated_image.jpg",
-            product_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7579007f_zambeel_ai_generated_image.jpg",
-            product_image_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/69935ea5_zambeel_ai_generated_image.jpg",
-            product_image_5: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3da8433f_zambeel_ai_generated_image.jpg"
+            product_image_1: "",
+            product_image_2: "",
+            product_image_3: "",
+            product_image_4: "",
+            product_image_5: ""
         }
     },
 

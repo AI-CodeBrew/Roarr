@@ -1,7 +1,7 @@
 import { authenticate } from "../shopify.server";
 
-const THEME_EXTENSION_UID = "019b183d-746c-7391-a5b6-6ac9f26fa6b4";
-const APP_HANDLE = "kluck-ai-store-builder";
+const THEME_EXTENSION_UID = "01a1603e-9aab-7970-8b2b-ce92b2515051";
+const APP_HANDLE = "roarr";
 const API_VERSION = "2026-01";
 
 const APP_BLOCKS = [

@@ -2,7 +2,7 @@
 {%- if render_flag == true -%}
   {%- liquid
     assign s = block.settings
-    assign m = product.metafields.kluck_ai
+    assign m = product.metafields.roarr
     assign color_schema = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
 
     assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
@@ -24,13 +24,13 @@
     assign body_font = s.body_font_family
 
     if s.use_metafields
-      assign heading_content = product.metafields.kluck_ai.stats_section_heading | default: s.heading
-      assign point_1_heading = product.metafields.kluck_ai.stats_section_point_1_heading | default: s.row1_title
-      assign point_1_desc = product.metafields.kluck_ai.stats_section_point_1_desc | default: s.row1_body
-      assign point_2_heading = product.metafields.kluck_ai.stats_section_point_2_heading | default: s.row2_title
-      assign point_2_desc = product.metafields.kluck_ai.stats_section_point_2_desc | default: s.row2_body
-      assign point_3_heading = product.metafields.kluck_ai.stats_section_point_3_heading | default: s.row3_title
-      assign point_3_desc = product.metafields.kluck_ai.stats_section_point_3_desc | default: s.row3_body
+      assign heading_content = product.metafields.roarr.stats_section_heading | default: s.heading
+      assign point_1_heading = product.metafields.roarr.stats_section_point_1_heading | default: s.row1_title
+      assign point_1_desc = product.metafields.roarr.stats_section_point_1_desc | default: s.row1_body
+      assign point_2_heading = product.metafields.roarr.stats_section_point_2_heading | default: s.row2_title
+      assign point_2_desc = product.metafields.roarr.stats_section_point_2_desc | default: s.row2_body
+      assign point_3_heading = product.metafields.roarr.stats_section_point_3_heading | default: s.row3_title
+      assign point_3_desc = product.metafields.roarr.stats_section_point_3_desc | default: s.row3_body
     else
       assign heading_content = s.heading
       assign point_1_heading = s.row1_title
@@ -41,8 +41,8 @@
       assign point_3_desc = s.row3_body
     endif
     assign image_content = blank
-    if product.metafields.kluck_ai.problem_solving_image
-      assign image_meta = product.metafields.kluck_ai.problem_solving_image
+    if product.metafields.roarr.problem_solving_image
+      assign image_meta = product.metafields.roarr.problem_solving_image
       assign image_content = image_meta | default: image_meta
     endif
     if s.image != blank

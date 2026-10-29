@@ -4,7 +4,7 @@
   endunless
 
   assign s = block.settings
-  assign m = product.metafields.kluck_ai
+  assign m = product.metafields.roarr
   assign color_schema = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
   assign panel_color = color_schema
   if s.use_metafields_bg == false and s.background_color != blank

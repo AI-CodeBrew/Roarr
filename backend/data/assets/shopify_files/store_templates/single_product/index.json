@@ -1,8 +1,8 @@
 
  {
   "sections": {
-    "kluck-ai-promotion-banner-section": {
-      "type": "kluck-ai-promotion-banner-section",
+    "roarr-promotion-banner-section": {
+      "type": "roarr-promotion-banner-section",
       "disabled": true,
       "name": "Roarr - Promotion Banner",
       "settings": {
@@ -31,8 +31,8 @@
         "btn_pad_y_m": 10
       }
     },
-    "kluck-ai-home-hero-section": {
-      "type": "kluck-ai-home-hero-section",
+    "roarr-home-hero-section": {
+      "type": "roarr-home-hero-section",
       "blocks": {
         "slide_a6PQQB": {
           "type": "slide",
@@ -58,7 +58,7 @@
       ],
       "name": "Roarr - Hero Banner",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "height_desktop": 550,
         "height_mobile": 300,
         "border_radius": 0,
@@ -68,8 +68,8 @@
         "padding_top": 0
       }
     },
-    "kluck-ai-marquee-section-2": {
-      "type": "kluck-ai-marquee-section-2",
+    "roarr-marquee-section-2": {
+      "type": "roarr-marquee-section-2",
       "blocks": {
         "image_QCyM8d": {
           "type": "image",
@@ -112,7 +112,7 @@
       ],
       "name": "Roarr - Marquee Banner",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "direction": "left",
         "pause_hover": false,
         "show_border_top": true,
@@ -131,11 +131,11 @@
         "img_radius": 100
       }
     },
-    "kluck-ai-image-with-text-1-section": {
-      "type": "kluck-ai-image-with-text-1-section",
+    "roarr-image-with-text-1-section": {
+      "type": "roarr-image-with-text-1-section",
       "name": "Roarr - Image with Text - 1",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "layout": "image_right",
         "max_width": 1250,
         "desktop_gap": 80,
@@ -167,8 +167,8 @@
         "padding_bottom_mobile": 40
       }
     },
-    "kluck-ai-headline-section": {
-      "type": "kluck-ai-headline-section",
+    "roarr-headline-section": {
+      "type": "roarr-headline-section",
       "blocks": {
         "text_segment_jUddaH": {
           "type": "text_segment",
@@ -241,7 +241,7 @@
       ],
       "name": "Roarr - Headline",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "",
         "size_desktop": 69,
         "size_mobile": 45,
@@ -251,8 +251,8 @@
         "padding_bottom": 100
       }
     },
-    "kluck-ai-image-with-text-2-section": {
-      "type": "kluck-ai-image-with-text-2-section",
+    "roarr-image-with-text-2-section": {
+      "type": "roarr-image-with-text-2-section",
       "blocks": {
         "accordion_item_iGcgHa": {
           "type": "accordion_item",
@@ -299,7 +299,7 @@
       ],
       "name": "Roarr - Image with Text - 2",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "desktop_layout": "image_left",
         "max_width": 1250,
         "border_radius": 30,
@@ -321,8 +321,8 @@
         "padding_bottom_mobile": 0
       }
     },
-    "kluck-ai-features-center-section": {
-      "type": "kluck-ai-features-center-section",
+    "roarr-features-center-section": {
+      "type": "roarr-features-center-section",
       "blocks": {
         "feature_hHgXHJ": {
           "type": "feature",
@@ -401,9 +401,8 @@
       ],
       "name": "Roarr - Features Center",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "heading": "Reasons to be fussy",
-        "center_image": "shopify://shop_images/kluck_ai_store_product_image_1_1a3ba39e-b5b2-4504-adbd-31edb2a42d48.jpg",
         "max_width": 1250,
         "section_color_scheme": "scheme-1",
         "center_image_width_desktop": 350,
@@ -429,8 +428,8 @@
         "padding_bottom_mobile": 40
       }
     },
-    "kluck-ai-trust-badge-2-section": {
-      "type": "kluck-ai-trust-badge-2-section",
+    "roarr-trust-badge-2-section": {
+      "type": "roarr-trust-badge-2-section",
       "blocks": {
         "badge_pMUQ7W": {
           "type": "badge",
@@ -489,8 +488,8 @@
         "item_pad_y_m": 8
       }
     },
-    "kluck-ai-product-hero-section": {
-      "type": "kluck-ai-product-hero-section",
+    "roarr-product-hero-section": {
+      "type": "roarr-product-hero-section",
       "blocks": {
         "badges_t8DeKK": {
           "type": "badges",
@@ -532,7 +531,7 @@
             "swatch_trigger": "color,colour"
           }
         },
-        "kluck_ai_bundle": {
+        "roarr_bundle": {
           "type": "bundle",
           "settings": {}
         },
@@ -579,7 +578,7 @@
         "description_xWiwpf",
         "stock_wYbP3W",
         "variants_U7Qt6C",
-        "kluck_ai_bundle",
+        "roarr_bundle",
         "buy_buttons_3Mki4m",
         "trust_badges_eb9GYq",
         "accordion_b8bQe9",
@@ -603,8 +602,8 @@
         "padding_bottom_mobile": 40
       }
     },
-    "kluck-ai-testimonials-section": {
-      "type": "kluck-ai-testimonials-section",
+    "roarr-testimonials-section": {
+      "type": "roarr-testimonials-section",
       "blocks": {
         "testimonial_t9AwTm": {
           "type": "testimonial",
@@ -656,7 +655,7 @@
       ],
       "name": "Roarr - Testimonials",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "section_full_width": false,
         "section_max_width": 1320,
         "padding_top": 60,
@@ -671,11 +670,11 @@
         "image_border_width": 1
       }
     },
-    "kluck-ai-image-with-text-3-section": {
-      "type": "kluck-ai-image-with-text-3-section",
+    "roarr-image-with-text-3-section": {
+      "type": "roarr-image-with-text-3-section",
       "name": "Roarr - Image with Text - 3",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "section_width": 1300,
         "text_column_width": 50,
         "border_radius": 20,
@@ -695,8 +694,8 @@
         "padding_bottom": 60
       }
     },
-    "kluck-ai-faq-section-home-1": {
-      "type": "kluck-ai-faq-section-home-1",
+    "roarr-faq-section-home-1": {
+      "type": "roarr-faq-section-home-1",
       "blocks": {
         "faq_item_MnAkKt": {
           "type": "faq_item",
@@ -727,7 +726,7 @@
       ],
       "name": "Roarr - FAQ",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "section_full_width": false,
         "section_max_width": 1300,
         "color_scheme": "scheme-1",
@@ -742,17 +741,17 @@
     }
   },
   "order": [
-    "kluck-ai-promotion-banner-section",
-    "kluck-ai-home-hero-section",
-    "kluck-ai-marquee-section-2",
-    "kluck-ai-image-with-text-1-section",
-    "kluck-ai-headline-section",
-    "kluck-ai-image-with-text-2-section",
-    "kluck-ai-features-center-section",
-    "kluck-ai-trust-badge-2-section",
-    "kluck-ai-product-hero-section",
-    "kluck-ai-testimonials-section",
-    "kluck-ai-image-with-text-3-section",
-    "kluck-ai-faq-section-home-1"
+    "roarr-promotion-banner-section",
+    "roarr-home-hero-section",
+    "roarr-marquee-section-2",
+    "roarr-image-with-text-1-section",
+    "roarr-headline-section",
+    "roarr-image-with-text-2-section",
+    "roarr-features-center-section",
+    "roarr-trust-badge-2-section",
+    "roarr-product-hero-section",
+    "roarr-testimonials-section",
+    "roarr-image-with-text-3-section",
+    "roarr-faq-section-home-1"
   ]
 }

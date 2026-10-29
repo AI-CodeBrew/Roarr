@@ -2,7 +2,7 @@
 {%- if render_flag == true -%}
   {%- liquid
     assign bs = block.settings
-    assign m = product.metafields.kluck_ai
+    assign m = product.metafields.roarr
     assign c_schema = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
 
     assign opacity_val = bs.background_opacity | default: 10 | divided_by: 100.0

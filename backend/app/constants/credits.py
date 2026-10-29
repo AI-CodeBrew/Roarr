@@ -64,6 +64,10 @@ FEATURE_COSTS: Dict[str, int] = {
     "page_generation_glow": 150,
     # Lumenook (template 4) product page — all categories.
     "page_generation_lumenook": 150,
+    # Noir (template 5) product page — all categories.
+    "page_generation_noir": 150,
+    # Frost (template 6) product page — all categories.
+    "page_generation_frost": 150,
     "image_regenerate": 5,
     "brand_ads_campaign": 30,
 }
@@ -185,12 +189,16 @@ def get_feature_cost(feature: str) -> int:
 
 
 def get_page_generation_cost(category: Optional[str], template: Any) -> int:
-    """Aura (template 3) and Lumenook (template 4) cost less than other product pages."""
+    """Aura (3), Lumenook (4), Noir (5) and Frost (6) cost less than other product pages."""
     template_key = str(template or "").strip().lower().replace("template_", "")
     if template_key == "3":
         return get_feature_cost("page_generation_glow")
     if template_key == "4":
         return get_feature_cost("page_generation_lumenook")
+    if template_key == "5":
+        return get_feature_cost("page_generation_noir")
+    if template_key == "6":
+        return get_feature_cost("page_generation_frost")
     return get_feature_cost("page_generation")
 
 

@@ -1,6 +1,6 @@
 /**
  * Lumenook multi-product home: section settings for the liquid preview.
- * Defaults match each section's `{% schema %}` in backend `kluck-ai-lumen-home-*.liquid`.
+ * Defaults match each section's `{% schema %}` in backend `roarr-lumen-home-*.liquid`.
  * Copy and images come from homeData (`section.settings.homeData`), same keys as the classic multi home.
  */
 

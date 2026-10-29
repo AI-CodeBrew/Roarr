@@ -54,27 +54,27 @@ AMOUR_CATEGORY_ACCENTS = {
 CATEGORY_REFERENCES = {
     "health_beauty": {
         "title": "Noir Rose Eau de Parfum",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3e293a6f_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "fashion": {
         "title": "Bordeaux Leather Crossbody Bag",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a24f68bd_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "home_kitchen": {
         "title": "Amber Glow Soy Candle",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/10fac164_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "kids_toys": {
         "title": "Twirling Ballerina Music Box",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/74192ec1_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "car_accessories": {
         "title": "Aura Car Vent Diffuser",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8d681d84_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
     "general": {
         "title": "Heritage Leather Strap Watch",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/eb7e5688_zambeel_ai_generated_image.jpg",
+        "reference": "",
     },
 }
 

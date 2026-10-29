@@ -1,7 +1,7 @@
 {
   "sections": {
-    "kluck-ai-product-hero-section-3": {
-      "type": "kluck-ai-product-hero-section-3",
+    "roarr-product-hero-section-3": {
+      "type": "roarr-product-hero-section-3",
       "blocks": {
         "title_Necbfb": {
           "type": "title",
@@ -95,8 +95,8 @@
         "padding_bottom": 60
       }
     },
-    "kluck-ai-marquee-section-1": {
-      "type": "kluck-ai-marquee-section-1",
+    "roarr-marquee-section-1": {
+      "type": "roarr-marquee-section-1",
       "blocks": {
         "text_AVRi7F": {
           "type": "text",
@@ -161,8 +161,8 @@
         "h6_weight": 500
       }
     },
-    "kluck-ai-product-feature-details-section": {
-      "type": "kluck-ai-product-feature-details-section",
+    "roarr-product-feature-details-section": {
+      "type": "roarr-product-feature-details-section",
       "blocks": {
         "detail_item_8qGzUD": {
           "type": "detail_item",
@@ -202,8 +202,8 @@
     }
   },
   "order": [
-    "kluck-ai-product-hero-section-3",
-    "kluck-ai-marquee-section-1",
-    "kluck-ai-product-feature-details-section"
+    "roarr-product-hero-section-3",
+    "roarr-marquee-section-1",
+    "roarr-product-feature-details-section"
   ]
 }

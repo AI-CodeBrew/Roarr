@@ -84,23 +84,6 @@ export default function App() {
           href={tailwindStyles}
         />
 
-        {/* Preload common dashboard images */}
-        <link
-          rel="preload"
-          as="image"
-          href="https://cdn.shopify.com/s/files/1/0704/0119/6122/files/BUNDDLES.png?v=1772100009"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="https://cdn.shopify.com/s/files/1/0704/0119/6122/files/More_Templates_to_Choose_From.png?v=1772101790"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-        />
-
         <style dangerouslySetInnerHTML={{ __html: SPLASH_STYLES }} />
 
 

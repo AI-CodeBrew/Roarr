@@ -4,9 +4,9 @@
   - Optional Roarr metafields; layout/CSS in marquee-scrolling-banner.css.
 {% endcomment %}
 
-{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
 {%- assign section_scheme = section.settings.color_scheme | default: 'scheme-1' -%}
-{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: true -%}
+{%- assign use_roarr = section.settings.use_roarr_metafields | default: true -%}
 {%- assign font_family = section.settings.font_family | default: 'heading' -%}
 
 {% if shop.metafields.app.block_control.value %}
@@ -59,7 +59,7 @@
                 {% assign text_index = text_index | plus: 1 %}
                 {% assign final_text = block.settings.text %}
 
-                {% if use_kluck_ai and store_gen != blank and store_gen.home_page != blank %}
+                {% if use_roarr and store_gen != blank and store_gen.home_page != blank %}
                   {% assign hp_text = store_gen.home_page.text %}
                   {% if hp_text != blank %}
                     {% if text_index == 1 and hp_text.marquee_text_1 != blank %}
@@ -78,22 +78,22 @@
 
               {% when 'image' %}
                 {% assign img_index = img_index | plus: 1 %}
-                {% assign kluck_img = blank %}
+                {% assign roarr_img = blank %}
 
-                {% if use_kluck_ai %}
+                {% if use_roarr %}
                   {% if img_index == 1 %}
-                    {% assign kluck_img = shop.metafields.kluck_ai.banner_image.value %}
+                    {% assign roarr_img = shop.metafields.roarr.banner_image.value %}
                   {% elsif img_index == 2 %}
-                    {% assign kluck_img = shop.metafields.kluck_ai.feature_image.value %}
+                    {% assign roarr_img = shop.metafields.roarr.feature_image.value %}
                   {% elsif img_index == 3 %}
-                    {% assign kluck_img = shop.metafields.kluck_ai.creative_image.value %}
+                    {% assign roarr_img = shop.metafields.roarr.creative_image.value %}
                   {% endif %}
                 {% endif %}
 
                 {% if block.settings.image != blank %}
                   {% assign final_image = block.settings.image %}
-                {% elsif kluck_img != blank %}
-                  {% assign final_image = kluck_img %}
+                {% elsif roarr_img != blank %}
+                  {% assign final_image = roarr_img %}
                 {% endif %}
 
                 {% assign render_item = true %}

@@ -47,7 +47,8 @@ export async function ensureBundlerDiscount(admin) {
       `[BundlerDiscount] Found ${discountNodes.length} discount nodes`,
     );
 
-    const expectedTitle = "kluck ai bundler-discount";
+    // Match on the function's description, not the title: the title changed when the
+    // app was renamed, and a title match would create a second discount.
     const expectedDescription = "bundler-discount";
     let bundlerDiscount = null;
     let bundlerDiscountNodeId = null;
@@ -56,10 +57,9 @@ export async function ensureBundlerDiscount(admin) {
     discountNodes.forEach((edge, index) => {
       const discount = edge.node?.discount;
       if (discount?.__typename === "DiscountAutomaticApp") {
-        const title = discount.title;
         const description = discount.appDiscountType?.description;
 
-        if (title === expectedTitle && description === expectedDescription) {
+        if (description === expectedDescription) {
           bundlerDiscount = discount;
           bundlerDiscountNodeId = edge.node.id;
           console.log(
@@ -182,7 +182,7 @@ export async function ensureBundlerDiscount(admin) {
 
         const variables = {
           automaticAppDiscount: {
-            title: "kluck ai bundler-discount",
+            title: "roarr bundler-discount",
             functionHandle: "bundler-discount",
             discountClasses: ["PRODUCT"],
             startsAt: "2026-01-01T00:00:00Z",

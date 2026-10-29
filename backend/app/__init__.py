@@ -35,9 +35,6 @@ def create_app():
     from .modules.credits.routes import credits_bp
     app.register_blueprint(credits_bp)
     
-    from .modules.license import license_bp
-    app.register_blueprint(license_bp)
-    
     from .modules.debug import debug_bp
     app.register_blueprint(debug_bp)
     
@@ -64,6 +61,6 @@ def create_app():
 
     @app.route('/')
     def root():
-        return {'message': 'Zambeel Backend API', 'status': 'running'}, 200
+        return {'message': 'Roarr Backend API', 'status': 'running'}, 200
 
     return app

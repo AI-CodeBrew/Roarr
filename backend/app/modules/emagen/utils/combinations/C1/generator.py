@@ -3,7 +3,7 @@ C1 Generation Engine: Fashion + Product + Uploaded Identity
 ==========================================================
 
 Async generation engine for C1 combination with anchor-followup pattern.
-Adapted for Zambeel backend integration.
+Adapted for Roarr backend integration.
 """
 
 import os, json, io, asyncio, hashlib, logging, uuid, time

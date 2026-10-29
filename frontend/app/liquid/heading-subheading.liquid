@@ -2,7 +2,7 @@
 {%- if render_flag == true -%}
   {%- liquid
     assign s = block.settings
-    assign m = product.metafields.kluck_ai
+    assign m = product.metafields.roarr
     assign color = m.color_schema.value | default: m.color_schema | default: '#a34e4e'
 
     assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
@@ -22,9 +22,9 @@
     assign body_font = s.body_font_family
     assign icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>'
     if s.use_metafields
-      assign heading_meta = product.metafields.kluck_ai.high_impacting_product_heading
+      assign heading_meta = product.metafields.roarr.high_impacting_product_heading
       assign heading_content = heading_meta.value | default: heading_meta | default: s.heading
-      assign subheading_meta = product.metafields.kluck_ai.high_impacting_product_subheading
+      assign subheading_meta = product.metafields.roarr.high_impacting_product_subheading
       assign subheading_content = subheading_meta.value | default: subheading_meta | default: s.subheading
     else
       assign heading_content = s.heading

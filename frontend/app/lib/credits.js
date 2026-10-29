@@ -18,6 +18,10 @@ export const FEATURE_COSTS_DEFAULT = Object.freeze({
   page_generation_glow: 150,
   // Lumenook (template 4) product page — all categories.
   page_generation_lumenook: 150,
+  // Noir (template 5) product page — all categories.
+  page_generation_noir: 150,
+  // Frost (template 6) product page — all categories.
+  page_generation_frost: 150,
   image_regenerate: 5,
   // Brand ads: one campaign produces 3 creatives at 10 credits each = 30.
   brand_ads_campaign: 30,
@@ -65,6 +69,8 @@ export const FEATURE_LABELS = Object.freeze({
   page_generation: "Generate Product Page",
   page_generation_glow: "Generate Product Page",
   page_generation_lumenook: "Generate Product Page",
+  page_generation_noir: "Generate Product Page",
+  page_generation_frost: "Generate Product Page",
   image_regenerate: "Image Regeneration",
   brand_ads_campaign: "Brand Ads Campaign",
 });
@@ -81,11 +87,13 @@ export function formatCredits(n, unit = "cr") {
 /**
  * Resolved cost for `featureKey` using API-backed costs when provided, else defaults.
  */
-/** Feature key for a product page: Aura (template 3) and Lumenook (template 4) have their own price. */
+/** Feature key for a product page: Aura (3), Lumenook (4), Noir (5) and Frost (6) have their own price. */
 export function pageGenerationFeatureKey(_category, template) {
   const n = Number(template);
   if (n === 3) return "page_generation_glow";
   if (n === 4) return "page_generation_lumenook";
+  if (n === 5) return "page_generation_noir";
+  if (n === 6) return "page_generation_frost";
   return "page_generation";
 }
 

@@ -1,7 +1,9 @@
 import { chromium } from "playwright";
+import { fileURLToPath } from "node:url";
 
-const root =
-  "/Users/macbook/Documents/Projects/KluckAI/kluck-embeded/scripts/demo-preview-out/2026-09-20/store/luminous-home";
+const root = fileURLToPath(
+  new URL("./demo-preview-out/2026-09-20/store/luminous-home", import.meta.url),
+);
 const cats = [
   "general",
   "fashion",
@@ -25,7 +27,7 @@ for (const cat of cats) {
   await page.addStyleTag({
     content: `
       [class*="marquee"] *,
-      .mq-track, .tb-track, .hl-marquee-track, .kluck-marquee-inner {
+      .mq-track, .tb-track, .hl-marquee-track, .roarr-marquee-inner {
         animation: none !important;
         transform: none !important;
       }

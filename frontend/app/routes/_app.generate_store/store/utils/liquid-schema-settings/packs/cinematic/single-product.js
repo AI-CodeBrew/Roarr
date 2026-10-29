@@ -4,7 +4,7 @@
 
 export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     "pf-cinematic-announcement": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         announcement_1: "Free shipping on every order",
         announcement_2: "Up to 30% off your first pair",
         announcement_3: "Easy 30-day returns",
@@ -13,13 +13,13 @@ export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     },
 
     "pf-cinematic-hero": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         banner_image: "",
         banner_image_mobile: "",
     },
 
     "pf-cinematic-trust": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         trust_1_title: "Free Shipping",
         trust_1_line: "Nationwide",
         trust_2_title: "Satisfied",
@@ -31,7 +31,7 @@ export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     },
 
     "pf-cinematic-product-story": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         product_story_image: "",
         product_story_eyebrow: "Sound that moves with you",
         product_story_heading: "Pure Freedom\nEveryday",
@@ -42,14 +42,14 @@ export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     },
 
     "pf-cinematic-inspiration": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         inspiration_line_1: "Small earbuds.",
         inspiration_line_1_accent: "Big possibilities.",
         inspiration_line_2: "Sound that moves with you — for a brighter everyday.",
     },
 
     "pf-cinematic-feature-ticker": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         feature_ticker_1: "Rich, layered sound",
         feature_ticker_2: "Featherlight comfort",
         feature_ticker_3: "All-day battery life",
@@ -59,7 +59,7 @@ export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     },
 
     "pf-cinematic-why-shop": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         why_shop_image: "",
         why_shop_heading: "Why Shop With Us?",
         why_1_title: "Designed for real days",
@@ -75,7 +75,7 @@ export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     },
 
     "pf-cinematic-feature-orbit": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         circle_feature_image: "",
         orbit_eyebrow: "Key features",
         orbit_heading: "Built around the way you move",
@@ -94,7 +94,7 @@ export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     },
 
     "pf-cinematic-reviews": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         review_eyebrow: "Reviews",
         review_heading: "What customers say",
         customer_name_1: "Reviewer Name",
@@ -106,7 +106,7 @@ export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     },
 
     "pf-cinematic-faq": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         faq_eyebrow: "FAQs",
         faq_heading: "Questions, Answered",
         faq_1_q: "How fast will my order arrive?",
@@ -124,7 +124,7 @@ export const CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS = {
     },
 
     "pf-cinematic-sticky-bar": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         product: "",
         sticky_cta: "Shop now",
         fallback_title: "Featured product",

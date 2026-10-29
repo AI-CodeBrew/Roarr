@@ -43,37 +43,37 @@ CATEGORY_REFERENCES = {
     "kids_toys": {
         "title": "Cuddle Dino Plush Friend",
         "description": "A soft friendly dinosaur plush toy in muted sage and cream, made for naps and play.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7e7b00c2_kids-toys-vibe-1.png",
+        "reference": "",
         "place": "a sunny child's bedroom with a soft rug, wooden floor, and warm window light",
     },
     "general": {
         "title": "Pulse Portable Bluetooth Speaker",
         "description": "A compact charcoal portable Bluetooth speaker with a fabric grille and rounded body.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3849e8e6_general-vibe-1.png",
+        "reference": "",
         "place": "a modern desk by a window, with a park picnic table as a second mood",
     },
     "fashion": {
         "title": "Bohemian Elegance Sapphire Gold Hoops",
         "description": "Gold hoop earrings with deep sapphire drops and a diamond-pavé finish.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/58a6fd99_fashion-vibe-product-1.png",
+        "reference": "",
         "place": "a softly lit vanity with warm evening light, marble, and a mirror edge",
     },
     "health_beauty": {
         "title": "Velvet Berry Matte Lipstick",
         "description": "A deep berry matte lipstick bullet in a slim elegant tube.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0405de30_health-beauty-vibe-1.png",
+        "reference": "",
         "place": "a bright beauty vanity with soft marble, a mirror, and morning light",
     },
     "home_kitchen": {
         "title": "Stoneware Pour-Over Mug Set",
         "description": "A warm-glaze stoneware pour-over dripper stacked with a matching mug.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/42147457_home-kitchen-vibe-1.png",
+        "reference": "",
         "place": "a calm kitchen counter in morning light, with wood, linen, and a small plant",
     },
     "car_accessories": {
         "title": "Magnetic Car Phone Mount",
         "description": "A matte black magnetic phone mount that clips in a car for hands-free navigation.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b3662a04_car-accessories-vibe-1.png",
+        "reference": "",
         "place": "a modern car dashboard and windshield in daylight, phone attached to the mount",
     },
 }

@@ -128,13 +128,13 @@ export const DEFAULT_PRODUCT_PAGE_SETTINGS = {
         ]
     },
     "pf-split-feature": {
-        use_kluck_ai_metafields: false,
+        use_roarr_metafields: false,
         section_width: 1400,
         text_column_width: 50,
         border_radius: 20,
         color_scheme: "scheme-1",
         card_color_scheme: "scheme-2",
-        image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/aa0bd95e_zambeel_ai_generated_image.png",
+        image: "",
         eyebrow: "Gentle And Safe",
         heading: "Made for sensitive skin",
         text: "We create safe products that really work.",

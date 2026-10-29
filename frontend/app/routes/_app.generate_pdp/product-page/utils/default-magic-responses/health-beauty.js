@@ -107,37 +107,40 @@ export const HEALTH_BEAUTY_DEFAULT_MAGIC_RESPONSES = {
     images: {
         body_images: {
             // Happy Customer Images
-            happy_customer_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/34cd8af6_zambeel_ai_generated_image.jpg",
-            happy_customer_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/81a9537f_zambeel_ai_generated_image.jpg",
-            happy_customer_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e4e8f14b_zambeel_ai_generated_image.jpg",
+            happy_customer_image_1: "",
+            happy_customer_image_2: "",
+            happy_customer_image_3: "",
 
             // Before/After Images
-            before_use_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/abdfa83f_zambeel_ai_generated_image.jpg",
-            after_use_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0b84cf7c_zambeel_ai_generated_image.jpg",
+            before_use_image: "",
+            after_use_image: "",
 
             // Product Highlights
-            product_highlight_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0f1a84aa_zambeel_ai_generated_image.png",
-            product_highlight_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0f1a84aa_zambeel_ai_generated_image.png",
-            product_highlight_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0f1a84aa_zambeel_ai_generated_image.png",
-            product_highlight_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0f1a84aa_zambeel_ai_generated_image.png",
+            product_highlight_1: "",
+            product_highlight_2: "",
+            product_highlight_3: "",
+            product_highlight_4: "",
 
             // Feature & Impact Images
-            feature_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e27ca92b_zambeel_ai_generated_image.png",
-            product_impact_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/aa0bd95e_zambeel_ai_generated_image.png",
-            problem_solving_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f7d895e5_zambeel_ai_generated_image.png"
+            feature_image: "",
+            product_impact_image: "",
+            problem_solving_image: ""
         },
 
         product_images: {
-            product_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b009f66a_zambeel_ai_generated_image.jpg",
-            product_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/759f44d3_zambeel_ai_generated_image.jpg",
-            product_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/217ae9c8_zambeel_ai_generated_image.jpg",
-            product_image_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e080d721_zambeel_ai_generated_image.jpg",
-            product_image_5: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d8eb0863_zambeel_ai_generated_image.jpg"
+            product_image_1: "",
+            product_image_2: "",
+            product_image_3: "",
+            product_image_4: "",
+            product_image_5: ""
         }
     },
 
     color: "#7E0D33"
 };
+
+/** Aura demo photos, drawn by scripts/build-demo-art.mjs. */
+const auraImg = (name) => `/aura-assets/${name}.jpg`;
 
 /** Aura (template 3) — Health & Beauty only. Sleek and Vibe keep the object above. */
 export const HEALTH_BEAUTY_GLOW_DEFAULT_MAGIC_RESPONSES = {
@@ -208,19 +211,19 @@ export const HEALTH_BEAUTY_GLOW_DEFAULT_MAGIC_RESPONSES = {
     images: {
         body_images: {
             ...HEALTH_BEAUTY_DEFAULT_MAGIC_RESPONSES.images.body_images,
-            product_highlight_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/serum.jpg",
-            product_highlight_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/step-hand.jpg",
-            feature_image: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/serum.jpg",
-            how_to_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/step-eye.jpg",
-            how_to_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/step-hand.jpg",
-            how_to_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/step-apply.jpg",
+            product_highlight_1: auraImg("product_highlight_1"),
+            product_highlight_2: auraImg("product_highlight_2"),
+            feature_image: auraImg("feature_image"),
+            how_to_image_1: auraImg("how_to_image_1"),
+            how_to_image_2: auraImg("how_to_image_2"),
+            how_to_image_3: auraImg("how_to_image_3"),
         },
         product_images: {
-            product_image_1: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/serum.jpg",
-            product_image_2: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/step-hand.jpg",
-            product_image_3: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/serum.jpg",
-            product_image_4: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/step-apply.jpg",
-            product_image_5: "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/demo-previews/2026-09-20/pdp/glow/step-eye.jpg",
+            product_image_1: auraImg("product_image_1"),
+            product_image_2: auraImg("product_image_2"),
+            product_image_3: auraImg("product_image_3"),
+            product_image_4: auraImg("product_image_4"),
+            product_image_5: auraImg("product_image_5"),
         },
     },
     color: "#1A1A1A",

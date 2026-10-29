@@ -113,40 +113,40 @@ export const FASHION_VIBE_DEFAULT_MAGIC_RESPONSES = {
   images: {
     body_images: {
       happy_customer_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3343db4d_fashion-vibe-product-3.png",
+        "",
       happy_customer_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7e44564d_fashion-vibe-product-4.png",
+        "",
       happy_customer_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ca41758a_fashion-vibe-product-5.png",
+        "",
 
       feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/96874476_fashion-vibe-product-2.png",
+        "",
       product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3343db4d_fashion-vibe-product-3.png",
+        "",
       problem_solving_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7e44564d_fashion-vibe-product-4.png",
+        "",
 
       product_highlight_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/58a6fd99_fashion-vibe-product-1.png",
+        "",
       product_highlight_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/96874476_fashion-vibe-product-2.png",
+        "",
       product_highlight_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3343db4d_fashion-vibe-product-3.png",
+        "",
       product_highlight_4:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ca41758a_fashion-vibe-product-5.png",
+        "",
     },
 
     product_images: {
       product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/58a6fd99_fashion-vibe-product-1.png",
+        "",
       product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/96874476_fashion-vibe-product-2.png",
+        "",
       product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3343db4d_fashion-vibe-product-3.png",
+        "",
       product_image_4:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7e44564d_fashion-vibe-product-4.png",
+        "",
       product_image_5:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ca41758a_fashion-vibe-product-5.png",
+        "",
     },
   },
 

@@ -20,6 +20,7 @@ import { generateTemplateConfig } from "./utils/productTemplatesConfig.js";
 import { getDefaultColor, getDefaultMagicResponses } from "./utils/default-magic-responses/index.js";
 import LiquidPreviewRender from "../../../components/theme-preview-editor/LiquidPreviewRender.jsx";
 import ThemePreviewCard from "../../../components/theme-preview-editor/ThemePreviewCard.jsx";
+import TemplateCardRail from "../../../components/TemplateCardRail.jsx";
 import { getProductPageThemeName } from "../../../lib/themeNames.js";
 import {
   DemoPreviewBadge,
@@ -50,14 +51,14 @@ const ProductPreviewEditor = lazy(() =>
 const ProductGenerationStep = lazy(() => import("./ProductGenerationStep.jsx"));
 const ProductPublishStep = lazy(() => import("./ProductPublishStep.jsx"));
 
-const TEMPLATE_LABELS = { 1: "Sleek", 2: "Vibe", 3: "Aura", 4: "Lumenook" };
+const TEMPLATE_LABELS = { 1: "Sleek", 2: "Vibe", 3: "Aura", 4: "Lumenook", 5: "Noir", 6: "Frost" };
 
 function asProductTemplate(value) {
   const n = Number(value);
-  return n === 1 || n === 2 || n === 3 || n === 4 ? n : null;
+  return Number.isInteger(n) && n >= 1 && n <= 6 ? n : null;
 }
 const IMAGE_REGENERATE_FALLBACK_URL =
-  "https://cdn.shopify.com/s/files/1/0670/3438/2430/files/ChatGPT_Image_Aug_7_2026_05_45_30_PM.png?v=1786106870";
+  "";
 
 const CATEGORY_OPTIONS = [
   { label: "Car Accessories", value: "car_accessories" },
@@ -211,7 +212,11 @@ function mapPageRecordToProductFlowState(page) {
     genDataForTemplate?.selectedTemplate ??
     genDataForTemplate?.selected_template;
   const template =
-    storedTemplate === 4 || storedTemplate === "4" || storedTemplate === "template_4"
+    storedTemplate === 6 || storedTemplate === "6" || storedTemplate === "template_6"
+      ? 6
+      : storedTemplate === 5 || storedTemplate === "5" || storedTemplate === "template_5"
+      ? 5
+      : storedTemplate === 4 || storedTemplate === "4" || storedTemplate === "template_4"
       ? 4
       : storedTemplate === 3 || storedTemplate === "3" || storedTemplate === "template_3"
       ? 3
@@ -501,6 +506,57 @@ export default function ProductFlowStructure({
     () => ["product-page-card", "general", "4-lumenook", selectedProduct?.id || ""].join("::"),
     [selectedProduct?.id],
   );
+  const noirMagicResponse = useMemo(() => {
+    const categoryDefaults = getDefaultMagicResponses("general", { template: 5 });
+    return {
+      ...DEFAULT_MAGIC_RESPONSE,
+      images: categoryDefaults.images || {},
+      text: categoryDefaults.text || {},
+      selected_color: categoryDefaults.color || undefined,
+      color_schemes: categoryDefaults.color ? [categoryDefaults.color] : [],
+    };
+  }, []);
+  const noirProductData = useMemo(
+    () => aiResponseMapping(noirMagicResponse),
+    [noirMagicResponse],
+  );
+  const noirTemplateRows = useMemo(
+    () => generateTemplateConfig("general", noirProductData, 5, noirMagicResponse),
+    [noirProductData, noirMagicResponse],
+  );
+  const noirPreviewCacheKey = useMemo(
+    () => ["product-page-card", "general", "5-noir", selectedProduct?.id || ""].join("::"),
+    [selectedProduct?.id],
+  );
+  const frostMagicResponse = useMemo(() => {
+    const categoryDefaults = getDefaultMagicResponses("general", { template: 6 });
+    return {
+      ...DEFAULT_MAGIC_RESPONSE,
+      images: categoryDefaults.images || {},
+      text: categoryDefaults.text || {},
+      selected_color: categoryDefaults.color || undefined,
+      color_schemes: categoryDefaults.color ? [categoryDefaults.color] : [],
+    };
+  }, []);
+  const frostProductData = useMemo(
+    () => aiResponseMapping(frostMagicResponse),
+    [frostMagicResponse],
+  );
+  const frostTemplateRows = useMemo(
+    () => generateTemplateConfig("general", frostProductData, 6, frostMagicResponse),
+    [frostProductData, frostMagicResponse],
+  );
+  const frostPreviewCacheKey = useMemo(
+    () => ["product-page-card", "general", "6-frost", selectedProduct?.id || ""].join("::"),
+    [selectedProduct?.id],
+  );
+  // Live preview rows + cache key for each premium template card.
+  const premiumCardPreviews = {
+    3: [glowTemplateRows, glowPreviewCacheKey],
+    4: [lumenTemplateRows, lumenPreviewCacheKey],
+    5: [noirTemplateRows, noirPreviewCacheKey],
+    6: [frostTemplateRows, frostPreviewCacheKey],
+  };
 
   const openProductDemoModal = useCallback(
     (template) => {
@@ -938,11 +994,11 @@ export default function ProductFlowStructure({
     asProductTemplate(templateSelectionRef.current) ?? asProductTemplate(selectedTemplate);
 
   // Aura is the default product template — auto-select it when a product is ready,
-  // unless the merchant already picked Lumenook.
+  // unless the merchant already picked Lumenook, Noir or Frost.
   useEffect(() => {
     if (pageIdFromUrl) return;
     if (!activeProduct || productValidationMessage) return;
-    if (selectedTemplate === 3 || selectedTemplate === 4) return;
+    if (selectedTemplate >= 3 && selectedTemplate <= 6) return;
     templateSelectionRef.current = 3;
     setSelectedTemplate(3);
   }, [activeProduct, productValidationMessage, selectedTemplate, pageIdFromUrl]);
@@ -952,7 +1008,8 @@ export default function ProductFlowStructure({
     const ready =
       Boolean(activeProduct) &&
       !productValidationMessage &&
-      (template === 3 || template === 4);
+      template >= 3 &&
+      template <= 6;
     if (!ready) return;
     const wallet = await refreshCreditsWallet();
     const cost = resolveFeatureCost(
@@ -984,7 +1041,8 @@ export default function ProductFlowStructure({
     const ready =
       Boolean(activeProduct) &&
       !productValidationMessage &&
-      (template === 3 || template === 4);
+      template >= 3 &&
+      template <= 6;
     if (!ready) return;
     setStep(2);
     setIsGenerating(true);
@@ -1460,7 +1518,9 @@ export default function ProductFlowStructure({
               (demoSelectedTemplate === 1 ||
                 demoSelectedTemplate === 2 ||
                 demoSelectedTemplate === 3 ||
-                demoSelectedTemplate === 4) ? (
+                demoSelectedTemplate === 4 ||
+                demoSelectedTemplate === 5 ||
+                demoSelectedTemplate === 6) ? (
                 <>
                     <div
                     style={{
@@ -1534,6 +1594,44 @@ export default function ProductFlowStructure({
                       attachBelowChrome={modalPreviewMode === "desktop"}
                       minHeight="1200px"
                       previewCacheKey={lumenPreviewCacheKey}
+                      prebuiltHtmlUrl={null}
+                      expandToContent
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: demoSelectedTemplate === 5 ? "block" : "none",
+                      height: "auto",
+                    }}
+                    aria-hidden={demoSelectedTemplate !== 5}
+                  >
+                    <LiquidPreviewRender
+                      templateRows={noirTemplateRows}
+                      previewMode={modalPreviewMode}
+                      selectedSection={null}
+                      storeName={null}
+                      attachBelowChrome={modalPreviewMode === "desktop"}
+                      minHeight="1200px"
+                      previewCacheKey={noirPreviewCacheKey}
+                      prebuiltHtmlUrl={null}
+                      expandToContent
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: demoSelectedTemplate === 6 ? "block" : "none",
+                      height: "auto",
+                    }}
+                    aria-hidden={demoSelectedTemplate !== 6}
+                  >
+                    <LiquidPreviewRender
+                      templateRows={frostTemplateRows}
+                      previewMode={modalPreviewMode}
+                      selectedSection={null}
+                      storeName={null}
+                      attachBelowChrome={modalPreviewMode === "desktop"}
+                      minHeight="1200px"
+                      previewCacheKey={frostPreviewCacheKey}
                       prebuiltHtmlUrl={null}
                       expandToContent
                     />
@@ -1683,15 +1781,10 @@ export default function ProductFlowStructure({
                   title="Template"
                   description="Pick a look for your product page. Preview it before you begin."
                 >
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: isMobileLayout
-                            ? "minmax(0, 1fr)"
-                            : `repeat(${PRODUCT_TEMPLATE_OPTIONS.length}, minmax(0, 360px))`,
-                          gap: "12px",
-                          alignItems: "stretch",
-                        }}
+                      <TemplateCardRail
+                        visible={isMobileLayout ? 1.15 : 3}
+                        activeIndex={PRODUCT_TEMPLATE_OPTIONS.findIndex((opt) => opt.id === selectedTemplate)}
+                        label="Product page templates"
                       >
                         {PRODUCT_TEMPLATE_OPTIONS.map((opt) => {
                           const cardMedia = getProductTemplateCardMedia(opt);
@@ -1720,8 +1813,8 @@ export default function ProductFlowStructure({
                               }
                               beginMagicLoading={isGenerating}
                               onPreview={() => openProductDemoModal(opt.id)}
-                              templateRows={opt.id === 4 ? lumenTemplateRows : glowTemplateRows}
-                              previewCacheKey={opt.id === 4 ? lumenPreviewCacheKey : glowPreviewCacheKey}
+                              templateRows={(premiumCardPreviews[opt.id] || premiumCardPreviews[3])[0]}
+                              previewCacheKey={(premiumCardPreviews[opt.id] || premiumCardPreviews[3])[1]}
                               framePreviewUrl={null}
                               thumbUrl={cardMedia.thumbUrl}
                               prebuiltHtmlUrl={null}
@@ -1732,7 +1825,7 @@ export default function ProductFlowStructure({
                             />
                           );
                         })}
-                      </div>
+                      </TemplateCardRail>
                 </Panel>
               ) : null}
 

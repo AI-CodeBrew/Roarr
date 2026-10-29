@@ -6,7 +6,7 @@
 
 export const KIDS_TOYS_TEMPLATE_SETTINGS = {
     1: {
-        /* hero-section: kluck-ai-hero-section */
+        /* hero-section: roarr-hero-section */
         "hero-section": {
             use_metafields: true,
             background_color: "#187631",
@@ -100,7 +100,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             ],
             show_accordion: false
         },
-        /* text-marquee: kluck-ai-marquee-section-1 */
+        /* text-marquee: roarr-marquee-section-1 */
         "text-marquee": {
             use_metafields: true,
             background_color: "#187631",
@@ -136,7 +136,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             h6_size: 16,
             h6_weight: 500
         },
-        /* bento-grid: kluck-ai-empty-section-1 */
+        /* bento-grid: roarr-empty-section-1 */
         "bento-grid": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -181,7 +181,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             cell_3_heading: "",
             cell_3_text: ""
         },
-        /* text-marquee-2: kluck-ai-marquee-section-2 */
+        /* text-marquee-2: roarr-marquee-section-2 */
         "text-marquee-2": {
             use_metafields: true,
             use_metafields_bg: true,
@@ -218,7 +218,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             h6_size: 16,
             h6_weight: 500
         },
-        /* image-with-text: kluck-ai-empty-section-2 */
+        /* image-with-text: roarr-empty-section-2 */
         "image-with-text": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -257,7 +257,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             subheading_4: "Subheading 4",
             subheading_4_desc: "Subheading 4 Description"
         },
-        /* trust-badges: kluck-ai-trust-badge-section */
+        /* trust-badges: roarr-trust-badge-section */
         "trust-badges": {
             use_metafields: true,
             use_metafield_text: false,
@@ -304,7 +304,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             badge_3_icon: null,
             badge_4_icon: null
         },
-        /* four-blocks: kluck-ai-empty-section-3 */
+        /* four-blocks: roarr-empty-section-3 */
         "four-blocks": {
             use_metafields: true,
             background_color: "#187631",
@@ -345,7 +345,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             block_4_heading: "Heading 4",
             block_4_subheading: "Subheading 4"
         },
-        /* circular-feature-ring: kluck-ai-empty-section-4 */
+        /* circular-feature-ring: roarr-empty-section-4 */
         "circular-feature-ring": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -386,7 +386,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             feature4_title: "Tranquility",
             feature4_text: "Helps you unwind and clear your mind after a long day."
         },
-        /* pillow-banner: kluck-ai-pillow-banner-section */
+        /* pillow-banner: roarr-pillow-banner-section */
         "pillow-banner": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -422,7 +422,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             h6_size: 16,
             h6_weight: 500
         },
-        /* comparison-table: kluck-ai-empty-section-5 */
+        /* comparison-table: roarr-empty-section-5 */
         "comparison-table": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -473,7 +473,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             row4_feature: "Feature 4",
             row5_feature: "Feature 5"
         },
-        /* new-faq: kluck-ai-faq-section */
+        /* new-faq: roarr-faq-section */
         "new-faq": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -515,7 +515,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
         }
     },
     2: {
-        /* hero-section: kluck-ai-hero-section */
+        /* hero-section: roarr-hero-section */
         "hero-section": {
             use_metafields: true,
             background_color: "#187631",
@@ -618,7 +618,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             accordion_heading_4: "Enter your text!",
             accordion_content_4: "<p>Enter your text!</p>"
         },
-        /* text-marquee: kluck-ai-marquee-section */
+        /* text-marquee: roarr-marquee-section */
         "text-marquee": {
             use_metafields: true,
             background_color: "#187631",
@@ -654,7 +654,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             h6_size: 16,
             h6_weight: 500
         },
-        /* loved-by-everyone: kluck-ai-empty-section-1 */
+        /* loved-by-everyone: roarr-empty-section-1 */
         "loved-by-everyone": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -682,7 +682,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             h6_weight: 500,
             heading: "Loved by Everyone!"
         },
-        /* image-with-text: kluck-ai-empty-section-2 */
+        /* image-with-text: roarr-empty-section-2 */
         "image-with-text": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -721,7 +721,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             subheading_4: "Subheading 4",
             subheading_4_desc: "Description for subheading 4"
         },
-        /* trust-badges: kluck-ai-trust-badge-section */
+        /* trust-badges: roarr-trust-badge-section */
         "trust-badges": {
             use_metafields: true,
             use_metafield_text: false,
@@ -768,7 +768,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             badge_3_icon: null,
             badge_4_icon: null
         },
-        /* four-blocks: kluck-ai-empty-section-3 */
+        /* four-blocks: roarr-empty-section-3 */
         "four-blocks": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -809,7 +809,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             block_4_heading: "Heading 4",
             block_4_subheading: "Subheading 4"
         },
-        /* circular-feature-ring: kluck-ai-empty-section-4 */
+        /* circular-feature-ring: roarr-empty-section-4 */
         "circular-feature-ring": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -850,7 +850,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             feature4_title: "Tranquility",
             feature4_text: "Helps you unwind and clear your mind after a long day."
         },
-        /* impact-stat: kluck-ai-empty-section-5 */
+        /* impact-stat: roarr-empty-section-5 */
         "impact-stat": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -887,7 +887,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             row3_body: "<p>Enter your text.</p>",
             row3_percent: 88
         },
-        /* comparison-table: kluck-ai-empty-section-6 */
+        /* comparison-table: roarr-empty-section-6 */
         "comparison-table": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -938,7 +938,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             row4_feature: "Feature 4",
             row5_feature: "Feature 5"
         },
-        /* faq: kluck-ai-faq-section */
+        /* faq: roarr-faq-section */
         "faq": {
             use_metafields: true,
             background_color: "#ffffff",
@@ -977,7 +977,7 @@ export const KIDS_TOYS_TEMPLATE_SETTINGS = {
             answer_4: "",
             question_5: "",
             answer_5: "",
-            hide_kluck_credit: false
+            hide_roarr_credit: false
         }
     }
 };

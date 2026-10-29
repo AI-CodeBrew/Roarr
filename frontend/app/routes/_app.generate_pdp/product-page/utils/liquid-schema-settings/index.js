@@ -153,8 +153,8 @@ export const ACCORDION_BLOCK = {
     }
 };
 
-// const DEFAULT_BEFORE_IMAGE = "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/56e95f55_zambeel_ai_generated_image.png";
-// const DEFAULT_AFTER_IMAGE = "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/547224d0_zambeel_ai_generated_image.jpg";
+// const DEFAULT_BEFORE_IMAGE = "";
+// const DEFAULT_AFTER_IMAGE = "";
 
 export const BEFORE_AFTER_BLOCK = {
     id: "block_123",
@@ -196,9 +196,6 @@ export const BUNDLE_BLOCK = {
 export function buildFbtProductList(product) {
     const imgs = product?.media?.map((m) => m.preview_image) || [];
     const defaultImgs = [
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/9bae792c_zambeel_ai_generated_image.jpg",
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7dfa4bf1_zambeel_ai_generated_image.jpg",
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1825ce59_zambeel_ai_generated_image.jpg"
     ];
     const urls = imgs.length ? imgs : defaultImgs;
     return urls.slice(0, 3).map((img, i) => {
@@ -339,7 +336,7 @@ export const FAQ_BLOCK = {
         answer_4: "<p>Enter your answer here.</p>",
         question_5: "Enter your question",
         answer_5: "<p>Enter your answer here.</p>",
-        hide_kluck_credit: false
+        hide_roarr_credit: false
     }
 };
 
@@ -529,7 +526,7 @@ export const IMAGE_WITH_TEXT_BLOCK = {
     }
 };
 
-// const DEFAULT_IMPACT_IMAGE = "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/880f1d5d_zambeel_ai_generated_image.png";
+// const DEFAULT_IMPACT_IMAGE = "";
 
 export const IMPACT_STAT_BLOCK = {
     id: "impact_stat_1",

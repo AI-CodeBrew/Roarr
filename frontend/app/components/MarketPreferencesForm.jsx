@@ -442,7 +442,7 @@ function StatusBadge({ done, number }) {
  * One setting in the vertical stack, as a drawer: the header (badge, title, chosen value and a
  * chevron) toggles the body. Closed rows show what was chosen instead of the help text.
  */
-function SettingRow({ number, done, title, description, summary, open, onToggle, children }) {
+export function SettingRow({ number, done, title, description, summary, open, onToggle, children }) {
   return (
     <section
       className={`rounded-xl ring-1 ring-inset transition ${

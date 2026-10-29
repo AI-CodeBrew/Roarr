@@ -103,7 +103,7 @@ const SHOP_BUNDLE_STATE_QUERY = `#graphql
   query getShopBundleState {
     shop {
       id
-      bundles: metafield(namespace: "kluck_bundle", key: "bundles") {
+      bundles: metafield(namespace: "roarr_bundle", key: "bundles") {
         value
       }
     }
@@ -331,7 +331,7 @@ export async function seedDefaultBundleIfNeeded(admin, options = {}) {
         metafields: [
           {
             ownerId,
-            namespace: "kluck_bundle",
+            namespace: "roarr_bundle",
             key: "bundles",
             value: JSON.stringify({ bundles }),
             type: "json",

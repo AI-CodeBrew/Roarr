@@ -18,7 +18,7 @@ export function StepHeader({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-3">
+      <div className="-mt-2 flex items-center gap-3">
         {onBack ? <BackButton onClick={onBack} disabled={backDisabled} /> : null}
         <div className="min-w-0 flex-1">
           <WhatsComingCard currentStep={step} completedStep={completed} variant="minimal" />

@@ -4,7 +4,7 @@
   endunless
 
   assign s = block.settings
-  assign kai = product.metafields.kluck_ai
+  assign kai = product.metafields.roarr
   assign cust = product.metafields.custom
   
   assign color = kai.color_schema.value | default: kai.color_schema | default: '#a34e4e'

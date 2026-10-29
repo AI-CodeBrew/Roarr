@@ -98,6 +98,42 @@ export function generateTemplateConfig(detectedCategory, productData, templateNu
 
   let rows;
 
+  // Frost (template 6) — same layout for every category
+  if (templateNumber === 6) {
+    const frostSection = (id, displayName) => [{
+      template: id.replace(/_/g, "-"),
+      displayName,
+      context: { product, block: { id, settings: {} }, shop },
+    }];
+    return [
+      frostSection("frost_hero", "Hero"),
+      frostSection("frost_bento", "Highlights"),
+      frostSection("frost_steps", "How it works"),
+      frostSection("frost_specs", "Specifications"),
+      frostSection("frost_faq", "Quick answers"),
+      frostSection("frost_promise", "Promise"),
+      frostSection("frost_closing", "Closing"),
+    ];
+  }
+
+  // Noir (template 5) — same layout for every category
+  if (templateNumber === 5) {
+    const noirSection = (id, displayName) => [{
+      template: id.replace(/_/g, "-"),
+      displayName,
+      context: { product, block: { id, settings: {} }, shop },
+    }];
+    return [
+      noirSection("noir_hero", "Hero"),
+      noirSection("noir_ticker", "Ticker"),
+      noirSection("noir_statement", "Statement"),
+      noirSection("noir_craft", "The craft"),
+      noirSection("noir_compare", "Comparison"),
+      noirSection("noir_faq", "FAQs"),
+      noirSection("noir_closing", "Closing"),
+    ];
+  }
+
   // Lumenook (template 4) — same layout for every category
   if (templateNumber === 4) {
     const lumenSection = (id, displayName) => [{

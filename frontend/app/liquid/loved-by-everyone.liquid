@@ -2,7 +2,7 @@
 {%- if render_flag == true -%}
 {%- liquid
   assign s = block.settings
-  assign m = product.metafields.kluck_ai
+  assign m = product.metafields.roarr
   assign opacity_val = s.background_opacity | default: 10 | divided_by: 100.0
   if s.show_background == false
     assign opacity = 0
@@ -47,7 +47,7 @@
             assign img_key = 'image_' | append: i
             assign img = blank
             assign meta_key = 'happy_customer_image_' | append: i
-            assign img_meta = product.metafields.kluck_ai[meta_key]
+            assign img_meta = product.metafields.roarr[meta_key]
             if img_meta
               assign img = img_meta.value | default: img_meta
             endif

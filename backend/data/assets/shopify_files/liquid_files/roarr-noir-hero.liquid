@@ -1,0 +1,222 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign collection_label = m.noir_collection.value | default: m.noir_collection | default: product.type -%}
+{%- assign subtitle = m.product_subtitle.value | default: m.product_subtitle -%}
+{%- assign price_note = m.noir_price_note.value | default: m.noir_price_note | default: 'Taxes included. Shipping calculated at checkout.' -%}
+{%- assign delivery = m.delivery_line.value | default: m.delivery_line | default: 'Order today and it ships within 1 to 2 working days.' -%}
+{%- assign t1 = m.badge_text_1.value | default: m.badge_text_1 | default: '2-year warranty' -%}
+{%- assign t2 = m.badge_text_2.value | default: m.badge_text_2 | default: 'Gift-ready packaging' -%}
+{%- assign t3 = m.badge_text_3.value | default: m.badge_text_3 | default: '30-day returns' -%}
+{%- assign a1_title = m.noir_acc_1_title.value | default: m.noir_acc_1_title | default: 'Description' -%}
+{%- assign a1_body = m.noir_acc_1_body.value | default: m.noir_acc_1_body -%}
+{%- assign a2_title = m.noir_acc_2_title.value | default: m.noir_acc_2_title | default: 'Specifications' -%}
+{%- assign a2_body = m.noir_acc_2_body.value | default: m.noir_acc_2_body -%}
+{%- assign a3_title = m.noir_acc_3_title.value | default: m.noir_acc_3_title | default: 'Shipping & Returns' -%}
+{%- assign a3_body = m.noir_acc_3_body.value | default: m.noir_acc_3_body -%}
+{%- assign img1 = m.product_image_1.value | default: m.product_image_1 -%}
+{%- assign img2 = m.product_image_2.value | default: m.product_image_2 -%}
+{%- assign img3 = m.product_image_3.value | default: m.product_image_3 -%}
+{%- assign img4 = m.product_image_4.value | default: m.product_image_4 -%}
+{%- assign img5 = m.product_image_5.value | default: m.product_image_5 -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+<section class="nr-hero" id="nr-hero">
+  <div class="nr-hero__grid">
+    <div class="nr-hero__media">
+      <div class="nr-hero__main">
+        {%- if product.media.size > 0 -%}
+          {%- assign main = product.media.first.preview_image | default: product.media.first -%}
+          <img data-nr-main src="{{ main | image_url: width: 1600 }}" alt="{{ product.title | escape }}">
+        {%- elsif img1 != blank -%}
+          <img data-nr-main src="{{ img1 | image_url: width: 1600 }}" alt="{{ product.title | escape }}">
+        {%- endif -%}
+        {%- if product.compare_at_price > product.price -%}
+          {%- assign saving = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round -%}
+          <span class="nr-hero__tag">-{{ saving }}%</span>
+        {%- endif -%}
+      </div>
+      <div class="nr-hero__thumbs">
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media limit: 6 -%}
+            {%- assign src = media.preview_image | default: media -%}
+            <button type="button" class="nr-hero__thumb{% if forloop.first %} is-on{% endif %}" data-src="{{ src | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} {{ forloop.index }}"><img src="{{ src | image_url: width: 200 }}" alt=""></button>
+          {%- endfor -%}
+        {%- else -%}
+          {%- if img1 != blank -%}<button type="button" class="nr-hero__thumb is-on" data-src="{{ img1 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 1"><img src="{{ img1 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img2 != blank -%}<button type="button" class="nr-hero__thumb" data-src="{{ img2 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 2"><img src="{{ img2 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img3 != blank -%}<button type="button" class="nr-hero__thumb" data-src="{{ img3 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 3"><img src="{{ img3 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img4 != blank -%}<button type="button" class="nr-hero__thumb" data-src="{{ img4 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 4"><img src="{{ img4 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img5 != blank -%}<button type="button" class="nr-hero__thumb" data-src="{{ img5 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 5"><img src="{{ img5 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="nr-hero__details">
+      {%- if collection_label != blank -%}<p class="nr-eyebrow">{{ collection_label }}</p>{%- endif -%}
+      <h1 class="nr-hero__title">{{ product.title }}</h1>
+      {%- if subtitle != blank -%}<p class="nr-hero__subtitle">{{ subtitle }}</p>{%- endif -%}
+      <div class="nr-hero__price">
+        <strong>{{ product.price | money }}</strong>
+        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+      </div>
+      {%- if price_note != blank -%}<p class="nr-hero__note">{{ price_note }}</p>{%- endif -%}
+      {%- form 'product', product, class: 'nr-hero__form' -%}
+        {%- if product.variants.size > 1 -%}
+          <label class="nr-hero__label" for="nr-variant-{{ section.id }}">{{ product.options | join: ' / ' }}</label>
+          <select class="nr-hero__select" id="nr-variant-{{ section.id }}" name="id">
+            {%- for v in product.variants -%}
+              <option value="{{ v.id }}"{% if v.id == variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }} · {{ v.price | money }}</option>
+            {%- endfor -%}
+          </select>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ variant.id }}">
+        {%- endif -%}
+        <div class="nr-hero__buy">
+          <div class="nr-hero__qty">
+            <button type="button" data-qty-minus aria-label="Decrease quantity">&minus;</button>
+            <input type="hidden" name="quantity" value="1" data-qty-input>
+            <b data-qty>1</b>
+            <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
+          </div>
+          <button class="nr-btn" type="submit"{% if variant.available == false %} disabled{% endif %}>
+            {%- if variant.available != false -%}{% render 'roarr-ui-string', key: 'add_to_cart' %}{%- else -%}{% render 'roarr-ui-string', key: 'sold_out' %}{%- endif -%}
+          </button>
+        </div>
+        <div class="nr-checkout">{{ form | payment_button }}</div>
+      {%- endform -%}
+      <div class="nr-hero__delivery">
+        <svg class="nr-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>
+        <p>{{ delivery }}</p>
+      </div>
+      <ul class="nr-hero__perks" role="list">
+        <li><svg class="nr-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>{{ t1 }}</span></li>
+        <li><svg class="nr-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.5-3-5-3.5-5-1.5S10 8 12 8zM12 8c1.5-3 5-3.5 5-1.5S14 8 12 8z"/></svg><span>{{ t2 }}</span></li>
+        <li><svg class="nr-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg><span>{{ t3 }}</span></li>
+      </ul>
+      <div class="nr-hero__accordions">
+        {%- if product.description != blank or a1_body != blank -%}
+          <details class="nr-acc" open>
+            <summary>{{ a1_title }}</summary>
+            <div class="nr-acc__body">{%- if product.description != blank -%}{{ product.description }}{%- else -%}<p>{{ a1_body }}</p>{%- endif -%}</div>
+          </details>
+        {%- endif -%}
+        {%- if a2_body != blank -%}<details class="nr-acc"><summary>{{ a2_title }}</summary><div class="nr-acc__body"><p>{{ a2_body }}</p></div></details>{%- endif -%}
+        {%- if a3_body != blank -%}<details class="nr-acc"><summary>{{ a3_title }}</summary><div class="nr-acc__body"><p>{{ a3_body }}</p></div></details>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .nr-hero { --nr-ink: #0D0C0B; --nr-coal: #161412; --nr-line: #2E2A25; --nr-gold: #C9A96E; --nr-gold-soft: #E4D2AA; --nr-ivory: #F2ECE2; --nr-muted: #A79E90; --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; background: var(--nr-ink); color: var(--nr-ivory); font-family: "Manrope", sans-serif; padding: clamp(24px, 4vw, 64px) 0 clamp(40px, 5vw, 80px); }
+  .nr-hero *, .nr-hero *::before, .nr-hero *::after { box-sizing: border-box; }
+  .nr-hero__grid { width: min(1320px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+  .nr-hero__media { display: grid; gap: 12px; position: sticky; top: 24px; }
+  .nr-hero__main { position: relative; aspect-ratio: 4 / 5; background: var(--nr-coal); overflow: hidden; }
+  .nr-hero__main img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .nr-hero__tag { position: absolute; top: 16px; inset-inline-start: 16px; padding: 6px 12px; background: var(--nr-gold); color: var(--nr-ink); font-size: 12px; font-weight: 600; letter-spacing: .08em; }
+  .nr-hero__thumbs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+  .nr-hero__thumb { padding: 0; border: 1px solid var(--nr-line); background: var(--nr-coal); cursor: pointer; line-height: 0; opacity: .6; transition: opacity 250ms ease, border-color 250ms ease; }
+  .nr-hero__thumb.is-on, .nr-hero__thumb:hover { opacity: 1; border-color: var(--nr-gold); }
+  .nr-hero__thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .nr-hero__details { display: grid; gap: 18px; padding-top: 8px; }
+  .nr-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--nr-gold); }
+  .nr-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+  .nr-hero__title { margin: 0; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(38px, 4.2vw, 60px); line-height: 1.04; letter-spacing: -0.01em; color: var(--nr-ivory); }
+  .nr-hero__subtitle { margin: 0; font-size: 16px; line-height: 1.7; color: var(--nr-muted); max-width: 520px; }
+  .nr-hero__price { display: flex; gap: 14px; align-items: baseline; padding-top: 6px; }
+  .nr-hero__price strong { font-family: "Bodoni Moda", serif; font-size: 30px; font-weight: 500; color: var(--nr-gold-soft); }
+  .nr-hero__price s { color: var(--nr-muted); font-size: 16px; }
+  .nr-hero__note { margin: -10px 0 0; padding-bottom: 20px; border-bottom: 1px solid var(--nr-line); font-size: 12px; color: var(--nr-muted); }
+  .nr-hero__form { display: grid; gap: 12px; }
+  .nr-hero__label { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--nr-muted); }
+  .nr-hero__select { width: 100%; min-height: 50px; padding: 0 14px; border: 1px solid var(--nr-line); border-radius: 0; background: var(--nr-coal); font: inherit; font-size: 14px; color: var(--nr-ivory); }
+  .nr-hero__buy { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; }
+  .nr-hero__qty { display: inline-flex; align-items: center; border: 1px solid var(--nr-line); background: var(--nr-coal); }
+  .nr-hero__qty button, .nr-hero__qty b { width: 44px; height: 52px; display: grid; place-items: center; font-weight: 500; }
+  .nr-hero__qty button { border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 18px; color: inherit; }
+  .nr-hero .nr-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 28px; border: 0; border-radius: 0; background: var(--nr-gold); color: var(--nr-ink); font: 600 12px "Manrope", sans-serif; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background 250ms ease; }
+  .nr-hero .nr-btn:hover { background: var(--nr-gold-soft); }
+  .nr-hero .nr-btn[disabled] { opacity: .5; cursor: not-allowed; }
+  .nr-checkout .shopify-payment-button__button { min-height: 54px; border-radius: 0; font-family: "Manrope", sans-serif; }
+  .nr-checkout .shopify-payment-button__button--unbranded, .nr-buynow { width: 100%; min-height: 54px; border-radius: 0; cursor: pointer; background: transparent; color: var(--nr-ivory); border: 1px solid var(--nr-ivory); font: 600 12px "Manrope", sans-serif; letter-spacing: .2em; text-transform: uppercase; transition: background 250ms ease, color 250ms ease; }
+  .nr-checkout .shopify-payment-button__button--unbranded:hover, .nr-buynow:hover { background: var(--nr-ivory); color: var(--nr-ink); }
+  .nr-checkout .shopify-payment-button__more-options { color: var(--nr-muted); font-size: 12px; }
+  .nr-hero__delivery { display: flex; gap: 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--nr-line); background: var(--nr-coal); font-size: 14px; line-height: 1.5; }
+  .nr-hero__delivery p { margin: 0; font-size: 14px; }
+  .nr-icon { flex: none; color: var(--nr-gold); }
+  .nr-hero__perks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; list-style: none; margin: 0; padding: 0; font-size: 12px; color: var(--nr-muted); }
+  .nr-hero__perks li { display: flex; align-items: center; gap: 8px; }
+  .nr-hero__perks li, .nr-hero__perks span { font-size: 12px; }
+  .nr-hero__accordions { border-top: 1px solid var(--nr-line); }
+  .nr-acc { border-bottom: 1px solid var(--nr-line); }
+  .nr-acc summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 56px; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+  .nr-acc summary::-webkit-details-marker { display: none; }
+  .nr-acc summary::after { content: "+"; font-size: 20px; font-weight: 400; color: var(--nr-gold); transition: transform 250ms ease; }
+  .nr-acc[open] > summary::after { transform: rotate(45deg); }
+  .nr-acc__body { padding-bottom: 22px; font-size: 15px; line-height: 1.7; color: var(--nr-muted); }
+  .nr-acc__body :is(p, li, span, a) { font-size: inherit; }
+  .nr-acc__body p { margin: 0 0 10px; }
+  .nr-acc__body ul { margin: 0 0 10px; padding-inline-start: 18px; }
+  @media (max-width: 989px) {
+    .nr-hero__grid { grid-template-columns: 1fr; width: calc(100% - 32px); gap: 28px; }
+    .nr-hero__media { position: static; }
+    .nr-hero__thumbs { display: flex; overflow-x: auto; }
+    .nr-hero__thumb { flex: 0 0 64px; }
+  }
+  @media (max-width: 599px) {
+    .nr-hero__perks { grid-template-columns: 1fr; }
+  }
+</style>
+<script>
+  (function () {
+    var root = document.getElementById("nr-hero");
+    if (!root) return;
+    var main = root.querySelector("[data-nr-main]");
+    root.querySelectorAll(".nr-hero__thumb").forEach(function (button) {
+      button.addEventListener("click", function (event) {
+        event.stopPropagation();
+        if (main && button.dataset.src) main.src = button.dataset.src;
+        root.querySelectorAll(".nr-hero__thumb").forEach(function (item) { item.classList.remove("is-on"); });
+        button.classList.add("is-on");
+      });
+    });
+    root.querySelectorAll(".nr-hero__qty").forEach(function (qty) {
+      var label = qty.querySelector("[data-qty]");
+      var input = qty.querySelector("[data-qty-input]");
+      function setQty(next) {
+        var value = Math.max(1, next);
+        if (label) label.textContent = String(value);
+        if (input) input.value = String(value);
+      }
+      var minus = qty.querySelector("[data-qty-minus]");
+      var plus = qty.querySelector("[data-qty-plus]");
+      if (minus) minus.addEventListener("click", function (event) { event.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) - 1); });
+      if (plus) plus.addEventListener("click", function (event) { event.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) + 1); });
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--noir" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Manrope", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Noir Hero",
+  "tag": "section",
+  "class": "roarr-noir-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Noir Hero" }]
+}
+{% endschema %}

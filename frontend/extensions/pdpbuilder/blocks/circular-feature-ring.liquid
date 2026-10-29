@@ -4,7 +4,7 @@
     break
   endunless
 
-  assign m = product.metafields.kluck_ai
+  assign m = product.metafields.roarr
   assign c = m.color_schema.value | default: m.color_schema | default: '#111'
   assign img = s.image | default: m.feature_image.value | default: m.feature_image
   

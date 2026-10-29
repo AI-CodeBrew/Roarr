@@ -1,6 +1,6 @@
 {%- liquid
   assign s = block.settings
-  assign color = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#a34e4e'
+  assign color = product.metafields.roarr.color_schema.value | default: product.metafields.roarr.color_schema | default: '#a34e4e'
 -%}
 <link rel="stylesheet" href="{{ 'typography.css' | asset_url }}" media="all">
 <link rel="stylesheet" href="{{ 'frequently-bought.css' | asset_url }}" media="all">

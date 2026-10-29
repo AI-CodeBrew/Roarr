@@ -1,6 +1,6 @@
 {%- capture kl_rtl_html -%}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
-{%- assign m = product.metafields.kluck_ai -%}
+{%- assign m = product.metafields.roarr -%}
 {%- assign eyebrow = m.lumen_eyebrow.value | default: m.lumen_eyebrow | default: product.type -%}
 {%- assign subtitle = m.product_subtitle.value | default: m.product_subtitle -%}
 {%- assign price_note = m.lumen_price_note.value | default: m.lumen_price_note | default: 'Taxes included. Shipping calculated at checkout.' -%}
@@ -90,7 +90,7 @@
             <button type="button" data-qty-plus aria-label="Increase quantity">+</button>
           </div>
           <button class="lmk-hero__atc" type="button"{% if variant.available == false %} disabled{% endif %}>
-            {%- if variant.available != false -%}{% render 'snippets/kluck-ui-string', key: 'add_to_cart' %}{%- else -%}{% render 'snippets/kluck-ui-string', key: 'sold_out' %}{%- endif -%}
+            {%- if variant.available != false -%}{% render 'snippets/roarr-ui-string', key: 'add_to_cart' %}{%- else -%}{% render 'snippets/roarr-ui-string', key: 'sold_out' %}{%- endif -%}
           </button>
         </div>
         <button class="lmk-hero__buynow" type="button">Buy it now</button>

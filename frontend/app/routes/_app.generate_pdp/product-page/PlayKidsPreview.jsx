@@ -5,13 +5,10 @@ import { useEffect, useRef } from "react";
  * Same sections as the Play card preview, filled with the selected product.
  */
 const FEATURE_ICONS = [
-  "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-1.png?v=1726124152",
-  "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-2.png?v=1726124153",
-  "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-box-3.png?v=1726124153",
 ];
-const PROMO_IMAGE = "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/iwt-1c.png?v=1726197375";
+const PROMO_IMAGE = "";
 
-const FLOWER = "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/cloud-2.png?v=1726123137";
+const FLOWER = "";
 
 function Ticker({ items }) {
   const row = [...items, ...items];
@@ -86,22 +83,14 @@ export default function PlayKidsPreview({
   const circleShots = [1, 2, 3, 4].map((n) => shot(
     n < 4 ? `happy_customer_image_${n}` : "product_highlight_4",
     [
-      "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c1.png?v=1726200609",
-      "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c2.png?v=1726200610",
-      "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c3.png?v=1726200609",
-      "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/c4.png?v=1726200609",
     ][n - 1],
   ));
   const storyShots = [1, 2, 3, 4].map((n) => shot(`product_highlight_${n}`, [
-    "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-1_bf88d73e-47ac-4511-b9b4-94fca069ec43.png?v=1726197308",
-    "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-2.png?v=1726197308",
-    "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-3.png?v=1726197308",
-    "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/img-highlight-4.png?v=1726197308",
   ][n - 1]));
   const igShots = (() => {
     const source = photos.length ? photos : [];
     if (!source.length) {
-      return [1, 2, 3, 4, 5].map((n) => `https://product-images-zambeel.s3.eu-west-3.amazonaws.com/${["cad40108", "a99e0b4d", "b32e56e8", "6a5e3b61", "07d81bd7"][n - 1]}_zambeel_ai_generated_image.jpg`);
+      return [];
     }
     return [0, 1, 2, 3, 4].map((index) => source[index % source.length]);
   })();
@@ -130,13 +119,13 @@ export default function PlayKidsPreview({
         .play-kids-page h1, .play-kids-page h2, .play-kids-page h3 { font-family: "Caveat Brush", cursive; font-weight: 400; margin: 0; overflow-wrap: anywhere; }
         .play-kids-page img { max-width: 100%; display: block; }
         .pk-wrap { width: min(1100px, calc(100% - 48px)); margin: 0 auto; }
-        .pk-hero-band { background-image: url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/product-bg.png?v=1726116403"); background-position: center center; background-size: cover; background-repeat: no-repeat; padding: 72px 0; overflow-x: clip; max-width: 100%; }
+        .pk-hero-band { background-image: url(""); background-position: center center; background-size: cover; background-repeat: no-repeat; padding: 72px 0; overflow-x: clip; max-width: 100%; }
         .pk-hero-card { background: #fff; border: 1px solid #6F2424; border-radius: 20px; padding: 40px 48px; box-sizing: border-box; }
         .pk-hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 36px; align-items: center; }
         .pk-hero > * { min-width: 0; }
         .pk-gallery { background: #fff; position: relative; }
         .pk-gallery img.hero { width: 100%; height: auto; max-height: 420px; object-fit: contain; border-radius: 20px; background: #fff; }
-        .pk-badge { position: absolute; top: 18px; left: 18px; width: 121px; height: 121px; display: grid; place-items: center; text-align: center; color: #fff; background-image: url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/sale-badge.png?v=1726541080"); background-position: center; background-size: cover; background-repeat: no-repeat; font-family: "Caveat Brush", cursive; font-size: 28px; line-height: 0.95; transform: rotate(-21deg); }
+        .pk-badge { position: absolute; top: 18px; left: 18px; width: 121px; height: 121px; display: grid; place-items: center; text-align: center; color: #fff; background-image: url(""); background-position: center; background-size: cover; background-repeat: no-repeat; font-family: "Caveat Brush", cursive; font-size: 28px; line-height: 0.95; transform: rotate(-21deg); }
         .pk-thumbs { display: flex; gap: 10px; margin-top: 12px; min-width: 0; max-width: 100%; }
         .pk-thumbs img { flex: 1 1 0; min-width: 0; width: 100%; max-width: 72px; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 12px; border: 2px solid #fff; }
         .pk-kicker { letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px; font-weight: 600; margin: 0 0 8px; }
@@ -176,7 +165,7 @@ export default function PlayKidsPreview({
         .pk-designed { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
         .pk-arch { position: relative; }
         .pk-arch img { width: 100%; height: auto; display: block; }
-        .pk-recycle { position: absolute; top: 18px; left: 6px; width: 150px; height: 150px; display: grid; place-items: center; text-align: center; color: #fff; background: url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/sale-badge.png?v=1726541080") center / cover no-repeat; font-family: "Caveat Brush", cursive; font-size: 30px; line-height: 0.95; transform: rotate(-15deg); }
+        .pk-recycle { position: absolute; top: 18px; left: 6px; width: 150px; height: 150px; display: grid; place-items: center; text-align: center; color: #fff; background: url("") center / cover no-repeat; font-family: "Caveat Brush", cursive; font-size: 30px; line-height: 0.95; transform: rotate(-15deg); }
         .pk-faq details { background: #fff; border: 1px solid #6F2424; border-radius: 20px; margin: 0 0 16px; padding: 6px 20px; }
         .pk-faq summary { cursor: pointer; font-family: "Caveat Brush", cursive; font-weight: 400; font-size: 32px; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
         .pk-faq summary::-webkit-details-marker { display: none; }
@@ -192,7 +181,7 @@ export default function PlayKidsPreview({
         .pk-row img { width: 180px; height: auto; max-height: 160px; object-fit: contain; border-radius: 18px; background: #fff; }
         .pk-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding-bottom: 48px; }
         .pk-grid img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; border-radius: 18px; background: #fff; }
-        .pk-reviews { background: #FFFCF5 url("https://cdn.shopify.com/s/files/1/0446/8228/1123/files/testi-bg.png?v=1726201762") center top / cover no-repeat; padding: 100px 0 70px; }
+        .pk-reviews { background: #FFFCF5 url("") center top / cover no-repeat; padding: 100px 0 70px; }
         .pk-reviews h2 { text-align: center; font-size: 56px; line-height: 1; }
         .pk-cards { display: flex; gap: 16px; margin-top: 28px; overflow: hidden; }
         .pk-card { flex: 0 0 260px; background: #fff; border: 1px solid #6F2424; border-radius: 20px; padding: 28px 22px 22px; text-align: left; }
@@ -309,7 +298,7 @@ export default function PlayKidsPreview({
           <div className="pk-designed">
             <div className="pk-arch">
               <span className="pk-recycle">100%<br />Recycled</span>
-              <img src={shot("problem_solving_image", "https://cdn.shopify.com/s/files/1/0446/8228/1123/files/iwt-2c.png?v=1726197375")} alt="" />
+              <img src={shot("problem_solving_image", "")} alt="" />
             </div>
             <div>
               {faqs.map((item, index) => (

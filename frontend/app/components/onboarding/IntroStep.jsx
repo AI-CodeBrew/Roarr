@@ -2,7 +2,6 @@ import { ArrowRight, Gift, ShieldCheck, Timer } from "lucide-react";
 import WhatsComingCard from "./WhatsComingCard";
 import { GradientText, PrimaryButton, StepFrame } from "./OnboardingUI";
 import { HeroShowcase } from "../../routes/root.dashboard/ShowcaseArt.jsx";
-import RoarrLionMark from "../RoarrLionMark.jsx";
 
 const PERKS = [
   { icon: ShieldCheck, label: "Your live theme & store stay untouched" },
@@ -15,23 +14,15 @@ export default function IntroStep({ onStart }) {
     <StepFrame>
       <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         <div className="min-w-0">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/80 py-1 pl-1 pr-3 text-xs font-semibold text-[#1e40af] ring-1 ring-inset ring-blue-200">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white ring-1 ring-blue-100">
-              <RoarrLionMark size={22} strokeWidth={6} />
-            </span>
-            Welcome to Roarr
-            <span aria-hidden>👋</span>
-          </span>
-
           <h1
-            className="mt-4 font-bold leading-[1.12] tracking-tight text-slate-900"
+            className="font-bold leading-[1.12] tracking-tight text-slate-900"
             style={{ fontSize: "clamp(1.7rem, 3.4vw, 2.6rem)" }}
           >
             You are minutes away from a store that <GradientText>actually converts.</GradientText>
           </h1>
           <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-slate-600">
-            In about 4 minutes, you'll have a store that works harder for you. Install and try
-            freely — nothing changes on your live store until you say so.
+            Roarr's AI builds a high-converting product page or a full store redesign in about 4
+            minutes — and nothing goes live until you say so.
           </p>
 
           <ul className="m-0 mt-4 flex list-none flex-wrap gap-2 p-0">

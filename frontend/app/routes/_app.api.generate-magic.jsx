@@ -68,7 +68,7 @@ export async function action({ request }) {
                 page_id: pageId || null,
                 language: language || null,
                 selectedTemplate:
-                    [1, 2, 3, 4].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : null,
+                    [1, 2, 3, 4, 5, 6].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : null,
             }),
         });
 

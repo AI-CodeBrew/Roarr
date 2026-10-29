@@ -4,7 +4,7 @@
   endunless
 
   assign s = block.settings
-  assign m = product.metafields.kluck_ai
+  assign m = product.metafields.roarr
   assign limit = s.number_of_items | default: 4 | at_most: 4 | at_least: 1
 -%}
 

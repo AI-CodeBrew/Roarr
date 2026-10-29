@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { ArrowUpRight, X } from "lucide-react";
 
-const LS_DISMISSED = "kluck_setup_guide_dismissed";
+const LS_DISMISSED = "roarr_setup_guide_dismissed";
 
 /** @returns {boolean} */
 function readFlag(key) {

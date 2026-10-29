@@ -3,7 +3,7 @@
  * Bump DEMO_PREVIEW_VERSION (today's date), rebuild HTML + card JPG + eye JPG,
  * optionally upload to S3.
  *
- * Usage (from kluck-embeded):
+ * Usage (from frontend/):
  *   npm run sync:demo-previews
  *   npm run sync:demo-previews -- --category general
  *   npm run sync:demo-previews -- --no-upload
@@ -100,14 +100,14 @@ async function main() {
   if (!args.upload) {
     console.log("\nSkipped upload (--no-upload). When ready:");
     console.log(
-      "  python ../kluck-ai/backend/scripts/upload_demo_previews_to_s3.py",
+      "  python ../backend/scripts/upload_demo_previews_to_s3.py",
     );
     return;
   }
 
   const uploadScript = path.resolve(
     ROOT,
-    "../kluck-ai/backend/scripts/upload_demo_previews_to_s3.py",
+    "../backend/scripts/upload_demo_previews_to_s3.py",
   );
   if (!fs.existsSync(uploadScript)) {
     console.warn(`Upload script missing: ${uploadScript}`);

@@ -41,37 +41,37 @@ CATEGORY_REFERENCES = {
     "kids_toys": {
         "title": "Wooden Abacus and Ramp Set",
         "description": "A colorful wooden abacus with a small vehicle ramp, made for kids.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/cad40108_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a bright playroom with warm wood, soft daylight, and a calm floor",
     },
     "general": {
         "title": "Stanley Quencher tumbler",
         "description": "A tall stainless steel tumbler with a handle, straw lid, and soft pastel finish.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d1419d62_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a clean desk or kitchen counter in soft cinematic daylight",
     },
     "fashion": {
         "title": "Royal Blue Crystal Silver Plated Bracelet",
         "description": "A silver-plated bracelet set with royal blue crystals.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/591e37f7_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a dark marble vanity with warm evening light and a soft reflection",
     },
     "health_beauty": {
         "title": "Essence Matte Liquid Lipstick",
         "description": "A slim tube of matte liquid lipstick with a rich velvety color.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b009f66a_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a bright beauty vanity with marble, a mirror edge, and morning light",
     },
     "home_kitchen": {
         "title": "Marble Designed Chef Knife",
         "description": "A chef knife with a marble-patterned handle and a sharp steel blade.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/15774af8_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a calm kitchen counter with wood, stone, and warm afternoon light",
     },
     "car_accessories": {
         "title": "Premium Car Drying Towel",
         "description": "A thick microfiber car drying towel, plush and lint-free.",
-        "reference": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1b4f3cf3_zambeel_ai_generated_image.jpg",
+        "reference": "",
         "place": "a clean car exterior in daylight, towel in hand or draped on the panel",
     },
 }

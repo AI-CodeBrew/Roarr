@@ -5,7 +5,6 @@ from urllib.parse import urlparse
 
 from .alibaba_parser import extract_product as alibaba_extract_product
 from .amazon_parser import extract_product as amazon_extract_product
-from .myzambeel_parser import extract_product as myzambeel_extract_product
 from .aliexpress_parser import extract_product as aliexpress_extract_product
 from .shopify_parser import extract_product as shopify_extract_product
 
@@ -23,7 +22,7 @@ def detect_platform(url: str) -> str:
         url: Product URL
         
     Returns:
-        Platform name: 'alibaba', 'aliexpress', 'amazon', 'myzambeel', 'shopify', or 'unknown'
+        Platform name: 'alibaba', 'aliexpress', 'amazon', 'shopify', or 'unknown'
     """
     try:
         parsed = urlparse(url.lower())
@@ -31,9 +30,7 @@ def detect_platform(url: str) -> str:
         path = parsed.path.lower()
         
         # Check specific platforms first (order matters)
-        if 'myzambeel.com' in domain:
-            return 'myzambeel'
-        elif 'alibaba.com' in domain:
+        if 'alibaba.com' in domain:
             return 'alibaba'
         elif 'aliexpress.com' in domain or 'aliexpress.us' in domain:
             return 'aliexpress'
@@ -43,7 +40,7 @@ def detect_platform(url: str) -> str:
             # Check for Shopify: /products/ path indicates Shopify store
             # Supports both /products/... and /collections/.../products/... patterns
             # Exclude known non-Shopify domains that might also use /products/
-            non_shopify_domains = ['amazon', 'alibaba', 'aliexpress', 'myzambeel']
+            non_shopify_domains = ['amazon', 'alibaba', 'aliexpress']
             is_non_shopify = any(non_shopify in domain for non_shopify in non_shopify_domains)
             if not is_non_shopify:
                 return 'shopify'
@@ -88,31 +85,7 @@ def scrape_product_from_url(product_url: str) -> Dict[str, Any]:
     logger.info(f"Detected platform: {platform} for URL: {product_url}")
     
     try:
-        if platform == 'myzambeel':
-            raw_data = myzambeel_extract_product(product_url, SCRAPERAPI_KEY)
-            
-            # Transform to expected format
-            product_data = {
-                'title': raw_data.get('title'),
-                'images': raw_data.get('image_urls', []),
-                'description': [raw_data.get('description')] if raw_data.get('description') else [],
-                'url': raw_data.get('url', product_url),
-                'platform': 'myzambeel'
-            }
-            
-            # Validate we got some data
-            if not product_data['title'] and not product_data['images']:
-                return {
-                    'success': False,
-                    'error': 'No product data could be extracted from the page'
-                }
-            
-            return {
-                'success': True,
-                'product': product_data
-            }
-            
-        elif platform == 'alibaba':
+        if platform == 'alibaba':
             raw_data = alibaba_extract_product(product_url, SCRAPERAPI_KEY)
             
             # Transform to expected format

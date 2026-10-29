@@ -310,7 +310,7 @@ function buildFashion2PreviewProduct(productData, homeData, stylePreferences, ca
         stylePreferences?.dynamicColor ||
         baseHome.selected_color ||
         categoryDefaults?.primaryColor ||
-        mappedInner?.metafields?.kluck_ai?.color_schema?.value ||
+        mappedInner?.metafields?.roarr?.color_schema?.value ||
         "#A34E4E";
     const defaultFaqQ = "When will my order ship?";
     const defaultFaqA =
@@ -320,13 +320,13 @@ function buildFashion2PreviewProduct(productData, homeData, stylePreferences, ca
         liquidBase.featured_media?.preview_image ||
         liquidBase.media?.[0]?.preview_image ||
         "";
-    const existingMeta = mappedInner?.metafields?.kluck_ai || liquidBase.metafields?.kluck_ai || {};
+    const existingMeta = mappedInner?.metafields?.roarr || liquidBase.metafields?.roarr || {};
     const asValue = (v, fallback = "") => {
         if (v == null || v === "") return { value: fallback };
         if (typeof v === "object" && v.value != null) return v;
         return { value: String(v) };
     };
-    const kluckAi = {
+    const roarr = {
         ...existingMeta,
         color_schema: asValue(existingMeta.color_schema, accent),
         highlight_banner_section_heading: asValue(
@@ -342,12 +342,12 @@ function buildFashion2PreviewProduct(productData, homeData, stylePreferences, ca
     for (let i = 1; i <= 3; i++) {
         const qk = `faq_question_${i}`;
         const ak = `faq_answer_${i}`;
-        if (kluckAi[qk] == null || kluckAi[qk] === "") kluckAi[qk] = text[qk] || defaultFaqQ;
-        if (kluckAi[ak] == null || kluckAi[ak] === "") kluckAi[ak] = text[ak] || defaultFaqA;
+        if (roarr[qk] == null || roarr[qk] === "") roarr[qk] = text[qk] || defaultFaqQ;
+        if (roarr[ak] == null || roarr[ak] === "") roarr[ak] = text[ak] || defaultFaqA;
     }
     return {
         ...liquidBase,
-        metafields: { kluck_ai: kluckAi }
+        metafields: { roarr: roarr }
     };
 }
 
@@ -376,7 +376,7 @@ function buildFashion1PreviewProduct(productData, homeData, stylePreferences, ca
         (baseHome.images && typeof baseHome.images === "object" && baseHome.images.body_images) ||
         baseHome.body_images ||
         {};
-    const existing = base.metafields?.kluck_ai || {};
+    const existing = base.metafields?.roarr || {};
     const asValue = (v, fallback = "") => {
         if (v == null || v === "") return { value: fallback };
         if (typeof v === "object" && v.value != null) return v;
@@ -413,7 +413,7 @@ function buildFashion1PreviewProduct(productData, homeData, stylePreferences, ca
     return {
         ...base,
         featured_image: fm || base.featured_image,
-        metafields: { kluck_ai: km }
+        metafields: { roarr: km }
     };
 }
 
@@ -425,7 +425,7 @@ function applyFashion2EditorPreviewOverrides(sectionType, blocks, processedSetti
     if (!homeData || typeof homeData !== "object") return;
     const text = homeData.text || {};
 
-    if (sectionType === "kluck-ai-trust-badge-2-section" && Array.isArray(blocks)) {
+    if (sectionType === "roarr-trust-badge-2-section" && Array.isArray(blocks)) {
         let badgeIdx = 0;
         for (const block of blocks) {
             if (block.type === "badge") {
@@ -438,7 +438,7 @@ function applyFashion2EditorPreviewOverrides(sectionType, blocks, processedSetti
         }
     }
 
-    if (sectionType === "kluck-ai-product-hero-section-2" && Array.isArray(blocks)) {
+    if (sectionType === "roarr-product-hero-section-2" && Array.isArray(blocks)) {
         let accIdx = 0;
         for (const block of blocks) {
             if (block.type === "accordion") {
@@ -454,7 +454,7 @@ function applyFashion2EditorPreviewOverrides(sectionType, blocks, processedSetti
         }
     }
 
-    if (sectionType === "kluck-ai-faq-section") {
+    if (sectionType === "roarr-faq-section") {
         if (text.faq_section_title != null && String(text.faq_section_title).trim() !== "") {
             processedSettings.title = String(text.faq_section_title);
         }
@@ -480,7 +480,7 @@ function fashionJsonSectionToPreviewRow(sectionInstanceId, spec, liquidProduct, 
         };
     });
     const processedSettings = { ...settingsOnly };
-    if (sectionType === "kluck-ai-product-hero-section-2" || sectionType === "kluck-ai-product-hero-section-3") {
+    if (sectionType === "roarr-product-hero-section-2" || sectionType === "roarr-product-hero-section-3") {
         processedSettings.product = liquidProduct;
     }
     applyFashion2EditorPreviewOverrides(sectionType, blocks, processedSettings, homeData);
@@ -497,8 +497,8 @@ function fashionJsonSectionToPreviewRow(sectionInstanceId, spec, liquidProduct, 
         routes: PREVIEW_PRODUCT_ROUTES,
         m: {
             color_schema:
-                liquidProduct?.metafields?.kluck_ai?.color_schema?.value ||
-                liquidProduct?.metafields?.kluck_ai?.color_schema ||
+                liquidProduct?.metafields?.roarr?.color_schema?.value ||
+                liquidProduct?.metafields?.roarr?.color_schema ||
                 "#A34E4E"
         },
         product: liquidProduct

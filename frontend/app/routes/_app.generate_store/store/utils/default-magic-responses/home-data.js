@@ -31,128 +31,128 @@ export function normalizeHomeDataCategory(category) {
 /** Single-product: shared default image URLs (each category also has `images` in `SINGLE_HOME_BY_CATEGORY` to replace). */
 const SINGLE_HOME_IMAGES_KIDS_TOYS = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5eb3d6a1_zambeel_ai_generated_image.png",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b13e4a45_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/87c9ad43_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/87c9ad43_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d8982c13_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5e6bc6e2_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ae324494_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0b52dc0d_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/bdd56f8d_zambeel_ai_generated_image.jpg"
+        ""
 };
 
 const SINGLE_HOME_IMAGES_GENERAL = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b40a1371_zambeel_ai_generated_image.png",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1243d0db_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1a60ba8b_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a8fc9a63_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a8fc9a63_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7beecada_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1a60ba8b_zambeel_ai_generated_image.png",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a33c1695_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7beecada_zambeel_ai_generated_image.png"
+        ""
 };
 
 const SINGLE_HOME_IMAGES_FASHION = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5bb38edc_zambeel_ai_generated_image.png",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/efd587cc_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4c9518d8_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4084e7b5_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/66a764a2_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4084e7b5_zambeel_ai_generated_image.png",    
+        "",    
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/93d23377_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/34c4b94b_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/efd587cc_zambeel_ai_generated_image.png"
+        ""
 };
 
 const SINGLE_HOME_IMAGES_HEALTH_BEAUTY = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1cd2f2da_zambeel_ai_generated_image.png",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/62a3ad90_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/36308d4f_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3fe182bd_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/36308d4f_zambeel_ai_generated_image.png",  
+        "",  
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ae4c142e_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fde2d960_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1c75ccc7_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/07ff12ce_zambeel_ai_generated_image.jpg"
+        ""
 };
 
 const SINGLE_HOME_IMAGES_HOME_KITCHEN = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/59d6c5b2_zambeel_ai_generated_image.png",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/2ee0e831_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/145e2823_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/9074b963_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/9074b963_zambeel_ai_generated_image.png",  
+        "",  
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/57a25eb1_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/93739898_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f809521c_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/efd587cc_zambeel_ai_generated_image.png"
+        ""
 };
 
 const SINGLE_HOME_IMAGES_CAR_ACCESSORIES = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ee1693b1_zambeel_ai_generated_image.png",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d1035182_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/97b41571_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a63b28cc_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a63b28cc_zambeel_ai_generated_image.png",  
+        "",  
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8a61e4aa_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5f3b8df1_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8d6a6df6_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a97c11a2_zambeel_ai_generated_image.jpg"
+        ""
 };
 
 
@@ -160,189 +160,189 @@ const SINGLE_HOME_IMAGES_CAR_ACCESSORIES = {
 /** Multi-product: shared default image URLs (each category also has `images` in `MULTI_HOME_BY_CATEGORY`). */
 const MULTI_HOME_IMAGES_FASHION = {
     banner_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a15f413b_zambeel_ai_generated_image.png",
+        "",
     banner_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/2abeab4b_zambeel_ai_generated_image.png",
+        "",
     banner_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d6eb9c6f_zambeel_ai_generated_image.png",
+        "",
     feature_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e3e48c24_zambeel_ai_generated_image.png",
+        "",
     feature_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/07e3148b_zambeel_ai_generated_image.png",
+        "",
     feature_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1b262743_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e1cb0566_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/bed7fc6f_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e9820a0d_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1b5c0eb4_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/537b3f9b_zambeel_ai_generated_image.png",
+        "",
     product_impact_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/443f4f1d_zambeel_ai_generated_image.png",
+        "",
     product_impact_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d53b4c8f_zambeel_ai_generated_image.png",
+        "",
     star_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/bf40eb8c_zambeel_ai_generated_image.png"
+        ""
 
 };
 
 const MULTI_HOME_IMAGES_KIDS_TOYS = {
     banner_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e08a3e48_zambeel_ai_generated_image.png",
+        "",
     banner_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/51cf8cdf_zambeel_ai_generated_image.png",
+        "",
     banner_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7a697edc_zambeel_ai_generated_image.png",
+        "",
     feature_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c92b219a_zambeel_ai_generated_image.png",
+        "",
     feature_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fe72c52c_zambeel_ai_generated_image.png",
+        "",
     feature_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d7aa5275_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4c85217b_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/9dd3fa55_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/088ca6ae_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/afa88b17_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0f9fa263_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/768ffc88_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b7ed6c1f_zambeel_ai_generated_image.jpg",
+        "",
     star_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e8d41fbf_zambeel_ai_generated_image.jpg"
+        ""
 };
 
 const MULTI_HOME_IMAGES_GENERAL = {
     banner_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f891f2fa_zambeel_ai_generated_image.png",
+        "",
     banner_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e7e75081_zambeel_ai_generated_image.png",
+        "",
     banner_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3fdef614_zambeel_ai_generated_image.png",
+        "",
     feature_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fdfc7263_zambeel_ai_generated_image.png",
+        "",
     feature_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/627fdab8_zambeel_ai_generated_image.png",
+        "",
     feature_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7cb4385e_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ed1842a4_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8195cc06_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e7f35f15_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/95ce9825_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6fc4f35c_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3f3d90d4_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b6e804c6_zambeel_ai_generated_image.jpg",
+        "",
     star_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0b3c13cb_zambeel_ai_generated_image.jpg"
+        ""
 };
 
 const MULTI_HOME_IMAGES_HEALTH_BEAUTY = {
     banner_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/195f53a8_zambeel_ai_generated_image.png",
+        "",
     banner_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/83d3dabd_zambeel_ai_generated_image.png",
+        "",
     banner_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0aff8e9d_zambeel_ai_generated_image.png",
+        "",
     feature_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ba922ac9_zambeel_ai_generated_image.png",
+        "",
     feature_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/2294b414_zambeel_ai_generated_image.png",
+        "",
     feature_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8f147b7e_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8fe883d3_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/2fa8a5e5_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fa75ed88_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5670a5be_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/782c168b_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4213b957_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/358fefba_zambeel_ai_generated_image.jpg",
+        "",
     star_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/803e8196_zambeel_ai_generated_image.png"
+        ""
 };
 
 const MULTI_HOME_IMAGES_HOME_KITCHEN = {
     banner_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/9b3ea20a_zambeel_ai_generated_image.png",
+        "",
     banner_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/2db6c167_zambeel_ai_generated_image.png",
+        "",
     banner_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8631e5d9_zambeel_ai_generated_image.png",
+        "",
     feature_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b89a0c66_zambeel_ai_generated_image.png",
+        "",
     feature_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/64d9978f_zambeel_ai_generated_image.png",
+        "",
     feature_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/664d04e3_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d8982842_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3bf6697a_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/becab347_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/39c8d73c_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e72f638d_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5d7f7e31_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/47e00eef_zambeel_ai_generated_image.jpg",
+        "",
     star_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6a6ad9a5_zambeel_ai_generated_image.jpg"
+        ""
 };
 
 const MULTI_HOME_IMAGES_CAR_ACCESSORIES = {
     banner_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6f7052d0_zambeel_ai_generated_image.png",
+        "",
     banner_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7051fafa_zambeel_ai_generated_image.png",
+        "",
     banner_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b5a78199_zambeel_ai_generated_image.png",
+        "",
     feature_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/eab31a65_zambeel_ai_generated_image.png",
+        "",
     feature_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3a1755d2_zambeel_ai_generated_image.png",
+        "",
     feature_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/eb0f400d_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/889d429a_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4e814b87_zambeel_ai_generated_image.jpg",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/194a7cb4_zambeel_ai_generated_image.jpg",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/710ca3fc_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d71cc4f0_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/434225c4_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/86f21bb0_zambeel_ai_generated_image.jpg",
+        "",
     star_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f25072f7_zambeel_ai_generated_image.jpg"
+        ""
 };
 
 /** Single-product home preview: full `{ images, text }` per store category (edit URLs or copy freely). */
@@ -1015,128 +1015,128 @@ export const MULTI_HOME_PAGE_BY_CATEGORY = buildMultiByCategory();
  */
 const PREPAID_CLASSIC_HOME_IMAGES_KIDS_TOYS = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/29c7cdcf_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0d07cfde_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3b52adee_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3b52adee_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/749a25c1_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c53df046_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/867a816f_zambeel_ai_generated_image.png",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/9457190d_zambeel_ai_generated_image.png",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/edf81712_zambeel_ai_generated_image.png",
+        "",
 };
 
 const PREPAID_CLASSIC_HOME_IMAGES_GENERAL = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b10cbd2f_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7e4d62e7_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a5e8e6a0_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a5e8e6a0_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0d62013c_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/76b870d8_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/539809cf_zambeel_ai_generated_image.png",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5c0c752e_zambeel_ai_generated_image.png",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/481dab4e_zambeel_ai_generated_image.png",
+        "",
 };
 
 const PREPAID_CLASSIC_HOME_IMAGES_FASHION = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/39d49500_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ca75fccf_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0e1eba82_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/0e1eba82_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/82290ef5_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/33ae0e3d_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e4168f87_zambeel_ai_generated_image.png",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/748492c2_zambeel_ai_generated_image.png",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fe360f12_zambeel_ai_generated_image.png",
+        "",
 };
 
 const PREPAID_CLASSIC_HOME_IMAGES_HEALTH_BEAUTY = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5fc193be_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/abec3f36_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6570572b_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6570572b_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/489dc889_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/cec054f5_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/82bc9207_zambeel_ai_generated_image.png",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8d59a9c4_zambeel_ai_generated_image.png",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/317ebeb9_zambeel_ai_generated_image.png",
+        "",
 };
 
 const PREPAID_CLASSIC_HOME_IMAGES_HOME_KITCHEN = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/25249319_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/64a1376c_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/214a2a53_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/214a2a53_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d3886933_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3d0ce305_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/64459836_zambeel_ai_generated_image.png",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/da371824_zambeel_ai_generated_image.png",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b0741b09_zambeel_ai_generated_image.png",
+        "",
 };
 
 const PREPAID_CLASSIC_HOME_IMAGES_CAR_ACCESSORIES = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b8363cea_zambeel_ai_generated_image.jpg",
+        "",
     product_impact_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5b099f8f_zambeel_ai_generated_image.png",
+        "",
     feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/28a12650_zambeel_ai_generated_image.png",
+        "",
     product_base_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/28a12650_zambeel_ai_generated_image.png",
+        "",
     creative_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ef87d317_zambeel_ai_generated_image.png",
+        "",
     highlight_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/24c1cfde_zambeel_ai_generated_image.png",
+        "",
     product_image_1:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/64cd804f_zambeel_ai_generated_image.png",
+        "",
     product_image_2:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f377fb75_zambeel_ai_generated_image.png",
+        "",
     product_image_3:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/41981204_zambeel_ai_generated_image.png",
+        "",
 };
 
 const PREPAID_CLASSIC_HOME_IMAGES_BY_CATEGORY = {
@@ -1369,80 +1369,80 @@ const CINEMATIC_TEXT_OVERRIDES = {
 /** Dedicated cinematic demo images — Velvet homepage heroes (per category). */
 const CINEMATIC_HOME_IMAGES_KIDS_TOYS = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/df8444dc_zambeel_ai_generated_image.jpg",
+        "",
     banner_image_mobile:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/383b5674_zambeel_ai_generated_image.jpg",
+        "",
     product_story_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4b72961b_zambeel_ai_generated_image.png",
+        "",
     why_shop_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3b0bc058_zambeel_ai_generated_image.png",
+        "",
     circle_feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6c598e87_zambeel_ai_generated_image.png",
+        "",
 };
 
 const CINEMATIC_HOME_IMAGES_GENERAL = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8871bb26_zambeel_ai_generated_image.jpg",
+        "",
     banner_image_mobile:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c4d72e0a_zambeel_ai_generated_image.jpg",
+        "",
     product_story_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6a7af4d5_zambeel_ai_generated_image.png",
+        "",
     why_shop_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ae1513dc_zambeel_ai_generated_image.png",
+        "",
     circle_feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/302be320_zambeel_ai_generated_image.png",
+        "",
 };
 
 const CINEMATIC_HOME_IMAGES_FASHION = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1ef4458c_zambeel_ai_generated_image.jpg",
+        "",
     banner_image_mobile:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a5621602_zambeel_ai_generated_image.jpg",
+        "",
     product_story_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4ba78aa8_zambeel_ai_generated_image.png",
+        "",
     why_shop_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fe03d512_zambeel_ai_generated_image.png",
+        "",
     circle_feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7ab8ac0e_zambeel_ai_generated_image.png",
+        "",
 };
 
 const CINEMATIC_HOME_IMAGES_HEALTH_BEAUTY = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4076e80c_zambeel_ai_generated_image.jpg",
+        "",
     banner_image_mobile:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/560aacdf_zambeel_ai_generated_image.jpg",
+        "",
     product_story_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1e186774_zambeel_ai_generated_image.png",
+        "",
     why_shop_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b5e24aff_zambeel_ai_generated_image.png",
+        "",
     circle_feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/36863784_zambeel_ai_generated_image.png",
+        "",
 };
 
 const CINEMATIC_HOME_IMAGES_HOME_KITCHEN = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/85b34d63_zambeel_ai_generated_image.jpg",
+        "",
     banner_image_mobile:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/30a78323_zambeel_ai_generated_image.jpg",
+        "",
     product_story_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/075573b5_zambeel_ai_generated_image.png",
+        "",
     why_shop_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/37197e52_zambeel_ai_generated_image.png",
+        "",
     circle_feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/488bed2c_zambeel_ai_generated_image.png",
+        "",
 };
 
 const CINEMATIC_HOME_IMAGES_CAR_ACCESSORIES = {
     banner_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/aeef9fd9_zambeel_ai_generated_image.jpg",
+        "",
     banner_image_mobile:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/38274151_zambeel_ai_generated_image.jpg",
+        "",
     product_story_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/f7340ae4_zambeel_ai_generated_image.png",
+        "",
     why_shop_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ca0bd7cf_zambeel_ai_generated_image.png",
+        "",
     circle_feature_image:
-        "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1bf116a5_zambeel_ai_generated_image.png",
+        "",
 };
 
 const CINEMATIC_HOME_IMAGES_BY_CATEGORY = {
@@ -1794,94 +1794,94 @@ const AMOUR_TEXT_OVERRIDES = {
  */
 const AMOUR_HOME_IMAGES_BY_CATEGORY = {
     "health_beauty": {
-        "banner_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/089c67c9_zambeel_ai_generated_image.jpg",
-        "banner_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ed96758e_zambeel_ai_generated_image.jpg",
-        "product_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/60ff487b_zambeel_ai_generated_image.jpg",
-        "product_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4b43cc93_zambeel_ai_generated_image.jpg",
-        "product_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/edb5a896_zambeel_ai_generated_image.jpg",
-        "look_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7c298e18_zambeel_ai_generated_image.jpg",
-        "look_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/53f6de77_zambeel_ai_generated_image.jpg",
-        "look_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/e5a9afc1_zambeel_ai_generated_image.jpg",
-        "split_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8f48d0d4_zambeel_ai_generated_image.jpg",
-        "editorial_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/2690e98a_zambeel_ai_generated_image.jpg",
-        "editorial_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/4dd693b3_zambeel_ai_generated_image.jpg",
-        "story_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a6a26cc4_zambeel_ai_generated_image.jpg",
-        "product_base_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3e293a6f_zambeel_ai_generated_image.jpg",
+        "banner_image": "",
+        "banner_image_2": "",
+        "product_image_1": "",
+        "product_image_2": "",
+        "product_image_3": "",
+        "look_image_1": "",
+        "look_image_2": "",
+        "look_image_3": "",
+        "split_image": "",
+        "editorial_image_1": "",
+        "editorial_image_2": "",
+        "story_image": "",
+        "product_base_image": "",
     },
     "fashion": {
-        "banner_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b6b67cb4_zambeel_ai_generated_image.jpg",
-        "banner_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/dbd64b1c_zambeel_ai_generated_image.jpg",
-        "product_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6b9ec660_zambeel_ai_generated_image.jpg",
-        "product_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7e4bda16_zambeel_ai_generated_image.jpg",
-        "product_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/18059bcb_zambeel_ai_generated_image.jpg",
-        "look_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8a84228c_zambeel_ai_generated_image.jpg",
-        "look_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/097db2e3_zambeel_ai_generated_image.jpg",
-        "look_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/381e8842_zambeel_ai_generated_image.jpg",
-        "split_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3f36dc79_zambeel_ai_generated_image.jpg",
-        "editorial_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/eda303e8_zambeel_ai_generated_image.jpg",
-        "editorial_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/6e15729e_zambeel_ai_generated_image.jpg",
-        "story_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c92a52f1_zambeel_ai_generated_image.jpg",
-        "product_base_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a24f68bd_zambeel_ai_generated_image.jpg",
+        "banner_image": "",
+        "banner_image_2": "",
+        "product_image_1": "",
+        "product_image_2": "",
+        "product_image_3": "",
+        "look_image_1": "",
+        "look_image_2": "",
+        "look_image_3": "",
+        "split_image": "",
+        "editorial_image_1": "",
+        "editorial_image_2": "",
+        "story_image": "",
+        "product_base_image": "",
     },
     "general": {
-        "banner_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8781eeb8_zambeel_ai_generated_image.jpg",
-        "banner_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/a8d8ac3d_zambeel_ai_generated_image.jpg",
-        "product_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/efd8724c_zambeel_ai_generated_image.jpg",
-        "product_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/fc5199a7_zambeel_ai_generated_image.jpg",
-        "product_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/72d0903a_zambeel_ai_generated_image.jpg",
-        "look_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/798caaaa_zambeel_ai_generated_image.jpg",
-        "look_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/60882801_zambeel_ai_generated_image.jpg",
-        "look_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/80d0e799_zambeel_ai_generated_image.jpg",
-        "split_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1e70d775_zambeel_ai_generated_image.jpg",
-        "editorial_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c793f1bd_zambeel_ai_generated_image.jpg",
-        "editorial_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/47e49de2_zambeel_ai_generated_image.jpg",
-        "story_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5d9cbc63_zambeel_ai_generated_image.jpg",
-        "product_base_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/eb7e5688_zambeel_ai_generated_image.jpg",
+        "banner_image": "",
+        "banner_image_2": "",
+        "product_image_1": "",
+        "product_image_2": "",
+        "product_image_3": "",
+        "look_image_1": "",
+        "look_image_2": "",
+        "look_image_3": "",
+        "split_image": "",
+        "editorial_image_1": "",
+        "editorial_image_2": "",
+        "story_image": "",
+        "product_base_image": "",
     },
     "home_kitchen": {
-        "banner_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3b5f82e7_zambeel_ai_generated_image.jpg",
-        "banner_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/519989da_zambeel_ai_generated_image.jpg",
-        "product_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/b6b50b0d_zambeel_ai_generated_image.jpg",
-        "product_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/dfc9b443_zambeel_ai_generated_image.jpg",
-        "product_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/de28de88_zambeel_ai_generated_image.jpg",
-        "look_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c4a0fd5c_zambeel_ai_generated_image.jpg",
-        "look_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/55ef2893_zambeel_ai_generated_image.jpg",
-        "look_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d1a12c04_zambeel_ai_generated_image.jpg",
-        "split_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/3847e7fc_zambeel_ai_generated_image.jpg",
-        "editorial_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1f95a177_zambeel_ai_generated_image.jpg",
-        "editorial_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/848a6894_zambeel_ai_generated_image.jpg",
-        "story_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1e3c1914_zambeel_ai_generated_image.jpg",
-        "product_base_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/10fac164_zambeel_ai_generated_image.jpg",
+        "banner_image": "",
+        "banner_image_2": "",
+        "product_image_1": "",
+        "product_image_2": "",
+        "product_image_3": "",
+        "look_image_1": "",
+        "look_image_2": "",
+        "look_image_3": "",
+        "split_image": "",
+        "editorial_image_1": "",
+        "editorial_image_2": "",
+        "story_image": "",
+        "product_base_image": "",
     },
     "kids_toys": {
-        "banner_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5a9f8384_zambeel_ai_generated_image.jpg",
-        "banner_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8238e3de_zambeel_ai_generated_image.jpg",
-        "product_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/d5707bdc_zambeel_ai_generated_image.jpg",
-        "product_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/cd44aed3_zambeel_ai_generated_image.jpg",
-        "product_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1298fe07_zambeel_ai_generated_image.jpg",
-        "look_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/00f57798_zambeel_ai_generated_image.jpg",
-        "look_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/c9c87bb1_zambeel_ai_generated_image.jpg",
-        "look_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/81dc9a41_zambeel_ai_generated_image.jpg",
-        "split_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ce19153f_zambeel_ai_generated_image.jpg",
-        "editorial_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/1e3c722d_zambeel_ai_generated_image.jpg",
-        "editorial_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/16328b66_zambeel_ai_generated_image.jpg",
-        "story_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8938a064_zambeel_ai_generated_image.jpg",
-        "product_base_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/74192ec1_zambeel_ai_generated_image.jpg",
+        "banner_image": "",
+        "banner_image_2": "",
+        "product_image_1": "",
+        "product_image_2": "",
+        "product_image_3": "",
+        "look_image_1": "",
+        "look_image_2": "",
+        "look_image_3": "",
+        "split_image": "",
+        "editorial_image_1": "",
+        "editorial_image_2": "",
+        "story_image": "",
+        "product_base_image": "",
     },
     "car_accessories": {
-        "banner_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ad75d357_zambeel_ai_generated_image.jpg",
-        "banner_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7a8a56da_zambeel_ai_generated_image.jpg",
-        "product_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/ef3e6927_zambeel_ai_generated_image.jpg",
-        "product_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/9a3836ff_zambeel_ai_generated_image.jpg",
-        "product_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/32fc516f_zambeel_ai_generated_image.jpg",
-        "look_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8bf8289b_zambeel_ai_generated_image.jpg",
-        "look_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/01eefedf_zambeel_ai_generated_image.jpg",
-        "look_image_3": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/5ad17abf_zambeel_ai_generated_image.jpg",
-        "split_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/86f4523c_zambeel_ai_generated_image.jpg",
-        "editorial_image_1": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/779a2849_zambeel_ai_generated_image.jpg",
-        "editorial_image_2": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/7c9fc24a_zambeel_ai_generated_image.jpg",
-        "story_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/70881ec2_zambeel_ai_generated_image.jpg",
-        "product_base_image": "https://product-images-zambeel.s3.eu-west-3.amazonaws.com/8d681d84_zambeel_ai_generated_image.jpg",
+        "banner_image": "",
+        "banner_image_2": "",
+        "product_image_1": "",
+        "product_image_2": "",
+        "product_image_3": "",
+        "look_image_1": "",
+        "look_image_2": "",
+        "look_image_3": "",
+        "split_image": "",
+        "editorial_image_1": "",
+        "editorial_image_2": "",
+        "story_image": "",
+        "product_base_image": "",
     },
 };
 

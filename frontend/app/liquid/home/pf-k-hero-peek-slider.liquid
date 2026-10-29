@@ -1,4 +1,4 @@
-{% assign store_gen = shop.metafields.kluck_ai.store_generation.value %}
+{% assign store_gen = shop.metafields.roarr.store_generation.value %}
 
 {% if shop.metafields.app.block_control.value %}
 {% comment %}
@@ -36,10 +36,10 @@
 
       {% for block in section.blocks %}
         {%- if total_blocks == 1 -%}
-          {%- assign kluck_banner_image = shop.metafields.kluck_ai.banner_image.value -%}
-          {%- assign kluck_banner_heading = store_gen.home_page.text.banner_heading -%}
-          {%- assign kluck_banner_eyebrow = store_gen.home_page.text.banner_eyebrow -%}
-          {%- assign kluck_product_handle = store_gen.home_page.text.selected_product -%}
+          {%- assign roarr_banner_image = shop.metafields.roarr.banner_image.value -%}
+          {%- assign roarr_banner_heading = store_gen.home_page.text.banner_heading -%}
+          {%- assign roarr_banner_eyebrow = store_gen.home_page.text.banner_eyebrow -%}
+          {%- assign roarr_product_handle = store_gen.home_page.text.selected_product -%}
         {%- else -%}
           {%- assign i = forloop.index -%}
           {%- assign img_key = 'banner_image_' | append: i -%}
@@ -47,15 +47,15 @@
           {%- assign eyebrow_key = 'banner_eyebrow_' | append: i -%}
           {%- assign product_key = 'selected_product_' | append: i -%}
 
-          {%- assign kluck_banner_image = shop.metafields.kluck_ai[img_key].value -%}
-          {%- assign kluck_banner_heading = store_gen.home_page.text[heading_key] -%}
-          {%- assign kluck_banner_eyebrow = store_gen.home_page.text[eyebrow_key] -%}
-          {%- assign kluck_product_handle = store_gen.home_page.text[product_key] -%}
+          {%- assign roarr_banner_image = shop.metafields.roarr[img_key].value -%}
+          {%- assign roarr_banner_heading = store_gen.home_page.text[heading_key] -%}
+          {%- assign roarr_banner_eyebrow = store_gen.home_page.text[eyebrow_key] -%}
+          {%- assign roarr_product_handle = store_gen.home_page.text[product_key] -%}
         {%- endif -%}
 
         {%- assign selected_product = block.settings.product -%}
-        {%- if section.settings.use_kluck_ai_metafields and kluck_product_handle != blank -%}
-          {%- assign selected_product = all_products[kluck_product_handle] -%}
+        {%- if section.settings.use_roarr_metafields and roarr_product_handle != blank -%}
+          {%- assign selected_product = all_products[roarr_product_handle] -%}
         {%- endif -%}
 
         <div
@@ -74,8 +74,8 @@
           </style>
 
           <div class="hs-bg-wrap">
-            {% if section.settings.use_kluck_ai_metafields and kluck_banner_image != blank %}
-              <img src="{{ kluck_banner_image | image_url: width: 2000, height: 1125, crop: 'center' }}" class="hs-bg-img" alt="{{ kluck_banner_heading | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+            {% if section.settings.use_roarr_metafields and roarr_banner_image != blank %}
+              <img src="{{ roarr_banner_image | image_url: width: 2000, height: 1125, crop: 'center' }}" class="hs-bg-img" alt="{{ roarr_banner_heading | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
             {% elsif block.settings.image != blank %}
               <img src="{{ block.settings.image | image_url: width: 2000, height: 1125, crop: 'center' }}" class="hs-bg-img" alt="{{ block.settings.heading | escape }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
             {% else %}
@@ -86,15 +86,15 @@
 
           <div class="hs-content-box color-{{ block.settings.slide_color_scheme }}" data-block-id="{{ block.id }}" style="background-color: transparent !important;">
             <div class="hs-text-content-inner">
-              {% if section.settings.use_kluck_ai_metafields and kluck_banner_eyebrow != blank %}
-                <span class="hs-eyebrow">{{ kluck_banner_eyebrow }}</span>
+              {% if section.settings.use_roarr_metafields and roarr_banner_eyebrow != blank %}
+                <span class="hs-eyebrow">{{ roarr_banner_eyebrow }}</span>
               {% elsif block.settings.eyebrow != blank %}
                 <span class="hs-eyebrow">{{ block.settings.eyebrow }}</span>
               {% endif %}
 
               <h2>
-                {% if section.settings.use_kluck_ai_metafields and kluck_banner_heading != blank %}
-                  {{ kluck_banner_heading }}
+                {% if section.settings.use_roarr_metafields and roarr_banner_heading != blank %}
+                  {{ roarr_banner_heading }}
                 {% else %}
                   {{ block.settings.heading }}
                 {% endif %}

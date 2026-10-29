@@ -27,7 +27,7 @@
               assign img_key = 'image_' | append: i
               assign img = blank
               assign meta_key = 'happy_customer_image_' | append: i
-              assign img_meta = product.metafields.kluck_ai[meta_key]
+              assign img_meta = product.metafields.roarr[meta_key]
               if img_meta
                 assign img = img_meta.value | default: img_meta
               endif

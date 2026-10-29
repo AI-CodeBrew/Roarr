@@ -4,7 +4,7 @@
     break
   endunless
 
-  assign m = product.metafields.kluck_ai
+  assign m = product.metafields.roarr
   assign c_schema = m.color_schema.value | default: m.color_schema | default: '#A34E4E'
   assign us_col_bg = bs.us_column_bg | default: '#fafafa'
   if bs.use_metafields

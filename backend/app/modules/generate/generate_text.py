@@ -27,6 +27,8 @@ from .templates.car_accessories.signature import (
     CarAccessoriesTemplate2,
 )
 from .templates.lumenook_signature import LumenookTemplate
+from .templates.noir_signature import NoirTemplate
+from .templates.frost_signature import FrostTemplate
 
 logger = logging.getLogger(__name__)
 
@@ -91,8 +93,24 @@ def generate_text(
         "template4",
         "t4",
     } or template == 4
-    # Template 3 = Aura and template 4 = Lumenook, for every category (legacy Play path retired in v2).
-    if lumenook_template:
+    noir_template = str(template or "").strip().lower() in {
+        "5",
+        "template_5",
+        "template5",
+        "t5",
+    } or template == 5
+    frost_template = str(template or "").strip().lower() in {
+        "6",
+        "template_6",
+        "template6",
+        "t6",
+    } or template == 6
+    # Template 3 = Aura, 4 = Lumenook, 5 = Noir and 6 = Frost, for every category (legacy Play path retired in v2).
+    if frost_template:
+        signature_class = FrostTemplate
+    elif noir_template:
+        signature_class = NoirTemplate
+    elif lumenook_template:
         signature_class = LumenookTemplate
     elif play_template:
         signature_class = HealthBeautyGlow

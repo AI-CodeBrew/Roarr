@@ -249,7 +249,7 @@ def main() -> None:
             {
                 "name": NAME,
                 "description": DESCRIPTION,
-                "tags": ["kluck", "product"],
+                "tags": ["roarr", "product"],
                 "restriction_level": 21,
             },
         )
@@ -276,7 +276,7 @@ def main() -> None:
                 "saved": True,
                 "query": query,
                 "dashboards": [dash_id],
-                "tags": ["kluck"],
+                "tags": ["roarr"],
             },
         )
         kinds.append(kind)

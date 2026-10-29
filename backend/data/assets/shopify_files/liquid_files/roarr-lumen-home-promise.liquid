@@ -1,0 +1,85 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@400;500&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+<section class="lmk-pr" aria-label="{{ section.settings.label | default: 'Our promise' | escape }}">
+  <div class="lmk-pr__inner">
+    <p class="lmk-pr__label">{{ section.settings.label | default: 'Our promise' }}</p>
+    <ul class="lmk-pr__list" role="list">
+      <li class="lmk-pr__item">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        <p class="lmk-pr__title">{{ ht.star_product_feature_1 | default: 'Considered quality' }}</p>
+        <p class="lmk-pr__text">{{ ht.star_product_feature_1_desc | default: 'Chosen to last and to look good for years.' }}</p>
+      </li>
+      <li class="lmk-pr__item">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>
+        <p class="lmk-pr__title">{{ ht.star_product_feature_2 | default: 'Delivered with care' }}</p>
+        <p class="lmk-pr__text">{{ ht.star_product_feature_2_desc | default: 'Packed carefully and sent to your door.' }}</p>
+      </li>
+      <li class="lmk-pr__item">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg>
+        <p class="lmk-pr__title">{{ ht.star_product_feature_3 | default: 'Easy returns' }}</p>
+        <p class="lmk-pr__text">{{ ht.star_product_feature_3_desc | default: 'Not quite right? Send it back within 14 days.' }}</p>
+      </li>
+      <li class="lmk-pr__item">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13"/><path d="M12 8c-2-3-6-3-6-.5S10 8 12 8zm0 0c2-3 6-3 6-.5S14 8 12 8z"/></svg>
+        <p class="lmk-pr__title">{{ ht.star_product_feature_4 | default: 'Ready to gift' }}</p>
+        <p class="lmk-pr__text">{{ ht.star_product_feature_4_desc | default: 'Beautifully boxed, with room for a note.' }}</p>
+      </li>
+    </ul>
+  </div>
+</section>
+<style>
+  .lmk-pr { background: #F6F1EA; color: #2B2320; font-family: "Jost", sans-serif; padding: clamp(56px, 8vw, 112px) 0; border-top: 1px solid #D9CFC2; }
+  .lmk-pr *, .lmk-pr *::before, .lmk-pr *::after { box-sizing: border-box; }
+  .lmk-pr__inner { width: min(1320px, calc(100% - 48px)); margin: 0 auto; }
+  .lmk-pr__label { margin: 0 0 36px; text-align: center; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: #6B5F58; }
+  .lmk-pr__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 16px; text-align: center; }
+  .lmk-pr__item { display: grid; justify-items: center; gap: 10px; }
+  .lmk-pr__item svg { color: #775A2C; }
+  .lmk-pr__title { margin: 0; font-family: "Cormorant Garamond", serif; font-size: 21px; font-weight: 500; line-height: 1.2; }
+  .lmk-pr__text { margin: 0; max-width: 260px; color: #6B5F58; font-size: 14px; line-height: 1.6; }
+  @media (max-width: 749px) {
+    .lmk-pr__inner { width: calc(100% - 32px); }
+    .lmk-pr__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--lumen" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Jost", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Cormorant Garamond", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Lumenook Promise",
+  "tag": "section",
+  "class": "roarr-lumen-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Our promise"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Roarr Lumenook Promise"
+    }
+  ]
+}
+{% endschema %}

@@ -8,18 +8,36 @@ import {
 } from "react-router";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { boundary } from "@shopify/shopify-app-react-router/server";
-import { ArrowLeftIcon } from "@shopify/polaris-icons";
+import { BookOpen, Boxes, Plus } from "lucide-react";
 import BundleList from "./_app.bundles/BundleList";
 import { v4 as uuidv4 } from "uuid";
-import { Modal, BlockStack, Text, Spinner, Icon, Button, Box, Card } from "@shopify/polaris";
+import { Modal, BlockStack, Text, Spinner, Box } from "@shopify/polaris";
 import { bundlesLoader } from "./_app.bundles/bundlesLoader.server";
 import { bundlesAction } from "./_app.bundles/bundlesAction.server";
 import { usePageTracking } from "../hooks/usePageTracking";
 import { usePosthogAfterIdentify } from "../lib/PosthogIdentityContext";
 import { useViewportBelowMd } from "../hooks/useViewportBelowMd";
 import { CreditWalletWidget } from "../components/CreditWalletWidget";
+import {
+  BackButton,
+  GradientText,
+  Panel,
+  PrimaryButton,
+  StepFrame,
+} from "../components/RoarrUI";
 
 const BundleForm = lazy(() => import("./_app.bundles/BundleForm"));
+
+const ADD_TO_STORE_STEPS = [
+  <>
+    Make sure the <strong>Roarr</strong> app embed is enabled for your theme (Online Store → Themes
+    → Customize → App embeds).
+  </>,
+  <>Open the section where you want the bundle to appear.</>,
+  <>
+    Click <strong>Apps</strong>, search for <strong>Roarr Bundler</strong>, and add the block.
+  </>,
+];
 
 export const loader = bundlesLoader;
 export const action = bundlesAction;
@@ -464,32 +482,19 @@ export default function BundlesPage() {
         </>
       ) : null}
 
-      <div style={{ maxWidth: "1150px", margin: "0 auto", padding: isMobileLayout ? "12px" : "16px" }}>
-        <style>
-          {`
-            .bundle-back-arrow-button:hover:not(:disabled) {
-              background:rgb(193, 193, 193) !important;
-            }
-          `}
-        </style>
+      <div
+        className="roarr-theme"
+        style={{
+          maxWidth: "1150px",
+          margin: "0 auto",
+          padding: isMobileLayout ? "12px" : "10px",
+        }}
+      >
+      <div className="flex flex-col gap-5">
         {showForm && (
-          <div style={{ marginBottom: "5px" }}>
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                color: "#303030",
-                opacity:
-                  isLoading ||
-                  isAuthenticating ||
-                  isSubmitting ||
-                  isTogglingStatus
-                    ? 0.45
-                    : 1,
-              }}
-            >
-              <button
+          <StepFrame compact>
+            <div className="flex items-center gap-3">
+              <BackButton
                 onClick={handleBackFromBundleForm}
                 disabled={
                   isLoading ||
@@ -497,99 +502,49 @@ export default function BundlesPage() {
                   isSubmitting ||
                   isTogglingStatus
                 }
-                className="bundle-back-arrow-button"
-                aria-label="Back to bundles"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 0,
-                  margin: 0,
-                  border: "none",
-                  width: "28px",
-                  height: "28px",
-                  borderRadius: "6px",
-                  background: "transparent",
-                  cursor: "pointer",
-                }}
-              >
-                <Icon source={ArrowLeftIcon}  />
-              </button>
-              <Text as="span" variant="headingLg">
-                {editingBundle ? "Edit Bundle" : "Create Bundle"}
-              </Text>
+              />
+              <span aria-hidden className="hidden h-8 w-px bg-blue-200 sm:block" />
+              <h1 className="m-0 text-xl font-bold leading-tight tracking-tight text-slate-900">
+                <GradientText>{editingBundle ? "Edit bundle" : "Create bundle"}</GradientText>
+              </h1>
             </div>
-          </div>
+          </StepFrame>
         )}
         {!showForm && (
-          <>
-            <Box>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: isMobileLayout ? "flex-start" : "center",
-                  gap: "12px",
-                  flexWrap: "wrap",
-                }}
-              >
-                <h4
-                  style={{
-                    fontFamily:
-                      'Baskerville, "Palatino Linotype", Palatino, "Times New Roman", Times, serif',
-                    fontSize: "1.75rem",
-                    fontWeight: 400,
-                    margin: 0,
-                    color: "#1a1a1a",
-                  }}
-                >
-                  Create{" "}
-                  <span
-                    style={{
-                      color: "#2f6f63",
-                      fontStyle: "italic",
-                      display: "inline-flex",
-                      flexDirection: "column",
-                      alignItems: "stretch",
-                    }}
-                  >
-                    <span>Bundles</span>
-                    <span
-                      style={{
-                        marginTop: 4,
-                        height: 3,
-                        background:
-                          "linear-gradient(to right, rgba(47, 111, 99, 0.95) 0%, rgba(47, 111, 99, 0.5) 45%, rgba(47, 111, 99, 0.1) 100%)",
-                        borderRadius: 999,
-                        width: "100%",
-                      }}
-                    />
-                  </span>
-                </h4>
-                <Button
-                  variant="primary"
-                  fullWidth={isMobileLayout}
-                  onClick={() => {
-                    if (isAuthenticating || isSubmitting || isTogglingStatus)
-                      return;
-                    setShowForm(true);
-                    setEditingBundle(null);
-                  }}
-                  disabled={
-                    isAuthenticating ||
-                    isSubmitting ||
-                    isTogglingStatus ||
-                    isLoading
-                  }
-                >
-                  Create Bundle
-                </Button>
+          <StepFrame compact>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3.5">
+                <span className="flex h-11 w-11 flex-none items-center justify-center rounded-2xl bg-white text-[#1e40af] shadow-sm ring-1 ring-blue-100">
+                  <Boxes size={22} aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <h1 className="m-0 text-[1.4rem] font-bold leading-tight tracking-tight text-slate-900 sm:text-[1.65rem]">
+                    <GradientText>Bundles</GradientText>
+                  </h1>
+                  <p className="m-0 mt-0.5 text-sm text-slate-600">
+                    Creating bundles is the right thing to do, to increase AOV!
+                  </p>
+                </div>
               </div>
-            </Box>
-            <Text as="h2" variant="bodyMd" tone="subdued">
-              Creating bundles is the right thing to do, to increase AOV!
-            </Text>
-          </>
+              <PrimaryButton
+                className={isMobileLayout ? "w-full" : ""}
+                onClick={() => {
+                  if (isAuthenticating || isSubmitting || isTogglingStatus) return;
+                  setShowForm(true);
+                  setEditingBundle(null);
+                }}
+                disabled={
+                  isAuthenticating ||
+                  isSubmitting ||
+                  isTogglingStatus ||
+                  isLoading
+                }
+              >
+                <Plus size={16} aria-hidden />
+                Create bundle
+              </PrimaryButton>
+            </div>
+          </StepFrame>
         )}
 
       {/* {themeEditorUrl && (
@@ -645,35 +600,25 @@ export default function BundlesPage() {
               setEditingBundle(null);
             }}
           />
-          <div style={{ marginTop: bundles?.length === 0 ? "16px" : "16px" }}>
-            <Card roundedAbove="sm" padding="0">
-              <Box background="bg-surface" padding="400">
-                <BlockStack gap="300">
-                <Text as="h3" variant="headingSm">
-                  How to add a bundle to your store
-                </Text>
-                <Text as="p" variant="bodyMd" tone="subdued">
-                  After you create a bundle, add it in the theme editor:
-                </Text>
-                <BlockStack gap="200">
-                  <Text as="p" variant="bodyMd">
-                    <strong>1.</strong> Make sure the <strong>Roarr</strong> app embed is
-                    enabled for your theme (Online Store → Themes → Customize → App embeds).
-                  </Text>
-                  <Text as="p" variant="bodyMd">
-                    <strong>2.</strong> Open the section where you want the bundle to appear.
-                  </Text>
-                  <Text as="p" variant="bodyMd">
-                    <strong>3.</strong> Click <strong>Apps</strong>, search for{" "}
-                    <strong>Roarr Bundler</strong>, and add the block.
-                  </Text>
-                </BlockStack>
-                </BlockStack>
-              </Box>
-            </Card>
-          </div>
+          <Panel
+            icon={BookOpen}
+            title="How to add a bundle to your store"
+            description="After you create a bundle, add it in the theme editor:"
+          >
+            <ol className="m-0 flex list-none flex-col gap-3 p-0">
+              {ADD_TO_STORE_STEPS.map((step, index) => (
+                <li key={index} className="flex items-start gap-3">
+                  <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-[#1e3a8a] text-xs font-semibold text-white">
+                    {index + 1}
+                  </span>
+                  <p className="m-0 text-sm leading-relaxed text-slate-700">{step}</p>
+                </li>
+              ))}
+            </ol>
+          </Panel>
         </>
       )}
+      </div>
       </div>
 
       {/* Delete Bundle Confirmation Modal */}

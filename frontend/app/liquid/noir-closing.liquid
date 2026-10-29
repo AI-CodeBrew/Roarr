@@ -1,0 +1,78 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.noir_closing_eyebrow.value | default: m.noir_closing_eyebrow | default: 'Yours to keep' -%}
+{%- assign heading = m.noir_closing_heading.value | default: m.noir_closing_heading | default: 'Made for the long run' -%}
+{%- assign text = m.noir_closing_text.value | default: m.noir_closing_text | default: 'Chosen with care, made to be used every day and built to keep its looks for years.' -%}
+{%- assign img = m.product_impact_image.value | default: m.product_impact_image -%}
+{%- if img == blank and product.media.size > 0 -%}
+  {%- assign last_media = product.media | last -%}
+  {%- assign img = last_media.preview_image | default: last_media -%}
+{%- endif -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+<section class="nr-closing">
+  <div class="nr-closing__media">
+    {%- if img != blank -%}<img src="{{ img | image_url: width: 1600 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
+  </div>
+  <div class="nr-closing__panel">
+    <div class="nr-closing__inner">
+      <p class="nr-eyebrow">{{ eyebrow }}</p>
+      <h2 class="nr-closing__heading">{{ heading }}</h2>
+      <p class="nr-closing__text">{{ text }}</p>
+      <div class="nr-closing__price">
+        <strong>{{ product.price | money }}</strong>
+        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+      </div>
+      {%- if product.variants.size > 1 -%}
+        <a class="nr-btn" href="#nr-hero">{% render 'snippets/roarr-ui-string', key: 'add_to_cart' %}</a>
+      {%- else -%}
+        <div class="nr-closing__form">
+          <input type="hidden" name="id" value="{{ variant.id }}">
+          <button class="nr-btn" type="button"{% if variant.available == false %} disabled{% endif %}>
+            {%- if variant.available != false -%}{% render 'snippets/roarr-ui-string', key: 'add_to_cart' %}{%- else -%}{% render 'snippets/roarr-ui-string', key: 'sold_out' %}{%- endif -%}
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  .nr-closing { --nr-ink: #0D0C0B; --nr-coal: #161412; --nr-line: #2E2A25; --nr-gold: #C9A96E; --nr-gold-soft: #E4D2AA; --nr-ivory: #F2ECE2; --nr-muted: #A79E90; --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; display: grid; grid-template-columns: 1fr 1fr; min-height: clamp(480px, 70vh, 720px); background: var(--nr-ink); color: var(--nr-ivory); font-family: "Manrope", sans-serif; }
+  .nr-closing *, .nr-closing *::before, .nr-closing *::after { box-sizing: border-box; }
+  .nr-closing__media { position: relative; overflow: hidden; background: var(--nr-coal); }
+  .nr-closing__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .nr-closing__panel { display: flex; align-items: center; padding: clamp(40px, 6vw, 96px); border-inline-start: 1px solid var(--nr-line); }
+  .nr-closing__inner { max-width: 480px; display: grid; gap: 18px; }
+  .nr-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--nr-gold); }
+  .nr-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+  .nr-closing__heading { margin: 0; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(36px, 4.4vw, 62px); line-height: 1.04; }
+  .nr-closing__text { margin: 0; font-size: 16px; line-height: 1.7; color: var(--nr-muted); }
+  .nr-closing__price { display: flex; gap: 14px; align-items: baseline; padding: 8px 0 4px; }
+  .nr-closing__price strong { font-family: "Bodoni Moda", serif; font-size: 28px; font-weight: 500; color: var(--nr-gold-soft); }
+  .nr-closing__price s { color: var(--nr-muted); font-size: 15px; }
+  .nr-closing__form { display: grid; }
+  .nr-closing .nr-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 36px; border: 0; border-radius: 0; background: var(--nr-gold); color: var(--nr-ink); font: 600 12px "Manrope", sans-serif; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background 250ms ease; width: fit-content; }
+  .nr-closing .nr-btn:hover { background: var(--nr-gold-soft); }
+  .nr-closing .nr-btn[disabled] { opacity: .5; cursor: not-allowed; }
+  @media (max-width: 749px) {
+    .nr-closing { grid-template-columns: 1fr; }
+    .nr-closing__media { aspect-ratio: 4 / 5; }
+    .nr-closing__panel { border-inline-start: 0; border-top: 1px solid var(--nr-line); padding: 40px 16px 56px; }
+    .nr-closing .nr-btn { width: 100%; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--noir" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Manrope", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

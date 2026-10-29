@@ -4,19 +4,19 @@
   - Layout: pf-new-ingreds-features.css | Accordion: pf-new-ingreds-features.js
 {% endcomment %}
 
-{%- assign store_gen = shop.metafields.kluck_ai.store_generation.value -%}
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
 {%- assign section_scheme = section.settings.section_color_scheme | default: 'scheme-1' -%}
 {%- assign container_scheme = section.settings.container_color_scheme | default: 'scheme-2' -%}
-{%- assign use_kluck_ai = section.settings.use_kluck_ai_metafields | default: false -%}
-{%- assign kluck_creative = shop.metafields.kluck_ai.creative_image.value -%}
+{%- assign use_roarr = section.settings.use_roarr_metafields | default: false -%}
+{%- assign roarr_creative = shop.metafields.roarr.creative_image.value -%}
 
-{%- assign kluck_main_heading = blank -%}
+{%- assign roarr_main_heading = blank -%}
 {%- if store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
-  {%- assign kluck_main_heading = store_gen.home_page.text.why_choose_us_heading -%}
+  {%- assign roarr_main_heading = store_gen.home_page.text.why_choose_us_heading -%}
 {%- endif -%}
 
 {%- assign accordion_single_image = false -%}
-{%- if use_kluck_ai and kluck_creative != blank -%}
+{%- if use_roarr and roarr_creative != blank -%}
   {%- assign accordion_single_image = true -%}
 {%- endif -%}
 
@@ -60,10 +60,10 @@
      class="img-acc-section img-acc-section--{{ section.id }} color-{{ section_scheme }}"
      data-accordion-single-image="{% if accordion_single_image %}true{% else %}false{% endif %}">
 
-  {% if use_kluck_ai %}
-    {% assign hs = kluck_main_heading | strip %}
+  {% if use_roarr %}
+    {% assign hs = roarr_main_heading | strip %}
     {% if hs != blank %}
-      <h2 class="img-acc-main-title img-acc-main-title--{{ section.id }}">{{ kluck_main_heading | strip }}</h2>
+      <h2 class="img-acc-main-title img-acc-main-title--{{ section.id }}">{{ roarr_main_heading | strip }}</h2>
     {% elsif section.settings.main_heading != blank %}
       <h2 class="img-acc-main-title img-acc-main-title--{{ section.id }}">{{ section.settings.main_heading }}</h2>
     {% endif %}
@@ -79,7 +79,7 @@
       {%- for block in section.blocks -%}
         {%- assign reason_heading = blank -%}
         {%- assign reason_description = blank -%}
-        {%- if use_kluck_ai and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
+        {%- if use_roarr and store_gen != blank and store_gen.home_page != blank and store_gen.home_page.text != blank -%}
           {%- assign _t = store_gen.home_page.text -%}
           {%- case forloop.index -%}
             {%- when 1 -%}
@@ -111,7 +111,7 @@
 
         <div class="img-acc-item img-acc-item--{{ section.id }}" {{ block.shopify_attributes }}>
           <button type="button" class="img-acc-trigger img-acc-trigger--{{ section.id }} {% if forloop.first %}is-open{% endif %}" data-index="{{ forloop.index0 }}">
-            {%- if use_kluck_ai -%}
+            {%- if use_roarr -%}
               {%- assign rs = reason_heading | strip -%}
               {%- if rs != blank -%}
                 {{ reason_heading | strip }}
@@ -129,7 +129,7 @@
           <div class="img-acc-content img-acc-content--{{ section.id }}" {% if forloop.first %}style="max-height: 1000px;"{% endif %}>
             <div class="img-acc-content-inner">
               <div class="img-acc-desc img-acc-desc--{{ section.id }}">
-                {%- if use_kluck_ai -%}
+                {%- if use_roarr -%}
                   {%- assign ds = reason_description | strip -%}
                   {%- if ds != blank -%}
                     {{ reason_description }}
@@ -154,15 +154,15 @@
     </div>
 
     <div class="img-acc-image-side img-acc-image-side--{{ section.id }}">
-      {%- if use_kluck_ai and kluck_creative != blank -%}
+      {%- if use_roarr and roarr_creative != blank -%}
         <img
-          src="{{ kluck_creative | image_url: width: 1200 }}"
+          src="{{ roarr_creative | image_url: width: 1200 }}"
           alt=""
           class="img-acc-image is-active"
           loading="lazy"
           data-index="0"
         >
-      {%- elsif use_kluck_ai -%}
+      {%- elsif use_roarr -%}
         {%- for block in section.blocks -%}
           {%- if block.settings.image != blank -%}
             <img

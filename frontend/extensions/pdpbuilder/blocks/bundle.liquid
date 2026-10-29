@@ -3,7 +3,7 @@
 <script>window.SHOP_MONEY_FORMAT={{ shop.money_format | default: money_fmt | json }};</script>
 {%- assign sv = product.selected_or_first_available_variant | default: product.variants.first -%}
 {%- assign unit_price = sv.price | default: product.price | default: product.price_min | default: 0 -%}
-{%- assign ba = shop.metafields.kluck_bundle.bundles.value.bundles -%}
+{%- assign ba = shop.metafields.roarr_bundle.bundles.value.bundles -%}
 {%- if ba -%}
 {%- assign b = null -%}
 {%- assign most_recent_created_at = '' -%}

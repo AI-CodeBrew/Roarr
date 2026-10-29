@@ -51,7 +51,7 @@ class ShopifySubscriptionManager:
                     'success': True,
                     'requires_contact': True,
                     'message': 'Enterprise plan requires contact with sales team',
-                    'contact_email': 'sales@zambeel.ai',
+                    'contact_email': 'fynktech1@gmail.com',
                     'plan_name': plan_details['name']
                 }
             

@@ -19,7 +19,7 @@ GENERATE_FOR_STORE_PATH = "/api/generate-for-store"
 
 # Reused sample asset so multi-product hits the image-generation path (each product needs URLs).
 SAMPLE_PRODUCT_IMAGE_URL = (
-    "https://cdn.shopify.com/s/files/1/0704/0119/6122/files/51W5ja1h4fS._AC.jpg?v=1772010531"
+    ""
 )
 
 

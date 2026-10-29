@@ -1,11 +1,11 @@
 /**
  * Amour single-product home — default section settings for Liquid preview.
- * Generated alongside the Shopify sections (kluck-ai-amour-*.liquid).
+ * Generated alongside the Shopify sections (roarr-amour-*.liquid).
  */
 
 export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
     "pf-amour-hero": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         banner_image: "",
@@ -21,7 +21,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-showcase": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         product_image_1: "",
@@ -38,7 +38,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-countdown": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         countdown_heading: "Limited time only",
@@ -51,7 +51,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-lookbook": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         look_image_1: "",
@@ -72,7 +72,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-ribbons": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         ribbon_1: "Free shipping",
@@ -82,7 +82,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-split": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         split_image: "",
@@ -97,7 +97,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-editorial": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         editorial_image_1: "",
@@ -114,7 +114,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-banner": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         banner_image_2: "",
@@ -128,7 +128,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-story": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         story_image: "",
@@ -145,7 +145,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-reviews": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         product_image_2: "",
@@ -168,7 +168,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-tabs": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         look_image_3: "",
@@ -184,7 +184,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-promise": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         promise_heading: "Our promise",
@@ -201,7 +201,7 @@ export const AMOUR_SINGLE_PRODUCT_HOME_SETTINGS = {
         color_scheme: "scheme-1",
     },
     "pf-amour-gallery": {
-        use_kluck_ai_metafields: true,
+        use_roarr_metafields: true,
         accent_color: "#6b0808",
         blush_color: "#ffe3de",
         product_image_1: "",

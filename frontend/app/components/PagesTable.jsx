@@ -333,7 +333,11 @@ export default function PagesTable({
     const productTitle = page.product_title || "";
     const storedTemplate = page.selectedTemplate ?? page.selected_template ?? page.template;
     const template =
-      storedTemplate == 4 || storedTemplate == "template_4"
+      storedTemplate == 6 || storedTemplate == "template_6"
+        ? 6
+        : storedTemplate == 5 || storedTemplate == "template_5"
+        ? 5
+        : storedTemplate == 4 || storedTemplate == "template_4"
         ? 4
         : storedTemplate == 3 || storedTemplate == "3" || storedTemplate == "template_3"
         ? 3

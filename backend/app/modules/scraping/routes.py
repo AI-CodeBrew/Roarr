@@ -15,15 +15,15 @@ scraping_bp = Blueprint('scraping', __name__)
 def is_valid_product_url(url: str) -> tuple[bool, str]:
     """
     Validate if the provided URL is a valid product URL
-    from AliExpress, Amazon, Alibaba, MyZambeel, or Shopify.
+    from AliExpress, Amazon, Alibaba, or Shopify.
     Each platform only accepts its own URLs.
     
     Returns:
         tuple: (is_valid, platform_name or error_message)
     """
     # Known non-Shopify domains to exclude
-    non_shopify_domains = ['amazon', 'alibaba', 'aliexpress', 'myzambeel']
-    
+    non_shopify_domains = ['amazon', 'alibaba', 'aliexpress']
+
     # Check specific platforms first (order matters - check specific ones before Shopify)
     specific_patterns = {
         "amazon": (
@@ -37,10 +37,6 @@ def is_valid_product_url(url: str) -> tuple[bool, str]:
         "alibaba": (
             r"^https?:\/\/(www\.)?alibaba\.com\/product-detail\/[^\/]+_\d+\.html",
             "Alibaba URLs only. Example: https://alibaba.com/product-detail/Product-Name_1234567890.html"
-        ),
-        "myzambeel": (
-            r"^https?:\/\/(www\.)?myzambeel\.com\/products\/[a-zA-Z0-9\-\_]+",
-            "MyZambeel URLs only. Example: https://myzambeel.com/products/product-name"
         )
     }
 
@@ -68,7 +64,7 @@ def is_valid_product_url(url: str) -> tuple[bool, str]:
             pass
     
     # If no match, provide helpful error message
-    return False, "Invalid URL format. Please provide a valid product URL from Amazon, AliExpress, Alibaba, MyZambeel, or Shopify."
+    return False, "Invalid URL format. Please provide a valid product URL from Amazon, AliExpress, Alibaba, or Shopify."
 
 @scraping_bp.route('/api/import-from-url', methods=['POST'])
 @require_shopify_auth

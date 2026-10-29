@@ -1,105 +1,105 @@
 {
   "sections": {
-    "kluck-ai-cinematic-announcement": {
-      "type": "kluck-ai-cinematic-announcement",
+    "roarr-cinematic-announcement": {
+      "type": "roarr-cinematic-announcement",
       "name": "Roarr - Cin Announce",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-cinematic-hero": {
-      "type": "kluck-ai-cinematic-hero",
+    "roarr-cinematic-hero": {
+      "type": "roarr-cinematic-hero",
       "name": "Roarr - Cin Hero",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-cinematic-trust": {
-      "type": "kluck-ai-cinematic-trust",
+    "roarr-cinematic-trust": {
+      "type": "roarr-cinematic-trust",
       "name": "Roarr - Cin Trust",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-2"
       }
     },
-    "kluck-ai-cinematic-product-story": {
-      "type": "kluck-ai-cinematic-product-story",
+    "roarr-cinematic-product-story": {
+      "type": "roarr-cinematic-product-story",
       "name": "Roarr - Cin Story",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-cinematic-inspiration": {
-      "type": "kluck-ai-cinematic-inspiration",
+    "roarr-cinematic-inspiration": {
+      "type": "roarr-cinematic-inspiration",
       "name": "Roarr - Cin Inspire",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-cinematic-feature-ticker": {
-      "type": "kluck-ai-cinematic-feature-ticker",
+    "roarr-cinematic-feature-ticker": {
+      "type": "roarr-cinematic-feature-ticker",
       "name": "Roarr - Cin Ticker",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-2"
       }
     },
-    "kluck-ai-cinematic-why-shop": {
-      "type": "kluck-ai-cinematic-why-shop",
+    "roarr-cinematic-why-shop": {
+      "type": "roarr-cinematic-why-shop",
       "name": "Roarr - Cin Why Shop",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-cinematic-feature-orbit": {
-      "type": "kluck-ai-cinematic-feature-orbit",
+    "roarr-cinematic-feature-orbit": {
+      "type": "roarr-cinematic-feature-orbit",
       "name": "Roarr - Cin Orbit",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-2"
       }
     },
-    "kluck-ai-cinematic-reviews": {
-      "type": "kluck-ai-cinematic-reviews",
+    "roarr-cinematic-reviews": {
+      "type": "roarr-cinematic-reviews",
       "name": "Roarr - Cin Reviews",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     },
-    "kluck-ai-cinematic-faq": {
-      "type": "kluck-ai-cinematic-faq",
+    "roarr-cinematic-faq": {
+      "type": "roarr-cinematic-faq",
       "name": "Roarr - Cin FAQ",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-2"
       }
     },
-    "kluck-ai-cinematic-sticky-bar": {
-      "type": "kluck-ai-cinematic-sticky-bar",
+    "roarr-cinematic-sticky-bar": {
+      "type": "roarr-cinematic-sticky-bar",
       "name": "Roarr - Cin Sticky",
       "settings": {
-        "use_kluck_ai_metafields": true,
+        "use_roarr_metafields": true,
         "color_scheme": "scheme-1"
       }
     }
   },
   "order": [
-    "kluck-ai-cinematic-announcement",
-    "kluck-ai-cinematic-hero",
-    "kluck-ai-cinematic-trust",
-    "kluck-ai-cinematic-product-story",
-    "kluck-ai-cinematic-inspiration",
-    "kluck-ai-cinematic-feature-ticker",
-    "kluck-ai-cinematic-why-shop",
-    "kluck-ai-cinematic-feature-orbit",
-    "kluck-ai-cinematic-reviews",
-    "kluck-ai-cinematic-faq",
-    "kluck-ai-cinematic-sticky-bar"
+    "roarr-cinematic-announcement",
+    "roarr-cinematic-hero",
+    "roarr-cinematic-trust",
+    "roarr-cinematic-product-story",
+    "roarr-cinematic-inspiration",
+    "roarr-cinematic-feature-ticker",
+    "roarr-cinematic-why-shop",
+    "roarr-cinematic-feature-orbit",
+    "roarr-cinematic-reviews",
+    "roarr-cinematic-faq",
+    "roarr-cinematic-sticky-bar"
   ]
 }

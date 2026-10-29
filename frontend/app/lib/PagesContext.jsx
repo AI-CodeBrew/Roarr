@@ -149,7 +149,7 @@ export function PagesProvider({ children, initialPages = [], shop, apiKey, skipI
     posthog.setPersonProperties({
       pdp_gen_count: totalPages,
       pdp_live_count: publishedPagesCount,
-      pdp_kluck_toggle_on_count: enabledPagesCount,
+      pdp_roarr_toggle_on_count: enabledPagesCount,
     });
 
   }, [pages, posthog, publishedPages]);

@@ -3,8 +3,8 @@
   - Layout: 5 Specific Panels (2 Wide, 2 Small, 1 Tall)
   - Scope: block.settings and block.id
 {% endcomment %}
-{%- assign color_schema = product.metafields.kluck_ai.color_schema.value | default: product.metafields.kluck_ai.color_schema | default: '#a34e4e' -%}
-{%- assign kai = product.metafields.kluck_ai -%}
+{%- assign color_schema = product.metafields.roarr.color_schema.value | default: product.metafields.roarr.color_schema | default: '#a34e4e' -%}
+{%- assign kai = product.metafields.roarr -%}
 {%- assign p2_heading = kai.bento_stat_1.value | default: kai.bento_stat_1 | default: block.settings.p2_heading -%}
 {%- assign p2_text = kai.bento_stat_description_1.value | default: kai.bento_stat_description_1 | default: block.settings.p2_text -%}
 {%- assign p3_heading = kai.bento_stat_2.value | default: kai.bento_stat_2 | default: block.settings.p3_heading -%}
@@ -33,7 +33,7 @@
     <div class="bento-grid">
       
       <!-- Panel 1: Wide Image (Top Left) - happy_customer_image_1 -->
-      {%- assign img_1 = product.metafields.kluck_ai.happy_customer_image_1.value | default: product.metafields.kluck_ai.happy_customer_image_1 -%}
+      {%- assign img_1 = product.metafields.roarr.happy_customer_image_1.value | default: product.metafields.roarr.happy_customer_image_1 -%}
       {%- if block.settings.image_1 != blank %}{% assign img_1 = block.settings.image_1 %}{% endif -%}
       <div class="bento-panel is-image panel-1">
         {% if img_1 != blank %}
@@ -60,7 +60,7 @@
       </div>
 
       <!-- Panel 4: Small Image (Bottom Middle) - happy_customer_image_2 -->
-      {%- assign img_4 = product.metafields.kluck_ai.happy_customer_image_2.value | default: product.metafields.kluck_ai.happy_customer_image_2 -%}
+      {%- assign img_4 = product.metafields.roarr.happy_customer_image_2.value | default: product.metafields.roarr.happy_customer_image_2 -%}
       {%- if block.settings.image_4 != blank %}{% assign img_4 = block.settings.image_4 %}{% endif -%}
       <div class="bento-panel is-image panel-4">
         {% if img_4 != blank %}
@@ -71,7 +71,7 @@
       </div>
 
       <!-- Panel 5: Tall Image (Right) - happy_customer_image_3 -->
-      {%- assign img_5 = product.metafields.kluck_ai.happy_customer_image_3.value | default: product.metafields.kluck_ai.happy_customer_image_3 -%}
+      {%- assign img_5 = product.metafields.roarr.happy_customer_image_3.value | default: product.metafields.roarr.happy_customer_image_3 -%}
       {%- if block.settings.image_5 != blank %}{% assign img_5 = block.settings.image_5 %}{% endif -%}
       <div class="bento-panel is-image panel-5">
         {% if img_5 != blank %}
