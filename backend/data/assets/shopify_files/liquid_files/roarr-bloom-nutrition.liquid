@@ -1,0 +1,142 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign title = m.bloom_facts_title.value | default: m.bloom_facts_title | default: 'Nutrition Facts' -%}
+{%- assign servings = m.bloom_facts_servings.value | default: m.bloom_facts_servings -%}
+{%- assign size_l = m.bloom_facts_size_label.value | default: m.bloom_facts_size_label | default: 'Serving size' -%}
+{%- assign size = m.bloom_facts_size.value | default: m.bloom_facts_size -%}
+{%- assign amount_l = m.bloom_facts_amount_label.value | default: m.bloom_facts_amount_label | default: 'Amount per serving' -%}
+{%- assign cal_l = m.bloom_facts_calories_label.value | default: m.bloom_facts_calories_label | default: 'Calories' -%}
+{%- assign cal = m.bloom_facts_calories.value | default: m.bloom_facts_calories -%}
+{%- assign dv_l = m.bloom_facts_dv_label.value | default: m.bloom_facts_dv_label | default: '% Daily Value*' -%}
+{%- assign rows = m.bloom_facts_rows.value | default: m.bloom_facts_rows -%}
+{%- assign note = m.bloom_facts_note.value | default: m.bloom_facts_note -%}
+{%- assign img = m.product_impact_image.value | default: m.product_impact_image -%}
+{% capture nl %}
+{% endcapture %}
+{%- assign lines = rows | split: nl -%}
+{%- if rows != blank -%}
+<section class="bloom bl-nutri" id="bl-nutri">
+  <div class="bl-wrap bl-nutri__grid{% if rows == blank %} bl-nutri__grid--solo{% endif %}">
+    {%- if rows != blank -%}
+    <div class="bl-nutri__panel" data-bl-reveal>
+      <div class="bl-nf">
+        <h3 class="bl-nf__title">{{ title }}</h3>
+        {%- if servings != blank -%}<p class="bl-nf__serv">{{ servings }}</p>{%- endif -%}
+        {%- if size != blank -%}<p class="bl-nf__size"><span>{{ size_l }}</span><span>{{ size }}</span></p>{%- endif -%}
+        <div class="bl-nf__bar bl-nf__bar--xl"></div>
+        <p class="bl-nf__amt">{{ amount_l }}</p>
+        {%- if cal != blank -%}<p class="bl-nf__cal"><span>{{ cal_l }}</span><span>{{ cal }}</span></p>{%- endif -%}
+        <div class="bl-nf__bar bl-nf__bar--lg"></div>
+        <p class="bl-nf__dv">{{ dv_l }}</p>
+        {%- for line in lines -%}
+          {%- assign line_t = line | strip -%}
+          {%- if line_t != blank -%}
+            {%- assign parts = line_t | split: '|' -%}
+            {%- assign name = parts[0] | strip -%}
+            {%- assign dv = parts[1] | strip -%}
+            {%- assign indent = false -%}
+            {%- assign italic = false -%}
+            {%- if name contains '--' -%}{%- assign indent = true -%}{%- assign name = name | remove_first: '--' | strip -%}{%- endif -%}
+            {%- assign first_c = name | slice: 0 -%}
+            {%- if first_c == '-' -%}{%- assign indent = true -%}{%- assign name = name | remove_first: '-' | strip -%}{%- endif -%}
+            {%- assign first_c = name | slice: 0 -%}
+            {%- if first_c == '~' -%}{%- assign italic = true -%}{%- assign name = name | remove_first: '~' | strip -%}{%- endif -%}
+            {%- assign words = name | split: ' ' -%}
+            {%- assign amt = '' -%}
+            {%- assign lab = name -%}
+            {%- if words.size > 1 -%}{%- assign amt = words | last -%}{%- assign lab = name | remove_last: amt | strip -%}{%- endif -%}
+            <p class="bl-nf__row{% if indent %} is-sub{% endif %}"><span class="bl-nf__lab">{% if italic %}<i>{{ lab }}</i>{% else %}<b>{{ lab }}</b>{% endif %}{% if amt != blank %} {{ amt }}{% endif %}</span>{% if dv != blank %}<b class="bl-nf__dvv">{{ dv }}</b>{% endif %}</p>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if note != blank -%}<p class="bl-nf__note">{{ note }}</p>{%- endif -%}
+      </div>
+    </div>
+    {%- endif -%}
+    {%- if img != blank -%}
+    <figure class="bl-nutri__pic" data-bl-reveal><img src="{{ img | image_url: width: 1100 }}" alt="{{ product.title | escape }}" loading="lazy"></figure>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .bloom { --bl-plum: #4A0E2B; --bl-ink: #3D1229; --bl-rose: #E5518E; --bl-rose-d: #B3235F; --bl-blush: #FDEBF5; --bl-pink: #FFDDEB; --bl-pink-2: #FFE9F2; --bl-peach: #FFE8E3; --bl-coral: #E8695C; --bl-cream: #FFF6E8; --bl-grad: linear-gradient(90deg, #E8695C 0%, #E5518E 100%); --bl-star: #F59E0B; --bl-muted: #6F5A67; --bl-line: #F1D5E1; --bl-serif: "Playfair Display", Georgia, serif; --bl-sans: "Open Sans", system-ui, sans-serif; --bl-pop: "Poppins", "Open Sans", sans-serif; --font-heading-family: "Playfair Display", serif; --font-body-family: "Open Sans", sans-serif; position: relative; font-family: var(--bl-sans); -webkit-font-smoothing: antialiased; }
+  :where(.bloom) { background: #fff; color: var(--bl-plum); }
+  .bloom *, .bloom *::before, .bloom *::after { box-sizing: border-box; }
+  :where(.bloom) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption, cite) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .bloom, .bloom :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption, cite) { font-family: var(--bl-sans) !important; }
+  .bloom :is(h1, h2, h3, h4, .bl-serif, .bl-serif *, .bl-h *) { font-family: var(--bl-serif) !important; }
+  .bloom .bl-pop, .bloom .bl-pop :is(p, li, a, span, label, button, input, select, strong, small, b, s, div, h3, h4) { font-family: var(--bl-pop) !important; }
+  :where(.bloom) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.bloom) :is(ul, ol) { list-style: none; }
+  :where(.bloom) img { display: block; max-width: 100%; }
+  :where(.bloom) button { font: inherit; }
+  :where(.bloom) .bl-wrap { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.bloom) .bl-h { font-weight: 600; line-height: 1.22; letter-spacing: 0; text-wrap: balance; text-align: center; color: var(--bl-plum); font-size: clamp(28px, 3.4vw, 40px); }
+  :where(.bloom) .bl-ac { color: var(--bl-rose); }
+  :where(.bloom) .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 28px; border: 1px solid #E5518E; border-radius: 8px; background: var(--bl-grad); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px -10px rgb(229 81 142 / .7); transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+  :where(.bloom) .bl-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 12px 24px -10px rgb(229 81 142 / .8); }
+  :where(.bloom) .bl-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .bloom [hidden] { display: none !important; }
+  :where(.bloom) .bl-fade { -webkit-mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); }
+  :where(.bloom) .bl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where(.bloom) .bl-stars { color: var(--bl-star); letter-spacing: 1px; }
+  @keyframes bl-rise { from { opacity: 0; transform: translate3d(0, 24px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .bloom [data-bl-reveal] { animation: bl-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.bloom) .bl-wrap { width: calc(100% - 32px); } }
+
+  .bl-nutri { background: #fff; padding: clamp(24px, 3vw, 44px) 0; }
+  .bl-nutri__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(16px, 2.2vw, 30px); align-items: stretch; }
+  .bl-nutri__grid--solo { grid-template-columns: minmax(0, 1fr); }
+  .bl-nutri__panel { padding: clamp(10px, 1.4vw, 16px); border-radius: 14px; background: #FFC8E0; box-shadow: 0 8px 24px -16px rgb(179 35 95 / .5); }
+  .bl-nf { padding: clamp(14px, 2vw, 22px) clamp(14px, 2.2vw, 24px) 16px; border-radius: 14px; background: #fff; color: #111; }
+  .bloom .bl-nf, .bloom .bl-nf * { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important; }
+  .bl-nf__title { margin: 0 0 4px !important; padding-bottom: 4px; border-bottom: 1px solid #111; font-size: clamp(24px, 2.8vw, 30px); font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
+  .bl-nf__serv, .bl-nf__size { font-size: 12.5px; line-height: 1.35; }
+  .bl-nf__size { display: flex; justify-content: space-between; font-weight: 700; padding-bottom: 4px; }
+  .bl-nf__bar { background: #111; }
+  .bl-nf__bar--xl { height: 9px; }
+  .bl-nf__bar--lg { height: 5px; }
+  .bl-nf__amt { margin-top: 4px; font-size: 10.5px; font-weight: 700; }
+  .bl-nf__cal { display: flex; align-items: baseline; justify-content: space-between; font-size: 22px; font-weight: 800; line-height: 1.1; padding-bottom: 4px; }
+  .bl-nf__cal span:last-child { font-size: 28px; }
+  .bl-nf__dv { padding: 3px 0; border-bottom: 1px solid #111; text-align: right; font-size: 12px; font-weight: 700; }
+  .bl-nf__row { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px solid #555; font-size: 12.5px; line-height: 1.35; }
+  .bl-nf__row.is-sub { padding-inline-start: 14px; }
+  .bl-nf__row:last-of-type { border-bottom: 5px solid #111; }
+  .bl-nf__dvv { font-weight: 700; }
+  .bl-nf__note { margin-top: 8px; font-size: 10px; line-height: 1.4; color: #333; }
+  .bl-nutri__pic { position: relative; border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, #FBD8E8 0%, #E9669F 100%); min-height: 320px; }
+  .bl-nutri__pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
+  @media (max-width: 749px) { .bl-nutri__grid { grid-template-columns: minmax(0, 1fr); } .bl-nutri__pic { min-height: 360px; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--bloom" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div, cite) { font-family: "Open Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Playfair Display", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .bl-flip { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Bloom Nutrition facts",
+  "tag": "section",
+  "class": "roarr-bloom-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Bloom Nutrition facts" }]
+}
+{% endschema %}

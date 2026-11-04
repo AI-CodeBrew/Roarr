@@ -1,0 +1,938 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<script>document.documentElement.classList.add("at-js");setTimeout(function(){if(!window.__atMotion)document.documentElement.classList.add("at-reveal-all")},3500);</script>
+{%- assign m = product.metafields.roarr -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign form_id = 'at-form-' | append: section.id -%}
+{%- assign subtitle = m.product_subtitle.value | default: m.product_subtitle -%}
+{%- assign price_note = m.atelier_price_note.value | default: m.atelier_price_note -%}
+{%- assign delivery = m.delivery_line.value | default: m.delivery_line -%}
+{%- assign t1 = m.badge_text_1.value | default: m.badge_text_1 -%}
+{%- assign t2 = m.badge_text_2.value | default: m.badge_text_2 -%}
+{%- assign t3 = m.badge_text_3.value | default: m.badge_text_3 -%}
+{%- assign a1_title = m.atelier_acc_1_title.value | default: m.atelier_acc_1_title | default: 'Details' -%}
+{%- assign a1_body = m.atelier_acc_1_body.value | default: m.atelier_acc_1_body -%}
+{%- assign a2_title = m.atelier_acc_2_title.value | default: m.atelier_acc_2_title | default: 'Shipping' -%}
+{%- assign a2_body = m.atelier_acc_2_body.value | default: m.atelier_acc_2_body -%}
+{%- assign a3_title = m.atelier_acc_3_title.value | default: m.atelier_acc_3_title | default: 'Returns & refunds' -%}
+{%- assign a3_body = m.atelier_acc_3_body.value | default: m.atelier_acc_3_body -%}
+{%- assign a4_title = m.atelier_acc_4_title.value | default: m.atelier_acc_4_title | default: 'Payment' -%}
+{%- assign a4_body = m.atelier_acc_4_body.value | default: m.atelier_acc_4_body -%}
+{%- assign txt_in = m.atelier_in_stock.value | default: m.atelier_in_stock | default: 'In stock' -%}
+{%- assign txt_low = m.atelier_low_stock.value | default: m.atelier_low_stock | default: 'Only [n] left' -%}
+{%- assign txt_added = m.atelier_added.value | default: m.atelier_added | default: 'Added to your bag' -%}
+{%- assign txt_view = m.atelier_view_bag.value | default: m.atelier_view_bag | default: 'View bag' -%}
+{%- assign txt_checkout = m.atelier_checkout.value | default: m.atelier_checkout | default: 'Checkout' -%}
+{%- assign txt_reviews = m.atelier_reviews_label.value | default: m.atelier_reviews_label | default: 'reviews' -%}
+{%- capture txt_add -%}{%- render 'snippets/roarr-ui-string', key: 'add_to_cart' -%}{%- endcapture -%}
+{%- capture txt_sold -%}{%- render 'snippets/roarr-ui-string', key: 'sold_out' -%}{%- endcapture -%}
+{%- assign rating = product.metafields.reviews.rating.value -%}
+{%- assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count -%}
+{%- assign shots = 0 -%}
+{%- if product.media.size > 0 -%}
+  {%- assign shots = product.media.size | at_most: 10 -%}
+{%- else -%}
+  {%- for i in (1..5) -%}
+    {%- assign key = 'product_image_' | append: i -%}
+    {%- assign probe = m[key].value | default: m[key] -%}
+    {%- if probe != blank -%}{%- assign shots = shots | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- assign dock_img = product.media.first.preview_image | default: product.media.first | default: m.product_image_1.value | default: m.product_image_1 -%}
+{%- assign sold_out = false -%}
+{%- if variant.available == false -%}{%- assign sold_out = true -%}{%- endif -%}
+<section class="at at--paper at-buy" id="at-purchase" data-at-buy data-txt-in="{{ txt_in | escape }}" data-txt-low="{{ txt_low | escape }}" data-txt-sold="{{ txt_sold | strip | escape }}" data-txt-add="{{ txt_add | strip | escape }}" data-txt-added="{{ txt_added | escape }}" data-txt-view="{{ txt_view | escape }}" data-txt-checkout="{{ txt_checkout | escape }}">
+  <div class="at-wrap at-buy__grid">
+    <div class="at-gal" data-at-gal data-at-reveal="fade">
+      <div class="at-gal__rail">
+        {%- if shots > 1 -%}
+        <ul class="at-gal__thumbs" role="list" data-at-thumbs>
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media limit: 10 -%}
+              {%- assign src = media.preview_image | default: media -%}
+              <li><button type="button" class="at-gal__thumb{% if forloop.first %} is-on{% endif %}" data-at-thumb aria-label="{{ product.title | escape }} {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"><img src="{{ src | image_url: width: 180 }}" alt="" width="90" height="100" loading="lazy" decoding="async"></button></li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign n = 0 -%}
+            {%- for i in (1..5) -%}
+              {%- assign key = 'product_image_' | append: i -%}
+              {%- assign src = m[key].value | default: m[key] -%}
+              {%- if src != blank -%}
+                <li><button type="button" class="at-gal__thumb{% if n == 0 %} is-on{% endif %}" data-at-thumb aria-label="{{ product.title | escape }} {{ i }}" aria-current="{% if n == 0 %}true{% else %}false{% endif %}"><img src="{{ src | image_url: width: 180 }}" alt="" width="90" height="100" loading="lazy" decoding="async"></button></li>
+                {%- assign n = n | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+        {%- endif -%}
+      </div>
+      <div class="at-gal__stage" data-at-stage>
+        <ul class="at-gal__slides" role="list">
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media limit: 10 -%}
+              {%- assign src = media.preview_image | default: media -%}
+              <li class="at-gal__slide{% if forloop.first %} is-on{% endif %}" data-at-slide data-zoom="{{ src | image_url: width: 2000 }}"><img src="{{ src | image_url: width: 1000 }}" srcset="{{ src | image_url: width: 600 }} 600w, {{ src | image_url: width: 1000 }} 1000w, {{ src | image_url: width: 1400 }} 1400w" sizes="(min-width: 990px) 50vw, 100vw" alt="{{ media.alt | default: product.title | escape }}" width="1000" height="1100"{% if forloop.first %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async" draggable="false"></li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign n = 0 -%}
+            {%- for i in (1..5) -%}
+              {%- assign key = 'product_image_' | append: i -%}
+              {%- assign src = m[key].value | default: m[key] -%}
+              {%- if src != blank -%}
+                <li class="at-gal__slide{% if n == 0 %} is-on{% endif %}" data-at-slide data-zoom="{{ src | image_url: width: 2000 }}"><img src="{{ src | image_url: width: 1000 }}" srcset="{{ src | image_url: width: 600 }} 600w, {{ src | image_url: width: 1000 }} 1000w, {{ src | image_url: width: 1400 }} 1400w" sizes="(min-width: 990px) 50vw, 100vw" alt="{{ src.alt | default: product.title | escape }}" width="1000" height="1100"{% if n == 0 %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async" draggable="false"></li>
+                {%- assign n = n | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+        {%- if shots > 0 -%}
+        <button type="button" class="at-gal__open" data-at-open aria-label="Open full-screen gallery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+        {%- endif -%}
+        {%- if shots > 1 -%}
+        <button type="button" class="at-gal__arrow at-gal__arrow--prev" data-at-prev aria-label="Previous image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="at-gal__arrow at-gal__arrow--next" data-at-next aria-label="Next image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        <p class="at-gal__count" aria-hidden="true"><b data-at-idx>01</b><i></i>{% if shots < 10 %}0{% endif %}{{ shots }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="at-buy__info" data-at-reveal="up" style="--d:.1s">
+      {%- if product.type != blank or product.vendor != blank -%}<p class="at-eyebrow">{{ product.type | default: product.vendor }}</p>{%- endif -%}
+      <h1 class="at-h at-buy__title">{{ product.title }}</h1>
+      {%- if rating != blank and rating_count != blank -%}
+        {%- assign scale = rating.scale_max.value | default: rating.scale_max | default: 5 -%}
+        {%- assign rating_value = rating.rating.value | default: rating.rating -%}
+        {%- assign pct = rating_value | times: 100.0 | divided_by: scale | round -%}
+        <p class="at-rating"><span class="at-stars" style="--p:{{ pct }}%" role="img" aria-label="{{ rating_value }} / {{ scale }}">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span>{{ rating_value }}</span><span class="at-rating__n">{{ rating_count }} {{ txt_reviews }}</span></p>
+      {%- endif -%}
+      <p class="at-price">
+        <span class="at-price__now" data-at-price>{{ variant.price | default: product.price | money }}</span>
+        <s class="at-price__was" data-at-compare{% unless product.compare_at_price > product.price %} hidden{% endunless %}>{{ product.compare_at_price | money }}</s>
+        <span class="at-save" data-at-save{% unless product.compare_at_price > product.price %} hidden{% endunless %}>{%- if product.compare_at_price > product.price -%}-{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round }}%{%- endif -%}</span>
+      </p>
+      {%- if price_note != blank -%}<p class="at-buy__note">{{ price_note }}</p>{%- endif -%}
+      {%- if subtitle != blank -%}<p class="at-buy__lede">{{ subtitle }}</p>{%- endif -%}
+
+      <div id="{{ form_id }}" class="at-form">
+        {%- if product.options_with_values.size > 0 and product.variants.size > 1 -%}
+          <div class="at-opts">
+            {%- for option in product.options_with_values -%}
+              {%- assign opt_i = forloop.index0 -%}
+              {%- assign selected = variant.options[opt_i] -%}
+              <fieldset class="at-opt" data-at-opt>
+                <legend>{{ option.name }}<span data-at-optval>{{ selected }}</span></legend>
+                <div class="at-opt__vals">
+                  {%- for value in option.values -%}
+                    {%- assign vname = value.name | default: value -%}
+                    {%- assign sw_color = value.swatch.color -%}
+                    {%- assign sw_image = value.swatch.image -%}
+                    <label class="at-opt__v{% if sw_color != blank or sw_image != blank %} at-opt__v--sw{% endif %}"{% if sw_image != blank %} style="--sw:url({{ sw_image | image_url: width: 90 }})"{% elsif sw_color != blank %} style="--sw:{{ sw_color }}"{% endif %}>
+                      <input type="radio" name="at-o-{{ section.id }}-{{ opt_i }}" value="{{ vname | escape }}"{% if vname == selected %} checked{% endif %}>
+                      <span>{{ vname }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+          </div>
+          <input type="hidden" name="id" value="{{ variant.id }}" data-at-id>
+        {%- elsif product.variants.size > 1 -%}
+          <div class="at-opts">
+            <label class="at-opt__lbl" for="at-sel-{{ section.id }}">{{ product.options | join: ' / ' }}</label>
+            <select class="at-select" id="at-sel-{{ section.id }}" name="id" data-at-id data-at-select>
+              {%- for v in product.variants -%}
+                <option value="{{ v.id }}"{% if v.id == variant.id %} selected{% endif %}{% if v.available == false %} disabled{% endif %}>{{ v.title }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ variant.id }}" data-at-id>
+        {%- endif -%}
+
+        <p class="at-stock" data-at-stock data-state="{% if sold_out %}out{% elsif variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny' and variant.inventory_quantity > 0 and variant.inventory_quantity <= 5 %}low{% else %}in{% endif %}" role="status"><i></i><span>{%- if sold_out -%}{{ txt_sold | strip }}{%- elsif variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny' and variant.inventory_quantity > 0 and variant.inventory_quantity <= 5 -%}{{ txt_low | replace: '[n]', variant.inventory_quantity }}{%- else -%}{{ txt_in }}{%- endif -%}</span></p>
+
+        <div class="at-buy__row">
+          <div class="at-qty">
+            <button type="button" data-at-minus aria-label="Decrease quantity"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10" stroke="currentColor" stroke-width="1.4"/></svg></button>
+            <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="Quantity" data-at-qty>
+            <button type="button" data-at-plus aria-label="Increase quantity"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 6h10M6 1v10" stroke="currentColor" stroke-width="1.4"/></svg></button>
+          </div>
+          <button class="at-btn at-btn--solid at-btn--atc" type="submit" data-at-atc{% if sold_out %} disabled{% endif %}><span class="at-btn__label" data-at-label>{%- if sold_out -%}{{ txt_sold | strip }}{%- else -%}{{ txt_add | strip }}{%- endif -%}</span></button>
+        </div>
+        <div class="at-checkout" data-at-checkout{% if sold_out %} hidden{% endif %}><button class="at-buynow" type="button">Buy it now</button></div>
+        <p class="at-msg" role="alert" data-at-msg></p>
+      </div>
+
+      {%- if delivery != blank -%}
+        <div class="at-note"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg><p>{{ delivery }}</p></div>
+      {%- endif -%}
+      {%- if t1 != blank or t2 != blank or t3 != blank -%}
+        <ul class="at-trust" role="list">
+          {%- if t1 != blank -%}<li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>{{ t1 }}</span></li>{%- endif -%}
+          {%- if t2 != blank -%}<li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg><span>{{ t2 }}</span></li>{%- endif -%}
+          {%- if t3 != blank -%}<li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><span>{{ t3 }}</span></li>{%- endif -%}
+        </ul>
+      {%- endif -%}
+
+      <div class="at-accs">
+        {%- if product.description != blank or a1_body != blank -%}
+          <details class="at-acc" open>
+            <summary>{{ a1_title }}</summary>
+            <div class="at-acc__body"><div class="at-acc__in">{%- if product.description != blank -%}{{ product.description }}{%- else -%}<p>{{ a1_body }}</p>{%- endif -%}</div></div>
+          </details>
+        {%- endif -%}
+        {%- if a2_body != blank or shop.shipping_policy.url != blank -%}
+          <details class="at-acc">
+            <summary>{{ a2_title }}</summary>
+            <div class="at-acc__body"><div class="at-acc__in">{%- if a2_body != blank -%}<p>{{ a2_body }}</p>{%- endif -%}{%- if shop.shipping_policy.url != blank -%}<p><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title }}</a></p>{%- endif -%}</div></div>
+          </details>
+        {%- endif -%}
+        {%- if a3_body != blank or shop.refund_policy.url != blank -%}
+          <details class="at-acc">
+            <summary>{{ a3_title }}</summary>
+            <div class="at-acc__body"><div class="at-acc__in">{%- if a3_body != blank -%}<p>{{ a3_body }}</p>{%- endif -%}{%- if shop.refund_policy.url != blank -%}<p><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a></p>{%- endif -%}</div></div>
+          </details>
+        {%- endif -%}
+        {%- if a4_body != blank or shop.enabled_payment_types.size > 0 -%}
+          <details class="at-acc">
+            <summary>{{ a4_title }}</summary>
+            <div class="at-acc__body"><div class="at-acc__in">
+              {%- if a4_body != blank -%}<p>{{ a4_body }}</p>{%- endif -%}
+              {%- if shop.enabled_payment_types.size > 0 -%}
+                <ul class="at-pay" role="list" aria-label="{{ a4_title | escape }}">
+                  {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'at-pay__icon' }}</li>{%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div></div>
+          </details>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="at-dock" data-at-dock aria-hidden="true">
+    <div class="at-dock__in">
+      {%- if dock_img != blank -%}<img class="at-dock__img" src="{{ dock_img | image_url: width: 120 }}" alt="" width="52" height="52">{%- endif -%}
+      <div class="at-dock__info"><strong>{{ product.title }}</strong><span><em data-at-dock-var></em><span data-at-dock-price>{{ variant.price | default: product.price | money }}</span></span></div>
+      <button class="at-btn at-btn--solid" type="submit" form="{{ form_id }}" tabindex="-1" data-at-dock-btn{% if sold_out %} disabled{% endif %}><span class="at-btn__label" data-at-dock-label>{%- if sold_out -%}{{ txt_sold | strip }}{%- else -%}{{ txt_add | strip }}{%- endif -%}</span></button>
+    </div>
+  </div>
+
+  <dialog class="at-lb" data-at-lb aria-label="{{ product.title | escape }}">
+    <button type="button" class="at-lb__close" data-at-lb-close aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    <button type="button" class="at-lb__nav at-lb__nav--prev" data-at-lb-prev aria-label="Previous image"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button type="button" class="at-lb__nav at-lb__nav--next" data-at-lb-next aria-label="Next image"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+    <div class="at-lb__view" data-at-lb-view><img width="1600" height="1760" alt="" data-at-lb-img draggable="false"></div>
+    <p class="at-lb__count"><b data-at-lb-idx>01</b><i></i>{% if shots < 10 %}0{% endif %}{{ shots }}</p>
+  </dialog>
+
+  <script type="application/json" data-at-variants>
+  [
+  {%- for v in product.variants -%}
+    {%- assign mi = -1 -%}
+    {%- if v.featured_media and product.media.size > 0 -%}
+      {%- for md in product.media limit: 10 -%}{%- if md.id == v.featured_media.id -%}{%- assign mi = forloop.index0 -%}{%- endif -%}{%- endfor -%}
+    {%- endif -%}
+    {%- assign cap = 0 -%}
+    {%- if v.inventory_management == 'shopify' and v.inventory_policy == 'deny' -%}{%- assign cap = v.inventory_quantity -%}{%- endif -%}
+    {"id":{{ v.id | json }},"title":{{ v.title | json }},"options":{{ v.options | json }},"available":{% if v.available == false %}false{% else %}true{% endif %},"price":{{ v.price | money | json }},"p":{{ v.price | default: 0 }},"cmp":{{ v.compare_at_price | default: 0 }},"cmpf":{{ v.compare_at_price | money | json }},"media":{{ mi }},"managed":{% if v.inventory_management == 'shopify' %}true{% else %}false{% endif %},"cap":{{ cap | default: 0 }}}{% unless forloop.last %},{% endunless %}
+  {%- endfor -%}
+  ]
+  </script>
+  {%- if product.url != blank -%}<script type="application/ld+json">{{ product | structured_data }}</script>{%- endif -%}
+</section>
+<style>
+  .at { --at-ink: #14110E; --at-ink-2: #1E1A16; --at-bone: #F2EDE4; --at-paper: #FBF9F5; --at-sand: #E8DFD0; --at-line: #DCD3C4; --at-muted: #6D645A; --at-soft: #A89E90; --at-accent: #B38B52; --at-serif: "Cormorant Garamond", "Iowan Old Style", "Times New Roman", serif; --at-sans: "Hanken Grotesk", -apple-system, "Segoe UI", sans-serif; --at-ease: cubic-bezier(.22, .8, .2, 1); --at-pad: clamp(20px, 4vw, 64px); --at-edge: max(var(--at-pad), calc((100vw - 1440px) / 2)); position: relative; font-family: var(--at-sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .at *, .at *::before, .at *::after { box-sizing: border-box; }
+  :where(.at) :is(p, li, a, span, strong, em, b, s, small, cite, dt, dd, label, summary, blockquote, footer) { font-size: inherit; font-weight: inherit; line-height: inherit; color: inherit; }
+  .at, .at :is(p, li, a, span, label, button, input, select, summary, dt, dd, cite, small, strong, em, b, s, blockquote, footer, div) { font-family: var(--at-sans) !important; }
+  .at :is(h1, h2, h3, h4, .at-h, .at-h *, .at-hero__amount, .at-story__n, .at-story__sig, .at-feat__num, .at-feat__name, .at-feat__count, .at-feat__count *, .at-price__now, .at-gal__count, .at-gal__count *, .at-proof__quote p, .at-proof__score, .at-closing__price, .at-toast__n, .at-specs__n, .at-lb__count, .at-lb__count *, .at-card__title, .at-card__title *, .at-dock__info strong) { font-family: var(--at-serif) !important; }
+  :where(.at) :is(h1, h2, h3, h4, p, figure, ul, ol, dl, dd, blockquote) { margin: 0; padding: 0; }
+  :where(.at) :is(ul, ol) { list-style: none; }
+  :where(.at) img { display: block; max-width: 100%; }
+  :where(.at) button { font: inherit; color: inherit; }
+  :where(.at) a { color: inherit; }
+  .at :focus-visible { outline: 2px solid var(--at-accent); outline-offset: 3px; }
+  .at--dark { --at-fg: var(--at-bone); --at-bg: var(--at-ink); --at-inv-fg: var(--at-ink); --at-inv-bg: var(--at-bone); --at-rule: rgb(242 237 228 / .16); --at-sub: var(--at-soft); background: var(--at-ink); color: var(--at-bone); }
+  .at--light, .at--paper, .at--sand { --at-fg: var(--at-ink); --at-inv-fg: var(--at-bone); --at-inv-bg: var(--at-ink); --at-rule: var(--at-line); --at-sub: var(--at-muted); color: var(--at-ink); }
+  .at--light { --at-bg: var(--at-bone); background: var(--at-bone); }
+  .at--paper { --at-bg: var(--at-paper); background: var(--at-paper); }
+  .at--sand { --at-bg: var(--at-sand); --at-rule: #CFC3AF; background: var(--at-sand); }
+  .at-wrap { width: min(1440px, calc(100% - var(--at-pad) * 2)); margin-inline: auto; }
+  .at-eyebrow { display: flex; align-items: center; gap: 14px; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--at-accent); }
+  .at-eyebrow::before { content: ""; flex: none; width: 36px; height: 1px; background: currentColor; }
+  .at-eyebrow--center { justify-content: center; }
+  .at-eyebrow--center::after { content: ""; flex: none; width: 36px; height: 1px; background: currentColor; }
+  .at-h { font-family: var(--at-serif); font-weight: 400; line-height: .98; letter-spacing: -.02em; text-wrap: balance; overflow-wrap: break-word; }
+  .at-btn { position: relative; isolation: isolate; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 56px; padding: 0 38px; border: 1px solid var(--b, currentColor); background: var(--bg, transparent); color: var(--fg, inherit); font: 600 12px/1 var(--at-sans); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: transform .45s var(--at-ease), color .35s ease, border-color .35s ease; }
+  .at-btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--wipe, var(--at-accent)); transform: scaleY(0); transform-origin: 50% 100%; transition: transform .5s var(--at-ease); }
+  .at-btn:hover::before, .at-btn:focus-visible::before { transform: scaleY(1); }
+  .at-btn--solid { --bg: var(--at-inv-bg); --fg: var(--at-inv-fg); --b: var(--at-inv-bg); --wipe: var(--at-accent); }
+  .at-btn--solid:hover, .at-btn--solid:focus-visible { color: var(--at-ink); border-color: var(--at-accent); }
+  .at-btn--ghost { --b: currentColor; --wipe: var(--at-fg); }
+  .at-btn--ghost:hover, .at-btn--ghost:focus-visible { color: var(--at-bg); }
+  .at-btn[disabled] { opacity: .4; cursor: not-allowed; pointer-events: none; }
+  .at-btn svg { flex: none; }
+  .at-btn.is-loading .at-btn__label { opacity: 0; }
+  .at-btn.is-loading::after { content: ""; position: absolute; width: 18px; height: 18px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: at-spin .7s linear infinite; }
+  @keyframes at-spin { to { transform: rotate(360deg); } }
+  .at-link { position: relative; display: inline-flex; align-items: center; gap: 10px; padding-block: 8px; font: 600 12px/1 var(--at-sans); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; }
+  .at-link::after { content: ""; position: absolute; inset: auto 0 2px 0; height: 1px; background: currentColor; transform-origin: 0 50%; transition: transform .5s var(--at-ease); }
+  .at-link:hover::after { transform: scaleX(.3); }
+  .at-w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .04em .14em; margin: 0 -.04em -.14em; }
+  .at-w > span { display: inline-block; }
+  @media (prefers-reduced-motion: no-preference) {
+    html.at-js:not(.at-reveal-all) [data-at-reveal] { transition: opacity .9s var(--at-ease) var(--d, 0s), transform 1.1s var(--at-ease) var(--d, 0s), clip-path 1.3s var(--at-ease) var(--d, 0s); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="up"]:not(.is-in) { opacity: 0; transform: translate3d(0, 32px, 0); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="fade"]:not(.is-in) { opacity: 0; }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="mask"] { clip-path: inset(0 0 0 0); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="mask"]:not(.is-in) { clip-path: inset(0 0 100% 0); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="mask"] img { transition: transform 1.8s var(--at-ease) var(--d, 0s); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="mask"]:not(.is-in) img { transform: scale(1.22); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="media"] img { transition: transform 2.2s var(--at-ease) var(--d, 0s), opacity 1.4s ease var(--d, 0s); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="media"]:not(.is-in) img { opacity: 0; transform: scale(1.14); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="split"] .at-w > span { transition: transform 1.1s var(--at-ease); }
+    html.at-js:not(.at-reveal-all) [data-at-reveal="split"]:not(.is-in) .at-w > span { transform: translate3d(0, 115%, 0); }
+  }
+  .at-toast { position: fixed; inset-inline-end: 20px; bottom: 20px; z-index: 9999; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: center; width: min(380px, calc(100% - 32px)); padding: 14px; background: var(--at-paper); color: var(--at-ink); border: 1px solid var(--at-line); box-shadow: 0 24px 60px rgb(20 17 14 / .22); opacity: 0; visibility: hidden; transform: translateY(18px); transition: opacity .35s ease, transform .5s var(--at-ease), visibility 0s linear .5s; }
+  .at-toast.is-on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .at-toast img { width: 64px; height: 64px; object-fit: cover; background: var(--at-sand); }
+  .at-toast__t { font: 600 11px/1.3 var(--at-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--at-accent); }
+  .at-toast__n { margin-top: 4px; font: 500 20px/1.15 var(--at-serif); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .at-toast__v { margin-top: 2px; font-size: 12px; color: var(--at-muted); }
+  .at-toast__a { display: flex; gap: 18px; margin-top: 10px; }
+  .at-toast__a a { font: 600 11px/1 var(--at-sans); letter-spacing: .16em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+  @media (max-width: 749px) { .at-toast { inset-inline: 12px; bottom: 12px; width: auto; } }
+  .at [hidden] { display: none !important; }
+  .at-buy { padding-block: clamp(64px, 8vw, 128px); scroll-margin-top: 0; }
+  .at-buy__grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: clamp(32px, 5vw, 96px); align-items: start; }
+  .at-gal { position: sticky; top: 96px; display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 16px; align-items: stretch; }
+  .at-gal:not(:has(.at-gal__thumbs)) { grid-template-columns: minmax(0, 1fr); }
+  .at-gal__rail { position: relative; min-height: 0; }
+  .at-gal__thumbs { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; scrollbar-width: none; padding: 2px; margin: -2px; }
+  .at-gal__thumbs::-webkit-scrollbar { display: none; }
+  .at-gal__thumb { flex: none; display: block; width: 100%; padding: 0; border: 1px solid transparent; background: var(--at-sand); cursor: pointer; line-height: 0; opacity: .55; transition: opacity .35s ease, border-color .35s ease; }
+  .at-gal__thumb:hover { opacity: .9; }
+  .at-gal__thumb.is-on { opacity: 1; border-color: var(--at-ink); }
+  .at-gal__thumb img { width: 100%; aspect-ratio: 9 / 10; object-fit: cover; }
+  .at-gal__stage { position: relative; overflow: hidden; aspect-ratio: 10 / 11; background: var(--at-sand); cursor: zoom-in; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+  .at-gal__slides { position: absolute; inset: 0; }
+  .at-gal__slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .7s var(--at-ease), visibility 0s linear .7s; }
+  .at-gal__slide.is-on { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .at-gal__slide img { width: 100%; height: 100%; object-fit: cover; transform-origin: var(--zx, 50%) var(--zy, 50%); transition: transform .6s var(--at-ease); will-change: transform; }
+  .at-gal__stage.is-zoom .at-gal__slide.is-on img { transform: scale(1.9); }
+  .at-gal__open, .at-gal__arrow { position: absolute; z-index: 2; display: grid; place-items: center; width: 46px; height: 46px; padding: 0; border: 0; border-radius: 50%; background: rgb(251 249 245 / .86); color: var(--at-ink); cursor: pointer; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: opacity .35s ease, transform .45s var(--at-ease), background .3s ease; }
+  .at-gal__open { inset-block-start: 16px; inset-inline-end: 16px; }
+  .at-gal__arrow { inset-block-start: 50%; margin-top: -23px; opacity: 0; }
+  .at-gal__arrow--prev { inset-inline-start: 16px; }
+  .at-gal__arrow--next { inset-inline-end: 16px; }
+  .at-gal__stage:hover .at-gal__arrow, .at-gal__arrow:focus-visible { opacity: 1; }
+  .at-gal__open:hover, .at-gal__arrow:hover { background: #fff; transform: scale(1.06); }
+  [dir="rtl"] .at-gal__arrow svg, [dir="rtl"] .at-lb__nav svg { transform: scaleX(-1); }
+  @media (hover: none) { .at-gal__arrow { opacity: 1; } }
+  .at-gal__count { position: absolute; z-index: 2; inset-block-end: 16px; inset-inline-start: 18px; display: flex; align-items: center; gap: 12px; font: 400 14px/1 var(--at-serif); letter-spacing: .12em; color: var(--at-ink); mix-blend-mode: normal; background: rgb(251 249 245 / .86); padding: 8px 14px; }
+  .at-gal__count b { font-weight: 500; }
+  .at-gal__count i { width: 22px; height: 1px; background: currentColor; opacity: .5; }
+  .at-buy__info { display: grid; gap: 20px; padding-top: 6px; min-width: 0; }
+  .at-buy__title { font-size: clamp(36px, 3.8vw, 64px); font-weight: 400; line-height: .98; }
+  .at-rating { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 14px; }
+  .at-stars { font-size: 15px; letter-spacing: 3px; line-height: 1; background: linear-gradient(90deg, var(--at-accent) var(--p, 0%), var(--at-rule) var(--p, 0%)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .at-rating__n { color: var(--at-sub); }
+  .at-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+  .at-price__now { font: 400 clamp(30px, 2.6vw, 40px)/1 var(--at-serif); }
+  .at-price__was { font-size: 16px; color: var(--at-sub); }
+  .at-save { padding: 5px 11px; border: 1px solid var(--at-accent); color: var(--at-accent); font: 600 11px/1 var(--at-sans); letter-spacing: .14em; }
+  .at-buy__note { margin-top: -10px; font-size: 12px; letter-spacing: .03em; color: var(--at-sub); }
+  .at-buy__lede { font-size: 16px; line-height: 1.8; color: var(--at-sub); max-width: 34em; }
+  .at-form { display: grid; gap: 18px; padding-top: 22px; border-top: 1px solid var(--at-rule); }
+  .at-opts { display: grid; gap: 22px; }
+  .at-opt { margin: 0; padding: 0; border: 0; min-width: 0; }
+  .at-opt legend, .at-opt__lbl { display: flex; gap: 10px; padding: 0; margin-bottom: 12px; font: 600 11px/1 var(--at-sans); letter-spacing: .18em; text-transform: uppercase; }
+  .at-opt legend span { color: var(--at-sub); font-weight: 500; }
+  .at-opt legend span::before { content: "\2014"; margin-inline-end: 10px; }
+  .at-opt__vals { display: flex; flex-wrap: wrap; gap: 10px; }
+  .at-opt__v { position: relative; display: inline-flex; cursor: pointer; }
+  .at-opt__v input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .at-opt__v span { display: grid; place-items: center; min-width: 52px; height: 48px; padding: 0 20px; border: 1px solid var(--at-rule); font-size: 13px; font-weight: 500; transition: border-color .3s ease, background .3s ease, color .3s ease; }
+  .at-opt__v:hover span { border-color: var(--at-ink); }
+  .at-opt__v input:checked + span { border-color: var(--at-ink); background: var(--at-ink); color: var(--at-bone); }
+  .at-opt__v input:focus-visible + span { outline: 2px solid var(--at-accent); outline-offset: 3px; }
+  .at-opt__v.is-na span { color: var(--at-soft); text-decoration: line-through; }
+  .at-opt__v--sw span { width: 40px; min-width: 40px; height: 40px; padding: 0; border-radius: 50%; font-size: 0; background: var(--sw) center / cover; box-shadow: inset 0 0 0 1px rgb(20 17 14 / .18); border: 2px solid var(--at-paper); outline: 1px solid transparent; }
+  .at-opt__v--sw:hover span { border-color: var(--at-paper); outline-color: var(--at-soft); }
+  .at-opt__v--sw input:checked + span { background: var(--sw) center / cover; border-color: var(--at-paper); outline: 1px solid var(--at-ink); color: transparent; }
+  .at-select { width: 100%; min-height: 52px; padding: 0 16px; border: 1px solid var(--at-rule); border-radius: 0; background: transparent; font: inherit; font-size: 15px; color: inherit; }
+  .at-stock { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; }
+  .at-stock i { width: 8px; height: 8px; border-radius: 50%; background: #5C7F62; }
+  .at-stock[data-state="low"] i { background: #C28A2C; }
+  .at-stock[data-state="out"] i { background: #A04A3C; }
+  .at-buy__row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; }
+  .at-qty { display: inline-flex; align-items: center; height: 58px; border: 1px solid var(--at-rule); }
+  .at-qty button { display: grid; place-items: center; width: 46px; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; transition: color .25s ease; }
+  .at-qty button:hover { color: var(--at-accent); }
+  .at-qty input { width: 40px; height: 100%; padding: 0; border: 0; background: none; text-align: center; font: 500 15px var(--at-sans); color: inherit; -moz-appearance: textfield; appearance: textfield; }
+  .at-qty input::-webkit-outer-spin-button, .at-qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .at-btn--atc { width: 100%; min-height: 58px; }
+  .at-btn.is-added::before { transform: scaleY(1); }
+  .at-btn.is-added { color: var(--at-ink); border-color: var(--at-accent); }
+  .at-checkout { display: grid; }
+  .at-checkout .shopify-payment-button__button { min-height: 58px; border-radius: 0; }
+  .at-checkout .shopify-payment-button__button--unbranded, .at-buynow { width: 100%; min-height: 58px; border-radius: 0; background: transparent; color: var(--at-ink); border: 1px solid var(--at-ink); font: 600 12px/1 var(--at-sans); letter-spacing: .18em; text-transform: uppercase; cursor: pointer; transition: background .35s ease, color .35s ease; }
+  .at-checkout .shopify-payment-button__button--unbranded:hover, .at-buynow:hover { background: var(--at-ink); color: var(--at-bone); }
+  .at-checkout .shopify-payment-button__more-options { color: var(--at-sub); font-size: 12px; }
+  .at-msg { min-height: 0; font-size: 13px; color: #A04A3C; }
+  .at-msg:empty { display: none; }
+  .at-note { display: flex; align-items: flex-start; gap: 16px; padding: 20px 0 0; border-top: 1px solid var(--at-rule); font-size: 14px; line-height: 1.6; }
+  .at-note svg { flex: none; margin-top: 2px; color: var(--at-accent); }
+  .at-trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; padding-bottom: 8px; }
+  .at-trust li { display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 1.4; color: var(--at-sub); }
+  .at-trust svg { flex: none; color: var(--at-accent); }
+  .at-accs { border-top: 1px solid var(--at-rule); margin-top: 6px; }
+  .at-acc { border-bottom: 1px solid var(--at-rule); }
+  .at-acc summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 64px; cursor: pointer; list-style: none; font: 600 12px/1.3 var(--at-sans); letter-spacing: .18em; text-transform: uppercase; }
+  .at-acc summary::-webkit-details-marker { display: none; }
+  .at-acc summary::after { content: ""; flex: none; width: 11px; height: 11px; background: linear-gradient(currentColor, currentColor) center / 100% 1px no-repeat, linear-gradient(currentColor, currentColor) center / 1px 100% no-repeat; transition: transform .5s var(--at-ease); }
+  .at-acc[open] > summary::after { transform: rotate(45deg); }
+  .at-acc__body { overflow: hidden; }
+  .at-acc__in { padding-bottom: 24px; font-size: 15px; line-height: 1.85; color: var(--at-sub); }
+  .at-acc__in :is(p, li, span, a, div) { font-size: inherit; }
+  .at-acc__in p { margin: 0 0 12px; }
+  .at-acc__in ul { padding-inline-start: 1.2em; list-style: disc; }
+  .at-pay { display: flex; flex-wrap: wrap; gap: 8px; }
+  .at-pay__icon { width: 40px; height: 26px; }
+  .at-dock { position: fixed; inset-inline: 0; bottom: 0; z-index: 60; background: rgb(251 249 245 / .94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid var(--at-line); padding-bottom: env(safe-area-inset-bottom); transform: translateY(105%); transition: transform .55s var(--at-ease); }
+  .at-dock.is-on { transform: none; }
+  .at-dock__in { display: flex; align-items: center; gap: 18px; width: min(1440px, calc(100% - var(--at-pad) * 2)); margin-inline: auto; padding-block: 12px; }
+  .at-dock__img { flex: none; width: 52px; height: 52px; object-fit: cover; background: var(--at-sand); }
+  .at-dock__info { display: grid; min-width: 0; flex: 1; }
+  .at-dock__info strong { font: 500 21px/1.2 var(--at-serif); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .at-dock__info > span { display: flex; gap: 10px; font-size: 13px; color: var(--at-sub); }
+  .at-dock__info em { font-style: normal; }
+  .at-dock__info em:not(:empty)::after { content: "\00B7"; margin-inline-start: 10px; }
+  .at-dock .at-btn { flex: none; min-height: 50px; padding-inline: 34px; }
+  .at-lb { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgb(14 12 10 / .97); color: var(--at-bone); overflow: hidden; }
+  .at-lb:not([open]) { display: none; }
+  .at-lb::backdrop { background: rgb(14 12 10 / .97); }
+  .at-lb__view { position: absolute; inset: 0; display: grid; place-items: center; padding: 64px 90px; overflow: hidden; touch-action: pan-y; cursor: zoom-in; }
+  .at-lb__view img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; transform-origin: var(--zx, 50%) var(--zy, 50%); transition: transform .5s var(--at-ease), opacity .4s ease; }
+  .at-lb.is-zoom .at-lb__view { cursor: zoom-out; padding: 0; }
+  .at-lb.is-zoom .at-lb__view img { transform: scale(2.2); max-width: none; max-height: 100vh; }
+  .at-lb__close, .at-lb__nav { position: absolute; z-index: 3; display: grid; place-items: center; width: 54px; height: 54px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--at-bone); cursor: pointer; transition: background .3s ease; }
+  .at-lb__close:hover, .at-lb__nav:hover { background: rgb(242 237 228 / .12); }
+  .at-lb__close { inset-block-start: 18px; inset-inline-end: 18px; }
+  .at-lb__nav { inset-block-start: 50%; margin-top: -27px; }
+  .at-lb__nav--prev { inset-inline-start: 18px; }
+  .at-lb__nav--next { inset-inline-end: 18px; }
+  .at-lb__count { position: absolute; z-index: 3; inset-block-end: 22px; inset-inline-start: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; font: 400 15px/1 var(--at-serif); letter-spacing: .12em; }
+  .at-lb__count i { width: 28px; height: 1px; background: currentColor; opacity: .5; }
+  html.at-lb-open { overflow: hidden; }
+  @media (max-width: 989px) {
+    .at-buy__grid { grid-template-columns: 1fr; gap: 36px; }
+    .at-gal { position: static; grid-template-columns: 1fr; gap: 12px; }
+    .at-gal__rail { order: 2; }
+    .at-gal__thumbs { position: static; flex-direction: row; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; padding: 2px; margin: -2px; }
+    .at-gal__thumb { flex: 0 0 72px; scroll-snap-align: start; }
+    .at-gal__stage { aspect-ratio: 4 / 5; }
+    .at-gal__arrow { display: none; }
+    .at-lb__view { padding: 70px 0; }
+    .at-lb__nav { display: none; }
+  }
+  @media (max-width: 749px) {
+    .at-trust { grid-template-columns: 1fr; gap: 10px; }
+    .at-dock__img { display: none; }
+    .at-dock__in { gap: 12px; padding-block: 10px; }
+    .at-dock__info strong { font-size: 18px; }
+    .at-dock .at-btn { padding-inline: 22px; min-height: 46px; }
+  }
+</style>
+<script>
+    (function () {
+      if (window.__atMotion) return;
+      window.__atMotion = true;
+      var doc = document;
+      var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var fine = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
+      var pars = [];
+      var queued = false;
+      // Masked items start fully clipped, and a clipped element never counts as intersecting,
+      // so those are watched through their parent.
+      var io = "IntersectionObserver" in window ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          (entry.target.__atFor || [entry.target]).forEach(function (el) { el.classList.add("is-in"); });
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.14, rootMargin: "0px 0px -5% 0px" }) : null;
+      function split(el) {
+        if (el.getAttribute("data-at-split") === "done") return;
+        var text = el.textContent.replace(/\s+/g, " ").trim();
+        el.setAttribute("aria-label", text);
+        el.textContent = "";
+        text.split(" ").forEach(function (word, i) {
+          var box = doc.createElement("span");
+          var inner = doc.createElement("span");
+          box.className = "at-w";
+          box.setAttribute("aria-hidden", "true");
+          inner.textContent = word;
+          inner.style.transitionDelay = (0.12 + i * 0.07) + "s";
+          box.appendChild(inner);
+          el.appendChild(box);
+          el.appendChild(doc.createTextNode(" "));
+        });
+        el.setAttribute("data-at-split", "done");
+      }
+      function magnet(el) {
+        if (el.__atm || reduce || !fine) return;
+        el.__atm = 1;
+        el.addEventListener("pointermove", function (event) {
+          var r = el.getBoundingClientRect();
+          el.style.transform = "translate(" + ((event.clientX - r.left - r.width / 2) * 0.18).toFixed(1) + "px," + ((event.clientY - r.top - r.height / 2) * 0.28).toFixed(1) + "px)";
+        });
+        el.addEventListener("pointerleave", function () { el.style.transform = ""; });
+      }
+      function frame() {
+        if (queued || reduce) return;
+        queued = true;
+        window.requestAnimationFrame(function () {
+          queued = false;
+          var vh = window.innerHeight || 800;
+          pars.forEach(function (el) {
+            var box = el.parentElement.getBoundingClientRect();
+            if (box.bottom < -120 || box.top > vh + 120) return;
+            var p = Math.max(-1, Math.min(1, ((box.top + box.height / 2) - vh / 2) / vh));
+            var speed = parseFloat(el.getAttribute("data-at-par")) || 0.08;
+            el.style.transform = "translate3d(0," + (-p * speed * box.height).toFixed(1) + "px,0)";
+          });
+        });
+      }
+      function scan() {
+        doc.querySelectorAll("[data-at-split]").forEach(split);
+        doc.querySelectorAll("[data-at-reveal]").forEach(function (el) {
+          if (el.__atr) return;
+          el.__atr = 1;
+          if (reduce || !io) { el.classList.add("is-in"); return; }
+          if (el.getAttribute("data-at-reveal") !== "mask") { io.observe(el); return; }
+          var host = el.parentElement;
+          if (!host.__atFor) { host.__atFor = []; io.observe(host); }
+          host.__atFor.push(el);
+        });
+        doc.querySelectorAll("[data-at-par]").forEach(function (el) {
+          if (el.__atp) return;
+          el.__atp = 1;
+          pars.push(el);
+        });
+        doc.querySelectorAll("[data-at-magnet]").forEach(magnet);
+        doc.querySelectorAll("a[data-at-jump]").forEach(function (a) {
+          if (a.__atj) return;
+          a.__atj = 1;
+          a.addEventListener("click", function (event) {
+            var target = doc.getElementById((a.getAttribute("href") || "").slice(1));
+            if (!target) return;
+            event.preventDefault();
+            target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+          });
+        });
+        frame();
+      }
+      window.addEventListener("scroll", frame, { passive: true });
+      window.addEventListener("resize", frame);
+      doc.addEventListener("shopify:section:load", scan);
+      if (doc.readyState === "loading") doc.addEventListener("DOMContentLoaded", scan); else scan();
+    })();
+  (function () {
+    var root = document.querySelector("[data-at-buy]");
+    if (!root || root.__atb) return;
+    root.__atb = 1;
+    var $ = function (s, c) { return (c || root).querySelector(s); };
+    var $$ = function (s, c) { return [].slice.call((c || root).querySelectorAll(s)); };
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var fine = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
+    var rtl = getComputedStyle(root).direction === "rtl";
+    var txt = root.dataset;
+    var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+
+    /* Cart API shared with the other Atelier sections (related quick add, closing CTA). */
+    window.AtelierCart = window.AtelierCart || (function () {
+      var base = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || "/";
+      var toastEl = null;
+      var timer = 0;
+      function showToast(item, strings) {
+        if (!toastEl) {
+          toastEl = document.createElement("div");
+          toastEl.className = "at at-toast";
+          toastEl.setAttribute("role", "status");
+          document.body.appendChild(toastEl);
+        }
+        toastEl.textContent = "";
+        var img = document.createElement("img");
+        img.alt = "";
+        if (item.image) img.src = item.image;
+        var box = document.createElement("div");
+        function line(cls, text) { if (!text) return; var p = document.createElement("p"); p.className = cls; p.textContent = text; box.appendChild(p); }
+        line("at-toast__t", strings.added);
+        line("at-toast__n", item.product_title || item.title);
+        if (item.variant_title !== "Default Title") line("at-toast__v", item.variant_title);
+        var actions = document.createElement("div");
+        actions.className = "at-toast__a";
+        [[base + "cart", strings.view], [base + "checkout", strings.checkout]].forEach(function (pair) {
+          if (!pair[1]) return;
+          var a = document.createElement("a");
+          a.href = pair[0];
+          a.textContent = pair[1];
+          actions.appendChild(a);
+        });
+        box.appendChild(actions);
+        if (item.image) toastEl.appendChild(img);
+        toastEl.style.gridTemplateColumns = item.image ? "" : "1fr";
+        toastEl.appendChild(box);
+        toastEl.classList.add("is-on");
+        clearTimeout(timer);
+        timer = setTimeout(function () { toastEl.classList.remove("is-on"); }, 6500);
+      }
+      function refreshBubble(cart) {
+        ["cart:updated", "cart:refresh", "cart:change"].forEach(function (name) {
+          document.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: { cart: cart } }));
+        });
+        document.querySelectorAll("[data-cart-count], .cart-count, .cart__count, #CartCount, .header__cart-count, .site-header__cart-count").forEach(function (el) { el.textContent = cart.item_count; });
+        // Dawn-family themes render the header bubble as a section; ask for its fresh markup.
+        fetch(base + "?sections=cart-icon-bubble").then(function (r) { return r.ok ? r.json() : null; }).then(function (json) {
+          var html = json && json["cart-icon-bubble"];
+          var host = document.getElementById("cart-icon-bubble");
+          if (!html || !host) return;
+          var tmp = document.createElement("div");
+          tmp.innerHTML = html;
+          var next = tmp.querySelector("#shopify-section-cart-icon-bubble");
+          host.innerHTML = next ? next.innerHTML : html;
+        }).catch(function () {});
+      }
+      /** Adds the form's product via the cart API. Returns a promise, or null when the browser cannot (caller submits natively). */
+      function add(form, buttons, strings) {
+        if (!window.fetch || !window.FormData || !form || form.tagName !== "FORM") return null;
+        var body = new FormData(form);
+        if (!body.get("id")) return null;
+        buttons = (buttons || []).filter(Boolean);
+        buttons.forEach(function (b) { b.classList.add("is-loading"); b.setAttribute("aria-busy", "true"); });
+        return fetch(base + "cart/add.js", { method: "POST", headers: { Accept: "application/json", "X-Requested-With": "XMLHttpRequest" }, body: body })
+          .then(function (res) {
+            return res.json().then(function (data) {
+              if (!res.ok) { var err = new Error(data.description || data.message || "Error"); err.user = true; throw err; }
+              return data;
+            });
+          })
+          .then(function (item) {
+            return fetch(base + "cart.js", { headers: { Accept: "application/json" } }).then(function (r) { return r.json(); }).then(function (cart) {
+              refreshBubble(cart);
+              showToast(item, strings);
+              return item;
+            });
+          })
+          .then(function (item) { buttons.forEach(function (b) { b.classList.remove("is-loading"); b.removeAttribute("aria-busy"); }); return item; },
+            function (err) { buttons.forEach(function (b) { b.classList.remove("is-loading"); b.removeAttribute("aria-busy"); }); throw err; });
+      }
+      return { add: add, toast: showToast };
+    })();
+    var strings = { added: txt.txtAdded, view: txt.txtView, checkout: txt.txtCheckout };
+
+    /* Gallery */
+    var slides = $$("[data-at-slide]");
+    var thumbs = $$("[data-at-thumb]");
+    var stage = $("[data-at-stage]");
+    var idx = $("[data-at-idx]");
+    var cur = 0;
+    function keepThumb() {
+      var t = thumbs[cur];
+      var list = t && t.closest("[data-at-thumbs]");
+      if (!list) return;
+      var a = t.getBoundingClientRect();
+      var b = list.getBoundingClientRect();
+      if (list.scrollWidth > list.clientWidth + 2) list.scrollBy({ left: (a.left + a.width / 2) - (b.left + b.width / 2), behavior: reduce ? "auto" : "smooth" });
+      else if (list.scrollHeight > list.clientHeight + 2) list.scrollBy({ top: (a.top + a.height / 2) - (b.top + b.height / 2), behavior: reduce ? "auto" : "smooth" });
+    }
+    function show(i) {
+      if (!slides.length) return;
+      cur = (i + slides.length) % slides.length;
+      slides.forEach(function (s, n) { s.classList.toggle("is-on", n === cur); });
+      thumbs.forEach(function (t, n) { t.classList.toggle("is-on", n === cur); t.setAttribute("aria-current", n === cur ? "true" : "false"); });
+      if (idx) idx.textContent = pad(cur + 1);
+      stage.classList.remove("is-zoom");
+      keepThumb();
+    }
+    thumbs.forEach(function (t, n) { t.addEventListener("click", function () { show(n); }); });
+    var prev = $("[data-at-prev]");
+    var next = $("[data-at-next]");
+    if (prev) prev.addEventListener("click", function (e) { e.stopPropagation(); show(cur - 1); });
+    if (next) next.addEventListener("click", function (e) { e.stopPropagation(); show(cur + 1); });
+
+    var downX = null;
+    var downY = 0;
+    var swiped = false;
+    function swipeDir(dx, dy) { return Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.2 ? ((dx < 0) !== rtl ? 1 : -1) : 0; }
+    if (stage) {
+      stage.addEventListener("pointerdown", function (e) { if (e.target.closest("button")) return; downX = e.clientX; downY = e.clientY; swiped = false; });
+      window.addEventListener("pointerup", function (e) {
+        if (downX === null) return;
+        var d = swipeDir(e.clientX - downX, e.clientY - downY);
+        downX = null;
+        if (d) { swiped = true; show(cur + d); }
+      });
+      window.addEventListener("pointercancel", function () { downX = null; });
+      if (fine && !reduce) {
+        stage.addEventListener("pointermove", function (e) {
+          if (e.pointerType !== "mouse" || downX !== null) return;
+          var r = stage.getBoundingClientRect();
+          var s = slides[cur];
+          if (!s) return;
+          s.style.setProperty("--zx", ((e.clientX - r.left) / r.width * 100).toFixed(1) + "%");
+          s.style.setProperty("--zy", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
+          var img = s.querySelector("img");
+          if (img) { img.style.setProperty("--zx", s.style.getPropertyValue("--zx")); img.style.setProperty("--zy", s.style.getPropertyValue("--zy")); }
+          stage.classList.add("is-zoom");
+        });
+        stage.addEventListener("pointerleave", function () { stage.classList.remove("is-zoom"); });
+      }
+    }
+
+    /* Full-screen gallery */
+    var lb = $("[data-at-lb]");
+    var lbImg = $("[data-at-lb-img]");
+    var lbIdx = $("[data-at-lb-idx]");
+    var lbView = $("[data-at-lb-view]");
+    var lbCur = 0;
+    var opener = null;
+    function lbShow(i) {
+      lbCur = (i + slides.length) % slides.length;
+      var s = slides[lbCur];
+      lb.classList.remove("is-zoom");
+      lbImg.src = s.getAttribute("data-zoom");
+      lbImg.alt = s.querySelector("img").alt;
+      if (lbIdx) lbIdx.textContent = pad(lbCur + 1);
+      [lbCur + 1, lbCur - 1].forEach(function (k) { var n = slides[(k + slides.length) % slides.length]; if (n) (new Image()).src = n.getAttribute("data-zoom"); });
+    }
+    function lbOpen(from) {
+      if (!lb || !lb.showModal || !slides.length) return;
+      opener = from || null;
+      lbShow(cur);
+      lb.showModal();
+      document.documentElement.classList.add("at-lb-open");
+    }
+    if (lb) {
+      var ld = null;
+      var ly = 0;
+      var lmoved = false;
+      $("[data-at-lb-close]").addEventListener("click", function () { lb.close(); });
+      $("[data-at-lb-prev]").addEventListener("click", function () { lbShow(lbCur - 1); });
+      $("[data-at-lb-next]").addEventListener("click", function () { lbShow(lbCur + 1); });
+      lb.addEventListener("close", function () {
+        document.documentElement.classList.remove("at-lb-open");
+        show(lbCur);
+        if (opener && opener.focus) opener.focus();
+      });
+      lb.addEventListener("click", function (e) { if (e.target === lb) lb.close(); });
+      lb.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight") lbShow(lbCur + (rtl ? -1 : 1));
+        else if (e.key === "ArrowLeft") lbShow(lbCur + (rtl ? 1 : -1));
+      });
+      lbView.addEventListener("pointerdown", function (e) { ld = e.clientX; ly = e.clientY; lmoved = false; });
+      lbView.addEventListener("pointermove", function (e) {
+        if (lb.classList.contains("is-zoom") && e.pointerType === "mouse") {
+          var r = lbView.getBoundingClientRect();
+          lbImg.style.setProperty("--zx", ((e.clientX - r.left) / r.width * 100).toFixed(1) + "%");
+          lbImg.style.setProperty("--zy", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
+        }
+      });
+      lbView.addEventListener("pointerup", function (e) {
+        if (ld === null) return;
+        var dx = e.clientX - ld;
+        var d = swipeDir(dx, e.clientY - ly);
+        ld = null;
+        if (d && !lb.classList.contains("is-zoom")) { lmoved = true; lbShow(lbCur + d); }
+        else if (Math.abs(dx) < 6) {
+          var r = lbView.getBoundingClientRect();
+          lbImg.style.setProperty("--zx", ((e.clientX - r.left) / r.width * 100).toFixed(1) + "%");
+          lbImg.style.setProperty("--zy", ((e.clientY - r.top) / r.height * 100).toFixed(1) + "%");
+          lb.classList.toggle("is-zoom");
+        }
+      });
+    }
+    var openBtn = $("[data-at-open]");
+    if (openBtn) openBtn.addEventListener("click", function (e) { e.stopPropagation(); lbOpen(openBtn); });
+    if (stage) stage.addEventListener("click", function (e) { if (swiped || e.target.closest("button")) { swiped = false; return; } lbOpen(openBtn); });
+
+    /* Variants */
+    var data = [];
+    try { data = JSON.parse($("[data-at-variants]").textContent); } catch (err) { data = []; }
+    var byId = {};
+    data.forEach(function (v) { byId[String(v.id)] = v; });
+    var idInput = $("[data-at-id]");
+    var groups = $$("[data-at-opt]");
+    var select = $("[data-at-select]");
+    var priceEl = $("[data-at-price]");
+    var compareEl = $("[data-at-compare]");
+    var saveEl = $("[data-at-save]");
+    var stockEl = $("[data-at-stock]");
+    var atc = $("[data-at-atc]");
+    var label = $("[data-at-label]");
+    var checkout = $("[data-at-checkout]");
+    var dock = $("[data-at-dock]");
+    var dockBtn = $("[data-at-dock-btn]");
+    var dockLabel = $("[data-at-dock-label]");
+    var dockPrice = $("[data-at-dock-price]");
+    var dockVar = $("[data-at-dock-var]");
+    var qty = $("[data-at-qty]");
+    var msg = $("[data-at-msg]");
+    var form = $(".at-form");
+    var state = { v: idInput ? byId[idInput.value] : null };
+
+    function setQty(n) {
+      var max = state.v && state.v.cap > 0 ? state.v.cap : 0;
+      n = Math.max(1, parseInt(n, 10) || 1);
+      if (max) n = Math.min(n, max);
+      qty.value = n;
+    }
+    $("[data-at-minus]").addEventListener("click", function () { setQty((parseInt(qty.value, 10) || 1) - 1); });
+    $("[data-at-plus]").addEventListener("click", function () { setQty((parseInt(qty.value, 10) || 1) + 1); });
+    qty.addEventListener("change", function () { setQty(qty.value); });
+
+    function paintAvailability(available, st, text) {
+      stockEl.setAttribute("data-state", st);
+      stockEl.querySelector("span").textContent = text;
+      var add = available ? txt.txtAdd : txt.txtSold;
+      atc.disabled = !available;
+      label.textContent = add;
+      if (checkout) checkout.hidden = !available;
+      if (dockBtn) { dockBtn.disabled = !available; dockLabel.textContent = add; }
+    }
+    function setVariant(v) {
+      state.v = v;
+      if (idInput && String(idInput.value) !== String(v.id)) {
+        idInput.value = v.id;
+        idInput.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      priceEl.textContent = v.price;
+      if (dockPrice) dockPrice.textContent = v.price;
+      var onSale = v.cmp > v.p;
+      compareEl.hidden = saveEl.hidden = !onSale;
+      if (onSale) { compareEl.textContent = v.cmpf; saveEl.textContent = "-" + Math.round((v.cmp - v.p) * 100 / v.cmp) + "%"; }
+      var low = v.managed && v.cap > 0 && v.cap <= 5;
+      paintAvailability(v.available, !v.available ? "out" : low ? "low" : "in", !v.available ? txt.txtSold : low ? txt.txtLow.replace("[n]", v.cap) : txt.txtIn);
+      if (dockVar) dockVar.textContent = v.title && v.title !== "Default Title" ? v.title : "";
+      setQty(qty.value);
+      if (v.media >= 0 && slides.length) show(v.media);
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.set("variant", v.id);
+        window.history.replaceState(null, "", url.toString());
+      } catch (err) { /* sandboxed preview frame */ }
+    }
+    function chosen() { return groups.map(function (g) { var c = g.querySelector("input:checked"); return c ? c.value : null; }); }
+    function markUnavailable() {
+      var vals = chosen();
+      groups.forEach(function (g, gi) {
+        $$("input", g).forEach(function (input) {
+          var ok = data.some(function (v) {
+            return v.available && v.options.every(function (o, i) { return i === gi ? o === input.value : (vals[i] === null || o === vals[i]); });
+          });
+          input.parentNode.classList.toggle("is-na", !ok);
+        });
+      });
+    }
+    groups.forEach(function (g) {
+      g.addEventListener("change", function () {
+        var vals = chosen();
+        groups.forEach(function (grp, i) { var out = $("[data-at-optval]", grp); if (out) out.textContent = vals[i] || ""; });
+        var v = data.filter(function (item) { return item.options.every(function (o, i) { return o === vals[i]; }); })[0];
+        if (v) { msg.textContent = ""; setVariant(v); }
+        else {
+          if (idInput) idInput.value = "";
+          paintAvailability(false, "out", txt.txtSold);
+        }
+        markUnavailable();
+      });
+    });
+    if (select) select.addEventListener("change", function () { var v = byId[select.value]; if (v) setVariant(v); });
+    if (groups.length) markUnavailable();
+    if (state.v && dockVar) dockVar.textContent = state.v.title && state.v.title !== "Default Title" ? state.v.title : "";
+
+    /* Add to bag */
+    var added = 0;
+    function flash() {
+      [atc, dockBtn].forEach(function (b) { if (b) b.classList.add("is-added"); });
+      label.textContent = txt.txtAdded;
+      if (dockLabel) dockLabel.textContent = txt.txtAdded;
+      clearTimeout(added);
+      added = setTimeout(function () {
+        [atc, dockBtn].forEach(function (b) { if (b) b.classList.remove("is-added"); });
+        label.textContent = txt.txtAdd;
+        if (dockLabel) dockLabel.textContent = txt.txtAdd;
+      }, 2400);
+    }
+    if (form && form.tagName === "FORM") {
+      form.addEventListener("submit", function (e) {
+        if (!idInput.value || atc.classList.contains("is-loading")) { e.preventDefault(); return; }
+        var request = window.AtelierCart.add(form, [atc, dockBtn], strings);
+        if (!request) return;
+        e.preventDefault();
+        msg.textContent = "";
+        request.then(flash).catch(function (err) {
+          if (err && err.user) msg.textContent = err.message;
+          else form.submit();
+        });
+      });
+    }
+
+    /* Accordions */
+    $$(".at-acc").forEach(function (d) {
+      var summary = d.querySelector("summary");
+      var body = d.querySelector(".at-acc__body");
+      var anim = null;
+      summary.addEventListener("click", function (e) {
+        if (reduce || !body.animate) return;
+        e.preventDefault();
+        if (anim) anim.cancel();
+        var ease = "cubic-bezier(.22,.8,.2,1)";
+        if (d.open) {
+          anim = body.animate({ height: [body.offsetHeight + "px", "0px"] }, { duration: 380, easing: ease, fill: "forwards" });
+          anim.onfinish = function () { d.open = false; anim.cancel(); anim = null; };
+        } else {
+          d.open = true;
+          anim = body.animate({ height: ["0px", body.offsetHeight + "px"] }, { duration: 480, easing: ease });
+          anim.onfinish = function () { anim = null; };
+        }
+      });
+    });
+
+    /* Sticky bar: once the buy buttons scroll out of view; when they are further down the page, only after the hero. */
+    if (dock && atc) {
+      var hero = document.querySelector("[data-at-hero]");
+      var queued = false;
+      var update = function () {
+        queued = false;
+        var vh = window.innerHeight || 800;
+        var r = atc.getBoundingClientRect();
+        var pastHero = !hero || hero.getBoundingClientRect().bottom < 0;
+        var on = r.bottom < 0 || (r.top > vh && pastHero);
+        dock.classList.toggle("is-on", on);
+        dock.setAttribute("aria-hidden", on ? "false" : "true");
+        if (dockBtn) dockBtn.tabIndex = on ? 0 : -1;
+      };
+      window.addEventListener("scroll", function () { if (!queued) { queued = true; window.requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener("resize", update);
+      update();
+    }
+  })();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--atelier" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, s, td, th, dt, dd, blockquote, div) { font-family: "Hanken Grotesk", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.85 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6, .at-h, .at-h *) { font-family: "Noto Naskh Arabic", "Tajawal", "Cormorant Garamond", serif !important; line-height: 1.4 !important; font-weight: 500 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

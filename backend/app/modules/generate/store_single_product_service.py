@@ -17,6 +17,7 @@ from .store.templates.single_store.signature import (
 )
 from .store.templates.packs.cinematic.signature import HomePageCinematicStore
 from .store.templates.packs.amour.signature import HomePageAmourStore
+from .store.templates.packs.maison.signature import HomePageMaisonStore
 from .store.pack_utils import (
     HOME_ONLY_STORE_TEMPLATE_PACKS,
     normalize_store_template_pack,
@@ -78,6 +79,7 @@ def generate_home_page_text(
     schema_cls = {
         "cinematic": HomePageCinematicStore,
         "amour": HomePageAmourStore,
+        "maison": HomePageMaisonStore,
     }.get(pack, HomePageSingleStore)
 
     llm = llm_4_1_nano
@@ -249,7 +251,7 @@ def generate_for_single_product_store(data, category_key, language, page_id=None
     include_premium_pdp = (
         True if not _premium_key_present else len(_requested_premium) > 0
     )
-    # Swift / Amour: homepage-only (no Sleek/Vibe PDP), prepaid and COD.
+    # Swift / Amour / Maison: homepage-only (no Sleek/Vibe PDP), prepaid and COD.
     if store_template_pack in HOME_ONLY_STORE_TEMPLATE_PACKS:
         include_premium_pdp = False
     # Explicit empty premiumProductIds → homepage-only (Swift), including COD.

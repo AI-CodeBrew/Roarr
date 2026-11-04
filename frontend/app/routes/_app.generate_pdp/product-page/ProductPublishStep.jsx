@@ -229,7 +229,7 @@ function PublishStep({
 
     try {
       const normalizedSelectedTemplate =
-        [1, 2, 3, 4, 5, 6].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : undefined;
+        [1, 2, 3, 4, 5, 6, 7, 8].includes(Number(selectedTemplate)) ? Number(selectedTemplate) : undefined;
 
       const res = await fetch("/api/publish-page", {
         method: "POST",

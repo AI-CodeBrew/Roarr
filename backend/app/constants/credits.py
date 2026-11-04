@@ -68,6 +68,10 @@ FEATURE_COSTS: Dict[str, int] = {
     "page_generation_noir": 150,
     # Frost (template 6) product page — all categories.
     "page_generation_frost": 150,
+    # Atelier (template 7) product page — all categories.
+    "page_generation_atelier": 150,
+    # Bloom (template 8) product page — all categories.
+    "page_generation_bloom": 150,
     "image_regenerate": 5,
     "brand_ads_campaign": 30,
 }
@@ -86,6 +90,9 @@ LINEN_SINGLE_STORE_CREDITS = 300
 
 # Amour: editorial homepage + simple product page. Same price on prepaid and COD.
 AMOUR_SINGLE_STORE_CREDITS = 300
+
+# Maison: quiet-luxury homepage + simple product page. Same price on prepaid and COD.
+MAISON_SINGLE_STORE_CREDITS = 300
 
 LEDGER_TYPE_GRANT_SIGNUP = "grant_signup"
 LEDGER_TYPE_GRANT_PACK = "grant_pack"
@@ -189,7 +196,7 @@ def get_feature_cost(feature: str) -> int:
 
 
 def get_page_generation_cost(category: Optional[str], template: Any) -> int:
-    """Aura (3), Lumenook (4), Noir (5) and Frost (6) cost less than other product pages."""
+    """Aura (3), Lumenook (4), Noir (5), Frost (6), Atelier (7) and Bloom (8) cost less than other product pages."""
     template_key = str(template or "").strip().lower().replace("template_", "")
     if template_key == "3":
         return get_feature_cost("page_generation_glow")
@@ -199,6 +206,10 @@ def get_page_generation_cost(category: Optional[str], template: Any) -> int:
         return get_feature_cost("page_generation_noir")
     if template_key == "6":
         return get_feature_cost("page_generation_frost")
+    if template_key == "7":
+        return get_feature_cost("page_generation_atelier")
+    if template_key == "8":
+        return get_feature_cost("page_generation_bloom")
     return get_feature_cost("page_generation")
 
 
@@ -214,6 +225,7 @@ def get_store_creation_cost(
     Single-product:
     - Linen (classic + Sleek): 300 on prepaid and COD
     - Amour (homepage only): 300 on prepaid and COD
+    - Maison (homepage only): 300 on prepaid and COD
     - other premium PDPs: ``single_product`` tier (500)
     - Classic prepaid / no premium PDP: ``single_product_basic`` tier (300 prepaid)
 
@@ -226,6 +238,9 @@ def get_store_creation_cost(
     # Amour: homepage-only single store, same price on prepaid and COD.
     if mode_key == "single_product" and pack_key == "amour":
         return AMOUR_SINGLE_STORE_CREDITS
+    # Maison: homepage-only single store, same price on prepaid and COD.
+    if mode_key == "single_product" and pack_key == "maison":
+        return MAISON_SINGLE_STORE_CREDITS
     try:
         template_number = int(selected_template) if selected_template is not None else None
     except (TypeError, ValueError):

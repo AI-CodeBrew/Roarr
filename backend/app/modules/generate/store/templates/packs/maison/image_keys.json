@@ -1,0 +1,13 @@
+{
+  "home_page": {
+    "maison_hero_image": "16:9",
+    "maison_inline_image": "1:1",
+    "maison_piece_image": "4:5",
+    "maison_gallery_1": "4:5",
+    "maison_gallery_2": "4:5",
+    "maison_gallery_3": "4:5",
+    "maison_craft_image": "1:1",
+    "maison_banner_image": "16:9"
+  },
+  "product_page": {}
+}

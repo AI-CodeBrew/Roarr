@@ -1,5 +1,5 @@
 {%- capture kl_rtl_html -%}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600;700&display=swap">
 {%- assign m = product.metafields.roarr -%}
 {%- assign collection_label = m.noir_collection.value | default: m.noir_collection | default: product.type -%}
 {%- assign subtitle = m.product_subtitle.value | default: m.product_subtitle -%}
@@ -20,10 +20,23 @@
 {%- assign img4 = m.product_image_4.value | default: m.product_image_4 -%}
 {%- assign img5 = m.product_image_5.value | default: m.product_image_5 -%}
 {%- assign variant = product.selected_or_first_available_variant -%}
-<section class="nr-hero" id="nr-hero">
-  <div class="nr-hero__grid">
+{%- if product.media.size > 0 -%}
+  {%- assign nr_total = product.media.size -%}
+  {%- if nr_total > 6 -%}{%- assign nr_total = 6 -%}{%- endif -%}
+{%- else -%}
+  {%- assign nr_total = 0 -%}
+  {%- if img1 != blank -%}{%- assign nr_total = nr_total | plus: 1 -%}{%- endif -%}
+  {%- if img2 != blank -%}{%- assign nr_total = nr_total | plus: 1 -%}{%- endif -%}
+  {%- if img3 != blank -%}{%- assign nr_total = nr_total | plus: 1 -%}{%- endif -%}
+  {%- if img4 != blank -%}{%- assign nr_total = nr_total | plus: 1 -%}{%- endif -%}
+  {%- if img5 != blank -%}{%- assign nr_total = nr_total | plus: 1 -%}{%- endif -%}
+{%- endif -%}
+{%- assign title_text = product.title -%}
+<section class="noir nr-hero" id="nr-hero">
+  <div class="nr-hero__glow" aria-hidden="true"></div>
+  <div class="nr-wrap nr-hero__grid">
     <div class="nr-hero__media">
-      <div class="nr-hero__main">
+      <div class="nr-hero__stage">
         {%- if product.media.size > 0 -%}
           {%- assign main = product.media.first.preview_image | default: product.media.first -%}
           <img data-nr-main src="{{ main | image_url: width: 1600 }}" alt="{{ product.title | escape }}">
@@ -32,42 +45,54 @@
         {%- endif -%}
         {%- if product.compare_at_price > product.price -%}
           {%- assign saving = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round -%}
-          <span class="nr-hero__tag">-{{ saving }}%</span>
+          <span class="nr-hero__tag">&minus;{{ saving }}%</span>
+        {%- endif -%}
+        {%- if nr_total > 1 -%}
+          <div class="nr-hero__count nr-serif" aria-hidden="true"><b data-nr-index>01</b><span>/ {% if nr_total < 10 %}0{% endif %}{{ nr_total }}</span></div>
+          <div class="nr-hero__nav">
+            <button type="button" data-nr-prev aria-label="Previous image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M10 6l-6 6 6 6"/></svg></button>
+            <button type="button" data-nr-next aria-label="Next image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M14 6l6 6-6 6"/></svg></button>
+          </div>
         {%- endif -%}
       </div>
       <div class="nr-hero__thumbs">
         {%- if product.media.size > 0 -%}
           {%- for media in product.media limit: 6 -%}
             {%- assign src = media.preview_image | default: media -%}
-            <button type="button" class="nr-hero__thumb{% if forloop.first %} is-on{% endif %}" data-src="{{ src | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} {{ forloop.index }}"><img src="{{ src | image_url: width: 200 }}" alt=""></button>
+            <button type="button" class="nr-hero__thumb{% if forloop.first %} is-on{% endif %}" data-src="{{ src | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} {{ forloop.index }}"><img src="{{ src | image_url: width: 240 }}" alt="" loading="lazy"></button>
           {%- endfor -%}
         {%- else -%}
-          {%- if img1 != blank -%}<button type="button" class="nr-hero__thumb is-on" data-src="{{ img1 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 1"><img src="{{ img1 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
-          {%- if img2 != blank -%}<button type="button" class="nr-hero__thumb" data-src="{{ img2 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 2"><img src="{{ img2 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
-          {%- if img3 != blank -%}<button type="button" class="nr-hero__thumb" data-src="{{ img3 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 3"><img src="{{ img3 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
-          {%- if img4 != blank -%}<button type="button" class="nr-hero__thumb" data-src="{{ img4 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 4"><img src="{{ img4 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
-          {%- if img5 != blank -%}<button type="button" class="nr-hero__thumb" data-src="{{ img5 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 5"><img src="{{ img5 | image_url: width: 200 }}" alt=""></button>{%- endif -%}
+          {%- if img1 != blank -%}<button type="button" class="nr-hero__thumb{% if true %} is-on{% endif %}" data-src="{{ img1 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 1"><img src="{{ img1 | image_url: width: 240 }}" alt="" loading="lazy"></button>{%- endif -%}
+          {%- if img2 != blank -%}<button type="button" class="nr-hero__thumb{% if false %} is-on{% endif %}" data-src="{{ img2 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 2"><img src="{{ img2 | image_url: width: 240 }}" alt="" loading="lazy"></button>{%- endif -%}
+          {%- if img3 != blank -%}<button type="button" class="nr-hero__thumb{% if false %} is-on{% endif %}" data-src="{{ img3 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 3"><img src="{{ img3 | image_url: width: 240 }}" alt="" loading="lazy"></button>{%- endif -%}
+          {%- if img4 != blank -%}<button type="button" class="nr-hero__thumb{% if false %} is-on{% endif %}" data-src="{{ img4 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 4"><img src="{{ img4 | image_url: width: 240 }}" alt="" loading="lazy"></button>{%- endif -%}
+          {%- if img5 != blank -%}<button type="button" class="nr-hero__thumb{% if false %} is-on{% endif %}" data-src="{{ img5 | image_url: width: 1600 }}" aria-label="{{ product.title | escape }} 5"><img src="{{ img5 | image_url: width: 240 }}" alt="" loading="lazy"></button>{%- endif -%}
         {%- endif -%}
       </div>
     </div>
 
     <div class="nr-hero__details">
       {%- if collection_label != blank -%}<p class="nr-eyebrow">{{ collection_label }}</p>{%- endif -%}
-      <h1 class="nr-hero__title">{{ product.title }}</h1>
+      <h1 class="nr-h nr-hero__title">{%- assign title_text_w = title_text | split: ' ' -%}{%- if title_text_w.size > 1 -%}{%- assign title_text_w_n = title_text_w.size | minus: 1 -%}{% for word in title_text_w limit: title_text_w_n %}{{ word }} {% endfor %}<em>{{ title_text_w | last }}</em>{%- else -%}{{ title_text }}{%- endif -%}</h1>
       {%- if subtitle != blank -%}<p class="nr-hero__subtitle">{{ subtitle }}</p>{%- endif -%}
-      <div class="nr-hero__price">
-        <strong>{{ product.price | money }}</strong>
-        {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+      <div class="nr-hero__pricebox">
+        <div class="nr-hero__price">
+          <strong class="nr-serif" data-nr-price>{{ product.price | money }}</strong>
+          <s data-nr-compare{% unless product.compare_at_price > product.price %} hidden{% endunless %}>{%- if product.compare_at_price > product.price -%}{{ product.compare_at_price | money }}{%- endif -%}</s>
+        </div>
+        {%- if price_note != blank -%}<p class="nr-hero__note">{{ price_note }}</p>{%- endif -%}
       </div>
-      {%- if price_note != blank -%}<p class="nr-hero__note">{{ price_note }}</p>{%- endif -%}
+      <div class="nr-rule" aria-hidden="true"><span></span></div>
       <div class="nr-hero__form">
         {%- if product.variants.size > 1 -%}
           <label class="nr-hero__label" for="nr-variant-{{ section.id }}">{{ product.options | join: ' / ' }}</label>
-          <select class="nr-hero__select" id="nr-variant-{{ section.id }}" name="id">
-            {%- for v in product.variants -%}
-              <option value="{{ v.id }}"{% if v.id == variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }} · {{ v.price | money }}</option>
-            {%- endfor -%}
-          </select>
+          <div class="nr-select">
+            <select class="nr-hero__select" id="nr-variant-{{ section.id }}" name="id">
+              {%- for v in product.variants -%}
+                <option value="{{ v.id }}" data-price="{{ v.price | money }}" data-compare="{% if v.compare_at_price > v.price %}{{ v.compare_at_price | money }}{% endif %}"{% if v.id == variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
         {%- else -%}
           <input type="hidden" name="id" value="{{ variant.id }}">
         {%- endif -%}
@@ -85,13 +110,13 @@
         <div class="nr-checkout"><button class="nr-buynow" type="button">Buy it now</button></div>
       </div>
       <div class="nr-hero__delivery">
-        <svg class="nr-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>
+        <span class="nr-pulse" aria-hidden="true"></span>
         <p>{{ delivery }}</p>
       </div>
       <ul class="nr-hero__perks" role="list">
-        <li><svg class="nr-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>{{ t1 }}</span></li>
-        <li><svg class="nr-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.5-3-5-3.5-5-1.5S10 8 12 8zM12 8c1.5-3 5-3.5 5-1.5S14 8 12 8z"/></svg><span>{{ t2 }}</span></li>
-        <li><svg class="nr-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg><span>{{ t3 }}</span></li>
+        <li><svg class="nr-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><span>{{ t1 }}</span></li>
+        <li><svg class="nr-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 12h18M12 8v13"/><path d="M12 8c-1.5-3-5-3.5-5-1.5S10 8 12 8zM12 8c1.5-3 5-3.5 5-1.5S14 8 12 8z"/></svg><span>{{ t2 }}</span></li>
+        <li><svg class="nr-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg><span>{{ t3 }}</span></li>
       </ul>
       <div class="nr-hero__accordions">
         {%- if product.description != blank or a1_body != blank -%}
@@ -107,91 +132,183 @@
   </div>
 </section>
 <style>
-  .nr-hero { --nr-ink: #0D0C0B; --nr-coal: #161412; --nr-line: #2E2A25; --nr-gold: #C9A96E; --nr-gold-soft: #E4D2AA; --nr-ivory: #F2ECE2; --nr-muted: #A79E90; --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; background: var(--nr-ink); color: var(--nr-ivory); font-family: "Manrope", sans-serif; padding: clamp(24px, 4vw, 64px) 0 clamp(40px, 5vw, 80px); }
-  .nr-hero *, .nr-hero *::before, .nr-hero *::after { box-sizing: border-box; }
-  .nr-hero__grid { width: min(1320px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
-  .nr-hero__media { display: grid; gap: 12px; position: sticky; top: 24px; }
-  .nr-hero__main { position: relative; aspect-ratio: 4 / 5; background: var(--nr-coal); overflow: hidden; }
-  .nr-hero__main img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .nr-hero__tag { position: absolute; top: 16px; inset-inline-start: 16px; padding: 6px 12px; background: var(--nr-gold); color: var(--nr-ink); font-size: 12px; font-weight: 600; letter-spacing: .08em; }
-  .nr-hero__thumbs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
-  .nr-hero__thumb { padding: 0; border: 1px solid var(--nr-line); background: var(--nr-coal); cursor: pointer; line-height: 0; opacity: .6; transition: opacity 250ms ease, border-color 250ms ease; }
-  .nr-hero__thumb.is-on, .nr-hero__thumb:hover { opacity: 1; border-color: var(--nr-gold); }
-  .nr-hero__thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-  .nr-hero__details { display: grid; gap: 18px; padding-top: 8px; }
-  .nr-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--nr-gold); }
-  .nr-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
-  .nr-hero__title { margin: 0; font-family: "Bodoni Moda", serif; font-weight: 500; font-size: clamp(38px, 4.2vw, 60px); line-height: 1.04; letter-spacing: -0.01em; color: var(--nr-ivory); }
-  .nr-hero__subtitle { margin: 0; font-size: 16px; line-height: 1.7; color: var(--nr-muted); max-width: 520px; }
-  .nr-hero__price { display: flex; gap: 14px; align-items: baseline; padding-top: 6px; }
-  .nr-hero__price strong { font-family: "Bodoni Moda", serif; font-size: 30px; font-weight: 500; color: var(--nr-gold-soft); }
-  .nr-hero__price s { color: var(--nr-muted); font-size: 16px; }
-  .nr-hero__note { margin: -10px 0 0; padding-bottom: 20px; border-bottom: 1px solid var(--nr-line); font-size: 12px; color: var(--nr-muted); }
+  .noir { --nr-ink: #0B0A09; --nr-coal: #121110; --nr-char: #1A1714; --nr-line: rgb(201 169 110 / .18); --nr-line-2: rgb(242 236 226 / .09); --nr-gold: #C9A96E; --nr-gold-hi: #E9D5A6; --nr-gold-lo: #8A6B3C; --nr-gild: linear-gradient(120deg, #F1DEB0 0%, #C9A96E 40%, #A8864F 68%, #E4CB92 100%); --nr-ivory: #F3EDE3; --nr-paper: #EFE8DC; --nr-muted: #A0978A; --nr-serif: "Bodoni Moda", "Didot", serif; --nr-sans: "Manrope", system-ui, sans-serif; --nr-ease: cubic-bezier(.22, .8, .24, 1); --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; position: relative; font-family: var(--nr-sans); -webkit-font-smoothing: antialiased; interpolate-size: allow-keywords; }
+  :where(.noir) { background: var(--nr-ink); color: var(--nr-ivory); }
+  .noir *, .noir *::before, .noir *::after { box-sizing: border-box; }
+  :where(.noir) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .noir, .noir :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption) { font-family: var(--nr-sans) !important; }
+  .noir :is(h1, h2, h3, h4, .nr-h *, .nr-serif, .nr-serif *) { font-family: var(--nr-serif) !important; }
+  :where(.noir) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.noir) :is(ul, ol) { list-style: none; }
+  :where(.noir) img { display: block; max-width: 100%; }
+  :where(.noir) .nr-wrap { width: min(1320px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.noir) .nr-eyebrow { display: flex; align-items: center; gap: 14px; font-size: 11px; font-weight: 600; line-height: 1.4; letter-spacing: .3em; text-transform: uppercase; color: var(--nr-gold); }
+  :where(.noir) .nr-eyebrow::before { content: ""; flex: none; width: 34px; height: 1px; background: linear-gradient(90deg, transparent, currentColor); }
+  :where(.noir) .nr-eyebrow--center { justify-content: center; }
+  :where(.noir) .nr-eyebrow--center::after { content: ""; flex: none; width: 34px; height: 1px; background: linear-gradient(90deg, currentColor, transparent); }
+  :where(.noir) .nr-h { font-weight: 400; line-height: 1.02; letter-spacing: -.015em; text-wrap: balance; }
+  :where(.noir) .nr-h em { font-style: italic; color: var(--nr-gold-hi); }
+  :where(.noir) .nr-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 56px; padding: 0 34px; border: 0; border-radius: 0; background: var(--nr-gild); background-size: 220% 100%; color: var(--nr-ink); font-size: 12px; font-weight: 700; line-height: 1; letter-spacing: .22em; text-transform: uppercase; text-decoration: none; cursor: pointer; box-shadow: 0 12px 32px -14px rgb(201 169 110 / .6); transition: background-position .7s var(--nr-ease), box-shadow .4s ease; }
+  :where(.noir) .nr-btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / .45) 50%, transparent 65%); transform: translateX(-120%); transition: transform 1s var(--nr-ease); pointer-events: none; }
+  :where(.noir) .nr-btn:hover { background-position: 100% 0; box-shadow: 0 16px 40px -14px rgb(201 169 110 / .8); }
+  :where(.noir) .nr-btn:hover::after { transform: translateX(120%); }
+  :where(.noir) .nr-btn[disabled] { opacity: .45; cursor: not-allowed; box-shadow: none; }
+  :where(.noir) .nr-btn svg { flex: none; width: 16px; height: 16px; transition: transform .4s var(--nr-ease); }
+  :where(.noir) .nr-btn:hover svg { transform: translateX(4px); }
+  :where(.noir) .nr-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .noir.nr-grain::before { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: .08; mix-blend-mode: overlay; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  @keyframes nr-rise { from { opacity: 0; transform: translate3d(0, 34px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .noir [data-nr-reveal] { animation: nr-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 75%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.noir) .nr-wrap { width: calc(100% - 32px); } }
+
+  .nr-hero { background: var(--nr-ink); color: var(--nr-ivory); padding: clamp(20px, 3vw, 48px) 0 clamp(64px, 7vw, 112px); overflow: clip; }
+  .nr-hero__glow { position: absolute; top: -18%; inset-inline-start: -12%; width: 72%; aspect-ratio: 1; background: radial-gradient(closest-side, rgb(201 169 110 / .13), transparent 72%); pointer-events: none; }
+  .nr-hero__grid { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: clamp(36px, 5.5vw, 96px); align-items: start; }
+  .nr-hero__media { position: sticky; top: 24px; display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .nr-hero__stage { grid-column: 2; grid-row: 1; position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: radial-gradient(120% 90% at 50% 30%, #241e17, var(--nr-coal) 70%); }
+  .nr-hero__stage img { width: 100%; height: 100%; object-fit: cover; transition: opacity .45s ease, transform 1.2s var(--nr-ease); }
+  .nr-hero__stage img.is-swap { opacity: 0; transform: scale(1.035); }
+  .nr-hero__stage::after { content: ""; position: absolute; inset: 14px; border: 1px solid rgb(233 213 166 / .22); pointer-events: none; }
+  .nr-hero__tag { position: absolute; top: 30px; inset-inline-start: 30px; z-index: 2; padding: 8px 12px; background: rgb(11 10 9 / .7); backdrop-filter: blur(8px); border: 1px solid var(--nr-gold); color: var(--nr-gold-hi); font-size: 11px; font-weight: 700; letter-spacing: .16em; }
+  .nr-hero__count { position: absolute; bottom: 30px; inset-inline-start: 32px; z-index: 2; display: flex; align-items: baseline; gap: 8px; font-size: 14px; color: rgb(242 236 226 / .6); }
+  .nr-hero__count b { font-size: 30px; font-weight: 400; color: var(--nr-ivory); }
+  .nr-hero__nav { position: absolute; bottom: 26px; inset-inline-end: 26px; z-index: 2; display: flex; gap: 8px; }
+  .nr-hero__nav button { width: 46px; height: 46px; display: grid; place-items: center; padding: 0; border: 1px solid rgb(242 236 226 / .28); background: rgb(11 10 9 / .5); backdrop-filter: blur(8px); color: var(--nr-ivory); cursor: pointer; transition: background .3s ease, border-color .3s ease, color .3s ease; }
+  .nr-hero__nav button:hover { background: var(--nr-gold); border-color: var(--nr-gold); color: var(--nr-ink); }
+  .nr-hero__thumbs { grid-column: 1; grid-row: 1; display: grid; gap: 12px; }
+  .nr-hero__thumb { position: relative; padding: 0; border: 0; background: var(--nr-coal); cursor: pointer; line-height: 0; opacity: .45; transition: opacity .3s ease; }
+  .nr-hero__thumb::after { content: ""; position: absolute; inset: 0; border: 1px solid transparent; transition: border-color .3s ease; }
+  .nr-hero__thumb:hover, .nr-hero__thumb.is-on { opacity: 1; }
+  .nr-hero__thumb.is-on::after { border-color: var(--nr-gold); }
+  .nr-hero__thumb img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+  .nr-hero__details { display: grid; gap: 22px; padding-top: 10px; }
+  .nr-hero__title { font-size: clamp(42px, 4.6vw, 72px); color: var(--nr-ivory); }
+  .nr-hero__subtitle { font-size: 16px; line-height: 1.75; color: var(--nr-muted); max-width: 520px; }
+  .nr-hero__pricebox { display: grid; gap: 6px; }
+  .nr-hero__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px; }
+  .nr-hero__price strong { font-size: clamp(30px, 2.6vw, 38px); font-weight: 400; line-height: 1.1; background: var(--nr-gild); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .nr-hero__price s { font-size: 16px; color: var(--nr-muted); }
+  .nr-hero__note { font-size: 12px; line-height: 1.5; color: var(--nr-muted); }
+  .nr-rule { position: relative; height: 1px; background: linear-gradient(90deg, transparent, var(--nr-line) 12%, var(--nr-line) 88%, transparent); }
+  .nr-rule span { position: absolute; top: 50%; left: 50%; width: 7px; height: 7px; background: var(--nr-gold); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 0 6px var(--nr-ink); }
   .nr-hero__form { display: grid; gap: 12px; }
-  .nr-hero__label { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--nr-muted); }
-  .nr-hero__select { width: 100%; min-height: 50px; padding: 0 14px; border: 1px solid var(--nr-line); border-radius: 0; background: var(--nr-coal); font: inherit; font-size: 14px; color: var(--nr-ivory); }
+  .nr-hero__label { font-size: 11px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--nr-muted); }
+  .nr-select { position: relative; }
+  .nr-select::after { content: ""; position: absolute; top: 50%; inset-inline-end: 20px; width: 7px; height: 7px; border-right: 1px solid var(--nr-gold); border-bottom: 1px solid var(--nr-gold); transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+  .nr-hero__select { appearance: none; -webkit-appearance: none; width: 100%; min-height: 54px; padding: 0 48px 0 16px; border: 1px solid var(--nr-line); border-radius: 0; background: var(--nr-coal); color: var(--nr-ivory); font-size: 14px; cursor: pointer; transition: border-color .3s ease; }
+  .nr-hero__select:hover, .nr-hero__select:focus { border-color: var(--nr-gold); outline: none; }
   .nr-hero__buy { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; }
   .nr-hero__qty { display: inline-flex; align-items: center; border: 1px solid var(--nr-line); background: var(--nr-coal); }
-  .nr-hero__qty button, .nr-hero__qty b { width: 44px; height: 52px; display: grid; place-items: center; font-weight: 500; }
-  .nr-hero__qty button { border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 18px; color: inherit; }
-  .nr-hero .nr-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 28px; border: 0; border-radius: 0; background: var(--nr-gold); color: var(--nr-ink); font: 600 12px "Manrope", sans-serif; letter-spacing: .2em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background 250ms ease; }
-  .nr-hero .nr-btn:hover { background: var(--nr-gold-soft); }
-  .nr-hero .nr-btn[disabled] { opacity: .5; cursor: not-allowed; }
-  .nr-checkout .shopify-payment-button__button { min-height: 54px; border-radius: 0; font-family: "Manrope", sans-serif; }
-  .nr-checkout .shopify-payment-button__button--unbranded, .nr-buynow { width: 100%; min-height: 54px; border-radius: 0; cursor: pointer; background: transparent; color: var(--nr-ivory); border: 1px solid var(--nr-ivory); font: 600 12px "Manrope", sans-serif; letter-spacing: .2em; text-transform: uppercase; transition: background 250ms ease, color 250ms ease; }
-  .nr-checkout .shopify-payment-button__button--unbranded:hover, .nr-buynow:hover { background: var(--nr-ivory); color: var(--nr-ink); }
+  .nr-hero__qty button, .nr-hero__qty b { width: 46px; height: 54px; display: grid; place-items: center; font-weight: 500; }
+  .nr-hero__qty b { font-size: 15px; }
+  .nr-hero__qty button { padding: 0; border: 0; background: transparent; cursor: pointer; font-size: 18px; color: var(--nr-muted); transition: color .3s ease; }
+  .nr-hero__qty button:hover { color: var(--nr-gold-hi); }
+  .nr-hero .nr-btn { width: 100%; }
+  .nr-checkout .shopify-payment-button__button { min-height: 54px; border-radius: 0; }
+  .nr-checkout .shopify-payment-button__button--unbranded, .nr-buynow { width: 100%; min-height: 54px; border-radius: 0; cursor: pointer; background: transparent; color: var(--nr-ivory); border: 1px solid rgb(242 236 226 / .38); font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; transition: background .35s ease, color .35s ease, border-color .35s ease; }
+  .nr-checkout .shopify-payment-button__button--unbranded:hover, .nr-buynow:hover { background: var(--nr-ivory); border-color: var(--nr-ivory); color: var(--nr-ink); }
   .nr-checkout .shopify-payment-button__more-options { color: var(--nr-muted); font-size: 12px; }
-  .nr-hero__delivery { display: flex; gap: 12px; align-items: center; padding: 14px 16px; border: 1px solid var(--nr-line); background: var(--nr-coal); font-size: 14px; line-height: 1.5; }
-  .nr-hero__delivery p { margin: 0; font-size: 14px; }
+  .nr-hero__delivery { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border: 1px solid var(--nr-line); background: linear-gradient(90deg, rgb(201 169 110 / .09), transparent 75%); font-size: 14px; line-height: 1.5; }
+  .nr-pulse { position: relative; flex: none; width: 8px; height: 8px; margin-inline: 4px; border-radius: 50%; background: #93C08F; color: #93C08F; }
+  .nr-pulse::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid currentColor; animation: nr-pulse 2.2s ease-out infinite; }
+  @keyframes nr-pulse { from { transform: scale(.5); opacity: 1; } to { transform: scale(1.9); opacity: 0; } }
   .nr-icon { flex: none; color: var(--nr-gold); }
-  .nr-hero__perks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; list-style: none; margin: 0; padding: 0; font-size: 12px; color: var(--nr-muted); }
-  .nr-hero__perks li { display: flex; align-items: center; gap: 8px; }
-  .nr-hero__perks li, .nr-hero__perks span { font-size: 12px; }
-  .nr-hero__accordions { border-top: 1px solid var(--nr-line); }
+  .nr-hero__perks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--nr-line); }
+  .nr-hero__perks li { display: grid; justify-items: center; align-content: start; gap: 10px; padding: 18px 10px; text-align: center; font-size: 11px; line-height: 1.45; letter-spacing: .12em; text-transform: uppercase; color: var(--nr-muted); }
+  .nr-hero__perks li + li { border-inline-start: 1px solid var(--nr-line); }
   .nr-acc { border-bottom: 1px solid var(--nr-line); }
-  .nr-acc summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 56px; font-size: 12px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+  .nr-acc summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 60px; font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; transition: color .3s ease; }
+  .nr-acc summary:hover { color: var(--nr-gold-hi); }
   .nr-acc summary::-webkit-details-marker { display: none; }
-  .nr-acc summary::after { content: "+"; font-size: 20px; font-weight: 400; color: var(--nr-gold); transition: transform 250ms ease; }
-  .nr-acc[open] > summary::after { transform: rotate(45deg); }
-  .nr-acc__body { padding-bottom: 22px; font-size: 15px; line-height: 1.7; color: var(--nr-muted); }
+  .nr-acc summary::after { content: ""; flex: none; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--nr-line); background: linear-gradient(var(--nr-gold), var(--nr-gold)) center / 9px 1px no-repeat, linear-gradient(var(--nr-gold), var(--nr-gold)) center / 1px 9px no-repeat; transition: transform .45s var(--nr-ease), border-color .3s ease; }
+  .nr-acc[open] > summary::after { transform: rotate(135deg); border-color: var(--nr-gold); }
+  .nr-acc::details-content { block-size: 0; overflow: hidden; transition: block-size .5s var(--nr-ease), content-visibility .5s allow-discrete; }
+  .nr-acc[open]::details-content { block-size: auto; }
+  .nr-acc__body { padding-bottom: 24px; font-size: 15px; line-height: 1.75; color: var(--nr-muted); }
   .nr-acc__body :is(p, li, span, a) { font-size: inherit; }
   .nr-acc__body p { margin: 0 0 10px; }
-  .nr-acc__body ul { margin: 0 0 10px; padding-inline-start: 18px; }
+  .nr-acc__body ul { margin: 0 0 10px; padding-inline-start: 18px; list-style: disc; }
   @media (max-width: 989px) {
-    .nr-hero__grid { grid-template-columns: 1fr; width: calc(100% - 32px); gap: 28px; }
-    .nr-hero__media { position: static; }
-    .nr-hero__thumbs { display: flex; overflow-x: auto; }
+    .nr-hero__grid { grid-template-columns: 1fr; gap: 32px; }
+    .nr-hero__media { position: static; grid-template-columns: 1fr; }
+    .nr-hero__stage { grid-column: 1; }
+    .nr-hero__thumbs { grid-column: 1; grid-row: 2; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+    .nr-hero__thumbs::-webkit-scrollbar { display: none; }
     .nr-hero__thumb { flex: 0 0 64px; }
   }
   @media (max-width: 599px) {
-    .nr-hero__perks { grid-template-columns: 1fr; }
+    .nr-hero__stage::after { inset: 10px; }
+    .nr-hero__tag { top: 22px; inset-inline-start: 22px; }
+    .nr-hero__count { bottom: 22px; inset-inline-start: 24px; }
+    .nr-hero__nav { bottom: 18px; inset-inline-end: 18px; }
+    .nr-hero__nav button { width: 40px; height: 40px; }
+    .nr-hero__perks li { padding: 16px 6px; font-size: 10px; letter-spacing: .08em; }
   }
 </style>
 <script>
   (function () {
-    var root = document.getElementById("nr-hero");
-    if (!root) return;
-    var main = root.querySelector("[data-nr-main]");
-    root.querySelectorAll(".nr-hero__thumb").forEach(function (button) {
-      button.addEventListener("click", function (event) {
-        event.stopPropagation();
-        if (main && button.dataset.src) main.src = button.dataset.src;
-        root.querySelectorAll(".nr-hero__thumb").forEach(function (item) { item.classList.remove("is-on"); });
-        button.classList.add("is-on");
-      });
-    });
-    root.querySelectorAll(".nr-hero__qty").forEach(function (qty) {
-      var label = qty.querySelector("[data-qty]");
-      var input = qty.querySelector("[data-qty-input]");
-      function setQty(next) {
-        var value = Math.max(1, next);
-        if (label) label.textContent = String(value);
-        if (input) input.value = String(value);
+    document.querySelectorAll(".nr-hero").forEach(function (root) {
+      if (root.getAttribute("data-nr-ready")) return;
+      root.setAttribute("data-nr-ready", "1");
+      var main = root.querySelector("[data-nr-main]");
+      var thumbs = Array.prototype.slice.call(root.querySelectorAll(".nr-hero__thumb"));
+      var indexEl = root.querySelector("[data-nr-index]");
+      var current = 0;
+      var timer = null;
+      function show(i) {
+        if (!thumbs.length) return;
+        current = (i + thumbs.length) % thumbs.length;
+        var btn = thumbs[current];
+        thumbs.forEach(function (t) { t.classList.toggle("is-on", t === btn); });
+        if (indexEl) indexEl.textContent = (current < 9 ? "0" : "") + (current + 1);
+        if (!main || !btn.dataset.src || main.getAttribute("src") === btn.dataset.src) return;
+        main.classList.add("is-swap");
+        clearTimeout(timer);
+        timer = setTimeout(function () { main.src = btn.dataset.src; main.classList.remove("is-swap"); }, 220);
       }
-      var minus = qty.querySelector("[data-qty-minus]");
-      var plus = qty.querySelector("[data-qty-plus]");
-      if (minus) minus.addEventListener("click", function (event) { event.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) - 1); });
-      if (plus) plus.addEventListener("click", function (event) { event.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) + 1); });
+      thumbs.forEach(function (b, i) { b.addEventListener("click", function (e) { e.stopPropagation(); show(i); }); });
+      var prev = root.querySelector("[data-nr-prev]");
+      var next = root.querySelector("[data-nr-next]");
+      if (prev) prev.addEventListener("click", function (e) { e.stopPropagation(); show(current - 1); });
+      if (next) next.addEventListener("click", function (e) { e.stopPropagation(); show(current + 1); });
+      var stage = root.querySelector(".nr-hero__stage");
+      var x0 = null;
+      if (stage) {
+        stage.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+        stage.addEventListener("touchend", function (e) {
+          if (x0 === null) return;
+          var dx = e.changedTouches[0].clientX - x0;
+          x0 = null;
+          if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+        });
+      }
+      var select = root.querySelector(".nr-hero__select");
+      var price = root.querySelector("[data-nr-price]");
+      var compare = root.querySelector("[data-nr-compare]");
+      if (select && price) {
+        select.addEventListener("change", function () {
+          var o = select.options[select.selectedIndex];
+          if (o && o.dataset.price) price.textContent = o.dataset.price;
+          if (compare) { compare.textContent = (o && o.dataset.compare) || ""; compare.hidden = !(o && o.dataset.compare); }
+        });
+      }
+      root.querySelectorAll(".nr-hero__qty").forEach(function (qty) {
+        var label = qty.querySelector("[data-qty]");
+        var input = qty.querySelector("[data-qty-input]");
+        function setQty(n) {
+          var value = Math.max(1, n);
+          if (label) label.textContent = String(value);
+          if (input) input.value = String(value);
+        }
+        var minus = qty.querySelector("[data-qty-minus]");
+        var plus = qty.querySelector("[data-qty-plus]");
+        if (minus) minus.addEventListener("click", function (e) { e.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) - 1); });
+        if (plus) plus.addEventListener("click", function (e) { e.stopPropagation(); setQty((parseInt(label && label.textContent, 10) || 1) + 1); });
+      });
     });
   })();
 </script>
@@ -206,6 +323,8 @@
   .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
   .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
   .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .nr-serif, .kl-rtl:is(#kl-rtl, *) .nr-serif * { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; }
+  .kl-rtl:is(#kl-rtl, *) .nr-btn svg, .kl-rtl:is(#kl-rtl, *) .nr-hero__nav svg { transform: scaleX(-1); }
 </style>
 {%- else -%}
 {{ kl_rtl_html }}

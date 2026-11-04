@@ -100,6 +100,7 @@ import {
   getStoreComboCardMedia,
   MULTI_THEME_COMBOS,
   PREPAID_CLASSIC_THEME_COMBO,
+  SINGLE_THEME_COMBOS,
 } from "./storeThemeCombos.js";
 
 const StoreGenerationStep = lazy(() => import("./StoreGenerationStep.jsx"));
@@ -814,12 +815,15 @@ export default function StoreFlowStructure({
     }
   }, [selectedProductForPreview, multiProductsForStore]);
 
-  // Auto-select once products are chosen: Swift for single; for multi keep the picked
-  // template (Swift or Lumenook), defaulting to Swift.
+  // Auto-select once products are chosen: keep the picked template (single: Swift or
+  // Maison; multi: Swift or Lumenook), defaulting to Swift.
   useEffect(() => {
     if (!hasStoreProductsSelected) return;
     if (storeType === "single") {
-      selectSingleThemeCombo(PREPAID_CLASSIC_THEME_COMBO);
+      selectSingleThemeCombo(
+        SINGLE_THEME_COMBOS.find((combo) => (combo.pack || "classic") === storeTemplatePack) ||
+          PREPAID_CLASSIC_THEME_COMBO,
+      );
     } else if (storeType === "multi") {
       selectMultiThemeCombo(
         MULTI_THEME_COMBOS.find((combo) => (combo.pack || "classic") === storeTemplatePack) ||
@@ -1441,8 +1445,8 @@ export default function StoreFlowStructure({
             previewCategory,
             pageType === "home-page" && storeType === "single"
               ? includePremium === false
-                ? String(pack).toLowerCase() === "amour"
-                  ? "amour"
+                ? String(pack).toLowerCase() === "amour" || String(pack).toLowerCase() === "maison"
+                  ? String(pack).toLowerCase()
                   : "classic-prepaid"
                 : pack
               : "classic",
@@ -1862,13 +1866,18 @@ export default function StoreFlowStructure({
     )
       .trim()
       .toLowerCase();
-    if (hydratedPack === "classic" || hydratedPack === "cinematic" || hydratedPack === "amour") {
+    if (
+      hydratedPack === "classic" ||
+      hydratedPack === "cinematic" ||
+      hydratedPack === "amour" ||
+      hydratedPack === "maison"
+    ) {
       setStoreTemplatePack(hydratedPack);
     }
-    // Amour is homepage-only: keep the card selected and premium PDP off on reload.
-    if (hydratedPack === "amour") {
+    // Amour and Maison are homepage-only: keep the card selected and premium PDP off on reload.
+    if (hydratedPack === "amour" || hydratedPack === "maison") {
       setSelectedProductTemplate(null);
-      themeSelectionRef.current = { pack: "amour", includePremium: false, template: null };
+      themeSelectionRef.current = { pack: hydratedPack, includePremium: false, template: null };
     }
     const premiumIds =
       genData?.premiumProductIds ||
@@ -3671,19 +3680,19 @@ export default function StoreFlowStructure({
                   <Panel
                     icon={LayoutTemplate}
                     title="Store template"
-                    description="Swift — single-product storefront with on-page checkout."
+                    description="Pick a look for your single-product storefront. Preview it before you begin."
                   >
                         <div
                           style={{
                             display: "grid",
                             gridTemplateColumns: isMobileLayout
                               ? "minmax(0, 1fr)"
-                              : "minmax(0, 360px)",
+                              : `repeat(${SINGLE_THEME_COMBOS.length}, minmax(0, 360px))`,
                             gap: "12px",
                             alignItems: "stretch",
                           }}
                         >
-                          {[PREPAID_CLASSIC_THEME_COMBO].map((combo) => {
+                          {SINGLE_THEME_COMBOS.map((combo) => {
                             const includePremium = combo.includePremium !== false;
                             const isSelected = includePremium
                               ? storeTemplatePack === combo.pack &&

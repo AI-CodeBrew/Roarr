@@ -211,7 +211,9 @@ export default function PagesTable({
       page?.store_template_pack ||
       "classic";
     const pack = String(raw || "classic").trim().toLowerCase();
-    return pack === "cinematic" || pack === "amour" || pack === "lumenook" ? pack : "classic";
+    return pack === "cinematic" || pack === "amour" || pack === "maison" || pack === "lumenook"
+      ? pack
+      : "classic";
   };
 
   const getStoreProductTemplateLabel = (page) => {
@@ -282,7 +284,7 @@ export default function PagesTable({
     if (isMulti) {
       return pack === "lumenook" ? "Multi Product - Lumenook" : "Multi Product - Swift";
     }
-    return "Single Product - Swift";
+    return pack === "maison" ? "Single Product - Maison" : "Single Product - Swift";
   };
 
   const getGenerationTypeLabel = (page) => {
@@ -333,7 +335,11 @@ export default function PagesTable({
     const productTitle = page.product_title || "";
     const storedTemplate = page.selectedTemplate ?? page.selected_template ?? page.template;
     const template =
-      storedTemplate == 6 || storedTemplate == "template_6"
+      storedTemplate == 8 || storedTemplate == "template_8"
+        ? 8
+        : storedTemplate == 7 || storedTemplate == "template_7"
+        ? 7
+        : storedTemplate == 6 || storedTemplate == "template_6"
         ? 6
         : storedTemplate == 5 || storedTemplate == "template_5"
         ? 5

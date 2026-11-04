@@ -5,12 +5,14 @@
 
 /**
  * Product page theme name from template number + category.
- * @param {number|string|null|undefined} template 3 = Aura, 4 = Lumenook, 5 = Noir, 6 = Frost (all categories); 1/2 legacy Sleek/Vibe
+ * @param {number|string|null|undefined} template 3 = Aura, 4 = Lumenook, 5 = Noir, 6 = Frost, 7 = Atelier, 8 = Bloom (all categories); 1/2 legacy Sleek/Vibe
  * @param {string|null|undefined} category
  * @returns {string}
  */
 export function getProductPageThemeName(template, _category) {
   const n = Number(template);
+  if (n === 8) return "Bloom";
+  if (n === 7) return "Atelier";
   if (n === 6) return "Frost";
   if (n === 5) return "Noir";
   if (n === 4) return "Lumenook";
@@ -43,6 +45,7 @@ export function getStoreThemeName({
     return packKey === "lumenook" ? "Lumenook" : "Swift";
   }
 
+  if (packKey === "maison") return "Maison";
   if (!includePremium) return "Swift";
   if (packKey === "amour") return "Amour";
   if (packKey === "cinematic") return vibe ? "Velvet" : "Eclipse";

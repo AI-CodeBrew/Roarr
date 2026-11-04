@@ -8,7 +8,7 @@ import {
 } from "../../../lib/demoPreviewUrls.js";
 import { getLumenookStorePreview } from "../../../lib/lumenookPreviews.js";
 
-/** Single store: Swift only (homepage checkout, no premium PDP). */
+/** Single store: Swift (homepage checkout, no premium PDP). */
 export const PREPAID_CLASSIC_THEME_COMBO = {
   id: "prepaid-classic",
   pack: "classic",
@@ -19,6 +19,25 @@ export const PREPAID_CLASSIC_THEME_COMBO = {
   defaultView: "Home",
   cardPageType: "home-page",
 };
+
+/** Single store: Maison (quiet-luxury homepage only, no premium PDP). */
+export const MAISON_THEME_COMBO = {
+  id: "maison",
+  pack: "maison",
+  template: null,
+  includePremium: false,
+  title: "Maison",
+  badge: { label: "New", tone: "new" },
+  blurb: "Quiet-luxury single-product store in ivory and champagne",
+  defaultView: "Home",
+  cardPageType: "home-page",
+};
+
+/** Single store templates, in picker order. */
+export const SINGLE_THEME_COMBOS = [PREPAID_CLASSIC_THEME_COMBO, MAISON_THEME_COMBO];
+
+/** Fixed card screenshots for Maison, built by scripts/build-maison-previews.mjs. */
+const MAISON_PREVIEW_BASE = "/demo-previews/maison";
 
 /** Multi store: Swift only (store home, no premium PDPs). */
 export const MULTI_THEME_COMBOS = [
@@ -53,6 +72,16 @@ export function getStoreComboCardMedia(combo, category = "general") {
     // Fixed real-photo screenshot (built by scripts/build-lumenook-previews.mjs) — the real
     // Lumenook look doesn't rotate per merchant category.
     return { ...getLumenookStorePreview(), prebuiltHtmlUrl: null, demoVariant: "lumenook-home" };
+  }
+  if (combo.pack === "maison") {
+    // One house look for every category, so one fixed screenshot.
+    return {
+      thumbUrl: `${MAISON_PREVIEW_BASE}/store.jpg`,
+      hoverImageUrl: `${MAISON_PREVIEW_BASE}/store.eye.jpg`,
+      cardUrl: `${MAISON_PREVIEW_BASE}/store.eye-sm.jpg`,
+      prebuiltHtmlUrl: null,
+      demoVariant: "maison-home",
+    };
   }
   const cat = String(category || "general").toLowerCase();
   if (combo.id === PREPAID_CLASSIC_THEME_COMBO.id) {

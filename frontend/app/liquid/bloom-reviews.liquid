@@ -1,0 +1,194 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign heading = m.bloom_reviews_heading.value | default: m.bloom_reviews_heading -%}
+{%- assign write = m.bloom_reviews_btn.value | default: m.bloom_reviews_btn | default: 'Write a Customer review' -%}
+{%- assign write_url = m.bloom_reviews_url.value | default: m.bloom_reviews_url -%}
+{%- assign more = m.bloom_reviews_more.value | default: m.bloom_reviews_more | default: 'See More Reviews' -%}
+{%- assign more_url = m.bloom_reviews_more_url.value | default: m.bloom_reviews_more_url -%}
+{%- assign helpful_l = m.bloom_review_helpful.value | default: m.bloom_review_helpful | default: 'Found this useful' -%}
+{%- assign rating = product.metafields.reviews.rating.value -%}
+{%- assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count -%}
+{%- assign rating_scale = rating.scale_max.value | default: rating.scale_max | default: 5 -%}
+{%- assign rating_value = rating.rating.value | default: rating.rating | default: rating.value -%}
+{%- assign rating_value = 4.9 -%}{%- assign rating_scale = 5 -%}{%- assign rating_count = '10k' -%}
+{%- assign rating_pct = 0 -%}
+{%- if rating_value != blank -%}{%- assign rating_pct = rating_value | times: 100.0 | divided_by: rating_scale | round -%}{%- endif -%}
+{%- capture items -%}
+  {%- for i in (1..6) -%}
+    {%- assign rn_k = 'bloom_review_' | append: i | append: '_name' -%}{%- assign rn = m[rn_k].value | default: m[rn_k] -%}{%- assign ra_k = 'bloom_review_' | append: i | append: '_avatar' -%}{%- assign ra = m[ra_k].value | default: m[ra_k] -%}{%- assign rh_k = 'bloom_review_' | append: i | append: '_headline' -%}{%- assign rh = m[rh_k].value | default: m[rh_k] -%}{%- assign rm_k = 'bloom_review_' | append: i | append: '_meta' -%}{%- assign rm = m[rm_k].value | default: m[rm_k] -%}{%- assign rt_k = 'bloom_review_' | append: i | append: '_title' -%}{%- assign rt = m[rt_k].value | default: m[rt_k] -%}{%- assign rb_k = 'bloom_review_' | append: i | append: '_body' -%}{%- assign rb = m[rb_k].value | default: m[rb_k] -%}{%- assign rp1_k = 'bloom_review_' | append: i | append: '_photo_1' -%}{%- assign rp1 = m[rp1_k].value | default: m[rp1_k] -%}{%- assign rp2_k = 'bloom_review_' | append: i | append: '_photo_2' -%}{%- assign rp2 = m[rp2_k].value | default: m[rp2_k] -%}{%- assign rp3_k = 'bloom_review_' | append: i | append: '_photo_3' -%}{%- assign rp3 = m[rp3_k].value | default: m[rp3_k] -%}{%- assign rc_k = 'bloom_review_' | append: i | append: '_helpful_count' -%}{%- assign rc = m[rc_k].value | default: m[rc_k] -%}
+    {%- if rn != blank and rb != blank -%}
+      <li class="bl-rv__item">
+        <span class="bl-rv__mark bl-serif" aria-hidden="true">&rdquo;</span>
+        <div class="bl-rv__who">
+          {%- if ra != blank -%}<img class="bl-rv__ava" src="{{ ra | image_url: width: 120 }}" alt="" loading="lazy">{%- endif -%}
+          <div class="bl-rv__id">
+            <span class="bl-rv__name">{{ rn }}</span>
+            <span class="bl-stars bl-rv__stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+        {%- if rh != blank -%}<p class="bl-rv__head">{{ rh }}</p>{%- endif -%}
+        {%- if rt != blank -%}<p class="bl-rv__title">{{ rt }}</p>{%- endif -%}
+        <p class="bl-rv__body">{{ rb }}</p>
+        {%- if rp1 != blank or rp2 != blank or rp3 != blank -%}<div class="bl-rv__photos">{%- if rp1 != blank -%}<img src="{{ rp1 | image_url: width: 240 }}" alt="" loading="lazy">{%- endif -%}{%- if rp2 != blank -%}<img src="{{ rp2 | image_url: width: 240 }}" alt="" loading="lazy">{%- endif -%}{%- if rp3 != blank -%}<img src="{{ rp3 | image_url: width: 240 }}" alt="" loading="lazy">{%- endif -%}</div>{%- endif -%}
+        <div class="bl-rv__foot">
+          {%- if rm != blank -%}<span class="bl-rv__meta">{{ rm }}</span>{%- endif -%}
+          {%- if rc != blank -%}<span class="bl-rv__helpful"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11v9H4v-9h3zM7 11l4-8c1.5 0 2.5 1.2 2 2.8L12.5 9H19a2 2 0 012 2.3l-1.2 7A2 2 0 0117.8 20H7"/></svg><span>{{ helpful_l }} ({{ rc }})</span></span>{%- endif -%}
+        </div>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if items != blank -%}
+<section class="bloom bl-rv bl-pop" id="bl-reviews">
+  <div class="bl-wrap">
+    <div class="bl-rv__top">
+      <div class="bl-rv__titles">
+        {%- if heading != blank -%}<h2 class="bl-rv__h" data-bl-reveal>{{ heading }}</h2>{%- endif -%}
+        {%- if rating_value != blank -%}
+          <p class="bl-rv__sum"><b class="bl-rv__score">{{ rating_value }}</b><span class="bl-hero__stars" style="--p:{{ rating_pct }}%" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>{%- if rating_count != blank -%}<span class="bl-rv__count">{{ rating_count }} reviews</span>{%- endif -%}</p>
+        {%- endif -%}
+      </div>
+      <div class="bl-rv__tools">
+        {%- if write_url != blank -%}<a class="bl-rv__write" href="{{ write_url }}">{{ write }}</a>{%- endif -%}
+        <button type="button" class="bl-rv__arrow" data-bl-prev aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button type="button" class="bl-rv__arrow" data-bl-next aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <div class="bl-rv__viewport" data-bl-track tabindex="0" aria-label="{{ heading | escape }}">
+      <ul class="bl-rv__list" role="list" data-bl-list>{{ items }}</ul>
+    </div>
+    <div class="bl-rv__bottom">
+      <span class="bl-rv__bar" aria-hidden="true"><i data-bl-bar></i></span>
+      {%- if more_url != blank -%}<a class="bl-rv__more" href="{{ more_url }}"><span>{{ more }}</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>{%- endif -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .bloom { --bl-plum: #4A0E2B; --bl-ink: #3D1229; --bl-rose: #E5518E; --bl-rose-d: #B3235F; --bl-blush: #FDEBF5; --bl-pink: #FFDDEB; --bl-pink-2: #FFE9F2; --bl-peach: #FFE8E3; --bl-coral: #E8695C; --bl-cream: #FFF6E8; --bl-grad: linear-gradient(90deg, #E8695C 0%, #E5518E 100%); --bl-star: #F59E0B; --bl-muted: #6F5A67; --bl-line: #F1D5E1; --bl-serif: "Playfair Display", Georgia, serif; --bl-sans: "Open Sans", system-ui, sans-serif; --bl-pop: "Poppins", "Open Sans", sans-serif; --font-heading-family: "Playfair Display", serif; --font-body-family: "Open Sans", sans-serif; position: relative; font-family: var(--bl-sans); -webkit-font-smoothing: antialiased; }
+  :where(.bloom) { background: #fff; color: var(--bl-plum); }
+  .bloom *, .bloom *::before, .bloom *::after { box-sizing: border-box; }
+  :where(.bloom) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption, cite) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .bloom, .bloom :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption, cite) { font-family: var(--bl-sans) !important; }
+  .bloom :is(h1, h2, h3, h4, .bl-serif, .bl-serif *, .bl-h *) { font-family: var(--bl-serif) !important; }
+  .bloom .bl-pop, .bloom .bl-pop :is(p, li, a, span, label, button, input, select, strong, small, b, s, div, h3, h4) { font-family: var(--bl-pop) !important; }
+  :where(.bloom) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.bloom) :is(ul, ol) { list-style: none; }
+  :where(.bloom) img { display: block; max-width: 100%; }
+  :where(.bloom) button { font: inherit; }
+  :where(.bloom) .bl-wrap { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.bloom) .bl-h { font-weight: 600; line-height: 1.22; letter-spacing: 0; text-wrap: balance; text-align: center; color: var(--bl-plum); font-size: clamp(28px, 3.4vw, 40px); }
+  :where(.bloom) .bl-ac { color: var(--bl-rose); }
+  :where(.bloom) .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 28px; border: 1px solid #E5518E; border-radius: 8px; background: var(--bl-grad); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px -10px rgb(229 81 142 / .7); transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+  :where(.bloom) .bl-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 12px 24px -10px rgb(229 81 142 / .8); }
+  :where(.bloom) .bl-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .bloom [hidden] { display: none !important; }
+  :where(.bloom) .bl-fade { -webkit-mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); }
+  :where(.bloom) .bl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where(.bloom) .bl-stars { color: var(--bl-star); letter-spacing: 1px; }
+  @keyframes bl-rise { from { opacity: 0; transform: translate3d(0, 24px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .bloom [data-bl-reveal] { animation: bl-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.bloom) .bl-wrap { width: calc(100% - 32px); } }
+
+  .bl-rv { background: linear-gradient(180deg, #fff 0%, #FFF6FA 100%); padding: clamp(36px, 4.5vw, 64px) 0 clamp(36px, 4vw, 56px); color: #2D0F20; overflow: clip; }
+  .bl-rv__top { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: clamp(18px, 2.4vw, 28px); }
+  .bloom.bl-rv .bl-rv__h { font-family: var(--bl-pop) !important; font-size: clamp(22px, 2.6vw, 30px); font-weight: 500; line-height: 1.25; color: #1D1218; }
+  .bl-rv__sum { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 10px; font-size: 14px; color: #6F5A67; }
+  .bl-rv__score { font-size: 26px; font-weight: 600; line-height: 1; color: #1D1218; }
+  .bl-rv__count { padding-inline-start: 10px; border-inline-start: 1px solid #E5CAD7; }
+  .bl-rv__tools { display: flex; align-items: center; gap: 10px; }
+  .bl-rv__write { display: inline-flex; align-items: center; margin-inline-end: 6px; min-height: 38px; padding: 0 18px; border: 1px solid #E49BBB; border-radius: 999px; background: #fff; color: #2D0F20; font-size: 13.5px; text-decoration: none; transition: background .25s ease; }
+  .bl-rv__write:hover { background: var(--bl-pink-2); }
+  .bl-rv__arrow { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid #E49BBB; border-radius: 50%; background: #fff; color: #3B1228; cursor: pointer; transition: background .25s ease, color .25s ease, opacity .25s ease; }
+  .bl-rv__arrow:hover:not([disabled]) { background: #3B1228; border-color: #3B1228; color: #fff; }
+  .bl-rv__arrow[disabled] { opacity: .4; cursor: default; }
+  .bl-rv__viewport { margin-inline: -10px; padding: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 10px; scrollbar-width: none; outline-offset: -4px; }
+  .bl-rv__viewport::-webkit-scrollbar { display: none; }
+  .bl-rv__list { --gap: clamp(14px, 1.8vw, 22px); display: flex; gap: var(--gap); }
+  .bl-rv__item { position: relative; flex: none; width: calc((100% - 2 * var(--gap)) / 3); scroll-snap-align: start; display: grid; align-content: start; gap: 8px; padding: 24px 22px 18px; border: 1px solid #F3D8E5; border-radius: 18px; background: #fff; box-shadow: 0 14px 30px -22px rgb(179 35 95 / .55); transition: transform .35s ease, box-shadow .35s ease; }
+  .bl-rv__item:hover { transform: translateY(-4px); box-shadow: 0 22px 38px -22px rgb(179 35 95 / .6); }
+  .bloom .bl-rv__mark { position: absolute; top: 4px; inset-inline-end: 18px; font-family: var(--bl-serif) !important; font-size: 84px; line-height: 1; color: #FBD3E3; pointer-events: none; }
+  .bl-rv__who { display: flex; align-items: center; gap: 12px; }
+  .bl-rv__ava { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #F3C3D8; }
+  .bl-rv__id { display: grid; gap: 3px; }
+  .bl-rv__name { font-size: 15px; font-weight: 500; color: #3B0F27; }
+  .bl-rv__stars { font-size: 13px; }
+  .bl-rv__head { margin-top: 4px; font-size: 12.5px; font-weight: 500; color: #E5518E; }
+  .bl-rv__title { font-size: 15px; font-weight: 500; line-height: 1.4; color: #1D1218; }
+  .bl-rv__body { font-size: 13.5px; line-height: 1.65; color: #4A1A33; }
+  .bl-rv__photos { display: flex; gap: 8px; margin-top: 4px; }
+  .bl-rv__photos img { width: 58px; height: 58px; border-radius: 10px; object-fit: cover; }
+  .bl-rv__foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 8px; padding-top: 12px; border-top: 1px solid #F7E3EC; }
+  .bl-rv__meta { font-size: 12px; color: #8C8189; }
+  .bl-rv__helpful { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid #F0D3E0; border-radius: 999px; color: #D6538A; font-size: 11.5px; }
+  .bl-rv__bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 16px; }
+  .bl-rv__bar { position: relative; flex: 1; max-width: 320px; height: 3px; border-radius: 3px; background: #F3D8E5; overflow: hidden; }
+  .bl-rv__bar i { position: absolute; inset-block: 0; left: 0; width: var(--w, 33%); border-radius: 3px; background: var(--bl-grad); transform: translateX(var(--x, 0%)); transition: transform .25s ease, width .25s ease; }
+  .bl-rv__more { display: inline-flex; align-items: center; gap: 6px; color: #1D1218; font-size: 14px; font-weight: 500; text-decoration: none; }
+  .bl-rv__more svg { transition: transform .25s ease; }
+  .bl-rv__more:hover svg { transform: translateX(4px); }
+  .bl-rv.is-static .bl-rv__arrow, .bl-rv.is-static .bl-rv__bar { display: none; }
+  @media (max-width: 989px) { .bl-rv__item { width: calc((100% - var(--gap)) / 2); } }
+  @media (max-width: 649px) { .bl-rv__item { width: 84%; } .bl-rv__write { display: none; } }
+</style>
+<script>
+(function () {
+  var root = document.getElementById("bl-reviews");
+  if (!root || root.dataset.blReady) return;
+  root.dataset.blReady = "1";
+  var track = root.querySelector("[data-bl-track]"), list = root.querySelector("[data-bl-list]");
+  var prev = root.querySelector("[data-bl-prev]"), next = root.querySelector("[data-bl-next]"), bar = root.querySelector("[data-bl-bar]");
+  var paused = false, onscreen = true;
+  function step() { var c = list.firstElementChild; return c ? c.getBoundingClientRect().width + (parseFloat(getComputedStyle(list).columnGap) || 20) : 300; }
+  function ui() {
+    var max = track.scrollWidth - track.clientWidth;
+    root.classList.toggle("is-static", max <= 4);
+    prev.disabled = track.scrollLeft <= 4;
+    next.disabled = track.scrollLeft >= max - 4;
+    var w = Math.max(12, 100 * track.clientWidth / track.scrollWidth);
+    bar.style.setProperty("--w", w + "%");
+    bar.style.setProperty("--x", (max > 0 ? (track.scrollLeft / max) * (100 / (w / 100) - 100) : 0) + "%");
+  }
+  prev.addEventListener("click", function () { track.scrollBy({ left: -step(), behavior: "smooth" }); });
+  next.addEventListener("click", function () { track.scrollBy({ left: step(), behavior: "smooth" }); });
+  track.addEventListener("scroll", ui, { passive: true });
+  window.addEventListener("resize", ui);
+  ["mouseenter", "focusin", "touchstart", "pointerdown"].forEach(function (e) { root.addEventListener(e, function () { paused = true; }, { passive: true }); });
+  ["mouseleave", "focusout"].forEach(function (e) { root.addEventListener(e, function () { paused = false; }); });
+  track.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") { e.preventDefault(); next.click(); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); prev.click(); }
+  });
+  if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { onscreen = en[0].isIntersecting; }, { threshold: 0.25 }).observe(root);
+  if (!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+    setInterval(function () {
+      var max = track.scrollWidth - track.clientWidth;
+      if (paused || !onscreen || max <= 4 || document.hidden) return;
+      if (track.scrollLeft >= max - 4) track.scrollTo({ left: 0, behavior: "smooth" });
+      else track.scrollBy({ left: step(), behavior: "smooth" });
+    }, 5200);
+  }
+  ui();
+})();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--bloom" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div, cite) { font-family: "Open Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Playfair Display", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .bl-flip { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

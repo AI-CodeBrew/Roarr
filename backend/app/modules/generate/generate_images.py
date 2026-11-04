@@ -209,8 +209,8 @@ def load_template_image_keys(
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         config = data.get(template_num)
-        # Aura (3), Lumenook (4), Noir (5) and Frost (6) image keys are shared — fall back to health_beauty when missing.
-        if not config and template_num in ("3", "4", "5", "6") and category != "health_beauty":
+        # Aura (3), Lumenook (4), Noir (5), Frost (6), Atelier (7) and Bloom (8) image keys are shared — fall back to health_beauty when missing.
+        if not config and template_num in ("3", "4", "5", "6", "7", "8") and category != "health_beauty":
             hb_path = os.path.join(
                 os.path.dirname(__file__), "templates", "health_beauty", "image_keys.json"
             )
@@ -389,7 +389,7 @@ def load_store_image_keys(
         if mode == "single_product":
             folder = (
                 os.path.join("packs", pack)
-                if pack in ("cinematic", "amour")
+                if pack in ("cinematic", "amour", "maison")
                 else "single_store"
             )
         else:
@@ -470,9 +470,10 @@ def generate_single_product_store_images(
 
     pack = normalize_store_template_pack(store_template_pack)
 
-    # Amour: templated prompts (same 12 keys/ratios), category-agnostic variables.
-    if pack == "amour":
-        return generate_amour_store_images(
+    # Amour / Maison: templated prompts (fixed keys/ratios), category-agnostic variables.
+    if pack in ("amour", "maison"):
+        return generate_templated_pack_store_images(
+            pack=pack,
             product_title=product_title,
             product_description=product_description,
             product_images=product_images,
@@ -729,7 +730,8 @@ def generate_single_product_store_images(
             print(f"Error cleaning up temp directory {temp_dir}: {e}")
 
 
-def generate_amour_store_images(
+def generate_templated_pack_store_images(
+    pack: str,
     product_title: str,
     product_description: str,
     product_images: list,
@@ -738,11 +740,15 @@ def generate_amour_store_images(
     page_id: Optional[str] = None,
     document_store=None,
 ) -> Dict[str, Any]:
-    """Amour homepage images: base product shot, then 12 templated slots at their ratios."""
-    from .store.templates.packs.amour.image_prompts import (
-        build_all_prompts,
-        build_image_variables,
+    """Templated-pack homepage images (Amour, Maison): base product shot, then one
+    templated prompt per slot in the pack's `image_prompts` module, at each slot's ratio."""
+    import importlib
+
+    prompts_module = importlib.import_module(
+        f".store.templates.packs.{pack}.image_prompts", package=__package__
     )
+    build_all_prompts = prompts_module.build_all_prompts
+    build_image_variables = prompts_module.build_image_variables
 
     result: Dict[str, Any] = {"home_page": {}, "product_page": {}}
     temp_dir = tempfile.mkdtemp()
@@ -792,7 +798,7 @@ def generate_amour_store_images(
                 result["home_page"][spec["key"]] = urls[i]
             else:
                 print(
-                    f"Amour image slot '{spec['key']}' missing after retries; continuing."
+                    f"{pack} image slot '{spec['key']}' missing after retries; continuing."
                 )
         if page_id and document_store:
             document_store.update_generation_percentage(page_id, 52)
@@ -1284,7 +1290,7 @@ _FROST_FRAME = {
     "product_highlight_2": " Square 1:1 bright photo showing the product being used, clean minimal setting, cool daylight. No text.",
     "product_highlight_3": " Square 1:1 bright photo of the product in everyday life, airy and minimal, cool daylight. No text.",
     "feature_image": " Portrait 4:5 bright, airy lifestyle photo of the product in a minimal white and pale blue space, soft daylight, product clearly visible. No text, no border.",
-    "product_impact_image": " Wide 16:9 bright photo of the product on a clean white surface with plenty of empty space around it, cool soft daylight. No text, no border.",
+    "product_impact_image": " Portrait 4:5 bright lifestyle photo of the product in use, subject centred and clearly visible, airy minimal setting, cool soft daylight. No text, no border.",
 }
 
 
@@ -1308,6 +1314,77 @@ def _is_frost_template(template) -> bool:
     if raw.startswith("template_"):
         raw = raw.split("_")[-1]
     return raw == "6" or template == 6
+
+
+_ATELIER_FRAME = {
+    "product_image_1": " Frame this as a portrait 4:5 lifestyle photo of the product in a refined, warmly lit interior, product clearly visible and in focus. Natural, editorial. No text, logo, or border.",
+    "product_image_2": " Frame this as a portrait 4:5 studio photo of the product at a three-quarter angle on a warm ivory seamless background, soft window light. No text, logo, or border.",
+    "product_image_3": " Frame this as a portrait 4:5 photo of the product with its packaging or one complementary prop on warm stone, soft daylight. No text, logo, or border.",
+    "product_image_4": " Frame this as a landscape 5:4 low-key photo of the product on a dark surface with a single warm spotlight and deep shadows. No text, logo, or border.",
+    "product_image_5": " Frame this as a portrait 4:5 photo of the product on a pale plinth in an airy, minimal space with soft shadows. No text, logo, or border.",
+    "product_highlight_1": " Portrait 4:5 editorial lifestyle photo of the product in a calm, styled setting with natural materials, warm light. No text.",
+    "product_highlight_2": " Square 1:1 macro close-up of one material or finish detail of the product, warm light, shallow depth of field. No text.",
+    "product_highlight_3": " Square 1:1 low-key macro of a key detail of the product against a dark background, warm directional light. No text.",
+    "feature_image": " Wide 16:9 cinematic photo. The product sits in the right third of the frame in a dark, moody setting lit by one warm light; the left half is deep shadow with empty space for text. No text, no border.",
+    "product_impact_image": " Portrait 4:5 cinematic photo of the product, large and centred, on a deep warm black background with a single soft spotlight and gentle reflections. The product dominates the frame. No text, logo, or border.",
+}
+
+
+def _apply_atelier_frame(prompts):
+    if not isinstance(prompts, dict):
+        return prompts
+    framed = {}
+    for key, value in prompts.items():
+        if isinstance(value, dict):
+            framed[key] = _apply_atelier_frame(value)
+        elif isinstance(value, str) and key in _ATELIER_FRAME:
+            framed[key] = value.rstrip() + _ATELIER_FRAME[key]
+        else:
+            framed[key] = value
+    return framed
+
+
+def _is_atelier_template(template) -> bool:
+    """Atelier is template 7 for all categories."""
+    raw = str(template or "").strip().lower()
+    if raw.startswith("template_"):
+        raw = raw.split("_")[-1]
+    return raw == "7" or template == 7
+
+
+_BLOOM_FRAME = {
+    "product_image_1": " Frame this as a square product photo on a clean, bright white-to-blush background with soft pink studio light. The product fills the frame and is fully visible. No text, logo, or border.",
+    "product_image_2": " Frame this as a square product photo from another angle on a pale blush-pink background, soft shadow. No text, logo, or border.",
+    "product_image_3": " Frame this as a square product photo of the product with its packaging on a soft pink surface, bright and airy. No text, logo, or border.",
+    "product_image_4": " Frame this as a square lifestyle photo of the product being held or used in a bright, airy home setting with soft pink accents. No text or border.",
+    "product_image_5": " Frame this as a square product photo, centered, on a light pink gradient background with a gentle glow. No text, logo, or border.",
+    "product_highlight_1": " Landscape 4:3 bright photo of the first step of using the product, clean light setting with soft pink accents. No text.",
+    "product_highlight_2": " Landscape 4:3 bright photo of the second step of using the product, a person using it in a light home setting. No text.",
+    "product_highlight_3": " Landscape 4:3 bright photo of a person enjoying the product in daily life, warm natural light, soft pink tones. No text.",
+    "product_impact_image": " Portrait 4:5 photo of a person holding the product in front of them against a soft pink gradient backdrop, product clearly visible and in focus. No text, no logo overlays, no border.",
+}
+
+
+def _apply_bloom_frame(prompts):
+    if not isinstance(prompts, dict):
+        return prompts
+    framed = {}
+    for key, value in prompts.items():
+        if isinstance(value, dict):
+            framed[key] = _apply_bloom_frame(value)
+        elif isinstance(value, str) and key in _BLOOM_FRAME:
+            framed[key] = value.rstrip() + _BLOOM_FRAME[key]
+        else:
+            framed[key] = value
+    return framed
+
+
+def _is_bloom_template(template) -> bool:
+    """Bloom is template 8 for all categories."""
+    raw = str(template or "").strip().lower()
+    if raw.startswith("template_"):
+        raw = raw.split("_")[-1]
+    return raw == "8" or template == 8
 
 
 def _apply_glow_frame(prompts):
@@ -1404,6 +1481,10 @@ def generate_images(
                 product_prompts = _apply_noir_frame(product_prompts)
             elif _is_frost_template(template):
                 product_prompts = _apply_frost_frame(product_prompts)
+            elif _is_atelier_template(template):
+                product_prompts = _apply_atelier_frame(product_prompts)
+            elif _is_bloom_template(template):
+                product_prompts = _apply_bloom_frame(product_prompts)
             if product_prompts.get("product_images"):
                 print("Generating product images...")
                 product_images_result = generate_product_images(
@@ -1456,6 +1537,10 @@ def generate_images(
                 body_prompts = _apply_noir_frame(body_prompts)
             elif _is_frost_template(template):
                 body_prompts = _apply_frost_frame(body_prompts)
+            elif _is_atelier_template(template):
+                body_prompts = _apply_atelier_frame(body_prompts)
+            elif _is_bloom_template(template):
+                body_prompts = _apply_bloom_frame(body_prompts)
             if body_prompts:
                 print("Generating body images...")
                 # Determine body image generation function based on subcategory

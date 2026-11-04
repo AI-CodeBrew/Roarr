@@ -1,0 +1,110 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign heading = m.bloom_steps_heading.value | default: m.bloom_steps_heading -%}
+{%- assign heading_h = heading | escape | replace: '[', '<span class="bl-ac">' | replace: ']', '</span>' -%}
+{%- assign st1 = m.bloom_step_1_title.value | default: m.bloom_step_1_title -%}
+{%- assign st2 = m.bloom_step_2_title.value | default: m.bloom_step_2_title -%}
+{%- assign st3 = m.bloom_step_3_title.value | default: m.bloom_step_3_title -%}
+{%- assign sx1 = m.bloom_step_1_text.value | default: m.bloom_step_1_text -%}
+{%- assign sx2 = m.bloom_step_2_text.value | default: m.bloom_step_2_text -%}
+{%- assign sx3 = m.bloom_step_3_text.value | default: m.bloom_step_3_text -%}
+{%- assign si1 = m.product_highlight_1.value | default: m.product_highlight_1 -%}
+{%- assign si2 = m.product_highlight_2.value | default: m.product_highlight_2 -%}
+{%- assign si3 = m.product_highlight_3.value | default: m.product_highlight_3 -%}
+{%- if st1 != blank -%}
+<section class="bloom bl-steps" id="bl-steps">
+  <div class="bl-wrap">
+    {%- if heading != blank -%}<h2 class="bl-h bl-steps__h" data-bl-reveal>{{ heading_h }}</h2>{%- endif -%}
+    <ol class="bl-steps__list" role="list">
+      {%- if st1 != blank or sx1 != blank -%}
+      <li class="bl-steps__item" data-bl-reveal style="--d:0.0s">
+        <span class="bl-steps__n" aria-hidden="true">1</span>
+        {%- if si1 != blank -%}<figure class="bl-steps__pic"><img src="{{ si1 | image_url: width: 800 }}" alt="{{ st1 | escape }}" loading="lazy"></figure>{%- endif -%}
+        <h3 class="bl-steps__t">{{ st1 }}</h3>
+        <p class="bl-steps__x">{{ sx1 }}</p>
+      </li>
+      {%- endif -%}
+      {%- if st2 != blank or sx2 != blank -%}
+      <li class="bl-steps__item" data-bl-reveal style="--d:0.08s">
+        <span class="bl-steps__n" aria-hidden="true">2</span>
+        {%- if si2 != blank -%}<figure class="bl-steps__pic"><img src="{{ si2 | image_url: width: 800 }}" alt="{{ st2 | escape }}" loading="lazy"></figure>{%- endif -%}
+        <h3 class="bl-steps__t">{{ st2 }}</h3>
+        <p class="bl-steps__x">{{ sx2 }}</p>
+      </li>
+      {%- endif -%}
+      {%- if st3 != blank or sx3 != blank -%}
+      <li class="bl-steps__item" data-bl-reveal style="--d:0.16s">
+        <span class="bl-steps__n" aria-hidden="true">3</span>
+        {%- if si3 != blank -%}<figure class="bl-steps__pic"><img src="{{ si3 | image_url: width: 800 }}" alt="{{ st3 | escape }}" loading="lazy"></figure>{%- endif -%}
+        <h3 class="bl-steps__t">{{ st3 }}</h3>
+        <p class="bl-steps__x">{{ sx3 }}</p>
+      </li>
+      {%- endif -%}
+    </ol>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .bloom { --bl-plum: #4A0E2B; --bl-ink: #3D1229; --bl-rose: #E5518E; --bl-rose-d: #B3235F; --bl-blush: #FDEBF5; --bl-pink: #FFDDEB; --bl-pink-2: #FFE9F2; --bl-peach: #FFE8E3; --bl-coral: #E8695C; --bl-cream: #FFF6E8; --bl-grad: linear-gradient(90deg, #E8695C 0%, #E5518E 100%); --bl-star: #F59E0B; --bl-muted: #6F5A67; --bl-line: #F1D5E1; --bl-serif: "Playfair Display", Georgia, serif; --bl-sans: "Open Sans", system-ui, sans-serif; --bl-pop: "Poppins", "Open Sans", sans-serif; --font-heading-family: "Playfair Display", serif; --font-body-family: "Open Sans", sans-serif; position: relative; font-family: var(--bl-sans); -webkit-font-smoothing: antialiased; }
+  :where(.bloom) { background: #fff; color: var(--bl-plum); }
+  .bloom *, .bloom *::before, .bloom *::after { box-sizing: border-box; }
+  :where(.bloom) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption, cite) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .bloom, .bloom :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption, cite) { font-family: var(--bl-sans) !important; }
+  .bloom :is(h1, h2, h3, h4, .bl-serif, .bl-serif *, .bl-h *) { font-family: var(--bl-serif) !important; }
+  .bloom .bl-pop, .bloom .bl-pop :is(p, li, a, span, label, button, input, select, strong, small, b, s, div, h3, h4) { font-family: var(--bl-pop) !important; }
+  :where(.bloom) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.bloom) :is(ul, ol) { list-style: none; }
+  :where(.bloom) img { display: block; max-width: 100%; }
+  :where(.bloom) button { font: inherit; }
+  :where(.bloom) .bl-wrap { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.bloom) .bl-h { font-weight: 600; line-height: 1.22; letter-spacing: 0; text-wrap: balance; text-align: center; color: var(--bl-plum); font-size: clamp(28px, 3.4vw, 40px); }
+  :where(.bloom) .bl-ac { color: var(--bl-rose); }
+  :where(.bloom) .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 28px; border: 1px solid #E5518E; border-radius: 8px; background: var(--bl-grad); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px -10px rgb(229 81 142 / .7); transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+  :where(.bloom) .bl-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 12px 24px -10px rgb(229 81 142 / .8); }
+  :where(.bloom) .bl-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .bloom [hidden] { display: none !important; }
+  :where(.bloom) .bl-fade { -webkit-mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); }
+  :where(.bloom) .bl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where(.bloom) .bl-stars { color: var(--bl-star); letter-spacing: 1px; }
+  @keyframes bl-rise { from { opacity: 0; transform: translate3d(0, 24px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .bloom [data-bl-reveal] { animation: bl-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.bloom) .bl-wrap { width: calc(100% - 32px); } }
+
+  .bl-steps { background: #fff; padding: clamp(36px, 5vw, 72px) 0 clamp(28px, 4vw, 56px); }
+  .bl-steps__h { margin-bottom: clamp(18px, 2.4vw, 30px); }
+  .bl-steps__list { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); counter-reset: bl-step; }
+  .bl-steps__list::before { content: ""; position: absolute; top: 20px; left: 16.66%; right: 16.66%; height: 1px; background: #E58CB4; }
+  .bl-steps__item { position: relative; display: grid; align-content: start; justify-items: start; gap: 0; }
+  .bl-steps__n { position: relative; z-index: 1; justify-self: center; display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 26px; border-radius: 50%; background: #FF8DB8; color: #fff; font-size: 16px; font-weight: 600; line-height: 1; }
+  .bl-steps__pic { width: 100%; aspect-ratio: 1.12; border-radius: 10px; overflow: hidden; background: #F4E4EB; }
+  .bl-steps__pic img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .bl-steps__item:hover .bl-steps__pic img { transform: scale(1.04); }
+  .bloom.bl-steps .bl-steps__t { margin-top: 14px; font-size: clamp(18px, 2vw, 22px); font-weight: 600; line-height: 1.3; color: #3A2A33; font-family: var(--bl-sans) !important; }
+  .bl-steps__x { margin-top: 6px; font-size: 14px; line-height: 1.6; color: #6B6168; }
+  @media (max-width: 749px) {
+    .bl-steps__list { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .bl-steps__list::before { display: none; }
+    .bl-steps__n { justify-self: start; margin-bottom: 12px; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--bloom" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div, cite) { font-family: "Open Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Playfair Display", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .bl-flip { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

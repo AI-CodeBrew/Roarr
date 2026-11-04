@@ -1,17 +1,17 @@
-"""Store template pack helpers (classic, cinematic, amour, lumenook)."""
+"""Store template pack helpers (classic, cinematic, amour, maison, lumenook)."""
 
 from __future__ import annotations
 
 import os
 from typing import Optional
 
-VALID_STORE_TEMPLATE_PACKS = frozenset({"classic", "cinematic", "amour", "lumenook"})
+VALID_STORE_TEMPLATE_PACKS = frozenset({"classic", "cinematic", "amour", "maison", "lumenook"})
 
 # Homepage-only packs: never generate or bind a premium Sleek/Vibe PDP.
-HOME_ONLY_STORE_TEMPLATE_PACKS = frozenset({"amour"})
+HOME_ONLY_STORE_TEMPLATE_PACKS = frozenset({"amour", "maison"})
 
 # Packs that exist for single-product stores only.
-SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS = frozenset({"cinematic", "amour"})
+SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS = frozenset({"cinematic", "amour", "maison"})
 
 # Packs that exist for multi-product stores only.
 MULTI_PRODUCT_ONLY_STORE_TEMPLATE_PACKS = frozenset({"lumenook"})
@@ -53,7 +53,7 @@ def resolve_store_templates_dir(
     Return Path to the JSON templates folder for this mode + pack.
 
     classic → store_templates/single_product|multi_product
-    cinematic / amour (single only) → store_templates/packs/<pack>/single_product
+    cinematic / amour / maison (single only) → store_templates/packs/<pack>/single_product
     lumenook (multi only) → store_templates/packs/lumenook/multi_product
     """
     from pathlib import Path
@@ -96,6 +96,8 @@ def store_theme_name(
 
     if pack == "amour":
         return "Amour"
+    if pack == "maison":
+        return "Maison"
     if not include_premium:
         return "Swift"
     if pack == "cinematic":

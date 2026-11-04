@@ -1,0 +1,127 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600;700&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.noir_ritual_eyebrow.value | default: m.noir_ritual_eyebrow | default: 'The ritual' -%}
+{%- assign heading = m.noir_ritual_heading.value | default: m.noir_ritual_heading | default: 'Three steps to make it yours' -%}
+{%- assign text = m.noir_ritual_text.value | default: m.noir_ritual_text | default: 'Simple from the very first day, and a little better every time you come back to it.' -%}
+{%- assign r1 = m.noir_ritual_1_title.value | default: m.noir_ritual_1_title | default: 'Unbox with care' -%}
+{%- assign r1t = m.noir_ritual_1_text.value | default: m.noir_ritual_1_text | default: 'Lift it from its case and take a moment with the finish before first use.' -%}
+{%- assign r2 = m.noir_ritual_2_title.value | default: m.noir_ritual_2_title | default: 'Set it up' -%}
+{%- assign r2t = m.noir_ritual_2_text.value | default: m.noir_ritual_2_text | default: 'A minute of setup is all it needs. Clear instructions are in the box.' -%}
+{%- assign r3 = m.noir_ritual_3_title.value | default: m.noir_ritual_3_title | default: 'Make it daily' -%}
+{%- assign r3t = m.noir_ritual_3_text.value | default: m.noir_ritual_3_text | default: 'Reach for it every day. It is made to be used, not kept for best.' -%}
+{%- assign note = m.noir_ritual_note.value | default: m.noir_ritual_note | default: 'Every order arrives with a printed care guide.' -%}
+{%- assign img = m.feature_image.value | default: m.feature_image -%}
+{%- if img == blank and product.media.size > 0 -%}
+  {%- assign img = product.media.last.preview_image | default: product.media.last -%}
+{%- endif -%}
+<section class="noir nr-ritual">
+  <div class="nr-wrap nr-ritual__grid">
+    <figure class="nr-ritual__arch" data-nr-reveal>
+      <div class="nr-ritual__frame">{%- if img != blank -%}<img src="{{ img | image_url: width: 1200 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}</div>
+    </figure>
+    <div class="nr-ritual__copy">
+      <header class="nr-ritual__head" data-nr-reveal>
+        <p class="nr-eyebrow">{{ eyebrow }}</p>
+        <h2 class="nr-h nr-ritual__heading">{%- assign heading_w = heading | split: ' ' -%}{%- if heading_w.size > 1 -%}{%- assign heading_w_n = heading_w.size | minus: 1 -%}{% for word in heading_w limit: heading_w_n %}{{ word }} {% endfor %}<em>{{ heading_w | last }}</em>{%- else -%}{{ heading }}{%- endif -%}</h2>
+        {%- if text != blank -%}<p class="nr-ritual__text">{{ text }}</p>{%- endif -%}
+      </header>
+      <ol class="nr-ritual__steps" role="list">
+        <li data-nr-reveal><span class="nr-ritual__n nr-serif">I</span><div><h3 class="nr-serif">{{ r1 }}</h3>{%- if r1t != blank -%}<p>{{ r1t }}</p>{%- endif -%}</div></li>
+        <li data-nr-reveal><span class="nr-ritual__n nr-serif">II</span><div><h3 class="nr-serif">{{ r2 }}</h3>{%- if r2t != blank -%}<p>{{ r2t }}</p>{%- endif -%}</div></li>
+        <li data-nr-reveal><span class="nr-ritual__n nr-serif">III</span><div><h3 class="nr-serif">{{ r3 }}</h3>{%- if r3t != blank -%}<p>{{ r3t }}</p>{%- endif -%}</div></li>
+      </ol>
+      {%- if note != blank -%}<p class="nr-ritual__note nr-serif" data-nr-reveal>{{ note }}</p>{%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+  .noir { --nr-ink: #0B0A09; --nr-coal: #121110; --nr-char: #1A1714; --nr-line: rgb(201 169 110 / .18); --nr-line-2: rgb(242 236 226 / .09); --nr-gold: #C9A96E; --nr-gold-hi: #E9D5A6; --nr-gold-lo: #8A6B3C; --nr-gild: linear-gradient(120deg, #F1DEB0 0%, #C9A96E 40%, #A8864F 68%, #E4CB92 100%); --nr-ivory: #F3EDE3; --nr-paper: #EFE8DC; --nr-muted: #A0978A; --nr-serif: "Bodoni Moda", "Didot", serif; --nr-sans: "Manrope", system-ui, sans-serif; --nr-ease: cubic-bezier(.22, .8, .24, 1); --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; position: relative; font-family: var(--nr-sans); -webkit-font-smoothing: antialiased; interpolate-size: allow-keywords; }
+  :where(.noir) { background: var(--nr-ink); color: var(--nr-ivory); }
+  .noir *, .noir *::before, .noir *::after { box-sizing: border-box; }
+  :where(.noir) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .noir, .noir :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption) { font-family: var(--nr-sans) !important; }
+  .noir :is(h1, h2, h3, h4, .nr-h *, .nr-serif, .nr-serif *) { font-family: var(--nr-serif) !important; }
+  :where(.noir) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.noir) :is(ul, ol) { list-style: none; }
+  :where(.noir) img { display: block; max-width: 100%; }
+  :where(.noir) .nr-wrap { width: min(1320px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.noir) .nr-eyebrow { display: flex; align-items: center; gap: 14px; font-size: 11px; font-weight: 600; line-height: 1.4; letter-spacing: .3em; text-transform: uppercase; color: var(--nr-gold); }
+  :where(.noir) .nr-eyebrow::before { content: ""; flex: none; width: 34px; height: 1px; background: linear-gradient(90deg, transparent, currentColor); }
+  :where(.noir) .nr-eyebrow--center { justify-content: center; }
+  :where(.noir) .nr-eyebrow--center::after { content: ""; flex: none; width: 34px; height: 1px; background: linear-gradient(90deg, currentColor, transparent); }
+  :where(.noir) .nr-h { font-weight: 400; line-height: 1.02; letter-spacing: -.015em; text-wrap: balance; }
+  :where(.noir) .nr-h em { font-style: italic; color: var(--nr-gold-hi); }
+  :where(.noir) .nr-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 56px; padding: 0 34px; border: 0; border-radius: 0; background: var(--nr-gild); background-size: 220% 100%; color: var(--nr-ink); font-size: 12px; font-weight: 700; line-height: 1; letter-spacing: .22em; text-transform: uppercase; text-decoration: none; cursor: pointer; box-shadow: 0 12px 32px -14px rgb(201 169 110 / .6); transition: background-position .7s var(--nr-ease), box-shadow .4s ease; }
+  :where(.noir) .nr-btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / .45) 50%, transparent 65%); transform: translateX(-120%); transition: transform 1s var(--nr-ease); pointer-events: none; }
+  :where(.noir) .nr-btn:hover { background-position: 100% 0; box-shadow: 0 16px 40px -14px rgb(201 169 110 / .8); }
+  :where(.noir) .nr-btn:hover::after { transform: translateX(120%); }
+  :where(.noir) .nr-btn[disabled] { opacity: .45; cursor: not-allowed; box-shadow: none; }
+  :where(.noir) .nr-btn svg { flex: none; width: 16px; height: 16px; transition: transform .4s var(--nr-ease); }
+  :where(.noir) .nr-btn:hover svg { transform: translateX(4px); }
+  :where(.noir) .nr-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .noir.nr-grain::before { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: .08; mix-blend-mode: overlay; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  @keyframes nr-rise { from { opacity: 0; transform: translate3d(0, 34px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .noir [data-nr-reveal] { animation: nr-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 75%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.noir) .nr-wrap { width: calc(100% - 32px); } }
+
+  .nr-ritual { --nr-ink-soft: #5E564C; background: var(--nr-paper); color: var(--nr-ink); padding: clamp(80px, 10vw, 150px) 0; overflow: clip; }
+  .nr-ritual .nr-eyebrow { color: var(--nr-gold-lo); }
+  .nr-ritual .nr-h em { color: var(--nr-gold-lo); }
+  .nr-ritual__grid { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: clamp(44px, 8vw, 136px); align-items: center; }
+  .nr-ritual__arch { position: relative; padding: 18px; }
+  .nr-ritual__arch::before { content: ""; position: absolute; inset: 0; border: 1px solid rgb(138 107 60 / .5); border-radius: 999px 999px 0 0; pointer-events: none; }
+  .nr-ritual__frame { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 999px 999px 0 0; background: #2A241D; }
+  .nr-ritual__frame img { width: 100%; height: 100%; object-fit: cover; object-position: 80% 50%; }
+  .nr-ritual__head { display: grid; gap: 18px; }
+  .nr-ritual__heading { font-size: clamp(40px, 4.6vw, 70px); color: var(--nr-ink); }
+  .nr-ritual__text { max-width: 500px; font-size: 16px; line-height: 1.75; color: var(--nr-ink-soft); }
+  .nr-ritual__steps { position: relative; display: grid; gap: 8px; margin-top: clamp(36px, 4vw, 56px); }
+  .nr-ritual__steps::before { content: ""; position: absolute; top: 34px; bottom: 34px; inset-inline-start: 31px; width: 1px; background: linear-gradient(rgb(138 107 60 / .5), rgb(138 107 60 / .15)); }
+  .nr-ritual__steps li { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 28px; align-items: start; padding: 14px 0; }
+  .nr-ritual__n { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; border: 1px solid rgb(138 107 60 / .55); background: var(--nr-paper); font-size: 20px; font-style: italic; line-height: 1; color: var(--nr-gold-lo); transition: background .4s ease, color .4s ease; }
+  .nr-ritual__steps li:hover .nr-ritual__n { background: var(--nr-ink); color: var(--nr-gold-hi); }
+  .nr-ritual__steps h3 { padding-top: 14px; font-size: clamp(22px, 2vw, 28px); font-weight: 400; line-height: 1.25; color: var(--nr-ink); }
+  .nr-ritual__steps p { margin-top: 8px; max-width: 460px; font-size: 15px; line-height: 1.75; color: var(--nr-ink-soft); }
+  .nr-ritual__note { display: flex; align-items: center; gap: 14px; margin-top: 32px; padding-top: 28px; border-top: 1px solid rgb(11 10 9 / .12); font-size: 18px; font-style: italic; line-height: 1.5; color: var(--nr-ink-soft); }
+  .nr-ritual__note::before { content: ""; flex: none; width: 8px; height: 8px; background: var(--nr-gold-lo); transform: rotate(45deg); }
+  @media (max-width: 899px) {
+    .nr-ritual__grid { grid-template-columns: 1fr; }
+    .nr-ritual__arch { width: min(420px, 86%); margin-inline: auto; padding: 12px; }
+    .nr-ritual__steps li { grid-template-columns: 52px minmax(0, 1fr); gap: 20px; }
+    .nr-ritual__n { width: 52px; height: 52px; font-size: 18px; }
+    .nr-ritual__steps::before { inset-inline-start: 25px; }
+    .nr-ritual__steps h3 { padding-top: 10px; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--noir" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Manrope", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .nr-serif, .kl-rtl:is(#kl-rtl, *) .nr-serif * { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; }
+  .kl-rtl:is(#kl-rtl, *) .nr-btn svg, .kl-rtl:is(#kl-rtl, *) .nr-hero__nav svg { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Noir Ritual",
+  "tag": "section",
+  "class": "roarr-noir-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Noir Ritual" }]
+}
+{% endschema %}

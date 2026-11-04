@@ -1,0 +1,213 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600;700&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign eyebrow = m.noir_sig_eyebrow.value | default: m.noir_sig_eyebrow | default: 'Signature details' -%}
+{%- assign heading = m.noir_sig_heading.value | default: m.noir_sig_heading | default: 'Look a little closer' -%}
+{%- assign text = m.noir_sig_text.value | default: m.noir_sig_text | default: 'Four details you notice on the first day, and keep noticing for years.' -%}
+{%- assign f1 = m.noir_sig_1_title.value | default: m.noir_sig_1_title | default: 'Considered form' -%}
+{%- assign f1t = m.noir_sig_1_text.value | default: m.noir_sig_1_text | default: 'Proportions refined until nothing feels out of place, from every angle you see it.' -%}
+{%- assign f2 = m.noir_sig_2_title.value | default: m.noir_sig_2_title | default: 'Honest materials' -%}
+{%- assign f2t = m.noir_sig_2_text.value | default: m.noir_sig_2_text | default: 'Chosen for how they look and feel on the first day and the thousandth.' -%}
+{%- assign f3 = m.noir_sig_3_title.value | default: m.noir_sig_3_title | default: 'Precise finish' -%}
+{%- assign f3t = m.noir_sig_3_text.value | default: m.noir_sig_3_text | default: 'Every edge and surface is finished with care, so it reads right up close.' -%}
+{%- assign f4 = m.noir_sig_4_title.value | default: m.noir_sig_4_title | default: 'Made to be used' -%}
+{%- assign f4t = m.noir_sig_4_text.value | default: m.noir_sig_4_text | default: 'Designed around real routines, so it earns its place in your day.' -%}
+{%- assign s1 = m.product_image_2.value | default: m.product_image_2 -%}
+{%- assign s2 = m.product_image_3.value | default: m.product_image_3 -%}
+{%- assign s3 = m.product_image_4.value | default: m.product_image_4 -%}
+{%- assign s4 = m.product_image_5.value | default: m.product_image_5 -%}
+{%- if product.media.size > 0 -%}
+  {%- assign mf0 = product.media.first.preview_image | default: product.media.first -%}
+  {%- if s1 == blank -%}{%- assign s1 = product.media[1].preview_image | default: product.media[1] | default: mf0 -%}{%- endif -%}
+  {%- if s2 == blank -%}{%- assign s2 = product.media[2].preview_image | default: product.media[2] | default: mf0 -%}{%- endif -%}
+  {%- if s3 == blank -%}{%- assign s3 = product.media[3].preview_image | default: product.media[3] | default: mf0 -%}{%- endif -%}
+  {%- if s4 == blank -%}{%- assign s4 = product.media[4].preview_image | default: product.media[4] | default: mf0 -%}{%- endif -%}
+{%- endif -%}
+<section class="noir nr-sig">
+  <div class="nr-wrap">
+    <header class="nr-sig__head" data-nr-reveal>
+      <p class="nr-eyebrow nr-eyebrow--center">{{ eyebrow }}</p>
+      <h2 class="nr-h nr-sig__heading">{%- assign heading_w = heading | split: ' ' -%}{%- if heading_w.size > 1 -%}{%- assign heading_w_n = heading_w.size | minus: 1 -%}{% for word in heading_w limit: heading_w_n %}{{ word }} {% endfor %}<em>{{ heading_w | last }}</em>{%- else -%}{{ heading }}{%- endif -%}</h2>
+      {%- if text != blank -%}<p class="nr-sig__text">{{ text }}</p>{%- endif -%}
+    </header>
+    <div class="nr-sig__body">
+      <div class="nr-sig__stage">
+        <figure class="nr-sig__shot is-on" data-nr-shot>{%- if s1 != blank -%}<img src="{{ s1 | image_url: width: 1400 }}" alt="{{ f1 | escape }}" loading="lazy">{%- endif -%}</figure>
+        <figure class="nr-sig__shot" data-nr-shot>{%- if s2 != blank -%}<img src="{{ s2 | image_url: width: 1400 }}" alt="{{ f2 | escape }}" loading="lazy">{%- endif -%}</figure>
+        <figure class="nr-sig__shot" data-nr-shot>{%- if s3 != blank -%}<img src="{{ s3 | image_url: width: 1400 }}" alt="{{ f3 | escape }}" loading="lazy">{%- endif -%}</figure>
+        <figure class="nr-sig__shot" data-nr-shot>{%- if s4 != blank -%}<img src="{{ s4 | image_url: width: 1400 }}" alt="{{ f4 | escape }}" loading="lazy">{%- endif -%}</figure>
+        <div class="nr-sig__caption" aria-hidden="true"><span class="nr-sig__cap-num nr-serif" data-nr-cap-num>I</span><span class="nr-sig__cap-title" data-nr-cap-title>{{ f1 }}</span></div>
+      </div>
+      <ol class="nr-sig__list" role="list">
+        <li class="nr-sig__item is-on" data-nr-item data-num="I" data-title="{{ f1 | escape }}">
+          <button type="button" class="nr-sig__btn" aria-expanded="true" aria-controls="nr-sig-{{ section.id }}-1">
+            <span class="nr-sig__num nr-serif">I</span>
+            <span class="nr-sig__title nr-serif">{{ f1 }}</span>
+          </button>
+          <div class="nr-sig__panel" id="nr-sig-{{ section.id }}-1"><div><p>{{ f1t }}</p></div></div>
+          <span class="nr-sig__bar" aria-hidden="true"><i></i></span>
+        </li>
+        <li class="nr-sig__item" data-nr-item data-num="II" data-title="{{ f2 | escape }}">
+          <button type="button" class="nr-sig__btn" aria-expanded="false" aria-controls="nr-sig-{{ section.id }}-2">
+            <span class="nr-sig__num nr-serif">II</span>
+            <span class="nr-sig__title nr-serif">{{ f2 }}</span>
+          </button>
+          <div class="nr-sig__panel" id="nr-sig-{{ section.id }}-2"><div><p>{{ f2t }}</p></div></div>
+          <span class="nr-sig__bar" aria-hidden="true"><i></i></span>
+        </li>
+        <li class="nr-sig__item" data-nr-item data-num="III" data-title="{{ f3 | escape }}">
+          <button type="button" class="nr-sig__btn" aria-expanded="false" aria-controls="nr-sig-{{ section.id }}-3">
+            <span class="nr-sig__num nr-serif">III</span>
+            <span class="nr-sig__title nr-serif">{{ f3 }}</span>
+          </button>
+          <div class="nr-sig__panel" id="nr-sig-{{ section.id }}-3"><div><p>{{ f3t }}</p></div></div>
+          <span class="nr-sig__bar" aria-hidden="true"><i></i></span>
+        </li>
+        <li class="nr-sig__item" data-nr-item data-num="IV" data-title="{{ f4 | escape }}">
+          <button type="button" class="nr-sig__btn" aria-expanded="false" aria-controls="nr-sig-{{ section.id }}-4">
+            <span class="nr-sig__num nr-serif">IV</span>
+            <span class="nr-sig__title nr-serif">{{ f4 }}</span>
+          </button>
+          <div class="nr-sig__panel" id="nr-sig-{{ section.id }}-4"><div><p>{{ f4t }}</p></div></div>
+          <span class="nr-sig__bar" aria-hidden="true"><i></i></span>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+<style>
+  .noir { --nr-ink: #0B0A09; --nr-coal: #121110; --nr-char: #1A1714; --nr-line: rgb(201 169 110 / .18); --nr-line-2: rgb(242 236 226 / .09); --nr-gold: #C9A96E; --nr-gold-hi: #E9D5A6; --nr-gold-lo: #8A6B3C; --nr-gild: linear-gradient(120deg, #F1DEB0 0%, #C9A96E 40%, #A8864F 68%, #E4CB92 100%); --nr-ivory: #F3EDE3; --nr-paper: #EFE8DC; --nr-muted: #A0978A; --nr-serif: "Bodoni Moda", "Didot", serif; --nr-sans: "Manrope", system-ui, sans-serif; --nr-ease: cubic-bezier(.22, .8, .24, 1); --font-heading-family: "Bodoni Moda", serif; --font-body-family: "Manrope", sans-serif; position: relative; font-family: var(--nr-sans); -webkit-font-smoothing: antialiased; interpolate-size: allow-keywords; }
+  :where(.noir) { background: var(--nr-ink); color: var(--nr-ivory); }
+  .noir *, .noir *::before, .noir *::after { box-sizing: border-box; }
+  :where(.noir) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .noir, .noir :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption) { font-family: var(--nr-sans) !important; }
+  .noir :is(h1, h2, h3, h4, .nr-h *, .nr-serif, .nr-serif *) { font-family: var(--nr-serif) !important; }
+  :where(.noir) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.noir) :is(ul, ol) { list-style: none; }
+  :where(.noir) img { display: block; max-width: 100%; }
+  :where(.noir) .nr-wrap { width: min(1320px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.noir) .nr-eyebrow { display: flex; align-items: center; gap: 14px; font-size: 11px; font-weight: 600; line-height: 1.4; letter-spacing: .3em; text-transform: uppercase; color: var(--nr-gold); }
+  :where(.noir) .nr-eyebrow::before { content: ""; flex: none; width: 34px; height: 1px; background: linear-gradient(90deg, transparent, currentColor); }
+  :where(.noir) .nr-eyebrow--center { justify-content: center; }
+  :where(.noir) .nr-eyebrow--center::after { content: ""; flex: none; width: 34px; height: 1px; background: linear-gradient(90deg, currentColor, transparent); }
+  :where(.noir) .nr-h { font-weight: 400; line-height: 1.02; letter-spacing: -.015em; text-wrap: balance; }
+  :where(.noir) .nr-h em { font-style: italic; color: var(--nr-gold-hi); }
+  :where(.noir) .nr-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 56px; padding: 0 34px; border: 0; border-radius: 0; background: var(--nr-gild); background-size: 220% 100%; color: var(--nr-ink); font-size: 12px; font-weight: 700; line-height: 1; letter-spacing: .22em; text-transform: uppercase; text-decoration: none; cursor: pointer; box-shadow: 0 12px 32px -14px rgb(201 169 110 / .6); transition: background-position .7s var(--nr-ease), box-shadow .4s ease; }
+  :where(.noir) .nr-btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / .45) 50%, transparent 65%); transform: translateX(-120%); transition: transform 1s var(--nr-ease); pointer-events: none; }
+  :where(.noir) .nr-btn:hover { background-position: 100% 0; box-shadow: 0 16px 40px -14px rgb(201 169 110 / .8); }
+  :where(.noir) .nr-btn:hover::after { transform: translateX(120%); }
+  :where(.noir) .nr-btn[disabled] { opacity: .45; cursor: not-allowed; box-shadow: none; }
+  :where(.noir) .nr-btn svg { flex: none; width: 16px; height: 16px; transition: transform .4s var(--nr-ease); }
+  :where(.noir) .nr-btn:hover svg { transform: translateX(4px); }
+  :where(.noir) .nr-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .noir.nr-grain::before { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: .08; mix-blend-mode: overlay; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  @keyframes nr-rise { from { opacity: 0; transform: translate3d(0, 34px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .noir [data-nr-reveal] { animation: nr-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 75%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.noir) .nr-wrap { width: calc(100% - 32px); } }
+
+  .nr-sig { background: var(--nr-coal); color: var(--nr-ivory); padding: clamp(80px, 10vw, 150px) 0; overflow: clip; }
+  .nr-sig::after { content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: clamp(40px, 5vw, 72px); background: linear-gradient(var(--nr-gold), transparent); }
+  .nr-sig__head { display: grid; justify-items: center; gap: 18px; max-width: 720px; margin: 0 auto clamp(48px, 6vw, 88px); text-align: center; }
+  .nr-sig__heading { font-size: clamp(40px, 5vw, 76px); }
+  .nr-sig__text { max-width: 520px; font-size: 16px; line-height: 1.75; color: var(--nr-muted); }
+  .nr-sig__body { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(36px, 6vw, 104px); align-items: center; }
+  .nr-sig__stage { position: relative; aspect-ratio: 5 / 6; overflow: hidden; background: var(--nr-char); }
+  .nr-sig__stage::after { content: ""; position: absolute; inset: 16px; z-index: 2; border: 1px solid rgb(233 213 166 / .25); pointer-events: none; }
+  .nr-sig__shot { position: absolute; inset: 0; opacity: 0; transform: scale(1.06); transition: opacity .9s ease, transform 1.8s var(--nr-ease); }
+  .nr-sig__shot.is-on { opacity: 1; transform: none; }
+  .nr-sig__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .nr-sig__caption { position: absolute; inset: auto 0 0 0; z-index: 1; display: flex; align-items: baseline; gap: 14px; padding: 80px 36px 34px; background: linear-gradient(transparent, rgb(11 10 9 / .85)); }
+  .nr-sig__cap-num { font-size: 26px; font-style: italic; line-height: 1; color: var(--nr-gold); }
+  .nr-sig__cap-title { font-size: 11px; font-weight: 600; line-height: 1.4; letter-spacing: .26em; text-transform: uppercase; color: var(--nr-ivory); }
+  .nr-sig__list { border-top: 1px solid var(--nr-line); }
+  .nr-sig__item { position: relative; border-bottom: 1px solid var(--nr-line); }
+  .nr-sig__btn { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: baseline; width: 100%; padding: 28px 0; border: 0; background: none; text-align: start; cursor: pointer; color: rgb(242 236 226 / .42); transition: color .45s ease; }
+  .nr-sig__btn:hover, .nr-sig__item.is-on .nr-sig__btn { color: var(--nr-ivory); }
+  .nr-sig__num { font-size: 20px; font-style: italic; line-height: 1; color: var(--nr-gold); }
+  .nr-sig__title { font-size: clamp(24px, 2.4vw, 36px); line-height: 1.15; }
+  .nr-sig__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .6s var(--nr-ease); }
+  .nr-sig__panel > div { overflow: hidden; }
+  .nr-sig__item.is-on .nr-sig__panel { grid-template-rows: 1fr; }
+  .nr-sig__panel p { max-width: 460px; padding: 0 0 30px 64px; font-size: 15px; line-height: 1.8; color: var(--nr-muted); }
+  .nr-sig__bar { position: absolute; inset: auto 0 -1px 0; height: 1px; overflow: hidden; }
+  .nr-sig__bar i { display: block; height: 100%; background: var(--nr-gild); transform: scaleX(0); transform-origin: 0 50%; }
+  .nr-sig__item.is-on .nr-sig__bar i { animation: nr-progress 7s linear forwards; }
+  .nr-sig__list:hover .nr-sig__item.is-on .nr-sig__bar i, .nr-sig.is-paused .nr-sig__item.is-on .nr-sig__bar i { animation-play-state: paused; }
+  @keyframes nr-progress { to { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { .nr-sig__item.is-on .nr-sig__bar i { animation: none; transform: scaleX(1); } }
+  @media (max-width: 899px) {
+    .nr-sig__body { grid-template-columns: 1fr; }
+    .nr-sig__stage { aspect-ratio: 4 / 5; }
+    .nr-sig__caption { padding: 64px 26px 26px; }
+    .nr-sig__btn { grid-template-columns: 48px minmax(0, 1fr); padding: 22px 0; }
+    .nr-sig__panel p { padding: 0 0 24px 48px; }
+  }
+</style>
+<script>
+  (function () {
+    document.querySelectorAll(".nr-sig").forEach(function (root) {
+      if (root.getAttribute("data-nr-ready")) return;
+      root.setAttribute("data-nr-ready", "1");
+      var items = Array.prototype.slice.call(root.querySelectorAll("[data-nr-item]"));
+      var shots = root.querySelectorAll("[data-nr-shot]");
+      var capNum = root.querySelector("[data-nr-cap-num]");
+      var capTitle = root.querySelector("[data-nr-cap-title]");
+      var current = 0;
+      function show(i) {
+        current = (i + items.length) % items.length;
+        items.forEach(function (item, n) {
+          var on = n === current;
+          item.classList.toggle("is-on", on);
+          var btn = item.querySelector("button");
+          if (btn) btn.setAttribute("aria-expanded", on ? "true" : "false");
+          if (shots[n]) shots[n].classList.toggle("is-on", on);
+        });
+        if (capNum) capNum.textContent = items[current].getAttribute("data-num") || "";
+        if (capTitle) capTitle.textContent = items[current].getAttribute("data-title") || "";
+      }
+      items.forEach(function (item, n) {
+        var btn = item.querySelector("button");
+        if (btn) btn.addEventListener("click", function (e) { e.stopPropagation(); show(n); });
+        var bar = item.querySelector(".nr-sig__bar i");
+        if (bar) bar.addEventListener("animationend", function () { if (n === current) show(current + 1); });
+      });
+      if ("IntersectionObserver" in window) {
+        root.classList.add("is-paused");
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) { root.classList.toggle("is-paused", !entry.isIntersecting); });
+        }, { threshold: 0.25 }).observe(root);
+      }
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--noir" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div) { font-family: "Manrope", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .nr-serif, .kl-rtl:is(#kl-rtl, *) .nr-serif * { font-family: "Bodoni Moda", "Amiri", "Noto Naskh Arabic", serif !important; }
+  .kl-rtl:is(#kl-rtl, *) .nr-btn svg, .kl-rtl:is(#kl-rtl, *) .nr-hero__nav svg { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Noir Signature",
+  "tag": "section",
+  "class": "roarr-noir-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Noir Signature" }]
+}
+{% endschema %}

@@ -1,0 +1,136 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign heading = m.bloom_benefits_heading.value | default: m.bloom_benefits_heading -%}
+{%- assign heading_h = heading | escape | replace: '[', '<span class="bl-ac">' | replace: ']', '</span>' -%}
+{%- assign bt1 = m.bloom_benefit_1_title.value | default: m.bloom_benefit_1_title -%}
+{%- assign bt2 = m.bloom_benefit_2_title.value | default: m.bloom_benefit_2_title -%}
+{%- assign bt3 = m.bloom_benefit_3_title.value | default: m.bloom_benefit_3_title -%}
+{%- assign bt4 = m.bloom_benefit_4_title.value | default: m.bloom_benefit_4_title -%}
+{%- assign bt5 = m.bloom_benefit_5_title.value | default: m.bloom_benefit_5_title -%}
+{%- assign bt6 = m.bloom_benefit_6_title.value | default: m.bloom_benefit_6_title -%}
+{%- assign bx1 = m.bloom_benefit_1_text.value | default: m.bloom_benefit_1_text -%}
+{%- assign bx2 = m.bloom_benefit_2_text.value | default: m.bloom_benefit_2_text -%}
+{%- assign bx3 = m.bloom_benefit_3_text.value | default: m.bloom_benefit_3_text -%}
+{%- assign bx4 = m.bloom_benefit_4_text.value | default: m.bloom_benefit_4_text -%}
+{%- assign bx5 = m.bloom_benefit_5_text.value | default: m.bloom_benefit_5_text -%}
+{%- assign bx6 = m.bloom_benefit_6_text.value | default: m.bloom_benefit_6_text -%}
+{%- if bt1 != blank -%}
+<section class="bloom bl-ben" id="bl-benefits">
+  <div class="bl-wrap">
+    {%- if heading != blank -%}<h2 class="bl-h bl-ben__h" data-bl-reveal>{{ heading_h }}</h2>{%- endif -%}
+    <ul class="bl-ben__grid bl-pop" role="list">
+      {%- if bt1 != blank -%}
+      <li class="bl-ben__card" data-bl-reveal style="--d:0.0s">
+        <span class="bl-ben__ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0012 3z"/></svg></span>
+        <h3 class="bl-ben__t">{{ bt1 }}</h3>
+        <p class="bl-ben__x">{{ bx1 }}</p>
+      </li>
+      {%- endif -%}
+      {%- if bt2 != blank -%}
+      <li class="bl-ben__card" data-bl-reveal style="--d:0.08s">
+        <span class="bl-ben__ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></span>
+        <h3 class="bl-ben__t">{{ bt2 }}</h3>
+        <p class="bl-ben__x">{{ bx2 }}</p>
+      </li>
+      {%- endif -%}
+      {%- if bt3 != blank -%}
+      <li class="bl-ben__card" data-bl-reveal style="--d:0.16s">
+        <span class="bl-ben__ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L5 13h6l-1 9 8-11h-6l1-9z"/></svg></span>
+        <h3 class="bl-ben__t">{{ bt3 }}</h3>
+        <p class="bl-ben__x">{{ bx3 }}</p>
+      </li>
+      {%- endif -%}
+      {%- if bt4 != blank -%}
+      <li class="bl-ben__card" data-bl-reveal style="--d:0.0s">
+        <span class="bl-ben__ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12M6 21h12M7 3c0 5 5 6 5 9s-5 4-5 9M17 3c0 5-5 6-5 9s5 4 5 9"/></svg></span>
+        <h3 class="bl-ben__t">{{ bt4 }}</h3>
+        <p class="bl-ben__x">{{ bx4 }}</p>
+      </li>
+      {%- endif -%}
+      {%- if bt5 != blank -%}
+      <li class="bl-ben__card" data-bl-reveal style="--d:0.08s">
+        <span class="bl-ben__ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <h3 class="bl-ben__t">{{ bt5 }}</h3>
+        <p class="bl-ben__x">{{ bx5 }}</p>
+      </li>
+      {%- endif -%}
+      {%- if bt6 != blank -%}
+      <li class="bl-ben__card" data-bl-reveal style="--d:0.16s">
+        <span class="bl-ben__ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(-35 12 12)"/><path d="M9.5 9.5l5 5"/></svg></span>
+        <h3 class="bl-ben__t">{{ bt6 }}</h3>
+        <p class="bl-ben__x">{{ bx6 }}</p>
+      </li>
+      {%- endif -%}
+    </ul>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .bloom { --bl-plum: #4A0E2B; --bl-ink: #3D1229; --bl-rose: #E5518E; --bl-rose-d: #B3235F; --bl-blush: #FDEBF5; --bl-pink: #FFDDEB; --bl-pink-2: #FFE9F2; --bl-peach: #FFE8E3; --bl-coral: #E8695C; --bl-cream: #FFF6E8; --bl-grad: linear-gradient(90deg, #E8695C 0%, #E5518E 100%); --bl-star: #F59E0B; --bl-muted: #6F5A67; --bl-line: #F1D5E1; --bl-serif: "Playfair Display", Georgia, serif; --bl-sans: "Open Sans", system-ui, sans-serif; --bl-pop: "Poppins", "Open Sans", sans-serif; --font-heading-family: "Playfair Display", serif; --font-body-family: "Open Sans", sans-serif; position: relative; font-family: var(--bl-sans); -webkit-font-smoothing: antialiased; }
+  :where(.bloom) { background: #fff; color: var(--bl-plum); }
+  .bloom *, .bloom *::before, .bloom *::after { box-sizing: border-box; }
+  :where(.bloom) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption, cite) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .bloom, .bloom :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption, cite) { font-family: var(--bl-sans) !important; }
+  .bloom :is(h1, h2, h3, h4, .bl-serif, .bl-serif *, .bl-h *) { font-family: var(--bl-serif) !important; }
+  .bloom .bl-pop, .bloom .bl-pop :is(p, li, a, span, label, button, input, select, strong, small, b, s, div, h3, h4) { font-family: var(--bl-pop) !important; }
+  :where(.bloom) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.bloom) :is(ul, ol) { list-style: none; }
+  :where(.bloom) img { display: block; max-width: 100%; }
+  :where(.bloom) button { font: inherit; }
+  :where(.bloom) .bl-wrap { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.bloom) .bl-h { font-weight: 600; line-height: 1.22; letter-spacing: 0; text-wrap: balance; text-align: center; color: var(--bl-plum); font-size: clamp(28px, 3.4vw, 40px); }
+  :where(.bloom) .bl-ac { color: var(--bl-rose); }
+  :where(.bloom) .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 28px; border: 1px solid #E5518E; border-radius: 8px; background: var(--bl-grad); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px -10px rgb(229 81 142 / .7); transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+  :where(.bloom) .bl-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 12px 24px -10px rgb(229 81 142 / .8); }
+  :where(.bloom) .bl-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .bloom [hidden] { display: none !important; }
+  :where(.bloom) .bl-fade { -webkit-mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); }
+  :where(.bloom) .bl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where(.bloom) .bl-stars { color: var(--bl-star); letter-spacing: 1px; }
+  @keyframes bl-rise { from { opacity: 0; transform: translate3d(0, 24px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .bloom [data-bl-reveal] { animation: bl-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.bloom) .bl-wrap { width: calc(100% - 32px); } }
+
+  .bl-ben { background: #fff; padding: clamp(36px, 5vw, 68px) 0; }
+  .bl-ben__h { max-width: 640px; margin: 0 auto clamp(22px, 3vw, 38px); }
+  .bl-ben__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, 1.4vw, 18px); }
+  .bl-ben__card { display: grid; justify-items: center; align-content: start; gap: 8px; padding: clamp(18px, 2.2vw, 28px) clamp(14px, 1.8vw, 24px); border-radius: 8px; background: linear-gradient(180deg, #FFD3D6, #FFD7D4); text-align: center; box-shadow: 0 4px 12px -8px rgb(232 105 92 / .5); transition: transform .3s ease, box-shadow .3s ease; }
+  .bl-ben__card:nth-child(3n + 2) { background: linear-gradient(180deg, #FFDDD0, #FFE0D2); }
+  .bl-ben__card:hover { transform: translateY(-3px); box-shadow: 0 14px 24px -14px rgb(232 105 92 / .6); }
+  .bl-ben__ic { display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: 4px; border-radius: 50%; background: #F9BDB6; color: #C2461E; }
+  .bloom .bl-ben__t { font-family: var(--bl-pop) !important; font-size: 16px; font-weight: 500; line-height: 1.3; color: #0F0A0C; }
+  .bl-ben__x { max-width: 260px; font-size: 14.5px; line-height: 1.55; color: #6F6A6C; }
+  @media (max-width: 989px) { .bl-ben__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .bl-ben__card:nth-child(3n + 2) { background: linear-gradient(180deg, #FFD3D6, #FFD7D4); } .bl-ben__card:nth-child(even) { background: linear-gradient(180deg, #FFDDD0, #FFE0D2); } }
+  @media (max-width: 549px) { .bl-ben__grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--bloom" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div, cite) { font-family: "Open Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Playfair Display", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .bl-flip { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Bloom Benefits",
+  "tag": "section",
+  "class": "roarr-bloom-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Bloom Benefits" }]
+}
+{% endschema %}

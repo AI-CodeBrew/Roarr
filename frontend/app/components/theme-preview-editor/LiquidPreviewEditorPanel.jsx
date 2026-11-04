@@ -124,6 +124,9 @@ export default function LiquidPreviewEditorPanel({
         if (normalized.startsWith("packs/amour/home/")) {
             normalized = normalized.slice("packs/amour/home/".length);
         }
+        if (normalized.startsWith("packs/maison/home/")) {
+            normalized = normalized.slice("packs/maison/home/".length);
+        }
         if (normalized.startsWith("packs/lumenook/home/")) {
             normalized = normalized.slice("packs/lumenook/home/".length);
         }

@@ -22,6 +22,10 @@ export const FEATURE_COSTS_DEFAULT = Object.freeze({
   page_generation_noir: 150,
   // Frost (template 6) product page — all categories.
   page_generation_frost: 150,
+  // Atelier (template 7) product page — all categories.
+  page_generation_atelier: 150,
+  // Bloom (template 8) product page — all categories.
+  page_generation_bloom: 150,
   image_regenerate: 5,
   // Brand ads: one campaign produces 3 creatives at 10 credits each = 30.
   brand_ads_campaign: 30,
@@ -40,6 +44,9 @@ export const LINEN_SINGLE_STORE_CREDITS = 300;
 
 /** Amour (editorial homepage + simple product page) on single prepaid and COD. Mirrors backend AMOUR_SINGLE_STORE_CREDITS. */
 export const AMOUR_SINGLE_STORE_CREDITS = 300;
+
+/** Maison (quiet-luxury homepage + simple product page) on single prepaid and COD. Mirrors backend MAISON_SINGLE_STORE_CREDITS. */
+export const MAISON_SINGLE_STORE_CREDITS = 300;
 
 export const CREDIT_PACKS_DEFAULT = Object.freeze({
   starter: {
@@ -71,6 +78,8 @@ export const FEATURE_LABELS = Object.freeze({
   page_generation_lumenook: "Generate Product Page",
   page_generation_noir: "Generate Product Page",
   page_generation_frost: "Generate Product Page",
+  page_generation_atelier: "Generate Product Page",
+  page_generation_bloom: "Generate Product Page",
   image_regenerate: "Image Regeneration",
   brand_ads_campaign: "Brand Ads Campaign",
 });
@@ -87,13 +96,15 @@ export function formatCredits(n, unit = "cr") {
 /**
  * Resolved cost for `featureKey` using API-backed costs when provided, else defaults.
  */
-/** Feature key for a product page: Aura (3), Lumenook (4), Noir (5) and Frost (6) have their own price. */
+/** Feature key for a product page: Aura (3), Lumenook (4), Noir (5), Frost (6), Atelier (7) and Bloom (8) have their own price. */
 export function pageGenerationFeatureKey(_category, template) {
   const n = Number(template);
   if (n === 3) return "page_generation_glow";
   if (n === 4) return "page_generation_lumenook";
   if (n === 5) return "page_generation_noir";
   if (n === 6) return "page_generation_frost";
+  if (n === 7) return "page_generation_atelier";
+  if (n === 8) return "page_generation_bloom";
   return "page_generation";
 }
 
@@ -128,6 +139,10 @@ export function getStoreCreationCost(
   // Amour: homepage-only single store. Same 300 credits on prepaid and COD.
   if (mode === "single_product" && pack === "amour") {
     return AMOUR_SINGLE_STORE_CREDITS;
+  }
+  // Maison: homepage-only single store. Same 300 credits on prepaid and COD.
+  if (mode === "single_product" && pack === "maison") {
+    return MAISON_SINGLE_STORE_CREDITS;
   }
   // Linen is classic + Sleek. Same 300 credits on prepaid and COD.
   if (

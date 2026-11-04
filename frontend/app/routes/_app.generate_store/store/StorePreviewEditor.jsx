@@ -29,6 +29,7 @@ import {
   HOME_MULTI_TEMPLATE_SCHEMAS,
   HOME_CINEMATIC_TEMPLATE_SCHEMAS,
   HOME_AMOUR_TEMPLATE_SCHEMAS,
+  HOME_MAISON_TEMPLATE_SCHEMAS,
   HOME_LUMENOOK_TEMPLATE_SCHEMAS,
 } from "./utils/editor-schema/index.js";
 import { useViewportBelowMd } from "../../../hooks/useViewportBelowMd.js";
@@ -449,7 +450,9 @@ export default function StorePreviewEditor({
           ? HOME_CINEMATIC_TEMPLATE_SCHEMAS
           : String(storeTemplatePack || "").toLowerCase() === "amour"
             ? HOME_AMOUR_TEMPLATE_SCHEMAS
-            : HOME_SINGLE_TEMPLATE_SCHEMAS),
+            : String(storeTemplatePack || "").toLowerCase() === "maison"
+              ? HOME_MAISON_TEMPLATE_SCHEMAS
+              : HOME_SINGLE_TEMPLATE_SCHEMAS),
       ...productTemplateSchemas,
     }),
     [productTemplateSchemas, isMultiProductHome, storeTemplatePack],

@@ -3,6 +3,8 @@
  * `SINGLE_HOME_BY_CATEGORY` and `MULTI_HOME_BY_CATEGORY` each hold full `{ images, text }` per store category.
  */
 
+import { buildMaisonHomeData } from "../buildMaisonDemo.js";
+
 /** @type {Record<string, string>} */
 export const CATEGORY_DISPLAY = {
     health_beauty: "Health & Beauty",
@@ -1911,7 +1913,7 @@ export const multi_home_page = MULTI_HOME_PAGE_BY_CATEGORY.fashion;
  * Home page data for liquid preview keyed by store type, category, and homepage pack.
  * @param {"single" | "multi" | null | undefined} storeType
  * @param {string | null | undefined} category — e.g. storeCategory from StoreFlowStructure
- * @param {"classic" | "cinematic" | "amour" | "classic-prepaid" | string | null | undefined} [storeTemplatePack]
+ * @param {"classic" | "cinematic" | "amour" | "maison" | "classic-prepaid" | string | null | undefined} [storeTemplatePack]
  */
 export function getHomeDataForPreview(storeType, category, storeTemplatePack = "classic") {
     const key = normalizeHomeDataCategory(category);
@@ -1927,6 +1929,10 @@ export function getHomeDataForPreview(storeType, category, storeTemplatePack = "
             AMOUR_SINGLE_HOME_PAGE_BY_CATEGORY[key] ??
             AMOUR_SINGLE_HOME_PAGE_BY_CATEGORY.general
         );
+    }
+    // Maison keeps one house look (and one demo product) for every category.
+    if (pack === "maison" && storeType !== "multi") {
+        return buildMaisonHomeData();
     }
     // Dedicated Classic prepaid theme demos (distinct products from COD classic / Velvet).
     if (pack === "classic-prepaid" && storeType !== "multi") {

@@ -1,0 +1,127 @@
+{%- capture mz_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign announce_1 = section.settings.announce_1 | default: 'Complimentary delivery' -%}
+{%- if use_mf and ht.announce_1 != blank -%}{%- assign announce_1 = ht.announce_1 -%}{%- endif -%}
+{%- assign announce_2 = section.settings.announce_2 | default: 'Made with intention' -%}
+{%- if use_mf and ht.announce_2 != blank -%}{%- assign announce_2 = ht.announce_2 -%}{%- endif -%}
+{%- assign announce_3 = section.settings.announce_3 | default: 'Gift-ready packaging' -%}
+{%- if use_mf and ht.announce_3 != blank -%}{%- assign announce_3 = ht.announce_3 -%}{%- endif -%}
+{%- if announce_1 != blank or announce_2 != blank or announce_3 != blank -%}
+<div class="mz mz-bar" role="region" aria-label="{{ shop.name | escape }}">
+  <ul class="mz-wrap mz-bar__row">
+    <li class="mz-bar__side">{{ announce_1 | escape }}</li>
+    <li class="mz-bar__mid">{{ announce_2 | escape }}</li>
+    <li class="mz-bar__side">{{ announce_3 | escape }}</li>
+  </ul>
+</div>
+{%- endif -%}
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.mz) { --mz-ivory: #F5F1EA; --mz-paper: #FBF9F5; --mz-stone: #E9E2D6; --mz-ink: #1D1915; --mz-ink-2: #5E554B; --mz-line: rgb(29 25 21 / .14); --mz-gold: #B39062; --mz-gold-deep: #8F6F43; --mz-gold-text: #6E5530; --mz-on-dark: #F3EDE3; --mz-on-dark-2: #CBC2B4; --mz-gold-light: #D8C29B; --mz-serif: "Instrument Serif", "Cormorant Garamond", "Times New Roman", serif; --mz-sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif; --mz-gutter: clamp(20px, 4vw, 64px); --mz-dir: 1; font-family: var(--mz-sans); font-size: 16px; line-height: 1.65; color: var(--mz-ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .mz *, .mz *::before, .mz *::after { box-sizing: border-box; }
+  :where(.mz) :where(h1, h2, h3, p, ul, ol, dl, dd, blockquote, figure) { margin: 0; padding: 0; }
+  :where(.mz) :where(ul, ol) { list-style: none; }
+  :where(.mz) img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .mz-wrap { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: var(--mz-gutter); }
+  .mz-label { display: flex; align-items: baseline; gap: 14px; font: 500 11.5px/1.4 var(--mz-sans); letter-spacing: .2em; text-transform: uppercase; color: var(--mz-gold-text); }
+  .mz-label__n { font-feature-settings: "tnum"; letter-spacing: .08em; color: var(--mz-ink-2); }
+  .mz-label__n::after { content: ""; display: inline-block; width: 28px; height: 1px; margin-inline-start: 14px; vertical-align: middle; background: var(--mz-gold); }
+  .mz-h2 { font: 400 clamp(40px, 4.8vw, 72px)/1 var(--mz-serif); letter-spacing: -.015em; color: var(--mz-ink); text-wrap: balance; }
+  .mz-h2 em, .mz-display em { font-style: italic; color: var(--mz-gold-deep); }
+  .mz-body { font-size: 17px; line-height: 1.7; color: var(--mz-ink-2); text-wrap: pretty; }
+  .mz-btn { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 54px; padding: 0 34px; border: 1px solid var(--mz-ink); background: var(--mz-ink); color: var(--mz-paper); font: 500 12px/1 var(--mz-sans); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; transition: background .4s ease, color .4s ease, border-color .4s ease; }
+  .mz-btn:hover { background: var(--mz-gold-deep); border-color: var(--mz-gold-deep); color: var(--mz-paper); }
+  .mz-btn--light { background: var(--mz-paper); border-color: var(--mz-paper); color: var(--mz-ink); }
+  .mz-btn--light:hover { background: transparent; border-color: var(--mz-paper); color: var(--mz-paper); }
+  .mz-link { position: relative; display: inline-flex; align-items: center; gap: 12px; padding-bottom: 8px; color: var(--mz-ink); font: 500 12px/1 var(--mz-sans); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; }
+  .mz-link::after { content: ""; position: absolute; inset: auto 0 0; height: 1px; background: currentColor; transform-origin: right; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+  .mz-link:hover::after { transform: scaleX(.35); }
+  .mz-btn:focus-visible, .mz-link:focus-visible, .mz summary:focus-visible { outline: 2px solid var(--mz-gold-text); outline-offset: 4px; }
+  .mz-arrow { display: inline-block; font-family: var(--mz-sans); }
+  .mz-media { position: relative; overflow: hidden; background: var(--mz-stone); }
+  .mz-media img { transition: transform 1.6s cubic-bezier(.2, .7, .2, 1); }
+  .mz-media:hover img { transform: scale(1.03); }
+  .mz-fig { display: grid; gap: 16px; }
+  .mz-fig figcaption { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; row-gap: 4px; align-items: baseline; }
+  .mz-fig__n { grid-row: span 2; font: 500 11px/1.6 var(--mz-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--mz-gold-text); }
+  .mz-fig h3 { font: 400 24px/1.15 var(--mz-serif); color: var(--mz-ink); }
+  .mz-fig p { font-size: 14.5px; line-height: 1.6; color: var(--mz-ink-2); }
+  @keyframes mz-reveal { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
+  @keyframes mz-settle { from { scale: 1.14; } to { scale: 1; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .mz-reveal { animation: mz-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+      .mz-settle img { animation: mz-settle linear both; animation-timeline: view(); animation-range: entry 0% cover 55%; }
+    }
+  }
+  @media (max-width: 749px) { .mz-body { font-size: 16px; } }
+  @media (prefers-reduced-motion: reduce) { .mz *, .mz *::before, .mz *::after { animation: none !important; transition: none !important; } }
+
+  .mz-bar { background: var(--mz-ink); color: var(--mz-gold-light); }
+  .mz-bar__row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; min-height: 40px; font: 500 11px/1.3 var(--mz-sans); letter-spacing: .2em; text-transform: uppercase; }
+  .mz-bar__row li:first-child { justify-self: start; }
+  .mz-bar__row li:last-child { justify-self: end; }
+  .mz-bar__mid { text-align: center; color: var(--mz-on-dark); }
+  @media (max-width: 749px) { .mz-bar__row { grid-template-columns: 1fr; } .mz-bar__side { display: none; } .mz-bar__mid { justify-self: center; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if mz_html contains 'ا' or mz_html contains 'ل' or mz_html contains 'ي' or mz_html contains 'ة' -%}
+<div class="mz-rtl" dir="rtl" style="display: contents">{{ mz_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .mz-rtl:is(#mz-rtl, *), .mz-rtl:is(#mz-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .mz-rtl:is(#mz-rtl, *) :is(p, li, span, a, summary, dt, dd, figcaption, div) { font-family: "Instrument Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .mz-rtl:is(#mz-rtl, *) :is(h1, h2, h3, blockquote, blockquote p) { font-family: "Instrument Serif", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.4 !important; }
+  .mz-rtl:is(#mz-rtl, *) .mz { --mz-dir: -1; }
+  .mz-rtl:is(#mz-rtl, *) .mz-arrow { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ mz_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Maison Announcement",
+  "tag": "section",
+  "class": "roarr-maison-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr generated content",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announce_1",
+      "label": "Message 1 (left)",
+      "default": "Complimentary delivery"
+    },
+    {
+      "type": "text",
+      "id": "announce_2",
+      "label": "Message 2 (centre)",
+      "default": "Made with intention"
+    },
+    {
+      "type": "text",
+      "id": "announce_3",
+      "label": "Message 3 (right)",
+      "default": "Gift-ready packaging"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Announcement"
+    }
+  ]
+}
+{% endschema %}

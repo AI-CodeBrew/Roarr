@@ -2235,6 +2235,59 @@ class ShopifyUtils:
                 cache["__bulk__"] = True
             return ok, output
 
+    def _theme_cli_push_stale(self, shop_domain: str, theme_id: str, cache: Dict[str, Any]) -> Dict[str, str]:
+        """
+        Push every Roarr section/snippet whose content this theme does not have yet, in ONE CLI call.
+
+        A CLI run costs several seconds whatever it pushes, so writing new or edited sections one file
+        at a time made a publish take minutes. Returns {asset_key: error} for files that could not be
+        pushed; an empty dict means everything that was stale is now in the theme and in the cache.
+        """
+        files_dir = Path(__file__).resolve().parents[3] / "data" / "assets" / "shopify_files"
+        sources = {"sections": files_dir / "liquid_files", "snippets": files_dir / "snippet_files"}
+        stale: Dict[str, Any] = {}
+        for folder, src in sources.items():
+            if not src.is_dir():
+                continue
+            for liquid in src.glob("*.liquid"):
+                data = liquid.read_bytes()
+                # Per-file writes read the source in text mode (CRLF -> LF), so hash the same form.
+                digest = hashlib.sha256(data.replace(b"\r\n", b"\n")).hexdigest()
+                key = f"{folder}/{liquid.name}"
+                if cache.get(key) != digest:
+                    stale[key] = (data, digest)
+        if not stale:
+            return {}
+
+        def push(keys: List[str], patterns: List[str]):
+            with tempfile.TemporaryDirectory(prefix="roarr-theme-") as tmp:
+                work = Path(tmp)
+                for key in keys:
+                    target = work / key
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(stale[key][0])
+                return self._run_theme_cli_push(shop_domain, theme_id, work, patterns)
+
+        keys = list(stale)
+        patterns = keys if len(keys) <= 60 else [f"{folder}/*.liquid" for folder in sources]
+        logger.info("Theme CLI: pushing %s changed Roarr sections/snippets to theme %s in one call", len(keys), theme_id)
+        ok, output = push(keys, patterns)
+        if ok:
+            for key in keys:
+                cache[key] = stale[key][1]
+            return {}
+        # One rejected file fails the whole call. Retry one by one so the good files still land
+        # and the error names the file at fault.
+        logger.warning("Theme CLI batch push failed (%s); retrying file by file", output[-300:])
+        errors: Dict[str, str] = {}
+        for key in keys:
+            one_ok, one_output = push([key], [key])
+            if one_ok:
+                cache[key] = stale[key][1]
+            else:
+                errors[key] = one_output
+        return errors
+
     def _write_theme_file_via_cli(
         self, theme_id: str, asset_key: str, user_id: str,
         text_value: Optional[str], base64_value: Optional[str],
@@ -2259,6 +2312,16 @@ class ShopifyUtils:
 
         if cache.get(asset_key) == digest:
             return {"success": True, "asset_key": asset_key, "theme_id": theme_id, "method": "cli-cache"}
+
+        if asset_key.startswith(("sections/", "snippets/")):
+            # A Roarr section that changed: push it together with every other changed one, in a single CLI call.
+            errors = self._theme_cli_push_stale(shop_domain, theme_id_cleaned, cache)
+            self._save_theme_cli_cache(shop_domain, theme_id_cleaned, cache)
+            if asset_key in errors:
+                return {"success": False, "error": f"Shopify CLI push failed for {asset_key}: {errors[asset_key]}"}
+            if cache.get(asset_key) == digest:
+                return {"success": True, "asset_key": asset_key, "theme_id": theme_id, "method": "cli-batch"}
+            # Not one of the bundled Roarr files (or its content was changed in memory): push it alone below.
 
         with tempfile.TemporaryDirectory(prefix="roarr-theme-") as tmp:
             target = Path(tmp) / asset_key

@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "atelier-buy": {
+      "type": "roarr-atelier-buy",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
+    "atelier-hero": {
+      "type": "roarr-atelier-hero",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
+    "atelier-story": {
+      "type": "roarr-atelier-story",
+      "settings": {}
+    },
+    "atelier-features": {
+      "type": "roarr-atelier-features",
+      "settings": {}
+    },
+    "atelier-specs": {
+      "type": "roarr-atelier-specs",
+      "settings": {}
+    },
+    "atelier-proof": {
+      "type": "roarr-atelier-proof",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    },
+    "atelier-related": {
+      "type": "roarr-atelier-related",
+      "settings": {}
+    },
+    "atelier-closing": {
+      "type": "roarr-atelier-closing",
+      "settings": {}
+    }
+  },
+  "order": [
+    "atelier-buy",
+    "atelier-hero",
+    "atelier-story",
+    "atelier-features",
+    "atelier-specs",
+    "atelier-proof",
+    "atelier-related",
+    "atelier-closing"
+  ]
+}

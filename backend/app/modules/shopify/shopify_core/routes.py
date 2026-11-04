@@ -170,9 +170,12 @@ def _should_force_update_section(liquid_file: str) -> bool:
         or name.startswith("roarr-play-")
         or name.startswith("roarr-glow-")
         or name.startswith("roarr-amour-")
+        or name.startswith("roarr-maison-")
         or name.startswith("roarr-lumen-")
         or name.startswith("roarr-noir-")
         or name.startswith("roarr-frost-")
+        or name.startswith("roarr-atelier-")
+        or name.startswith("roarr-bloom-")
     )
 
 
@@ -308,7 +311,7 @@ def _get_product_template_suffix_for_view(
 
 
 def _parse_template_number(selected_template):
-    """Return 1, 2, 3, 4 (Lumenook), 5 (Noir) or 6 (Frost). Accepts ints and strings like '3' or 'template_3'."""
+    """Return 1, 2, 3, 4 (Lumenook), 5 (Noir), 6 (Frost), 7 (Atelier) or 8 (Bloom). Accepts ints and strings like '3' or 'template_3'."""
     raw = selected_template
     if isinstance(raw, str):
         raw = raw.strip().lower()
@@ -318,7 +321,7 @@ def _parse_template_number(selected_template):
         number = int(raw)
     except (TypeError, ValueError):
         return None
-    return number if number in (1, 2, 3, 4, 5, 6) else None
+    return number if number in (1, 2, 3, 4, 5, 6, 7, 8) else None
 
 
 def _layout_template_number(selected_template) -> int:
@@ -338,7 +341,7 @@ def _unique_product_template_names(category: str, product_id, selected_template)
     """
     One Shopify template per product.
 
-    The layout comes from template 1, 2, 3, 4, 5, or 6. The uploaded file is
+    The layout comes from template 1, 2, 3, 4, 5, 6 or 7. The uploaded file is
     product.roarr-{category}-{productId}.json so two products never share a suffix.
     """
     layout = _layout_template_number(selected_template)
@@ -352,7 +355,7 @@ def _unique_product_template_names(category: str, product_id, selected_template)
         / folder
         / source_filename
     )
-    if layout in (3, 4, 5, 6) and not source_path.is_file():
+    if layout in (3, 4, 5, 6, 7) and not source_path.is_file():
         layout = 2
         _, folder, source_filename = _get_template_paths(category, layout)
     suffix = f"roarr-{folder}-{_numeric_product_id(product_id)}"
@@ -1834,6 +1837,7 @@ def _execute_publish_store(user_id, data):
                     for p in liquid_files
                     if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
                     and not p.name.startswith("roarr-cinematic-")
+                    and not p.name.startswith("roarr-maison-")
                 ]
                 logger.info(
                     "publish-store: amour pack — uploading %s section liquids "
@@ -1846,6 +1850,7 @@ def _execute_publish_store(user_id, data):
                     for p in liquid_files
                     if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
                     and not p.name.startswith("roarr-amour-")
+                    and not p.name.startswith("roarr-maison-")
                 ]
             elif store_template_pack == "lumenook":
                 liquid_files = [
@@ -1854,6 +1859,7 @@ def _execute_publish_store(user_id, data):
                     if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
                     and not p.name.startswith("roarr-cinematic-")
                     and not p.name.startswith("roarr-amour-")
+                    and not p.name.startswith("roarr-maison-")
                 ]
                 logger.info(
                     "publish-store: lumenook pack — uploading %s section liquids "
@@ -1863,6 +1869,20 @@ def _execute_publish_store(user_id, data):
                 logger.info(
                     "publish-store: cinematic pack — uploading %s section liquids "
                     "(cinematic home + premium PDP + shared pages)",
+                    len(liquid_files),
+                )
+            elif store_template_pack == "maison":
+                liquid_files = [
+                    p
+                    for p in liquid_files
+                    if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
+                    and not p.name.startswith("roarr-cinematic-")
+                    and not p.name.startswith("roarr-amour-")
+                    and not p.name.startswith("roarr-lumen-home-")
+                ]
+                logger.info(
+                    "publish-store: maison pack — uploading %s section liquids "
+                    "(maison home + shared pages)",
                     len(liquid_files),
                 )
             for liquid_path in liquid_files:
@@ -4299,7 +4319,7 @@ def _execute_publish_page(user_id, data):
                     logger.info(
                         f"Storing theme_id={live_theme_numeric_id} in page metadata (live theme)"
                     )
-                if selected_template in (1, 2, 3, 4, 5, 6):
+                if selected_template in (1, 2, 3, 4, 5, 6, 7, 8):
                     update_params["selectedTemplate"] = selected_template
                     update_params["template"] = f"template_{selected_template}"
 
@@ -6467,7 +6487,7 @@ def publish_generated_content():
                 "success"
             ):
                 page_update["roarr_template_suffix"] = template_suffix
-            if selected_template in (1, 2, 3, 4, 5, 6):
+            if selected_template in (1, 2, 3, 4, 5, 6, 7, 8):
                 page_update["selectedTemplate"] = selected_template
                 page_update["template"] = f"template_{selected_template}"
             document_store.update_generated_page(**page_update)

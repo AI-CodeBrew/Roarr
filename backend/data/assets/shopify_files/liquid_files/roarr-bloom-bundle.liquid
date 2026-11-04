@@ -1,0 +1,299 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign heading = m.bloom_bundle_heading.value | default: m.bloom_bundle_heading | default: 'Build Your [Bundle]' -%}
+{%- assign heading_h = heading | escape | replace: '[', '<span class="bl-ac">' | replace: ']', '</span>' -%}
+{%- assign add_l = m.bloom_bundle_add.value | default: m.bloom_bundle_add | default: 'Add' -%}
+{%- assign save_lbl = m.bloom_save_label.value | default: m.bloom_save_label | default: 'Save' -%}
+{%- assign p1 = m.bloom_pack_1.value | default: m.bloom_pack_1 | default: '5 pack' -%}
+{%- assign p2 = m.bloom_pack_2.value | default: m.bloom_pack_2 | default: '10 Pack' -%}
+{%- assign p3 = m.bloom_pack_3.value | default: m.bloom_pack_3 | default: '15 Pack' -%}
+{%- assign pack_save = m.bloom_pack_save.value | default: m.bloom_pack_save -%}
+{%- assign timer_l = m.bloom_bundle_timer_label.value | default: m.bloom_bundle_timer_label | default: 'Hurry, Offer ends in :' -%}
+{%- assign offer_end = m.bloom_offer_end.value | default: m.bloom_offer_end -%}
+{%- assign sel_l = m.bloom_bundle_selected.value | default: m.bloom_bundle_selected | default: 'Products Selected' -%}
+{%- assign empty_l = m.bloom_bundle_empty.value | default: m.bloom_bundle_empty | default: 'Start Selecting Your Products' -%}
+{%- assign ship_l = m.bloom_bundle_ship.value | default: m.bloom_bundle_ship -%}
+{%- assign cta_l = m.bloom_bundle_cta.value | default: m.bloom_bundle_cta | default: 'Add bundle to cart' -%}
+{%- assign panel_img = m.product_image_3.value | default: m.product_image_3 -%}
+{%- if panel_img == blank -%}{%- assign panel_img = m.product_image_1.value | default: m.product_image_1 | default: product.featured_media.preview_image -%}{%- endif -%}
+
+
+
+<section class="bloom bl-bu" id="bl-bundle" data-money="{{ 123456 | money }}">
+  <div class="bl-wrap">
+    {%- if heading != blank -%}<h2 class="bl-h bl-bu__h" data-bl-reveal>{{ heading_h }}</h2>{%- endif -%}
+
+
+    {%- assign pool_fallback = nil -%}
+    {%- assign tab_total = 0 -%}
+    {%- for t in (1..4) -%}
+      {%- assign ck = 'collection_' | append: t -%}
+      {%- if section.settings[ck] != blank -%}{%- assign tab_total = tab_total | plus: 1 -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if tab_total == 0 -%}
+      {%- for c in product.collections -%}
+        {%- if pool_fallback == nil and c.handle != 'all' and c.handle != 'frontpage' and c.products_count > 1 -%}{%- assign pool_fallback = c -%}{%- endif -%}
+      {%- endfor -%}
+      {%- if pool_fallback == nil -%}{%- assign pool_fallback = collections['all'] -%}{%- endif -%}
+    {%- endif -%}
+    {%- if tab_total > 1 -%}
+    <div class="bl-bu__tabs" role="tablist">
+      {%- assign first_on = true -%}
+      {%- for t in (1..4) -%}
+        {%- assign ck = 'collection_' | append: t -%}{%- assign lk = 'tab_' | append: t -%}
+        {%- assign col = section.settings[ck] -%}
+        {%- if col != blank -%}
+          <button type="button" class="bl-bu__tab{% if first_on %} is-on{% endif %}" role="tab" data-bl-tab="{{ t }}">{{ section.settings[lk] | default: col.title }}</button>
+          {%- assign first_on = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
+    <div class="bl-bu__layout">
+      <div class="bl-bu__grids">
+
+
+        {%- assign first_grid = true -%}
+        {%- if tab_total == 0 -%}
+          <ul class="bl-bu__grid" data-bl-grid="1">
+            {%- for card in pool_fallback.products limit: 7 -%}
+              {%- if card.id != product.id and card.available -%}
+                {%- assign card_v = card.selected_or_first_available_variant -%}
+                {%- assign card_img = card.featured_media.preview_image | default: card.featured_media -%}
+                {%- assign card_cmp = card.compare_at_price | default: card.price -%}
+                <li class="bl-bu__card" data-tab="1">
+                  <div class="bl-bu__pic">
+                    {%- assign bu_save = card_cmp | minus: card.price -%}
+                    {%- if bu_save > 0 -%}<span class="bl-bu__tag">{{ save_lbl }} {{ bu_save | money }}</span>{%- endif -%}
+                    {%- if card_img != blank -%}<img src="{{ card_img | image_url: width: 480 }}" alt="{{ card.title | escape }}" loading="lazy">{%- endif -%}
+                  </div>
+                  <h3 class="bl-bu__t bl-serif"><a href="{{ card.url }}">{{ card.title }}</a></h3>
+                  <p class="bl-bu__price"><strong>{{ card.price | money }}</strong>{%- if card_cmp > card.price -%} <s>{{ card_cmp | money }}</s>{%- endif -%}</p>
+                  <button type="button" class="bl-bu__add" data-bl-add data-id="{{ card_v.id }}" data-price="{{ card.price }}" data-title="{{ card.title | escape }}" data-img="{% if card_img != blank %}{{ card_img | image_url: width: 160 }}{% endif %}"><span data-on="{{ add_l | escape }}" data-off="&#10003;">{{ add_l }}</span></button>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          {%- for t in (1..4) -%}
+            {%- assign ck = 'collection_' | append: t -%}
+            {%- assign col = section.settings[ck] -%}
+            {%- if col != blank -%}
+              <ul class="bl-bu__grid" data-bl-grid="{{ t }}"{% unless first_grid %} hidden{% endunless %}>
+                {%- for card in col.products limit: 7 -%}
+                  {%- if card.id != product.id and card.available -%}
+                    {%- assign card_v = card.selected_or_first_available_variant -%}
+                    {%- assign card_img = card.featured_media.preview_image | default: card.featured_media -%}
+                    {%- assign card_cmp = card.compare_at_price | default: card.price -%}
+                    <li class="bl-bu__card" data-tab="{{ t }}">
+                      <div class="bl-bu__pic">
+                        {%- assign bu_save = card_cmp | minus: card.price -%}
+                        {%- if bu_save > 0 -%}<span class="bl-bu__tag">{{ save_lbl }} {{ bu_save | money }}</span>{%- endif -%}
+                        {%- if card_img != blank -%}<img src="{{ card_img | image_url: width: 480 }}" alt="{{ card.title | escape }}" loading="lazy">{%- endif -%}
+                      </div>
+                      <h3 class="bl-bu__t bl-serif"><a href="{{ card.url }}">{{ card.title }}</a></h3>
+                      <p class="bl-bu__price"><strong>{{ card.price | money }}</strong>{%- if card_cmp > card.price -%} <s>{{ card_cmp | money }}</s>{%- endif -%}</p>
+                      <button type="button" class="bl-bu__add" data-bl-add data-id="{{ card_v.id }}" data-price="{{ card.price }}" data-title="{{ card.title | escape }}" data-img="{% if card_img != blank %}{{ card_img | image_url: width: 160 }}{% endif %}"><span data-on="{{ add_l | escape }}" data-off="&#10003;">{{ add_l }}</span></button>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+              {%- assign first_grid = false -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+      </div>
+      <aside class="bl-bu__panel">
+        <div class="bl-bu__packs" role="radiogroup">
+          <button type="button" class="bl-bu__pack is-on" role="radio" aria-checked="true" data-bl-pack="{{ p1 }}">{{ p1 }}</button>
+          <button type="button" class="bl-bu__pack" role="radio" aria-checked="false" data-bl-pack="{{ p2 }}">{{ p2 }}{%- if pack_save != blank -%}<span class="bl-bu__star">{{ pack_save }}</span>{%- endif -%}</button>
+          <button type="button" class="bl-bu__pack" role="radio" aria-checked="false" data-bl-pack="{{ p3 }}">{{ p3 }}</button>
+        </div>
+
+
+        {%- if offer_end != blank -%}
+        <p class="bl-bu__timer" data-bl-end="{{ offer_end | escape }}"><span>{{ timer_l }}</span><b data-bl-h>00</b><i>:</i><b data-bl-m>00</b><i>:</i><b data-bl-s>00</b></p>
+        {%- endif -%}
+
+        <h3 class="bl-bu__count bl-serif"><span data-bl-count>0</span> <span>{{ sel_l }}</span></h3>
+        <p class="bl-bu__hint" data-bl-hint data-empty="{{ empty_l | escape }}">{{ empty_l }}</p>
+        {%- if ship_l != blank -%}<p class="bl-bu__ship"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="17" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="M8.5 17H14l2-8h3M12 9h3"/></svg><span>{{ ship_l }}</span></p>{%- endif -%}
+        <button type="button" class="bl-btn bl-bu__go" data-bl-go hidden>{{ cta_l }}</button>
+        {%- if panel_img != blank -%}<img class="bl-bu__img bl-fade" src="{{ panel_img | image_url: width: 800 }}" alt="" loading="lazy">{%- endif -%}
+      </aside>
+    </div>
+  </div>
+</section>
+<style>
+  .bloom { --bl-plum: #4A0E2B; --bl-ink: #3D1229; --bl-rose: #E5518E; --bl-rose-d: #B3235F; --bl-blush: #FDEBF5; --bl-pink: #FFDDEB; --bl-pink-2: #FFE9F2; --bl-peach: #FFE8E3; --bl-coral: #E8695C; --bl-cream: #FFF6E8; --bl-grad: linear-gradient(90deg, #E8695C 0%, #E5518E 100%); --bl-star: #F59E0B; --bl-muted: #6F5A67; --bl-line: #F1D5E1; --bl-serif: "Playfair Display", Georgia, serif; --bl-sans: "Open Sans", system-ui, sans-serif; --bl-pop: "Poppins", "Open Sans", sans-serif; --font-heading-family: "Playfair Display", serif; --font-body-family: "Open Sans", sans-serif; position: relative; font-family: var(--bl-sans); -webkit-font-smoothing: antialiased; }
+  :where(.bloom) { background: #fff; color: var(--bl-plum); }
+  .bloom *, .bloom *::before, .bloom *::after { box-sizing: border-box; }
+  :where(.bloom) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption, cite) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .bloom, .bloom :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption, cite) { font-family: var(--bl-sans) !important; }
+  .bloom :is(h1, h2, h3, h4, .bl-serif, .bl-serif *, .bl-h *) { font-family: var(--bl-serif) !important; }
+  .bloom .bl-pop, .bloom .bl-pop :is(p, li, a, span, label, button, input, select, strong, small, b, s, div, h3, h4) { font-family: var(--bl-pop) !important; }
+  :where(.bloom) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.bloom) :is(ul, ol) { list-style: none; }
+  :where(.bloom) img { display: block; max-width: 100%; }
+  :where(.bloom) button { font: inherit; }
+  :where(.bloom) .bl-wrap { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.bloom) .bl-h { font-weight: 600; line-height: 1.22; letter-spacing: 0; text-wrap: balance; text-align: center; color: var(--bl-plum); font-size: clamp(28px, 3.4vw, 40px); }
+  :where(.bloom) .bl-ac { color: var(--bl-rose); }
+  :where(.bloom) .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 28px; border: 1px solid #E5518E; border-radius: 8px; background: var(--bl-grad); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px -10px rgb(229 81 142 / .7); transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+  :where(.bloom) .bl-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 12px 24px -10px rgb(229 81 142 / .8); }
+  :where(.bloom) .bl-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .bloom [hidden] { display: none !important; }
+  :where(.bloom) .bl-fade { -webkit-mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); }
+  :where(.bloom) .bl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where(.bloom) .bl-stars { color: var(--bl-star); letter-spacing: 1px; }
+  @keyframes bl-rise { from { opacity: 0; transform: translate3d(0, 24px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .bloom [data-bl-reveal] { animation: bl-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.bloom) .bl-wrap { width: calc(100% - 32px); } }
+
+  .bl-bu { background: #fff; padding: clamp(36px, 5vw, 72px) 0; }
+  .bl-bu__h { margin-bottom: 18px; }
+  .bl-bu__tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: clamp(18px, 2.4vw, 30px); }
+  .bl-bu__tab { min-height: 36px; padding: 0 20px; border: 1px solid #E49BBB; border-radius: 999px; background: #fff; color: #3B1228; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+  .bl-bu__tab:hover { background: var(--bl-pink-2); }
+  .bl-bu__tab.is-on { background: #4A0E2B; border-color: #4A0E2B; color: #fff; }
+  .bl-bu__layout { display: grid; grid-template-columns: minmax(0, 1.72fr) minmax(0, 1fr); gap: clamp(14px, 1.8vw, 22px); align-items: start; }
+  .bl-bu__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, 1.2vw, 16px); }
+  .bl-bu__grid[hidden] { display: none; }
+  .bl-bu__card { display: grid; align-content: start; gap: 8px; padding: 8px 8px 12px; border-radius: 12px; background: #FFE6F1; box-shadow: 0 4px 14px -10px rgb(179 35 95 / .5); }
+  .bl-bu__pic { position: relative; display: grid; place-items: center; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: #DAD4FF; }
+  .bl-bu__card:nth-child(3n + 2) .bl-bu__pic { background: #FFCCE0; }
+  .bl-bu__card:nth-child(3n) .bl-bu__pic { background: #D3CCFF; }
+  .bl-bu__pic img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .5s ease; }
+  .bl-bu__card:hover .bl-bu__pic img { transform: scale(1.05); }
+  .bl-bu__tag { position: absolute; top: 8px; inset-inline-start: 8px; z-index: 1; padding: 3px 9px; border-radius: 999px; background: #E5518E; color: #fff; font-size: 11.5px; font-weight: 500; line-height: 1.4; }
+  .bl-bu__t { padding-inline: 4px; font-size: 15px; font-weight: 500; line-height: 1.3; color: #3B1228; }
+  .bl-bu__t a { color: inherit; text-decoration: none; }
+  .bl-bu__price { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding-inline: 4px; font-size: 14px; color: #1B0A14; }
+  .bl-bu__price strong { font-size: 15.5px; font-weight: 600; }
+  .bl-bu__price s { font-size: 12px; color: #9A8C94; }
+  .bl-bu__rate { margin-inline-start: auto; font-size: 12px; color: #6F5A67; }
+  .bl-bu__rate::first-letter { color: var(--bl-star); }
+  .bl-bu__add { min-height: 36px; margin-top: 2px; border: 1px solid #E5518E; border-radius: 6px; background: var(--bl-grad); color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: filter .2s ease, background .2s ease, color .2s ease; }
+  .bl-bu__add:hover { filter: brightness(1.06); }
+  .bl-bu__add.is-on { background: #fff; color: #B3235F; }
+  .bl-bu__panel { position: sticky; top: 16px; display: grid; justify-items: center; gap: 14px; padding: clamp(10px, 1.2vw, 14px) clamp(10px, 1.4vw, 16px) 0; border-radius: 14px; background: #FFE9F3; overflow: hidden; text-align: center; min-height: 460px; }
+  .bl-bu__packs { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; padding: 3px; border: 1px solid #D88AAE; border-radius: 999px; background: #FFE9F3; }
+  .bl-bu__pack { position: relative; min-height: 38px; padding: 0 6px; border: 0; border-radius: 999px; background: none; color: #3B1228; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .25s ease, color .25s ease; }
+  .bl-bu__pack.is-on { background: #E5518E; color: #fff; }
+  .bl-bu__star { position: absolute; top: -30px; left: 50%; display: grid; place-items: center; width: 54px; height: 54px; padding: 6px; margin-left: -27px; background: #E5518E; color: #fff; font-size: 10px; font-weight: 600; line-height: 1.1; text-align: center; clip-path: polygon(50% 0, 61% 14%, 79% 8%, 82% 26%, 100% 32%, 90% 50%, 100% 68%, 82% 74%, 79% 92%, 61% 86%, 50% 100%, 39% 86%, 21% 92%, 18% 74%, 0 68%, 10% 50%, 0 32%, 18% 26%, 21% 8%, 39% 14%); pointer-events: none; }
+  .bl-bu__timer { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 4px; font-size: 14.5px; color: #3B1228; }
+  .bl-bu__timer span { margin-inline-end: 6px; font-weight: 500; }
+  .bl-bu__timer b { display: grid; place-items: center; min-width: 34px; height: 32px; padding: 0 4px; border: 1px solid #D88AAE; border-radius: 4px; background: #fff; font-weight: 500; color: #B3235F; }
+  .bl-bu__count { font-size: clamp(24px, 2.6vw, 30px); font-weight: 500; line-height: 1.2; color: #E5518E; }
+  .bl-bu__hint { font-size: 15px; font-weight: 500; color: #2B1320; margin-top: -8px; }
+  .bl-bu__ship { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #2B1320; }
+  .bl-bu__ship svg { color: #D6538A; }
+  .bl-bu__go { min-height: 44px; }
+  .bl-bu__img { width: min(100%, 440px); margin-top: auto; mix-blend-mode: multiply; }
+  @media (max-width: 989px) { .bl-bu__layout { grid-template-columns: minmax(0, 1fr); } .bl-bu__panel { position: static; min-height: 0; order: -1; } }
+  @media (max-width: 549px) { .bl-bu__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>
+<script>
+(function () {
+  var root = document.getElementById("bl-bundle");
+  if (!root || root.dataset.blReady) return;
+  root.dataset.blReady = "1";
+  var max = parseInt((root.querySelector(".bl-bu__pack.is-on") || {}).dataset ? root.querySelector(".bl-bu__pack.is-on").dataset.blPack : "5", 10) || 5;
+  var picked = [];
+  var count = root.querySelector("[data-bl-count]"), hint = root.querySelector("[data-bl-hint]"), go = root.querySelector("[data-bl-go]");
+  function paint() {
+    count.textContent = picked.length;
+    hint.textContent = picked.length ? picked.length + " / " + max : hint.dataset.empty;
+    if (go) go.hidden = !picked.length || !picked.every(function (p) { return p.id; });
+    root.querySelectorAll("[data-bl-add]").forEach(function (b) {
+      var on = picked.some(function (p) { return p.el === b; });
+      b.classList.toggle("is-on", on);
+      var s = b.firstElementChild; if (s) s.textContent = on ? s.dataset.off : s.dataset.on;
+    });
+  }
+  root.querySelectorAll("[data-bl-add]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var i = picked.findIndex(function (p) { return p.el === b; });
+      if (i > -1) picked.splice(i, 1);
+      else if (picked.length < max) picked.push({ el: b, id: b.dataset.id });
+      paint();
+    });
+  });
+  root.querySelectorAll("[data-bl-pack]").forEach(function (p) {
+    p.addEventListener("click", function () {
+      root.querySelectorAll("[data-bl-pack]").forEach(function (x) { var on = x === p; x.classList.toggle("is-on", on); x.setAttribute("aria-checked", on); });
+      max = parseInt(p.dataset.blPack, 10) || max;
+      if (picked.length > max) picked = picked.slice(0, max);
+      paint();
+    });
+  });
+  root.querySelectorAll("[data-bl-tab]").forEach(function (t) {
+    t.addEventListener("click", function () {
+      root.querySelectorAll("[data-bl-tab]").forEach(function (x) { x.classList.toggle("is-on", x === t); });
+      root.querySelectorAll("[data-bl-grid]").forEach(function (g) { g.hidden = t.dataset.blTab !== "all" && g.dataset.blGrid !== t.dataset.blTab; });
+    });
+  });
+  if (go) go.addEventListener("click", function () {
+    var items = picked.map(function (p) { return { id: parseInt(p.id, 10), quantity: 1 }; });
+    go.disabled = true;
+    fetch("/cart/add.js", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: items }) })
+      .then(function () { window.location.href = "/cart"; })
+      .catch(function () { go.disabled = false; });
+  });
+  var timer = root.querySelector("[data-bl-end]");
+  if (timer) {
+    var end = Date.parse(timer.dataset.blEnd);
+    var h = timer.querySelector("[data-bl-h]"), m = timer.querySelector("[data-bl-m]"), s = timer.querySelector("[data-bl-s]");
+    var two = function (n) { return (n < 10 ? "0" : "") + n; };
+    var tick = function () {
+      var left = Math.max(0, Math.floor((end - Date.now()) / 1000));
+      if (isNaN(end) || left === 0 && end < Date.now()) { timer.hidden = true; return; }
+      h.textContent = two(Math.floor(left / 3600)); m.textContent = two(Math.floor(left % 3600 / 60)); s.textContent = two(left % 60);
+    };
+    tick(); setInterval(tick, 1000);
+  }
+  paint();
+})();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--bloom" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div, cite) { font-family: "Open Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Playfair Display", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .bl-flip { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Bloom Bundle builder",
+  "tag": "section",
+  "class": "roarr-bloom-section",
+  "settings": [
+    { "type": "collection", "id": "collection_1", "label": "Tab 1 collection" },
+    { "type": "text", "id": "tab_1", "label": "Tab 1 label (optional)" },
+    { "type": "collection", "id": "collection_2", "label": "Tab 2 collection" },
+    { "type": "text", "id": "tab_2", "label": "Tab 2 label (optional)" },
+    { "type": "collection", "id": "collection_3", "label": "Tab 3 collection" },
+    { "type": "text", "id": "tab_3", "label": "Tab 3 label (optional)" },
+    { "type": "collection", "id": "collection_4", "label": "Tab 4 collection" },
+    { "type": "text", "id": "tab_4", "label": "Tab 4 label (optional)" }
+  ],
+  "presets": [{ "name": "Roarr Bloom Bundle builder" }]
+}
+{% endschema %}

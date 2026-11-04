@@ -1,0 +1,203 @@
+{%- capture mz_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign gallery_eyebrow = section.settings.gallery_eyebrow | default: 'In situ' -%}
+{%- if use_mf and ht.gallery_eyebrow != blank -%}{%- assign gallery_eyebrow = ht.gallery_eyebrow -%}{%- endif -%}
+{%- assign gallery_heading = section.settings.gallery_heading | default: 'Seen in a quiet light' -%}
+{%- if use_mf and ht.gallery_heading != blank -%}{%- assign gallery_heading = ht.gallery_heading -%}{%- endif -%}
+{%- assign gallery_title_1 = section.settings.gallery_title_1 | default: 'In the hand' -%}
+{%- if use_mf and ht.gallery_title_1 != blank -%}{%- assign gallery_title_1 = ht.gallery_title_1 -%}{%- endif -%}
+{%- assign gallery_text_1 = section.settings.gallery_text_1 | default: 'Weighted, balanced and effortless to use.' -%}
+{%- if use_mf and ht.gallery_text_1 != blank -%}{%- assign gallery_text_1 = ht.gallery_text_1 -%}{%- endif -%}
+{%- assign gallery_title_2 = section.settings.gallery_title_2 | default: 'Still life' -%}
+{%- if use_mf and ht.gallery_title_2 != blank -%}{%- assign gallery_title_2 = ht.gallery_title_2 -%}{%- endif -%}
+{%- assign gallery_text_2 = section.settings.gallery_text_2 | default: 'Composed with restraint, finished with care.' -%}
+{%- if use_mf and ht.gallery_text_2 != blank -%}{%- assign gallery_text_2 = ht.gallery_text_2 -%}{%- endif -%}
+{%- assign gallery_title_3 = section.settings.gallery_title_3 | default: 'At home' -%}
+{%- if use_mf and ht.gallery_title_3 != blank -%}{%- assign gallery_title_3 = ht.gallery_title_3 -%}{%- endif -%}
+{%- assign gallery_text_3 = section.settings.gallery_text_3 | default: 'Settles into any room without raising its voice.' -%}
+{%- if use_mf and ht.gallery_text_3 != blank -%}{%- assign gallery_text_3 = ht.gallery_text_3 -%}{%- endif -%}
+{%- assign maison_gallery_1 = section.settings.maison_gallery_1 -%}
+{%- if use_mf and hi.maison_gallery_1 != blank -%}{%- assign maison_gallery_1 = hi.maison_gallery_1 -%}{%- endif -%}
+{%- assign maison_gallery_2 = section.settings.maison_gallery_2 -%}
+{%- if use_mf and hi.maison_gallery_2 != blank -%}{%- assign maison_gallery_2 = hi.maison_gallery_2 -%}{%- endif -%}
+{%- assign maison_gallery_3 = section.settings.maison_gallery_3 -%}
+{%- if use_mf and hi.maison_gallery_3 != blank -%}{%- assign maison_gallery_3 = hi.maison_gallery_3 -%}{%- endif -%}
+<section class="mz mz-gallery">
+  <div class="mz-wrap mz-gallery__grid">
+    <figure class="mz-fig mz-gallery__a">
+      <div class="mz-gallery__img mz-media mz-settle">{%- if maison_gallery_1 != blank -%}{%- if maison_gallery_1 contains 'http' or maison_gallery_1 contains '//' -%}<img src="{{ maison_gallery_1 }}" alt="{{ gallery_title_1 | escape }}" loading="lazy" width="1600" height="2000" decoding="async">{%- else -%}<img src="{{ maison_gallery_1 | image_url: width: 1600 }}" alt="{{ gallery_title_1 | escape }}" loading="lazy" width="1600" height="2000" decoding="async">{%- endif -%}{%- endif -%}</div>
+      <figcaption><span class="mz-fig__n">Fig. 01</span><h3>{{ gallery_title_1 | escape }}</h3><p>{{ gallery_text_1 | escape }}</p></figcaption>
+    </figure>
+    <div class="mz-gallery__side">
+      <div class="mz-gallery__head mz-reveal">
+        <p class="mz-label"><span class="mz-label__n">04</span>{{ gallery_eyebrow | escape }}</p>
+        <h2 class="mz-h2">{%- assign mz_words = gallery_heading | split: ' ' -%}{%- for w in mz_words -%}{%- if forloop.last -%}<em>{{ w | escape }}</em>{%- else -%}{{ w | escape }} {% endif -%}{%- endfor -%}</h2>
+      </div>
+      <figure class="mz-fig mz-gallery__b">
+        <div class="mz-gallery__img mz-media mz-settle">{%- if maison_gallery_2 != blank -%}{%- if maison_gallery_2 contains 'http' or maison_gallery_2 contains '//' -%}<img src="{{ maison_gallery_2 }}" alt="{{ gallery_title_2 | escape }}" loading="lazy" width="1000" height="1250" decoding="async">{%- else -%}<img src="{{ maison_gallery_2 | image_url: width: 1000 }}" alt="{{ gallery_title_2 | escape }}" loading="lazy" width="1000" height="1250" decoding="async">{%- endif -%}{%- endif -%}</div>
+        <figcaption><span class="mz-fig__n">Fig. 02</span><h3>{{ gallery_title_2 | escape }}</h3><p>{{ gallery_text_2 | escape }}</p></figcaption>
+      </figure>
+      <figure class="mz-fig mz-gallery__c">
+        <div class="mz-gallery__img mz-media mz-settle">{%- if maison_gallery_3 != blank -%}{%- if maison_gallery_3 contains 'http' or maison_gallery_3 contains '//' -%}<img src="{{ maison_gallery_3 }}" alt="{{ gallery_title_3 | escape }}" loading="lazy" width="1000" height="1250" decoding="async">{%- else -%}<img src="{{ maison_gallery_3 | image_url: width: 1000 }}" alt="{{ gallery_title_3 | escape }}" loading="lazy" width="1000" height="1250" decoding="async">{%- endif -%}{%- endif -%}</div>
+        <figcaption><span class="mz-fig__n">Fig. 03</span><h3>{{ gallery_title_3 | escape }}</h3><p>{{ gallery_text_3 | escape }}</p></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.mz) { --mz-ivory: #F5F1EA; --mz-paper: #FBF9F5; --mz-stone: #E9E2D6; --mz-ink: #1D1915; --mz-ink-2: #5E554B; --mz-line: rgb(29 25 21 / .14); --mz-gold: #B39062; --mz-gold-deep: #8F6F43; --mz-gold-text: #6E5530; --mz-on-dark: #F3EDE3; --mz-on-dark-2: #CBC2B4; --mz-gold-light: #D8C29B; --mz-serif: "Instrument Serif", "Cormorant Garamond", "Times New Roman", serif; --mz-sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif; --mz-gutter: clamp(20px, 4vw, 64px); --mz-dir: 1; font-family: var(--mz-sans); font-size: 16px; line-height: 1.65; color: var(--mz-ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .mz *, .mz *::before, .mz *::after { box-sizing: border-box; }
+  :where(.mz) :where(h1, h2, h3, p, ul, ol, dl, dd, blockquote, figure) { margin: 0; padding: 0; }
+  :where(.mz) :where(ul, ol) { list-style: none; }
+  :where(.mz) img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .mz-wrap { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: var(--mz-gutter); }
+  .mz-label { display: flex; align-items: baseline; gap: 14px; font: 500 11.5px/1.4 var(--mz-sans); letter-spacing: .2em; text-transform: uppercase; color: var(--mz-gold-text); }
+  .mz-label__n { font-feature-settings: "tnum"; letter-spacing: .08em; color: var(--mz-ink-2); }
+  .mz-label__n::after { content: ""; display: inline-block; width: 28px; height: 1px; margin-inline-start: 14px; vertical-align: middle; background: var(--mz-gold); }
+  .mz-h2 { font: 400 clamp(40px, 4.8vw, 72px)/1 var(--mz-serif); letter-spacing: -.015em; color: var(--mz-ink); text-wrap: balance; }
+  .mz-h2 em, .mz-display em { font-style: italic; color: var(--mz-gold-deep); }
+  .mz-body { font-size: 17px; line-height: 1.7; color: var(--mz-ink-2); text-wrap: pretty; }
+  .mz-btn { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 54px; padding: 0 34px; border: 1px solid var(--mz-ink); background: var(--mz-ink); color: var(--mz-paper); font: 500 12px/1 var(--mz-sans); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; transition: background .4s ease, color .4s ease, border-color .4s ease; }
+  .mz-btn:hover { background: var(--mz-gold-deep); border-color: var(--mz-gold-deep); color: var(--mz-paper); }
+  .mz-btn--light { background: var(--mz-paper); border-color: var(--mz-paper); color: var(--mz-ink); }
+  .mz-btn--light:hover { background: transparent; border-color: var(--mz-paper); color: var(--mz-paper); }
+  .mz-link { position: relative; display: inline-flex; align-items: center; gap: 12px; padding-bottom: 8px; color: var(--mz-ink); font: 500 12px/1 var(--mz-sans); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; }
+  .mz-link::after { content: ""; position: absolute; inset: auto 0 0; height: 1px; background: currentColor; transform-origin: right; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+  .mz-link:hover::after { transform: scaleX(.35); }
+  .mz-btn:focus-visible, .mz-link:focus-visible, .mz summary:focus-visible { outline: 2px solid var(--mz-gold-text); outline-offset: 4px; }
+  .mz-arrow { display: inline-block; font-family: var(--mz-sans); }
+  .mz-media { position: relative; overflow: hidden; background: var(--mz-stone); }
+  .mz-media img { transition: transform 1.6s cubic-bezier(.2, .7, .2, 1); }
+  .mz-media:hover img { transform: scale(1.03); }
+  .mz-fig { display: grid; gap: 16px; }
+  .mz-fig figcaption { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; row-gap: 4px; align-items: baseline; }
+  .mz-fig__n { grid-row: span 2; font: 500 11px/1.6 var(--mz-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--mz-gold-text); }
+  .mz-fig h3 { font: 400 24px/1.15 var(--mz-serif); color: var(--mz-ink); }
+  .mz-fig p { font-size: 14.5px; line-height: 1.6; color: var(--mz-ink-2); }
+  @keyframes mz-reveal { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
+  @keyframes mz-settle { from { scale: 1.14; } to { scale: 1; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .mz-reveal { animation: mz-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+      .mz-settle img { animation: mz-settle linear both; animation-timeline: view(); animation-range: entry 0% cover 55%; }
+    }
+  }
+  @media (max-width: 749px) { .mz-body { font-size: 16px; } }
+  @media (prefers-reduced-motion: reduce) { .mz *, .mz *::before, .mz *::after { animation: none !important; transition: none !important; } }
+
+  .mz-gallery { background: var(--mz-ivory); padding: clamp(88px, 10vw, 168px) 0; }
+  .mz-gallery__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 5vw, 96px); align-items: start; }
+  .mz-gallery__img { aspect-ratio: 4 / 5; }
+  .mz-gallery__side { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(48px, 6vw, 96px) 24px; }
+  .mz-gallery__head { grid-column: 1 / -1; display: grid; gap: 22px; }
+  .mz-gallery__c { margin-top: 33%; }
+  @media (max-width: 989px) { .mz-gallery__grid { grid-template-columns: minmax(0, 1fr); } .mz-gallery__head { order: -1; } }
+  @media (max-width: 480px) { .mz-gallery__side { grid-template-columns: minmax(0, 1fr); } .mz-gallery__c { margin-top: 0; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if mz_html contains 'ا' or mz_html contains 'ل' or mz_html contains 'ي' or mz_html contains 'ة' -%}
+<div class="mz-rtl" dir="rtl" style="display: contents">{{ mz_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .mz-rtl:is(#mz-rtl, *), .mz-rtl:is(#mz-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .mz-rtl:is(#mz-rtl, *) :is(p, li, span, a, summary, dt, dd, figcaption, div) { font-family: "Instrument Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .mz-rtl:is(#mz-rtl, *) :is(h1, h2, h3, blockquote, blockquote p) { font-family: "Instrument Serif", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.4 !important; }
+  .mz-rtl:is(#mz-rtl, *) .mz { --mz-dir: -1; }
+  .mz-rtl:is(#mz-rtl, *) .mz-arrow { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ mz_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Maison Gallery",
+  "tag": "section",
+  "class": "roarr-maison-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr generated content",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "gallery_eyebrow",
+      "label": "Label",
+      "default": "In situ"
+    },
+    {
+      "type": "text",
+      "id": "gallery_heading",
+      "label": "Heading (last word is italic)",
+      "default": "Seen in a quiet light"
+    },
+    {
+      "type": "text",
+      "id": "gallery_title_1",
+      "label": "Image 1 title",
+      "default": "In the hand"
+    },
+    {
+      "type": "text",
+      "id": "gallery_text_1",
+      "label": "Image 1 caption",
+      "default": "Weighted, balanced and effortless to use."
+    },
+    {
+      "type": "text",
+      "id": "gallery_title_2",
+      "label": "Image 2 title",
+      "default": "Still life"
+    },
+    {
+      "type": "text",
+      "id": "gallery_text_2",
+      "label": "Image 2 caption",
+      "default": "Composed with restraint, finished with care."
+    },
+    {
+      "type": "text",
+      "id": "gallery_title_3",
+      "label": "Image 3 title",
+      "default": "At home"
+    },
+    {
+      "type": "text",
+      "id": "gallery_text_3",
+      "label": "Image 3 caption",
+      "default": "Settles into any room without raising its voice."
+    },
+    {
+      "type": "image_picker",
+      "id": "maison_gallery_1",
+      "label": "Image 1 (4:5)"
+    },
+    {
+      "type": "image_picker",
+      "id": "maison_gallery_2",
+      "label": "Image 2 (4:5)"
+    },
+    {
+      "type": "image_picker",
+      "id": "maison_gallery_3",
+      "label": "Image 3 (4:5)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Gallery"
+    }
+  ]
+}
+{% endschema %}

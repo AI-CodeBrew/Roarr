@@ -10,6 +10,8 @@ import { CINEMATIC_SINGLE_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings
 import { AMOUR_SINGLE_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/amour/single-product.js";
 import { AMOUR_SINGLE_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/amour/single-product-sections.js";
 import { withAmourCategoryColors } from "./liquid-schema-settings/packs/amour/categoryTheme.js";
+import { MAISON_SINGLE_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/maison/single-product.js";
+import { MAISON_SINGLE_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/maison/single-product-sections.js";
 import { LUMENOOK_MULTI_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/lumenook/multi-product.js";
 import { LUMENOOK_MULTI_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/lumenook/multi-product-sections.js";
 import { applySectionColorSchemesToSettings } from "./sectionColorUtils.js";
@@ -774,6 +776,8 @@ function buildHomeTemplateConfigFromSections(
                     ? `packs/cinematic/home/${sectionKey}`
                     : sectionKey.startsWith("pf-amour-")
                         ? `packs/amour/home/${sectionKey}`
+                        : sectionKey.startsWith("pf-maison-")
+                          ? `packs/maison/home/${sectionKey}`
                         : sectionKey.startsWith("pf-lumen-")
                             ? `packs/lumenook/home/${sectionKey}`
                             : `home/${sectionKey}`;
@@ -1156,7 +1160,8 @@ export function buildLiquidPageTemplatesConfig({
 
     if (productType === "single-product" && pageType === "home-page") {
         const packRaw = String(storeTemplatePack || "").toLowerCase();
-        const pack = packRaw === "cinematic" || packRaw === "amour" ? packRaw : "classic";
+        const pack =
+            packRaw === "cinematic" || packRaw === "amour" || packRaw === "maison" ? packRaw : "classic";
         const homeSettings =
             pack === "cinematic"
                 ? CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS
@@ -1166,13 +1171,17 @@ export function buildLiquidPageTemplatesConfig({
                           detectedCategory || categoryDefaults?.id || "general",
                           stylePreferences?.dynamicColor,
                       )
-                    : SINGLE_PRODUCT_HOME_SETTINGS;
+                    : pack === "maison"
+                      ? MAISON_SINGLE_PRODUCT_HOME_SETTINGS
+                      : SINGLE_PRODUCT_HOME_SETTINGS;
         const homeSections =
             pack === "cinematic"
                 ? CINEMATIC_SINGLE_PRODUCT_HOME_SECTIONS
                 : pack === "amour"
                     ? AMOUR_SINGLE_PRODUCT_HOME_SECTIONS
-                    : SINGLE_PRODUCT_HOME_SECTIONS;
+                    : pack === "maison"
+                      ? MAISON_SINGLE_PRODUCT_HOME_SECTIONS
+                      : SINGLE_PRODUCT_HOME_SECTIONS;
         return buildHomeTemplateConfigFromSections(
             homeSettings,
             homeSections,

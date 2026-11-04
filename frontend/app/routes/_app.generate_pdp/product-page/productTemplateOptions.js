@@ -30,6 +30,20 @@ export const PRODUCT_TEMPLATE_OPTIONS = [
     blurb: "Crisp white and cobalt with a bold, modern sans",
     preview: "frost",
   },
+  {
+    id: 7,
+    title: "Atelier",
+    badge: { label: "New", tone: "new" },
+    blurb: "Cinematic dark and ivory editorial with serif display type",
+    preview: "atelier",
+  },
+  {
+    id: 8,
+    title: "Bloom",
+    badge: { label: "New", tone: "new" },
+    blurb: "Soft pink wellness layout with bundles, reviews and video proof",
+    preview: "bloom",
+  },
 ];
 
 /**

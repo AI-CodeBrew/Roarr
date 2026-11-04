@@ -98,6 +98,49 @@ export function generateTemplateConfig(detectedCategory, productData, templateNu
 
   let rows;
 
+  // Atelier (template 7) — same layout for every category
+  if (templateNumber === 7) {
+    const atelierSection = (id, displayName) => [{
+      template: id.replace(/_/g, "-"),
+      displayName,
+      context: { product, block: { id, settings: {} }, shop },
+    }];
+    return [
+      atelierSection("atelier_buy", "Purchase"),
+      atelierSection("atelier_hero", "Hero"),
+      atelierSection("atelier_story", "Story"),
+      atelierSection("atelier_features", "In detail"),
+      atelierSection("atelier_specs", "Benefits & specs"),
+      atelierSection("atelier_proof", "Trust"),
+      atelierSection("atelier_related", "Related products"),
+      atelierSection("atelier_closing", "Closing"),
+    ];
+  }
+
+  // Bloom (template 8) — same layout for every category
+  if (templateNumber === 8) {
+    const bloomSection = (id, displayName) => [{
+      template: id.replace(/_/g, "-"),
+      displayName,
+      context: { product, block: { id, settings: {} }, shop },
+    }];
+    return [
+      bloomSection("bloom_hero", "Purchase"),
+      bloomSection("bloom_experts", "Product showcase"),
+      bloomSection("bloom_compare", "Comparison"),
+      bloomSection("bloom_stories", "Customer videos"),
+      bloomSection("bloom_faq", "FAQ & community"),
+      bloomSection("bloom_steps", "How to use"),
+      bloomSection("bloom_nutrition", "Nutrition facts"),
+      bloomSection("bloom_ingredients", "Ingredient spotlight"),
+      bloomSection("bloom_benefits", "Benefits"),
+      bloomSection("bloom_reviews", "Reviews"),
+      bloomSection("bloom_bundle", "Bundle builder"),
+      bloomSection("bloom_recent", "Recently viewed"),
+      bloomSection("bloom_closing", "Closing banner"),
+    ];
+  }
+
   // Frost (template 6) — same layout for every category
   if (templateNumber === 6) {
     const frostSection = (id, displayName) => [{
@@ -126,8 +169,10 @@ export function generateTemplateConfig(detectedCategory, productData, templateNu
     return [
       noirSection("noir_hero", "Hero"),
       noirSection("noir_ticker", "Ticker"),
+      noirSection("noir_signature", "Signature details"),
       noirSection("noir_statement", "Statement"),
       noirSection("noir_craft", "The craft"),
+      noirSection("noir_ritual", "The ritual"),
       noirSection("noir_compare", "Comparison"),
       noirSection("noir_faq", "FAQs"),
       noirSection("noir_closing", "Closing"),

@@ -51,11 +51,11 @@ const ProductPreviewEditor = lazy(() =>
 const ProductGenerationStep = lazy(() => import("./ProductGenerationStep.jsx"));
 const ProductPublishStep = lazy(() => import("./ProductPublishStep.jsx"));
 
-const TEMPLATE_LABELS = { 1: "Sleek", 2: "Vibe", 3: "Aura", 4: "Lumenook", 5: "Noir", 6: "Frost" };
+const TEMPLATE_LABELS = { 1: "Sleek", 2: "Vibe", 3: "Aura", 4: "Lumenook", 5: "Noir", 6: "Frost", 7: "Atelier", 8: "Bloom" };
 
 function asProductTemplate(value) {
   const n = Number(value);
-  return Number.isInteger(n) && n >= 1 && n <= 6 ? n : null;
+  return Number.isInteger(n) && n >= 1 && n <= 8 ? n : null;
 }
 const IMAGE_REGENERATE_FALLBACK_URL =
   "";
@@ -212,7 +212,11 @@ function mapPageRecordToProductFlowState(page) {
     genDataForTemplate?.selectedTemplate ??
     genDataForTemplate?.selected_template;
   const template =
-    storedTemplate === 6 || storedTemplate === "6" || storedTemplate === "template_6"
+    storedTemplate === 8 || storedTemplate === "8" || storedTemplate === "template_8"
+      ? 8
+      : storedTemplate === 7 || storedTemplate === "7" || storedTemplate === "template_7"
+      ? 7
+      : storedTemplate === 6 || storedTemplate === "6" || storedTemplate === "template_6"
       ? 6
       : storedTemplate === 5 || storedTemplate === "5" || storedTemplate === "template_5"
       ? 5
@@ -550,12 +554,58 @@ export default function ProductFlowStructure({
     () => ["product-page-card", "general", "6-frost", selectedProduct?.id || ""].join("::"),
     [selectedProduct?.id],
   );
+  const atelierMagicResponse = useMemo(() => {
+    const categoryDefaults = getDefaultMagicResponses("general", { template: 7 });
+    return {
+      ...DEFAULT_MAGIC_RESPONSE,
+      images: categoryDefaults.images || {},
+      text: categoryDefaults.text || {},
+      selected_color: categoryDefaults.color || undefined,
+      color_schemes: categoryDefaults.color ? [categoryDefaults.color] : [],
+    };
+  }, []);
+  const atelierProductData = useMemo(
+    () => aiResponseMapping(atelierMagicResponse),
+    [atelierMagicResponse],
+  );
+  const atelierTemplateRows = useMemo(
+    () => generateTemplateConfig("general", atelierProductData, 7, atelierMagicResponse),
+    [atelierProductData, atelierMagicResponse],
+  );
+  const atelierPreviewCacheKey = useMemo(
+    () => ["product-page-card", "general", "7-atelier", selectedProduct?.id || ""].join("::"),
+    [selectedProduct?.id],
+  );
+  const bloomMagicResponse = useMemo(() => {
+    const categoryDefaults = getDefaultMagicResponses("general", { template: 8 });
+    return {
+      ...DEFAULT_MAGIC_RESPONSE,
+      images: categoryDefaults.images || {},
+      text: categoryDefaults.text || {},
+      selected_color: categoryDefaults.color || undefined,
+      color_schemes: categoryDefaults.color ? [categoryDefaults.color] : [],
+    };
+  }, []);
+  const bloomProductData = useMemo(
+    () => aiResponseMapping(bloomMagicResponse),
+    [bloomMagicResponse],
+  );
+  const bloomTemplateRows = useMemo(
+    () => generateTemplateConfig("general", bloomProductData, 8, bloomMagicResponse),
+    [bloomProductData, bloomMagicResponse],
+  );
+  const bloomPreviewCacheKey = useMemo(
+    () => ["product-page-card", "general", "8-bloom", selectedProduct?.id || ""].join("::"),
+    [selectedProduct?.id],
+  );
   // Live preview rows + cache key for each premium template card.
   const premiumCardPreviews = {
     3: [glowTemplateRows, glowPreviewCacheKey],
     4: [lumenTemplateRows, lumenPreviewCacheKey],
     5: [noirTemplateRows, noirPreviewCacheKey],
     6: [frostTemplateRows, frostPreviewCacheKey],
+    7: [atelierTemplateRows, atelierPreviewCacheKey],
+    8: [bloomTemplateRows, bloomPreviewCacheKey],
   };
 
   const openProductDemoModal = useCallback(
@@ -994,11 +1044,11 @@ export default function ProductFlowStructure({
     asProductTemplate(templateSelectionRef.current) ?? asProductTemplate(selectedTemplate);
 
   // Aura is the default product template — auto-select it when a product is ready,
-  // unless the merchant already picked Lumenook, Noir or Frost.
+  // unless the merchant already picked Lumenook, Noir, Frost, Atelier or Bloom.
   useEffect(() => {
     if (pageIdFromUrl) return;
     if (!activeProduct || productValidationMessage) return;
-    if (selectedTemplate >= 3 && selectedTemplate <= 6) return;
+    if (selectedTemplate >= 3 && selectedTemplate <= 8) return;
     templateSelectionRef.current = 3;
     setSelectedTemplate(3);
   }, [activeProduct, productValidationMessage, selectedTemplate, pageIdFromUrl]);
@@ -1009,7 +1059,7 @@ export default function ProductFlowStructure({
       Boolean(activeProduct) &&
       !productValidationMessage &&
       template >= 3 &&
-      template <= 6;
+      template <= 8;
     if (!ready) return;
     const wallet = await refreshCreditsWallet();
     const cost = resolveFeatureCost(
@@ -1042,7 +1092,7 @@ export default function ProductFlowStructure({
       Boolean(activeProduct) &&
       !productValidationMessage &&
       template >= 3 &&
-      template <= 6;
+      template <= 8;
     if (!ready) return;
     setStep(2);
     setIsGenerating(true);
@@ -1520,7 +1570,9 @@ export default function ProductFlowStructure({
                 demoSelectedTemplate === 3 ||
                 demoSelectedTemplate === 4 ||
                 demoSelectedTemplate === 5 ||
-                demoSelectedTemplate === 6) ? (
+                demoSelectedTemplate === 6 ||
+                demoSelectedTemplate === 7 ||
+                demoSelectedTemplate === 8) ? (
                 <>
                     <div
                     style={{
@@ -1632,6 +1684,44 @@ export default function ProductFlowStructure({
                       attachBelowChrome={modalPreviewMode === "desktop"}
                       minHeight="1200px"
                       previewCacheKey={frostPreviewCacheKey}
+                      prebuiltHtmlUrl={null}
+                      expandToContent
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: demoSelectedTemplate === 7 ? "block" : "none",
+                      height: "auto",
+                    }}
+                    aria-hidden={demoSelectedTemplate !== 7}
+                  >
+                    <LiquidPreviewRender
+                      templateRows={atelierTemplateRows}
+                      previewMode={modalPreviewMode}
+                      selectedSection={null}
+                      storeName={null}
+                      attachBelowChrome={modalPreviewMode === "desktop"}
+                      minHeight="1200px"
+                      previewCacheKey={atelierPreviewCacheKey}
+                      prebuiltHtmlUrl={null}
+                      expandToContent
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: demoSelectedTemplate === 8 ? "block" : "none",
+                      height: "auto",
+                    }}
+                    aria-hidden={demoSelectedTemplate !== 8}
+                  >
+                    <LiquidPreviewRender
+                      templateRows={bloomTemplateRows}
+                      previewMode={modalPreviewMode}
+                      selectedSection={null}
+                      storeName={null}
+                      attachBelowChrome={modalPreviewMode === "desktop"}
+                      minHeight="1200px"
+                      previewCacheKey={bloomPreviewCacheKey}
                       prebuiltHtmlUrl={null}
                       expandToContent
                     />

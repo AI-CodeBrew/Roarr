@@ -1,0 +1,69 @@
+{
+  "sections": {
+    "roarr-maison-announce": {
+      "type": "roarr-maison-announce",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-maison-hero": {
+      "type": "roarr-maison-hero",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-maison-intro": {
+      "type": "roarr-maison-intro",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-maison-piece": {
+      "type": "roarr-maison-piece",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-maison-gallery": {
+      "type": "roarr-maison-gallery",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-maison-craft": {
+      "type": "roarr-maison-craft",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-maison-promise": {
+      "type": "roarr-maison-promise",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-maison-faq": {
+      "type": "roarr-maison-faq",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-maison-closing": {
+      "type": "roarr-maison-closing",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    }
+  },
+  "order": [
+    "roarr-maison-announce",
+    "roarr-maison-hero",
+    "roarr-maison-intro",
+    "roarr-maison-piece",
+    "roarr-maison-gallery",
+    "roarr-maison-craft",
+    "roarr-maison-promise",
+    "roarr-maison-faq",
+    "roarr-maison-closing"
+  ]
+}

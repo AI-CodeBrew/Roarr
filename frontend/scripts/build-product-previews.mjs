@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Card screenshots for the Aura, Noir and Frost product page templates (same idea as
+ * Card screenshots for the Aura, Noir, Frost and Atelier product page templates (same idea as
  * build-lumenook-previews.mjs; neither has a prebuilt CDN demo).
  *
  * Usage (from frontend/), after `node scripts/build-demo-art.mjs`:
  *   npx vite-node scripts/build-product-previews.mjs          (all)
- *   npx vite-node scripts/build-product-previews.mjs frost    (one: aura, noir or frost)
+ *   npx vite-node scripts/build-product-previews.mjs frost    (one: aura, noir, frost or atelier)
  *
  * Renders each product page with the in-app preview CSS/JS and its demo copy + photos, then writes
  * public/demo-previews/<name>/product.jpg (card, top 1280×720) and product.eye.jpg (full page,
@@ -37,11 +37,14 @@ const JOBS = [
   { name: "aura", category: "health_beauty", template: 3, assets: "aura-assets" },
   { name: "noir", category: "general", template: 5, assets: "noir-assets" },
   { name: "frost", category: "general", template: 6, assets: "frost-assets" },
+  { name: "atelier", category: "general", template: 7, assets: "atelier-assets" },
+  { name: "bloom", category: "general", template: 8, assets: "bloom-assets" },
 ];
 
 /** The rendered HTML references "/<assets>/..." (same-origin in the app); point it at the files on disk. */
 function withLocalAssetPaths(html, assets) {
-  return html.replaceAll(`"/${assets}/`, `"${pathToFileURL(path.join(PUBLIC, assets)).href}/`);
+  // srcset lists repeat the URL after ", " as well, so match any quote or space before the path.
+  return html.replace(new RegExp(`(["\\s])/${assets}/`, "g"), `$1${pathToFileURL(path.join(PUBLIC, assets)).href}/`);
 }
 
 /** Reject if `promise` doesn't settle within `ms`. */
@@ -102,7 +105,9 @@ async function capture(browser, job, tmpDir) {
     const broken = await page.evaluate(() => [...document.images].filter((img) => !img.naturalWidth).map((img) => img.src));
     if (broken.length) console.warn(`${job.name}: ${broken.length} image(s) did not load`, broken.slice(0, 3));
     // Fixed bars (Frost's add-to-cart dock) sit off-screen until scroll, but a full-page shot would show them mid-page.
-    await page.addStyleTag({ content: "[data-fr-sticky]{display:none!important}" }).catch(() => {});
+    await page.addStyleTag({ content: "[data-fr-sticky],[data-at-dock],[data-bl-dock]{display:none!important}" }).catch(() => {});
+    // Atelier reveals sections as they scroll into view; a full-page shot never scrolls, so show everything.
+    await page.evaluate(() => document.documentElement.classList.add("at-reveal-all")).catch(() => {});
     const card = path.join(outDir, "product.jpg");
     const eye = path.join(outDir, "product.eye.jpg");
     await page.screenshot({ path: card, type: "jpeg", quality: 82, clip: { x: 0, y: 0, width: 1280, height: 720 } });

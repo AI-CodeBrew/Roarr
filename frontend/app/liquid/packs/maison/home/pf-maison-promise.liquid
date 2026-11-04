@@ -1,0 +1,114 @@
+{%- capture mz_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign promise_heading = section.settings.promise_heading | default: 'Our promises' -%}
+{%- if use_mf and ht.promise_heading != blank -%}{%- assign promise_heading = ht.promise_heading -%}{%- endif -%}
+{%- assign promise_1_label = section.settings.promise_1_label | default: 'Craftsmanship' -%}
+{%- if use_mf and ht.promise_1_label != blank -%}{%- assign promise_1_label = ht.promise_1_label -%}{%- endif -%}
+{%- assign promise_1_text = section.settings.promise_1_text | default: 'Every piece is made with care and checked before it leaves us.' -%}
+{%- if use_mf and ht.promise_1_text != blank -%}{%- assign promise_1_text = ht.promise_1_text -%}{%- endif -%}
+{%- assign promise_2_label = section.settings.promise_2_label | default: 'Secure delivery' -%}
+{%- if use_mf and ht.promise_2_label != blank -%}{%- assign promise_2_label = ht.promise_2_label -%}{%- endif -%}
+{%- assign promise_2_text = section.settings.promise_2_text | default: 'Carefully packed and sent with tracking, straight to your door.' -%}
+{%- if use_mf and ht.promise_2_text != blank -%}{%- assign promise_2_text = ht.promise_2_text -%}{%- endif -%}
+{%- assign promise_3_label = section.settings.promise_3_label | default: 'Easy returns' -%}
+{%- if use_mf and ht.promise_3_label != blank -%}{%- assign promise_3_label = ht.promise_3_label -%}{%- endif -%}
+{%- assign promise_3_text = section.settings.promise_3_text | default: 'Not quite right? Reach out and we will make it right.' -%}
+{%- if use_mf and ht.promise_3_text != blank -%}{%- assign promise_3_text = ht.promise_3_text -%}{%- endif -%}
+{%- assign promise_4_label = section.settings.promise_4_label | default: 'Personal care' -%}
+{%- if use_mf and ht.promise_4_label != blank -%}{%- assign promise_4_label = ht.promise_4_label -%}{%- endif -%}
+{%- assign promise_4_text = section.settings.promise_4_text | default: 'A real person reads and answers every message you send.' -%}
+{%- if use_mf and ht.promise_4_text != blank -%}{%- assign promise_4_text = ht.promise_4_text -%}{%- endif -%}
+<section class="mz mz-promise">
+  <div class="mz-wrap">
+    <div class="mz-promise__head mz-reveal"><p class="mz-label"><span class="mz-label__n">06</span></p><h2 class="mz-h2">{%- assign mz_words = promise_heading | split: ' ' -%}{%- for w in mz_words -%}{%- if forloop.last -%}<em>{{ w | escape }}</em>{%- else -%}{{ w | escape }} {% endif -%}{%- endfor -%}</h2></div>
+    <ol class="mz-promise__list" role="list">
+      {%- if promise_1_label != blank -%}<li class="mz-reveal"><span class="mz-promise__n" aria-hidden="true">01</span><h3>{{ promise_1_label | escape }}</h3><p>{{ promise_1_text | escape }}</p></li>{%- endif -%}
+      {%- if promise_2_label != blank -%}<li class="mz-reveal"><span class="mz-promise__n" aria-hidden="true">02</span><h3>{{ promise_2_label | escape }}</h3><p>{{ promise_2_text | escape }}</p></li>{%- endif -%}
+      {%- if promise_3_label != blank -%}<li class="mz-reveal"><span class="mz-promise__n" aria-hidden="true">03</span><h3>{{ promise_3_label | escape }}</h3><p>{{ promise_3_text | escape }}</p></li>{%- endif -%}
+      {%- if promise_4_label != blank -%}<li class="mz-reveal"><span class="mz-promise__n" aria-hidden="true">04</span><h3>{{ promise_4_label | escape }}</h3><p>{{ promise_4_text | escape }}</p></li>{%- endif -%}
+    </ol>
+  </div>
+</section>
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.mz) { --mz-ivory: #F5F1EA; --mz-paper: #FBF9F5; --mz-stone: #E9E2D6; --mz-ink: #1D1915; --mz-ink-2: #5E554B; --mz-line: rgb(29 25 21 / .14); --mz-gold: #B39062; --mz-gold-deep: #8F6F43; --mz-gold-text: #6E5530; --mz-on-dark: #F3EDE3; --mz-on-dark-2: #CBC2B4; --mz-gold-light: #D8C29B; --mz-serif: "Instrument Serif", "Cormorant Garamond", "Times New Roman", serif; --mz-sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif; --mz-gutter: clamp(20px, 4vw, 64px); --mz-dir: 1; font-family: var(--mz-sans); font-size: 16px; line-height: 1.65; color: var(--mz-ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .mz *, .mz *::before, .mz *::after { box-sizing: border-box; }
+  :where(.mz) :where(h1, h2, h3, p, ul, ol, dl, dd, blockquote, figure) { margin: 0; padding: 0; }
+  :where(.mz) :where(ul, ol) { list-style: none; }
+  :where(.mz) img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .mz-wrap { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: var(--mz-gutter); }
+  .mz-label { display: flex; align-items: baseline; gap: 14px; font: 500 11.5px/1.4 var(--mz-sans); letter-spacing: .2em; text-transform: uppercase; color: var(--mz-gold-text); }
+  .mz-label__n { font-feature-settings: "tnum"; letter-spacing: .08em; color: var(--mz-ink-2); }
+  .mz-label__n::after { content: ""; display: inline-block; width: 28px; height: 1px; margin-inline-start: 14px; vertical-align: middle; background: var(--mz-gold); }
+  .mz-h2 { font: 400 clamp(40px, 4.8vw, 72px)/1 var(--mz-serif); letter-spacing: -.015em; color: var(--mz-ink); text-wrap: balance; }
+  .mz-h2 em, .mz-display em { font-style: italic; color: var(--mz-gold-deep); }
+  .mz-body { font-size: 17px; line-height: 1.7; color: var(--mz-ink-2); text-wrap: pretty; }
+  .mz-btn { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 54px; padding: 0 34px; border: 1px solid var(--mz-ink); background: var(--mz-ink); color: var(--mz-paper); font: 500 12px/1 var(--mz-sans); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; transition: background .4s ease, color .4s ease, border-color .4s ease; }
+  .mz-btn:hover { background: var(--mz-gold-deep); border-color: var(--mz-gold-deep); color: var(--mz-paper); }
+  .mz-btn--light { background: var(--mz-paper); border-color: var(--mz-paper); color: var(--mz-ink); }
+  .mz-btn--light:hover { background: transparent; border-color: var(--mz-paper); color: var(--mz-paper); }
+  .mz-link { position: relative; display: inline-flex; align-items: center; gap: 12px; padding-bottom: 8px; color: var(--mz-ink); font: 500 12px/1 var(--mz-sans); letter-spacing: .18em; text-transform: uppercase; text-decoration: none; }
+  .mz-link::after { content: ""; position: absolute; inset: auto 0 0; height: 1px; background: currentColor; transform-origin: right; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+  .mz-link:hover::after { transform: scaleX(.35); }
+  .mz-btn:focus-visible, .mz-link:focus-visible, .mz summary:focus-visible { outline: 2px solid var(--mz-gold-text); outline-offset: 4px; }
+  .mz-arrow { display: inline-block; font-family: var(--mz-sans); }
+  .mz-media { position: relative; overflow: hidden; background: var(--mz-stone); }
+  .mz-media img { transition: transform 1.6s cubic-bezier(.2, .7, .2, 1); }
+  .mz-media:hover img { transform: scale(1.03); }
+  .mz-fig { display: grid; gap: 16px; }
+  .mz-fig figcaption { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; row-gap: 4px; align-items: baseline; }
+  .mz-fig__n { grid-row: span 2; font: 500 11px/1.6 var(--mz-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--mz-gold-text); }
+  .mz-fig h3 { font: 400 24px/1.15 var(--mz-serif); color: var(--mz-ink); }
+  .mz-fig p { font-size: 14.5px; line-height: 1.6; color: var(--mz-ink-2); }
+  @keyframes mz-reveal { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: none; } }
+  @keyframes mz-settle { from { scale: 1.14; } to { scale: 1; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .mz-reveal { animation: mz-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+      .mz-settle img { animation: mz-settle linear both; animation-timeline: view(); animation-range: entry 0% cover 55%; }
+    }
+  }
+  @media (max-width: 749px) { .mz-body { font-size: 16px; } }
+  @media (prefers-reduced-motion: reduce) { .mz *, .mz *::before, .mz *::after { animation: none !important; transition: none !important; } }
+
+  .mz-promise { background: var(--mz-paper); padding: clamp(88px, 10vw, 160px) 0; }
+  .mz-promise__head { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 40px; align-items: baseline; margin-bottom: clamp(48px, 6vw, 88px); }
+  .mz-promise__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--mz-ink); }
+  .mz-promise__list li { display: grid; align-content: start; gap: 14px; padding: 28px 28px 8px 0; }
+  .mz-promise__list li + li { padding-inline-start: 28px; border-inline-start: 1px solid var(--mz-line); }
+  .mz-promise__n { font: 500 11px/1 var(--mz-sans); letter-spacing: .14em; color: var(--mz-gold-text); }
+  .mz-promise__list h3 { margin-top: 18px; font: 400 28px/1.1 var(--mz-serif); color: var(--mz-ink); }
+  .mz-promise__list p { font-size: 15px; line-height: 1.6; color: var(--mz-ink-2); }
+  @media (max-width: 989px) {
+    .mz-promise__head { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .mz-promise__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .mz-promise__list li:nth-child(3) { padding-inline-start: 0; border-inline-start: 0; }
+    .mz-promise__list li:nth-child(n + 3) { border-top: 1px solid var(--mz-line); }
+  }
+  @media (max-width: 480px) {
+    .mz-promise__list { grid-template-columns: minmax(0, 1fr); }
+    .mz-promise__list li + li { padding-inline-start: 0; border-inline-start: 0; border-top: 1px solid var(--mz-line); }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if mz_html contains 'ا' or mz_html contains 'ل' or mz_html contains 'ي' or mz_html contains 'ة' -%}
+<div class="mz-rtl" dir="rtl" style="display: contents">{{ mz_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .mz-rtl:is(#mz-rtl, *), .mz-rtl:is(#mz-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .mz-rtl:is(#mz-rtl, *) :is(p, li, span, a, summary, dt, dd, figcaption, div) { font-family: "Instrument Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .mz-rtl:is(#mz-rtl, *) :is(h1, h2, h3, blockquote, blockquote p) { font-family: "Instrument Serif", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.4 !important; }
+  .mz-rtl:is(#mz-rtl, *) .mz { --mz-dir: -1; }
+  .mz-rtl:is(#mz-rtl, *) .mz-arrow { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ mz_html }}
+{%- endif -%}

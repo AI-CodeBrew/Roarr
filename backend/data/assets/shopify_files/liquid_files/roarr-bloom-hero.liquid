@@ -1,0 +1,511 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign p1 = m.bloom_perk_1.value | default: m.bloom_perk_1 | default: 'Free Shipping' -%}
+{%- assign p2 = m.bloom_perk_2.value | default: m.bloom_perk_2 | default: 'Fastest delivery' -%}
+{%- assign p3 = m.bloom_perk_3.value | default: m.bloom_perk_3 | default: 'Full Refund Guarantee' -%}
+{%- assign b1 = m.bloom_badge_1.value | default: m.bloom_badge_1 -%}
+{%- assign b2 = m.bloom_badge_2.value | default: m.bloom_badge_2 -%}
+{%- assign b3 = m.bloom_badge_3.value | default: m.bloom_badge_3 -%}
+{%- assign b4 = m.bloom_badge_4.value | default: m.bloom_badge_4 -%}
+{%- assign c1 = m.bloom_chip_1.value | default: m.bloom_chip_1 -%}
+{%- assign c2 = m.bloom_chip_2.value | default: m.bloom_chip_2 -%}
+{%- assign c3 = m.bloom_chip_3.value | default: m.bloom_chip_3 -%}
+{%- assign c4 = m.bloom_chip_4.value | default: m.bloom_chip_4 -%}
+{%- assign seal = m.bloom_seal_text.value | default: m.bloom_seal_text -%}
+{%- assign tab_desc = m.bloom_tab_desc.value | default: m.bloom_tab_desc -%}
+{%- assign tab_ben = m.bloom_tab_benefits.value | default: m.bloom_tab_benefits -%}
+{%- assign tab_ing = m.bloom_tab_ingredients.value | default: m.bloom_tab_ingredients -%}
+{%- assign tab_1 = m.bloom_tab_1_label.value | default: m.bloom_tab_1_label | default: 'Description' -%}
+{%- assign tab_2 = m.bloom_tab_2_label.value | default: m.bloom_tab_2_label | default: 'Benefits' -%}
+{%- assign tab_3 = m.bloom_tab_3_label.value | default: m.bloom_tab_3_label | default: 'Ingredients' -%}
+{%- assign qty_head = m.bloom_qty_heading.value | default: m.bloom_qty_heading | default: 'Select your Quantity' -%}
+{%- assign qty_unit = m.bloom_qty_unit.value | default: m.bloom_qty_unit | default: 'Package' -%}
+{%- assign qty_short = m.bloom_qty_short.value | default: m.bloom_qty_short | default: 'Pack' -%}
+{%- assign best = m.bloom_best_deal.value | default: m.bloom_best_deal | default: 'Best Deal' -%}
+{%- assign once_t = m.bloom_onetime_title.value | default: m.bloom_onetime_title | default: 'One Time Purchase' -%}
+{%- assign once_n = m.bloom_onetime_note.value | default: m.bloom_onetime_note | default: 'Received a single package' -%}
+{%- assign sub_t = m.bloom_sub_title.value | default: m.bloom_sub_title | default: 'Flexible Subscription' -%}
+{%- assign sub_from = m.bloom_sub_from.value | default: m.bloom_sub_from | default: 'Starting at' -%}
+{%- assign sub_per = m.bloom_sub_per.value | default: m.bloom_sub_per | default: 'month' -%}
+{%- assign save_lbl = m.bloom_save_label.value | default: m.bloom_save_label | default: 'Save' -%}
+{%- assign low_t = m.bloom_low_stock.value | default: m.bloom_low_stock | default: 'Hurry Up! Low in stock' -%}
+{%- assign g_bold = m.bloom_guarantee_bold.value | default: m.bloom_guarantee_bold -%}
+{%- assign g_text = m.bloom_guarantee_text.value | default: m.bloom_guarantee_text -%}
+{%- assign proof = m.bloom_proof_line.value | default: m.bloom_proof_line -%}
+{%- assign proof_lbl = m.bloom_proof_label.value | default: m.bloom_proof_label | default: 'Positive Reviews' -%}
+{%- assign av1 = m.bloom_avatar_1.value | default: m.bloom_avatar_1 -%}
+{%- assign av2 = m.bloom_avatar_2.value | default: m.bloom_avatar_2 -%}
+{%- assign av3 = m.bloom_avatar_3.value | default: m.bloom_avatar_3 -%}
+{%- assign av4 = m.bloom_avatar_4.value | default: m.bloom_avatar_4 -%}
+{%- assign i1 = m.product_image_1.value | default: m.product_image_1 -%}
+{%- assign i2 = m.product_image_2.value | default: m.product_image_2 -%}
+{%- assign i3 = m.product_image_3.value | default: m.product_image_3 -%}
+{%- assign i4 = m.product_image_4.value | default: m.product_image_4 -%}
+{%- assign i5 = m.product_image_5.value | default: m.product_image_5 -%}
+{%- comment -%} Gallery pictures: real product media first, generated pictures when there is none. {%- endcomment -%}
+{%- if product.media.size > 0 -%}
+  {%- assign main_src = product.media.first.preview_image | default: product.media.first -%}
+{%- else -%}
+  {%- assign main_src = i1 -%}
+{%- endif -%}
+{%- assign seal_up = seal | upcase | split: ' ' -%}
+{%- assign seal_top = seal_up.first -%}
+{%- assign seal_bot = seal | upcase | remove_first: seal_top | strip -%}
+{%- if seal_bot == blank -%}{%- assign seal_bot = seal_top -%}{%- assign seal_top = '' -%}{%- endif -%}
+{%- assign has_desc = tab_desc -%}
+{%- if has_desc == blank and product.description != blank -%}{%- assign has_desc = product.description | strip_html | truncatewords: 55 -%}{%- endif -%}
+{%- assign unit_price = variant.price -%}
+{%- assign tab_count = 0 -%}
+{%- if has_desc != blank -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+{%- if tab_ben != blank -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+{%- if tab_ing != blank -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+{%- assign rating = product.metafields.reviews.rating.value -%}
+{%- assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count -%}
+{%- assign rating_scale = rating.scale_max.value | default: rating.scale_max | default: 5 -%}
+{%- assign rating_value = rating.rating.value | default: rating.rating | default: rating.value -%}
+
+{%- assign rating_pct = 0 -%}
+{%- if rating_value != blank -%}{%- assign rating_pct = rating_value | times: 100.0 | divided_by: rating_scale | round -%}{%- endif -%}
+{%- assign save_pct = 0 -%}
+{%- if product.compare_at_price > product.price -%}{%- assign save_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round -%}{%- endif -%}
+
+{%- assign sub_group = product.selling_plan_groups.first -%}
+{%- assign sub_alloc = variant.selling_plan_allocations.first -%}
+{%- assign sub_price = sub_alloc.price -%}
+{%- assign sub_pct = 0 -%}
+{%- if sub_price != blank and sub_price < unit_price -%}{%- assign sub_pct = unit_price | minus: sub_price | times: 100 | divided_by: unit_price | round -%}{%- endif -%}
+
+
+<section class="bloom bl-hero" id="bl-hero" data-money="{{ 123456 | money }}" data-unit="{{ unit_price }}">
+  <div class="bl-wrap bl-hero__grid">
+    <div class="bl-hero__media">
+      <div class="bl-hero__panel">
+        <ul class="bl-hero__rail" role="list">
+        {%- if b1 != blank -%}<li><span class="bl-hero__badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="bl-hero__badge-t">{{ b1 }}</span></li>{%- endif -%}
+        {%- if b2 != blank -%}<li><span class="bl-hero__badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19C5 10 10 5 20 4c0 10-5 15-14 15z"/><path d="M5 19c3-5 6-8 11-11"/></svg></span><span class="bl-hero__badge-t">{{ b2 }}</span></li>{%- endif -%}
+        {%- if b3 != blank -%}<li><span class="bl-hero__badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 4 5 5 5 10a5 5 0 01-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg></span><span class="bl-hero__badge-t">{{ b3 }}</span></li>{%- endif -%}
+        {%- if b4 != blank -%}<li><span class="bl-hero__badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z"/></svg></span><span class="bl-hero__badge-t">{{ b4 }}</span></li>{%- endif -%}
+        </ul>
+        <div class="bl-hero__stage">
+          {%- if main_src != blank -%}<img class="bl-fade" data-bl-main src="{{ main_src | image_url: width: 1400 }}" alt="{{ product.title | escape }}">{%- endif -%}
+        </div>
+        {%- if seal != blank -%}
+        <div class="bl-hero__seal">
+          <svg class="bl-seal" viewBox="0 0 100 100" aria-hidden="true">
+            <defs><path id="bl-seal-top-h" d="M 16 50 A 34 34 0 0 1 84 50"/><path id="bl-seal-bot-h" d="M 11 50 A 39 39 0 0 0 89 50"/></defs>
+            <circle cx="50" cy="50" r="47" fill="#fff" stroke="currentColor" stroke-width="1.6"/><circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="1"/>
+            <text font-size="8.6" font-weight="700" letter-spacing="1.4" fill="currentColor"><textPath href="#bl-seal-top-h" startOffset="50%" text-anchor="middle">{{ seal_top }}</textPath></text>
+            <text font-size="8.6" font-weight="700" letter-spacing="1.4" fill="currentColor"><textPath href="#bl-seal-bot-h" startOffset="50%" text-anchor="middle">{{ seal_bot }}</textPath></text>
+            <g transform="translate(35 35) scale(1.25)" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10.5 3v6.5L6.5 17a2 2 0 001.7 3h7.6a2 2 0 001.7-3l-4-7.500V3"/><path d="M8.500 14h7"/></g>
+          </svg>
+        </div>
+        {%- endif -%}
+      </div>
+      <div class="bl-hero__thumbs">
+        {%- for i in (1..5) -%}
+          {%- if product.media.size > 0 -%}
+            {%- assign t_idx = i | minus: 1 -%}{%- assign t_m = product.media[t_idx] -%}{%- assign t_src = t_m.preview_image | default: t_m -%}
+          {%- else -%}
+            {%- assign t_key = 'product_image_' | append: i -%}{%- assign t_src = m[t_key].value | default: m[t_key] -%}
+          {%- endif -%}
+          {%- if t_src != blank -%}
+            <button type="button" class="bl-hero__thumb{% if i == 1 %} is-on{% endif %}" data-src="{{ t_src | image_url: width: 1400 }}" aria-label="{{ product.title | escape }} {{ i }}"><img src="{{ t_src | image_url: width: 240 }}" alt="" loading="lazy"></button>
+          {%- else -%}
+            <span class="bl-hero__thumb bl-hero__thumb--empty" aria-hidden="true"></span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <ul class="bl-hero__chips" role="list">
+        {%- if c1 != blank -%}<li><span class="bl-hero__chip-i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0012 3z"/></svg></span><span>{{ c1 }}</span></li>{%- endif -%}
+        {%- if c2 != blank -%}<li><span class="bl-hero__chip-i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg></span><span>{{ c2 }}</span></li>{%- endif -%}
+        {%- if c3 != blank -%}<li><span class="bl-hero__chip-i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L5 13h6l-1 9 8-11h-6l1-9z"/></svg></span><span>{{ c3 }}</span></li>{%- endif -%}
+        {%- if c4 != blank -%}<li><span class="bl-hero__chip-i"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 14a4.5 4.5 0 008 0M9 9.5v.5M15 9.5v.5"/></svg></span><span>{{ c4 }}</span></li>{%- endif -%}
+      </ul>
+    </div>
+
+    <div class="bl-hero__details">
+
+      {%- if variant.inventory_management != blank and variant.inventory_quantity > 0 and variant.inventory_quantity <= 10 -%}
+        <p class="bl-hero__low"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 4 5 5 5 10a5 5 0 01-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/></svg><span>{{ low_t }}</span></p>
+      {%- endif -%}
+
+
+      {%- if rating_value != blank and rating_count != blank -%}
+        <p class="bl-hero__rating"><span class="bl-hero__stars" style="--p:{{ rating_pct }}%" role="img" aria-label="{{ rating_value }} / {{ rating_scale }}">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span>{{ rating_count }} reviews</span></p>
+      {%- endif -%}
+      <h1 class="bl-hero__title bl-serif">{{ product.title }}</h1>
+      <ul class="bl-hero__perks" role="list">
+        {%- if p1 != blank -%}<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 9h4l3 3v4h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg><span>{{ p1 }}</span></li>{%- endif -%}
+        {%- if p2 != blank -%}<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="17" r="2.5"/><circle cx="18" cy="17" r="2.5"/><path d="M8.5 17H14l2-8h3M12 9h3"/></svg><span>{{ p2 }}</span></li>{%- endif -%}
+        {%- if p3 != blank -%}<li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg><span>{{ p3 }}</span></li>{%- endif -%}
+      </ul>
+      <div class="bl-hero__pricebox">
+        <strong class="bl-hero__price" data-bl-price>{{ unit_price | money }}</strong>
+        <s class="bl-hero__compare" data-bl-compare{% unless product.compare_at_price > product.price %} hidden{% endunless %}>{%- if product.compare_at_price > product.price -%}{{ product.compare_at_price | money }}{%- endif -%}</s>
+        <span class="bl-hero__save" data-bl-save data-label="{{ save_lbl | escape }}"{% if save_pct < 1 %} hidden{% endif %}>{{ save_lbl }} {{ save_pct }}%</span>
+      </div>
+      {%- if tab_count > 0 -%}
+      <div class="bl-hero__tabs" role="tablist">
+        {%- assign first_tab = true -%}
+        {%- if has_desc != blank -%}<button type="button" role="tab" class="bl-hero__tab is-on" data-bl-tab="desc" aria-selected="true">{{ tab_1 }}</button>{%- assign first_tab = false -%}{%- endif -%}
+        {%- if tab_ben != blank -%}<button type="button" role="tab" class="bl-hero__tab{% if first_tab %} is-on{% endif %}" data-bl-tab="ben" aria-selected="{{ first_tab }}">{{ tab_2 }}</button>{%- assign first_tab = false -%}{%- endif -%}
+        {%- if tab_ing != blank -%}<button type="button" role="tab" class="bl-hero__tab{% if first_tab %} is-on{% endif %}" data-bl-tab="ing" aria-selected="{{ first_tab }}">{{ tab_3 }}</button>{%- endif -%}
+      </div>
+      <div class="bl-hero__panelbox">
+        {%- assign first_tab = true -%}
+        {%- if has_desc != blank -%}<p data-bl-pane="desc">{{ has_desc }}</p>{%- assign first_tab = false -%}{%- endif -%}
+        {%- if tab_ben != blank -%}<p data-bl-pane="ben"{% unless first_tab %} hidden{% endunless %}>{{ tab_ben }}</p>{%- assign first_tab = false -%}{%- endif -%}
+        {%- if tab_ing != blank -%}<p data-bl-pane="ing"{% unless first_tab %} hidden{% endunless %}>{{ tab_ing }}</p>{%- endif -%}
+      </div>
+      {%- endif -%}
+
+      {%- form 'product', product, class: 'bl-hero__form' -%}
+        {%- if product.variants.size > 1 -%}
+          <label class="bl-hero__label" for="bl-variant">{{ product.options | join: ' / ' }}</label>
+          <div class="bl-select">
+            <select id="bl-variant" name="id" data-bl-variant>
+              {%- for v in product.variants -%}
+                {%- assign v_sub = v.selling_plan_allocations.first.price -%}
+                <option value="{{ v.id }}" data-price="{{ v.price }}" data-compare="{% if v.compare_at_price > v.price %}{{ v.compare_at_price }}{% endif %}" data-sub="{{ v_sub }}"{% if v.id == variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ variant.id }}" data-bl-variant data-price="{{ variant.price }}" data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price }}{% endif %}" data-sub="{{ sub_price }}">
+        {%- endif -%}
+
+        <p class="bl-hero__qtyhead"><b>{{ qty_head }}</b> <span data-bl-qty-label data-short="{{ qty_short | escape }}">2 {{ qty_short }}</span></p>
+        <input type="hidden" name="quantity" value="2" data-bl-qty-input>
+        <div class="bl-hero__qty" role="radiogroup" aria-label="{{ qty_head | escape }}">
+          <button type="button" class="bl-qty" data-bl-qty="1" role="radio" aria-checked="false"><span class="bl-qty__imgs"><img class="bl-fade" src="{{ main_src | image_url: width: 120 }}" alt="" loading="lazy"></span><span class="bl-qty__t">1 {{ qty_unit }}</span></button>
+          <button type="button" class="bl-qty is-on" data-bl-qty="2" role="radio" aria-checked="true"><span class="bl-qty__tag">{{ best }}</span><span class="bl-qty__imgs"><img class="bl-fade" src="{{ main_src | image_url: width: 120 }}" alt="" loading="lazy"><img class="bl-fade" src="{{ main_src | image_url: width: 120 }}" alt="" loading="lazy"></span><span class="bl-qty__t">2 {{ qty_unit }}</span></button>
+          <button type="button" class="bl-qty" data-bl-qty="3" role="radio" aria-checked="false"><span class="bl-qty__imgs"><img class="bl-fade" src="{{ main_src | image_url: width: 120 }}" alt="" loading="lazy"><img class="bl-fade" src="{{ main_src | image_url: width: 120 }}" alt="" loading="lazy"><img class="bl-fade" src="{{ main_src | image_url: width: 120 }}" alt="" loading="lazy"></span><span class="bl-qty__t">3 {{ qty_unit }}</span></button>
+        </div>
+
+
+        {%- if sub_group != blank and sub_price != blank -%}
+
+        <div class="bl-opts">
+          <label class="bl-opt{% if false %} is-on{% endif %}" data-bl-opt="once">
+            <input class="bl-sr" type="radio" name="bl_purchase" value="once" checked>
+            <span class="bl-opt__radio" aria-hidden="true"></span>
+            <span class="bl-opt__text"><b>{{ once_t }}</b><small>{{ once_n }}</small></span>
+            <span class="bl-opt__price"><b data-bl-once>{{ unit_price | times: 2 | money }}</b></span>
+          </label>
+          <label class="bl-opt" data-bl-opt="sub">
+            <input class="bl-sr" type="radio" name="bl_purchase" value="sub">
+            <span class="bl-opt__radio" aria-hidden="true"></span>
+            <span class="bl-opt__text"><b>{{ sub_t }}</b><small>{{ sub_from }} <span data-bl-sub-unit>{{ sub_price | money }}</span>/{{ sub_per }}</small></span>
+            <span class="bl-opt__price"><b data-bl-sub>{{ sub_price | times: 2 | money }}</b><small data-bl-sub-save{% if sub_pct < 1 %} hidden{% endif %}>{{ save_lbl }} {{ sub_pct }}%</small></span>
+            <span class="bl-opt__select bl-select">
+
+
+              <select name="selling_plan" data-bl-plan aria-label="{{ sub_t | escape }}" disabled>
+                {%- for plan in sub_group.selling_plans -%}<option value="{{ plan.id }}">{{ plan.name }}</option>{%- endfor -%}
+              </select>
+
+            </span>
+          </label>
+        </div>
+
+        {%- endif -%}
+
+
+        <button class="bl-btn bl-hero__cta" type="submit" data-bl-cta{% if variant.available == false %} disabled{% endif %}>
+          {%- if variant.available != false -%}<span>{% render 'roarr-ui-string', key: 'add_to_cart' %}</span> - <span data-bl-total>{{ unit_price | times: 2 | money }}</span>{%- else -%}{% render 'roarr-ui-string', key: 'sold_out' %}{%- endif -%}
+        </button>
+      {%- endform -%}
+      {%- if g_bold != blank or g_text != blank -%}
+      <p class="bl-hero__guarantee"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2.3 1.7 2.8-.1 1 2.7 2.3 1.7-.9 2.7.9 2.7-2.3 1.7-1 2.7-2.8-.1L12 21.5l-2.3-1.7-2.8.1-1-2.7-2.3-1.7.9-2.7-.9-2.7 2.3-1.7 1-2.7 2.8.1L12 2.5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span><b>{{ g_bold }}</b> {{ g_text }}</span></p>
+      {%- endif -%}
+      {%- if proof != blank or rating_value != blank -%}
+      <div class="bl-hero__proof">
+        {%- if rating_value != blank -%}
+          <span class="bl-hero__stars bl-hero__stars--c" style="--p:{{ rating_pct }}%" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          {%- if rating_count != blank -%}<a class="bl-hero__proof-link" href="#bl-reviews">({{ rating_count }} {{ proof_lbl }})</a>{%- endif -%}
+        {%- endif -%}
+        {%- if proof != blank -%}<p>&ldquo;{{ proof }}&rdquo;</p>{%- endif -%}
+        {%- if av1 != blank or av2 != blank or av3 != blank or av4 != blank -%}
+          <span class="bl-hero__avatars">
+            {%- if av1 != blank -%}<img src="{{ av1 | image_url: width: 120 }}" alt="" loading="lazy">{%- endif -%}
+            {%- if av2 != blank -%}<img src="{{ av2 | image_url: width: 120 }}" alt="" loading="lazy">{%- endif -%}
+            {%- if av3 != blank -%}<img src="{{ av3 | image_url: width: 120 }}" alt="" loading="lazy">{%- endif -%}
+            {%- if av4 != blank -%}<img src="{{ av4 | image_url: width: 120 }}" alt="" loading="lazy">{%- endif -%}
+          </span>
+        {%- endif -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- capture mq_items -%}
+    {%- if p1 != blank -%}<li>{{ p1 }}</li>{%- endif -%}
+    {%- if b1 != blank -%}<li>{{ b1 }}</li>{%- endif -%}
+    {%- if c1 != blank -%}<li>{{ c1 }}</li>{%- endif -%}
+    {%- if p2 != blank -%}<li>{{ p2 }}</li>{%- endif -%}
+    {%- if b2 != blank -%}<li>{{ b2 }}</li>{%- endif -%}
+    {%- if c2 != blank -%}<li>{{ c2 }}</li>{%- endif -%}
+    {%- if p3 != blank -%}<li>{{ p3 }}</li>{%- endif -%}
+    {%- if b3 != blank -%}<li>{{ b3 }}</li>{%- endif -%}
+    {%- if c3 != blank -%}<li>{{ c3 }}</li>{%- endif -%}
+    {%- if b4 != blank -%}<li>{{ b4 }}</li>{%- endif -%}
+    {%- if c4 != blank -%}<li>{{ c4 }}</li>{%- endif -%}
+  {%- endcapture -%}
+  {%- if mq_items contains '<li>' -%}
+  <div class="bl-hero__marquee">
+    <div class="bl-hero__mq-track">
+      <ul role="list">{{ mq_items }}</ul>
+      <ul role="list" aria-hidden="true">{{ mq_items }}</ul>
+      <ul role="list" aria-hidden="true">{{ mq_items }}</ul>
+    </div>
+  </div>
+  {%- endif -%}
+  <div class="bl-dock" data-bl-dock aria-hidden="true">
+    <div class="bl-dock__in">
+      {%- if main_src != blank -%}<img class="bl-dock__img" src="{{ main_src | image_url: width: 160 }}" alt="" width="46" height="46">{%- endif -%}
+      <span class="bl-dock__t"><b>{{ product.title }}</b><span data-bl-dock-price>{{ unit_price | times: 2 | money }}</span></span>
+      <button type="button" class="bl-btn bl-dock__btn" data-bl-dock-btn tabindex="-1">{% render 'roarr-ui-string', key: 'add_to_cart' %}</button>
+    </div>
+  </div>
+</section>
+<style>
+  .bloom { --bl-plum: #4A0E2B; --bl-ink: #3D1229; --bl-rose: #E5518E; --bl-rose-d: #B3235F; --bl-blush: #FDEBF5; --bl-pink: #FFDDEB; --bl-pink-2: #FFE9F2; --bl-peach: #FFE8E3; --bl-coral: #E8695C; --bl-cream: #FFF6E8; --bl-grad: linear-gradient(90deg, #E8695C 0%, #E5518E 100%); --bl-star: #F59E0B; --bl-muted: #6F5A67; --bl-line: #F1D5E1; --bl-serif: "Playfair Display", Georgia, serif; --bl-sans: "Open Sans", system-ui, sans-serif; --bl-pop: "Poppins", "Open Sans", sans-serif; --font-heading-family: "Playfair Display", serif; --font-body-family: "Open Sans", sans-serif; position: relative; font-family: var(--bl-sans); -webkit-font-smoothing: antialiased; }
+  :where(.bloom) { background: #fff; color: var(--bl-plum); }
+  .bloom *, .bloom *::before, .bloom *::after { box-sizing: border-box; }
+  :where(.bloom) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption, cite) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .bloom, .bloom :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption, cite) { font-family: var(--bl-sans) !important; }
+  .bloom :is(h1, h2, h3, h4, .bl-serif, .bl-serif *, .bl-h *) { font-family: var(--bl-serif) !important; }
+  .bloom .bl-pop, .bloom .bl-pop :is(p, li, a, span, label, button, input, select, strong, small, b, s, div, h3, h4) { font-family: var(--bl-pop) !important; }
+  :where(.bloom) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.bloom) :is(ul, ol) { list-style: none; }
+  :where(.bloom) img { display: block; max-width: 100%; }
+  :where(.bloom) button { font: inherit; }
+  :where(.bloom) .bl-wrap { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.bloom) .bl-h { font-weight: 600; line-height: 1.22; letter-spacing: 0; text-wrap: balance; text-align: center; color: var(--bl-plum); font-size: clamp(28px, 3.4vw, 40px); }
+  :where(.bloom) .bl-ac { color: var(--bl-rose); }
+  :where(.bloom) .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 28px; border: 1px solid #E5518E; border-radius: 8px; background: var(--bl-grad); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px -10px rgb(229 81 142 / .7); transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+  :where(.bloom) .bl-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 12px 24px -10px rgb(229 81 142 / .8); }
+  :where(.bloom) .bl-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .bloom [hidden] { display: none !important; }
+  :where(.bloom) .bl-fade { -webkit-mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); }
+  :where(.bloom) .bl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where(.bloom) .bl-stars { color: var(--bl-star); letter-spacing: 1px; }
+  @keyframes bl-rise { from { opacity: 0; transform: translate3d(0, 24px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .bloom [data-bl-reveal] { animation: bl-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.bloom) .bl-wrap { width: calc(100% - 32px); } }
+
+  .bl-hero { background: #fff; color: var(--bl-plum); padding: clamp(14px, 2vw, 28px) 0 0; }
+  .bl-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 2.4vw, 36px); align-items: start; padding-bottom: clamp(36px, 4.5vw, 60px); }
+  .bl-hero__media { position: sticky; top: 16px; display: grid; gap: 18px; }
+  .bl-hero__panel { position: relative; display: grid; grid-template-columns: minmax(96px, 22%) minmax(0, 1fr); align-items: center; gap: 4px; padding: clamp(14px, 2vw, 26px) clamp(10px, 1.6vw, 22px) clamp(14px, 2vw, 26px) clamp(14px, 2vw, 26px); border-radius: 14px; background: var(--bl-pink-2); min-height: 420px; overflow: hidden; }
+  .bl-hero__rail { display: grid; gap: clamp(10px, 1.6vw, 20px); align-content: center; justify-items: center; }
+  .bl-hero__rail li { display: grid; justify-items: center; gap: 8px; text-align: center; }
+  .bl-hero__badge { display: grid; place-items: center; width: clamp(52px, 5.4vw, 62px); aspect-ratio: 1; border-radius: 50%; background: #fff; color: var(--bl-rose-d); box-shadow: 0 6px 16px -10px rgb(179 35 95 / .35); }
+  .bl-hero__badge-t { max-width: 100px; font-size: 12.5px; font-weight: 500; line-height: 1.3; color: var(--bl-muted); }
+  .bl-hero__stage { display: grid; place-items: center; min-width: 0; }
+  .bl-hero__stage img { width: 100%; max-height: 520px; aspect-ratio: 1; object-fit: contain; mix-blend-mode: multiply; transition: opacity .35s ease, transform .6s ease; }
+  .bl-hero__stage img.is-swap { opacity: 0; transform: scale(.97); }
+  .bl-hero__seal { position: absolute; top: clamp(12px, 1.6vw, 20px); inset-inline-end: clamp(12px, 1.6vw, 22px); width: clamp(60px, 6.4vw, 76px); color: #5B1A3C; }
+  .bl-seal { width: 100%; height: auto; display: block; }
+  .bl-hero__thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(8px, 1.2vw, 14px); }
+  .bl-hero__thumb { position: relative; display: block; aspect-ratio: 1; padding: 0; border: 2px solid transparent; border-radius: 10px; background: #F2F2F2; overflow: hidden; cursor: pointer; transition: border-color .25s ease, transform .25s ease; }
+  .bl-hero__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .bl-hero__thumb--empty { cursor: default; }
+  button.bl-hero__thumb:hover { transform: translateY(-2px); }
+  .bl-hero__thumb.is-on { border-color: var(--bl-rose); }
+  .bl-hero__chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1.2vw, 14px); }
+  .bl-hero__chips li { display: grid; justify-items: center; align-content: center; gap: 6px; min-height: 66px; padding: 10px 6px; border-radius: 10px; background: var(--bl-peach); box-shadow: 0 4px 10px -6px rgb(179 35 95 / .3); font-size: 12.5px; font-weight: 500; line-height: 1.25; text-align: center; color: var(--bl-muted); }
+  .bl-hero__chip-i { color: #D2481E; display: grid; }
+
+  .bl-hero__details { display: grid; gap: 14px; min-width: 0; }
+  .bl-hero__low { display: flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 500; color: #D2481E; }
+  .bl-hero__rating { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #C75B2D; margin-top: -6px; }
+  .bl-hero__stars { position: relative; display: inline-block; font-size: 15px; line-height: 1; letter-spacing: 2px; color: #E6D3BE; background: linear-gradient(90deg, var(--bl-star) var(--p, 100%), #E6D3BE var(--p, 100%)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .bl-hero__title { font-size: clamp(30px, 3.2vw, 40px); font-weight: 600; line-height: 1.15; color: var(--bl-plum); }
+  .bl-hero__perks { display: flex; flex-wrap: wrap; gap: 10px; padding-bottom: 16px; border-bottom: 1px solid #ECDDE3; }
+  .bl-hero__perks li { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: var(--bl-peach); color: #B04A3A; font-size: 12.5px; font-weight: 500; line-height: 1; white-space: nowrap; }
+  .bl-hero__pricebox { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .bl-hero__price { font-size: 28px; font-weight: 700; line-height: 1; color: var(--bl-plum); }
+  .bl-hero__compare { font-size: 14px; color: #8A7C84; }
+  .bl-hero__save { padding: 4px 9px; border-radius: 5px; background: #E8606F; color: #fff; font-size: 12.5px; font-weight: 600; line-height: 1.2; }
+  .bl-hero__tabs { display: flex; gap: clamp(18px, 3vw, 44px); border-bottom: 1px solid #F1D8E2; margin-top: 2px; }
+  .bl-hero__tab { position: relative; padding: 4px 0 12px; border: 0; background: none; font-size: 14px; font-weight: 500; color: #7B6A72; cursor: pointer; transition: color .2s ease; }
+  .bl-hero__tab::after { content: ""; position: absolute; inset-inline: 0; bottom: -1px; height: 2px; background: var(--bl-rose); transform: scaleX(0); transition: transform .3s ease; }
+  .bl-hero__tab.is-on { color: var(--bl-rose); }
+  .bl-hero__tab.is-on::after { transform: scaleX(1); }
+  .bl-hero__panelbox { padding: 14px 16px; border-radius: 10px; background: #FFF1F3; font-size: 14px; line-height: 1.65; color: #5A3B4B; }
+  .bl-hero__form { display: grid; gap: 14px; }
+  .bl-hero__label { font-size: 13px; font-weight: 600; }
+  .bl-select { position: relative; display: block; }
+  .bl-select select { width: 100%; height: 44px; padding: 0 40px 0 14px; appearance: none; border: 1px solid #F1CFDD; border-radius: 8px; background: #FFE3EE; color: var(--bl-plum); font-size: 14px; cursor: pointer; }
+  .bl-select::after { content: ""; position: absolute; top: 50%; inset-inline-end: 16px; width: 8px; height: 8px; border: solid var(--bl-plum); border-width: 0 1.5px 1.5px 0; transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+  .bl-hero__qtyhead { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; font-size: 16px; margin-top: 4px; }
+  .bl-hero__qtyhead b { font-weight: 700; }
+  .bl-hero__qtyhead span { font-weight: 600; color: #B4531E; }
+  .bl-hero__qty { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding-top: 6px; }
+  .bl-qty { position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 76px; padding: 8px 10px; border: 2px solid transparent; border-radius: 10px; background: #FFDDEB; color: var(--bl-plum); font-size: 15px; font-weight: 500; cursor: pointer; transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+  .bl-qty:hover { transform: translateY(-2px); }
+  .bl-qty.is-on { border-color: #A6245C; background: #FFD5E6; }
+  .bl-qty__imgs { display: flex; flex: none; }
+  .bl-qty__imgs img { width: 30px; height: 36px; object-fit: contain; mix-blend-mode: multiply; margin-inline-end: -14px; }
+  .bl-qty__imgs img:last-child { margin-inline-end: 0; }
+  .bl-qty__t { white-space: nowrap; }
+  .bl-qty__tag { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); padding: 2px 12px; border-radius: 6px; background: #FFD0E3; border: 1px solid #E78BB0; color: #8E1F51; font-size: 11px; font-weight: 600; line-height: 1.4; white-space: nowrap; }
+  .bl-opts { display: grid; gap: 12px; }
+  .bl-opt { position: relative; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; row-gap: 10px; padding: 14px 16px; border: 1px solid #E9D9E1; border-radius: 10px; background: #fff; cursor: pointer; transition: border-color .25s ease, background .25s ease; }
+  .bl-opt__radio { width: 20px; height: 20px; border: 1.5px solid #6F5A67; border-radius: 50%; background: #fff; display: grid; place-items: center; }
+  .bl-opt__radio::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #E5518E; transform: scale(0); transition: transform .2s ease; }
+  .bl-opt__text { display: grid; gap: 2px; min-width: 0; }
+  .bl-opt__text b { font-size: 14px; font-weight: 600; color: var(--bl-plum); }
+  .bl-opt__text small { font-size: 11.5px; color: #8A7C84; }
+  .bl-opt__price { display: grid; justify-items: end; gap: 2px; }
+  .bl-opt__price b { font-size: 15px; font-weight: 700; }
+  .bl-opt__price small { font-size: 11.5px; color: #8A7C84; }
+  .bl-opt__select { grid-column: 2 / -1; display: none; }
+  .bl-opt.is-on { border-color: #E5518E; background: #FFE9F2; }
+  .bl-opt.is-on .bl-opt__radio { border-color: #E5518E; }
+  .bl-opt.is-on .bl-opt__radio::after { transform: scale(1); }
+  .bl-opt[data-bl-opt="sub"].is-on .bl-opt__select { display: block; }
+  .bl-opt__select select { background: #FFD5E6; }
+  .bl-hero__cta { width: 100%; min-height: 48px; font-size: 15px; border-radius: 8px; }
+  .bl-hero__guarantee { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.55; color: #5A3B4B; }
+  .bl-hero__guarantee svg { flex: none; color: #E8695C; margin-top: 2px; }
+  .bl-hero__guarantee b { color: #1B0A14; font-weight: 600; }
+  .bl-hero__proof { display: grid; justify-items: center; gap: 8px; padding: 16px 18px; border: 1px solid #F9D9C5; border-radius: 10px; background: #FFF1F1; text-align: center; }
+  .bl-hero__stars--c { font-size: 13px; }
+  .bl-hero__proof-link { font-size: 13px; color: #D6538A; text-decoration: underline; }
+  .bl-hero__proof p { max-width: 380px; font-size: 14px; line-height: 1.5; color: #4A1A33; }
+  .bl-hero__avatars { display: flex; }
+  .bl-hero__avatars img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; margin-inline-start: -9px; }
+  .bl-hero__avatars img:first-child { margin-inline-start: 0; }
+  .bl-hero__marquee { overflow: hidden; background: linear-gradient(90deg, #3D1229, #5A1A3C 50%, #3D1229); color: #FBD3E3; padding: 15px 0; }
+  .bl-hero__mq-track { display: flex; width: max-content; animation: bl-mq 46s linear infinite; }
+  .bl-hero__marquee:hover .bl-hero__mq-track { animation-play-state: paused; }
+  .bl-hero__mq-track ul { display: flex; flex: none; }
+  .bl-hero__mq-track li { display: flex; align-items: center; gap: 22px; padding-inline-start: 22px; font-size: 12.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; white-space: nowrap; }
+  .bl-hero__mq-track li::after { content: ""; width: 7px; height: 7px; border: 1px solid #F59AC0; transform: rotate(45deg); }
+  @keyframes bl-mq { to { transform: translateX(-33.3333%); } }
+  @media (prefers-reduced-motion: reduce) { .bl-hero__mq-track { animation: none; } .bl-hero__marquee { overflow-x: auto; } }
+  .bl-dock { position: fixed; inset-inline: 0; bottom: 0; z-index: 60; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgb(255 255 255 / .92); backdrop-filter: blur(14px); box-shadow: 0 -10px 30px -14px rgb(74 14 43 / .35); transform: translateY(115%); transition: transform .45s cubic-bezier(.22, .8, .24, 1); }
+  .bl-dock.is-on { transform: none; }
+  .bl-dock__in { display: flex; align-items: center; gap: 14px; width: min(1280px, 100%); margin-inline: auto; }
+  .bl-dock__img { flex: none; width: 46px; height: 46px; border-radius: 10px; object-fit: cover; background: var(--bl-pink-2); }
+  .bl-dock__t { display: grid; flex: 1; min-width: 0; font-size: 13px; color: var(--bl-muted); }
+  .bl-dock__t b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; font-weight: 600; color: var(--bl-plum); }
+  .bl-dock__btn { flex: none; min-height: 44px; padding: 0 26px; }
+  @media (max-width: 989px) {
+    .bl-hero__grid { grid-template-columns: minmax(0, 1fr); }
+    .bl-hero__media { position: static; }
+  }
+  @media (max-width: 749px) {
+    .bl-hero__panel { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+    .bl-hero__rail { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; align-content: start; order: 2; }
+    .bl-hero__badge { width: 46px; }
+    .bl-hero__badge svg { width: 20px; height: 20px; }
+    .bl-hero__badge-t { font-size: 11px; }
+    .bl-hero__qty { gap: 8px; }
+    .bl-qty { flex-direction: column; gap: 4px; padding: 14px 4px 8px; font-size: 13px; }
+    .bl-hero__chips li { font-size: 11.5px; min-height: 62px; }
+  }
+</style>
+<script>
+(function () {
+  var root = document.getElementById("bl-hero");
+  if (!root || root.dataset.blReady) return;
+  root.dataset.blReady = "1";
+  var sample = root.dataset.money || "";
+  var mm = sample.match(/^(.*?)([0-9][0-9.,\u00a0\u202f' ]*[0-9])(.*)$/);
+  var pre = mm ? mm[1] : "", suf = mm ? mm[3] : "", num = mm ? mm[2] : "1,234.56";
+  var dm = num.match(/([.,])(\d{1,2})$/);
+  var dsep = dm ? dm[1] : "", dlen = dm ? dm[2].length : 0;
+  var tm = num.replace(dm ? dm[0] : "", "").match(/[^0-9]/);
+  var tsep = tm ? tm[0] : "";
+  function fmt(c) {
+    var v = (c / 100).toFixed(dlen).split(".");
+    return pre + v[0].replace(/\B(?=(\d{3})+(?!\d))/g, tsep) + (dlen ? dsep + v[1] : "") + suf;
+  }
+  var qty = 2, sub = !!root.querySelector('input[value="sub"]:checked');
+  var variantEl = root.querySelector("[data-bl-variant]");
+  function opt() { return variantEl && variantEl.tagName === "SELECT" ? variantEl.options[variantEl.selectedIndex] : variantEl; }
+  function num2(v) { v = parseInt(v, 10); return isNaN(v) ? 0 : v; }
+  function paint() {
+    var o = opt(), unit = o ? num2(o.dataset.price) : num2(root.dataset.unit);
+    var cmp = o ? num2(o.dataset.compare) : 0, sp = o ? num2(o.dataset.sub) : 0;
+    var set = function (sel, txt) { var e = root.querySelector(sel); if (e) e.textContent = txt; };
+    set("[data-bl-price]", fmt(unit));
+    var c = root.querySelector("[data-bl-compare]"), s = root.querySelector("[data-bl-save]");
+    if (c) { c.hidden = !(cmp > unit); c.textContent = cmp > unit ? fmt(cmp) : ""; }
+    if (s) { s.hidden = !(cmp > unit); if (cmp > unit) s.textContent = s.dataset.label + " " + Math.round((cmp - unit) * 100 / cmp) + "%"; }
+    set("[data-bl-once]", fmt(unit * qty));
+    var useSub = sub && sp > 0;
+    if (sp > 0) {
+      set("[data-bl-sub]", fmt(sp * qty)); set("[data-bl-sub-unit]", fmt(sp));
+      var sv = root.querySelector("[data-bl-sub-save]");
+      if (sv) { sv.hidden = !(sp < unit); sv.textContent = (root.querySelector("[data-bl-save]") || sv).dataset.label + " " + Math.round((unit - sp) * 100 / unit) + "%"; }
+    }
+    set("[data-bl-total]", fmt((useSub ? sp : unit) * qty));
+    set("[data-bl-dock-price]", fmt((useSub ? sp : unit) * qty));
+    var ql = root.querySelector("[data-bl-qty-label]"); if (ql) ql.textContent = qty + " " + ql.dataset.short;
+    var qi = root.querySelector("[data-bl-qty-input]"); if (qi) qi.value = qty;
+    root.querySelectorAll("[data-bl-qty]").forEach(function (b) { var on = +b.dataset.blQty === qty; b.classList.toggle("is-on", on); b.setAttribute("aria-checked", on); });
+    root.querySelectorAll("[data-bl-opt]").forEach(function (l) { l.classList.toggle("is-on", (l.dataset.blOpt === "sub") === sub); });
+    var plan = root.querySelector("[data-bl-plan]"); if (plan) plan.disabled = !sub;
+  }
+  root.querySelectorAll("[data-bl-qty]").forEach(function (b) { b.addEventListener("click", function () { qty = +b.dataset.blQty; paint(); }); });
+  root.querySelectorAll("[data-bl-opt]").forEach(function (l) { l.addEventListener("click", function () { sub = l.dataset.blOpt === "sub"; var r = l.querySelector("input"); if (r) r.checked = true; paint(); }); });
+  if (variantEl && variantEl.tagName === "SELECT") variantEl.addEventListener("change", paint);
+  root.querySelectorAll("[data-bl-tab]").forEach(function (t) {
+    t.addEventListener("click", function () {
+      root.querySelectorAll("[data-bl-tab]").forEach(function (x) { var on = x === t; x.classList.toggle("is-on", on); x.setAttribute("aria-selected", on); });
+      root.querySelectorAll("[data-bl-pane]").forEach(function (p) { p.hidden = p.dataset.blPane !== t.dataset.blTab; });
+    });
+  });
+  var main = root.querySelector("[data-bl-main]");
+  root.querySelectorAll("button.bl-hero__thumb").forEach(function (t) {
+    t.addEventListener("click", function () {
+      if (!main) return;
+      root.querySelectorAll("button.bl-hero__thumb").forEach(function (x) { x.classList.toggle("is-on", x === t); });
+      main.classList.add("is-swap");
+      setTimeout(function () { main.src = t.dataset.src; main.classList.remove("is-swap"); }, 180);
+    });
+  });
+  var dock = root.querySelector("[data-bl-dock]"), cta = root.querySelector("[data-bl-cta]"), dockBtn = root.querySelector("[data-bl-dock-btn]");
+  if (dock && cta && "IntersectionObserver" in window) {
+    var setDock = function (on) { dock.classList.toggle("is-on", on); dock.setAttribute("aria-hidden", on ? "false" : "true"); if (dockBtn) dockBtn.tabIndex = on ? 0 : -1; };
+    new IntersectionObserver(function (en) { setDock(!en[0].isIntersecting && en[0].boundingClientRect.top < 0); }).observe(cta);
+    if (dockBtn) dockBtn.addEventListener("click", function () { cta.click(); });
+  }
+  paint();
+})();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--bloom" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div, cite) { font-family: "Open Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Playfair Display", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .bl-flip { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Bloom Hero",
+  "tag": "section",
+  "class": "roarr-bloom-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Bloom Hero" }]
+}
+{% endschema %}

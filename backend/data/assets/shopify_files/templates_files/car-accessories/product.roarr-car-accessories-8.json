@@ -1,0 +1,71 @@
+{
+  "sections": {
+    "bloom-hero": {
+      "type": "roarr-bloom-hero",
+      "settings": {}
+    },
+    "bloom-experts": {
+      "type": "roarr-bloom-experts",
+      "settings": {}
+    },
+    "bloom-compare": {
+      "type": "roarr-bloom-compare",
+      "settings": {}
+    },
+    "bloom-stories": {
+      "type": "roarr-bloom-stories",
+      "settings": {}
+    },
+    "bloom-faq": {
+      "type": "roarr-bloom-faq",
+      "settings": {}
+    },
+    "bloom-steps": {
+      "type": "roarr-bloom-steps",
+      "settings": {}
+    },
+    "bloom-nutrition": {
+      "type": "roarr-bloom-nutrition",
+      "settings": {}
+    },
+    "bloom-ingredients": {
+      "type": "roarr-bloom-ingredients",
+      "settings": {}
+    },
+    "bloom-benefits": {
+      "type": "roarr-bloom-benefits",
+      "settings": {}
+    },
+    "bloom-reviews": {
+      "type": "roarr-bloom-reviews",
+      "settings": {}
+    },
+    "bloom-bundle": {
+      "type": "roarr-bloom-bundle",
+      "settings": {}
+    },
+    "bloom-recent": {
+      "type": "roarr-bloom-recent",
+      "settings": {}
+    },
+    "bloom-closing": {
+      "type": "roarr-bloom-closing",
+      "settings": {}
+    }
+  },
+  "order": [
+    "bloom-hero",
+    "bloom-experts",
+    "bloom-compare",
+    "bloom-stories",
+    "bloom-faq",
+    "bloom-steps",
+    "bloom-nutrition",
+    "bloom-ingredients",
+    "bloom-benefits",
+    "bloom-reviews",
+    "bloom-bundle",
+    "bloom-recent",
+    "bloom-closing"
+  ]
+}

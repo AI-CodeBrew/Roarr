@@ -728,6 +728,44 @@ export const PDP_TEMPLATE_SCHEMAS = {
             { type: "text", key: "phrase_4", formKey: "text.noir_ticker_4", label: "Phrase 4", placeholder: "", productMetafield: "roarr.noir_ticker_4" }
         ]
     },
+    "noir-signature": {
+        displayName: "Signature details",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.noir_sig_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.noir_sig_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.noir_sig_heading", label: "Heading", placeholder: "", productMetafield: "roarr.noir_sig_heading" },
+            { type: "text", key: "text", formKey: "text.noir_sig_text", label: "Text", placeholder: "", productMetafield: "roarr.noir_sig_text" },
+            { type: "image", key: "image_1", formKey: "images.product_images.product_image_2", label: "Detail I image", productMetafield: "roarr.product_image_2" },
+            { type: "text", key: "title_1", formKey: "text.noir_sig_1_title", label: "Detail I title", placeholder: "", productMetafield: "roarr.noir_sig_1_title" },
+            { type: "text", key: "text_1", formKey: "text.noir_sig_1_text", label: "Detail I text", placeholder: "", productMetafield: "roarr.noir_sig_1_text" },
+            { type: "image", key: "image_2", formKey: "images.product_images.product_image_3", label: "Detail II image", productMetafield: "roarr.product_image_3" },
+            { type: "text", key: "title_2", formKey: "text.noir_sig_2_title", label: "Detail II title", placeholder: "", productMetafield: "roarr.noir_sig_2_title" },
+            { type: "text", key: "text_2", formKey: "text.noir_sig_2_text", label: "Detail II text", placeholder: "", productMetafield: "roarr.noir_sig_2_text" },
+            { type: "image", key: "image_3", formKey: "images.product_images.product_image_4", label: "Detail III image", productMetafield: "roarr.product_image_4" },
+            { type: "text", key: "title_3", formKey: "text.noir_sig_3_title", label: "Detail III title", placeholder: "", productMetafield: "roarr.noir_sig_3_title" },
+            { type: "text", key: "text_3", formKey: "text.noir_sig_3_text", label: "Detail III text", placeholder: "", productMetafield: "roarr.noir_sig_3_text" },
+            { type: "image", key: "image_4", formKey: "images.product_images.product_image_5", label: "Detail IV image", productMetafield: "roarr.product_image_5" },
+            { type: "text", key: "title_4", formKey: "text.noir_sig_4_title", label: "Detail IV title", placeholder: "", productMetafield: "roarr.noir_sig_4_title" },
+            { type: "text", key: "text_4", formKey: "text.noir_sig_4_text", label: "Detail IV text", placeholder: "", productMetafield: "roarr.noir_sig_4_text" }
+        ]
+    },
+    "noir-ritual": {
+        displayName: "The ritual",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.noir_ritual_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.noir_ritual_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.noir_ritual_heading", label: "Heading", placeholder: "", productMetafield: "roarr.noir_ritual_heading" },
+            { type: "text", key: "text", formKey: "text.noir_ritual_text", label: "Text", placeholder: "", productMetafield: "roarr.noir_ritual_text" },
+            { type: "image", key: "image", formKey: "images.body_images.feature_image", label: "Arch image", productMetafield: "roarr.feature_image" },
+            { type: "text", key: "step_1", formKey: "text.noir_ritual_1_title", label: "Step I", placeholder: "", productMetafield: "roarr.noir_ritual_1_title" },
+            { type: "text", key: "step_1_text", formKey: "text.noir_ritual_1_text", label: "Step I text", placeholder: "", productMetafield: "roarr.noir_ritual_1_text" },
+            { type: "text", key: "step_2", formKey: "text.noir_ritual_2_title", label: "Step II", placeholder: "", productMetafield: "roarr.noir_ritual_2_title" },
+            { type: "text", key: "step_2_text", formKey: "text.noir_ritual_2_text", label: "Step II text", placeholder: "", productMetafield: "roarr.noir_ritual_2_text" },
+            { type: "text", key: "step_3", formKey: "text.noir_ritual_3_title", label: "Step III", placeholder: "", productMetafield: "roarr.noir_ritual_3_title" },
+            { type: "text", key: "step_3_text", formKey: "text.noir_ritual_3_text", label: "Step III text", placeholder: "", productMetafield: "roarr.noir_ritual_3_text" },
+            { type: "text", key: "note", formKey: "text.noir_ritual_note", label: "Closing note", placeholder: "", productMetafield: "roarr.noir_ritual_note" }
+        ]
+    },
     "noir-statement": {
         displayName: "Statement",
         useForm: true,
@@ -921,6 +959,433 @@ export const PDP_TEMPLATE_SCHEMAS = {
             { type: "text", key: "heading", formKey: "text.frost_closing_heading", label: "Heading", placeholder: "", productMetafield: "roarr.frost_closing_heading" },
             { type: "text", key: "text", formKey: "text.frost_closing_text", label: "Text", placeholder: "", productMetafield: "roarr.frost_closing_text" },
             { type: "image", key: "image", formKey: "images.body_images.product_impact_image", label: "Image", productMetafield: "roarr.product_impact_image" }
+        ]
+    },
+    "atelier-hero": {
+        displayName: "Hero",
+        useForm: true,
+        fields: [
+            { type: "text", key: "title", formKey: "text.product_title", label: "Title", placeholder: "", productMetafield: "roarr.product_title" },
+            { type: "text", key: "eyebrow", formKey: "text.atelier_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.atelier_eyebrow" },
+            { type: "text", key: "subtitle", formKey: "text.product_subtitle", label: "Subtitle", placeholder: "", productMetafield: "roarr.product_subtitle" },
+            { type: "text", key: "cta_1", formKey: "text.atelier_cta_primary", label: "Main button", placeholder: "", productMetafield: "roarr.atelier_cta_primary" },
+            { type: "text", key: "cta_2", formKey: "text.atelier_cta_secondary", label: "Second link", placeholder: "", productMetafield: "roarr.atelier_cta_secondary" },
+            { type: "text", key: "price_note", formKey: "text.atelier_price_note", label: "Price note", placeholder: "", productMetafield: "roarr.atelier_price_note" },
+            { type: "image", key: "image", formKey: "images.body_images.product_impact_image", label: "Hero image", productMetafield: "roarr.product_impact_image" }
+        ]
+    },
+    "atelier-story": {
+        displayName: "Story",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.atelier_story_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.atelier_story_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.atelier_story_heading", label: "Heading", placeholder: "", productMetafield: "roarr.atelier_story_heading" },
+            { type: "text", key: "text", formKey: "text.atelier_story_text", label: "Text", placeholder: "", productMetafield: "roarr.atelier_story_text" },
+            { type: "text", key: "point_1", formKey: "text.atelier_story_point_1", label: "Point 1", placeholder: "", productMetafield: "roarr.atelier_story_point_1" },
+            { type: "text", key: "point_2", formKey: "text.atelier_story_point_2", label: "Point 2", placeholder: "", productMetafield: "roarr.atelier_story_point_2" },
+            { type: "text", key: "point_3", formKey: "text.atelier_story_point_3", label: "Point 3", placeholder: "", productMetafield: "roarr.atelier_story_point_3" },
+            { type: "text", key: "signature", formKey: "text.atelier_story_signature", label: "Closing line", placeholder: "", productMetafield: "roarr.atelier_story_signature" },
+            { type: "image", key: "image_1", formKey: "images.body_images.product_highlight_1", label: "Large image", productMetafield: "roarr.product_highlight_1" },
+            { type: "image", key: "image_2", formKey: "images.body_images.product_highlight_2", label: "Small image", productMetafield: "roarr.product_highlight_2" }
+        ]
+    },
+    "atelier-features": {
+        displayName: "In detail",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.atelier_features_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.atelier_features_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.atelier_features_heading", label: "Heading", placeholder: "", productMetafield: "roarr.atelier_features_heading" },
+            { type: "text", key: "title_1", formKey: "text.atelier_feature_1_title", label: "Tab 1 title", placeholder: "", productMetafield: "roarr.atelier_feature_1_title" },
+            { type: "text", key: "text_1", formKey: "text.atelier_feature_1_text", label: "Tab 1 text", placeholder: "", productMetafield: "roarr.atelier_feature_1_text" },
+            { type: "text", key: "spec_1", formKey: "text.atelier_feature_1_spec", label: "Tab 1 detail", placeholder: "", productMetafield: "roarr.atelier_feature_1_spec" },
+            { type: "image", key: "image_1", formKey: "images.body_images.product_highlight_3", label: "Tab 1 image", productMetafield: "roarr.product_highlight_3" },
+            { type: "text", key: "title_2", formKey: "text.atelier_feature_2_title", label: "Tab 2 title", placeholder: "", productMetafield: "roarr.atelier_feature_2_title" },
+            { type: "text", key: "text_2", formKey: "text.atelier_feature_2_text", label: "Tab 2 text", placeholder: "", productMetafield: "roarr.atelier_feature_2_text" },
+            { type: "text", key: "spec_2", formKey: "text.atelier_feature_2_spec", label: "Tab 2 detail", placeholder: "", productMetafield: "roarr.atelier_feature_2_spec" },
+            { type: "image", key: "image_2", formKey: "images.product_images.product_image_2", label: "Tab 2 image", productMetafield: "roarr.product_image_2" },
+            { type: "text", key: "title_3", formKey: "text.atelier_feature_3_title", label: "Tab 3 title", placeholder: "", productMetafield: "roarr.atelier_feature_3_title" },
+            { type: "text", key: "text_3", formKey: "text.atelier_feature_3_text", label: "Tab 3 text", placeholder: "", productMetafield: "roarr.atelier_feature_3_text" },
+            { type: "text", key: "spec_3", formKey: "text.atelier_feature_3_spec", label: "Tab 3 detail", placeholder: "", productMetafield: "roarr.atelier_feature_3_spec" },
+            { type: "image", key: "image_3", formKey: "images.product_images.product_image_3", label: "Tab 3 image", productMetafield: "roarr.product_image_3" },
+            { type: "text", key: "title_4", formKey: "text.atelier_feature_4_title", label: "Tab 4 title", placeholder: "", productMetafield: "roarr.atelier_feature_4_title" },
+            { type: "text", key: "text_4", formKey: "text.atelier_feature_4_text", label: "Tab 4 text", placeholder: "", productMetafield: "roarr.atelier_feature_4_text" },
+            { type: "text", key: "spec_4", formKey: "text.atelier_feature_4_spec", label: "Tab 4 detail", placeholder: "", productMetafield: "roarr.atelier_feature_4_spec" },
+            { type: "image", key: "image_4", formKey: "images.product_images.product_image_4", label: "Tab 4 image", productMetafield: "roarr.product_image_4" }
+        ]
+    },
+    "atelier-buy": {
+        displayName: "Purchase",
+        useForm: true,
+        fields: [
+            { type: "text", key: "title", formKey: "text.product_title", label: "Title", placeholder: "", productMetafield: "roarr.product_title" },
+            { type: "text", key: "subtitle", formKey: "text.product_subtitle", label: "Subtitle", placeholder: "", productMetafield: "roarr.product_subtitle" },
+            { type: "text", key: "price_note", formKey: "text.atelier_price_note", label: "Price note", placeholder: "", productMetafield: "roarr.atelier_price_note" },
+            { type: "text", key: "delivery", formKey: "text.delivery_line", label: "Delivery line", placeholder: "", productMetafield: "roarr.delivery_line" },
+            { type: "text", key: "badge_1", formKey: "text.badge_text_1", label: "Trust 1", placeholder: "", productMetafield: "roarr.badge_text_1" },
+            { type: "text", key: "badge_2", formKey: "text.badge_text_2", label: "Trust 2", placeholder: "", productMetafield: "roarr.badge_text_2" },
+            { type: "text", key: "badge_3", formKey: "text.badge_text_3", label: "Trust 3", placeholder: "", productMetafield: "roarr.badge_text_3" },
+            { type: "text", key: "acc_1_title", formKey: "text.atelier_acc_1_title", label: "Tab 1 label", placeholder: "", productMetafield: "roarr.atelier_acc_1_title" },
+            { type: "text", key: "acc_1_body", formKey: "text.atelier_acc_1_body", label: "Tab 1 text", placeholder: "", productMetafield: "roarr.atelier_acc_1_body" },
+            { type: "text", key: "acc_2_title", formKey: "text.atelier_acc_2_title", label: "Tab 2 label", placeholder: "", productMetafield: "roarr.atelier_acc_2_title" },
+            { type: "text", key: "acc_2_body", formKey: "text.atelier_acc_2_body", label: "Tab 2 text", placeholder: "", productMetafield: "roarr.atelier_acc_2_body" },
+            { type: "text", key: "acc_3_title", formKey: "text.atelier_acc_3_title", label: "Tab 3 label", placeholder: "", productMetafield: "roarr.atelier_acc_3_title" },
+            { type: "text", key: "acc_3_body", formKey: "text.atelier_acc_3_body", label: "Tab 3 text", placeholder: "", productMetafield: "roarr.atelier_acc_3_body" },
+            { type: "text", key: "acc_4_title", formKey: "text.atelier_acc_4_title", label: "Tab 4 label", placeholder: "", productMetafield: "roarr.atelier_acc_4_title" },
+            { type: "text", key: "acc_4_body", formKey: "text.atelier_acc_4_body", label: "Tab 4 text", placeholder: "", productMetafield: "roarr.atelier_acc_4_body" },
+            { type: "text", key: "in_stock", formKey: "text.atelier_in_stock", label: "In stock text", placeholder: "", productMetafield: "roarr.atelier_in_stock" },
+            { type: "text", key: "low_stock", formKey: "text.atelier_low_stock", label: "Low stock text ([n] = count)", placeholder: "", productMetafield: "roarr.atelier_low_stock" },
+            { type: "text", key: "added", formKey: "text.atelier_added", label: "Added message", placeholder: "", productMetafield: "roarr.atelier_added" },
+            { type: "text", key: "view_bag", formKey: "text.atelier_view_bag", label: "View bag link", placeholder: "", productMetafield: "roarr.atelier_view_bag" },
+            { type: "text", key: "checkout", formKey: "text.atelier_checkout", label: "Checkout link", placeholder: "", productMetafield: "roarr.atelier_checkout" },
+            { type: "image", key: "product_image_1", formKey: "images.product_images.product_image_1", label: "Product image 1", productMetafield: "roarr.product_image_1" },
+            { type: "image", key: "product_image_2", formKey: "images.product_images.product_image_2", label: "Product image 2", productMetafield: "roarr.product_image_2" },
+            { type: "image", key: "product_image_3", formKey: "images.product_images.product_image_3", label: "Product image 3", productMetafield: "roarr.product_image_3" },
+            { type: "image", key: "product_image_4", formKey: "images.product_images.product_image_4", label: "Product image 4", productMetafield: "roarr.product_image_4" },
+            { type: "image", key: "product_image_5", formKey: "images.product_images.product_image_5", label: "Product image 5", productMetafield: "roarr.product_image_5" }
+        ]
+    },
+    "atelier-specs": {
+        displayName: "Benefits & specs",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.atelier_specs_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.atelier_specs_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.atelier_specs_heading", label: "Heading", placeholder: "", productMetafield: "roarr.atelier_specs_heading" },
+            { type: "text", key: "text", formKey: "text.atelier_specs_text", label: "Text", placeholder: "", productMetafield: "roarr.atelier_specs_text" },
+            { type: "text", key: "benefit_1_title", formKey: "text.atelier_benefit_1_title", label: "Benefit 1 title", placeholder: "", productMetafield: "roarr.atelier_benefit_1_title" },
+            { type: "text", key: "benefit_1_text", formKey: "text.atelier_benefit_1_text", label: "Benefit 1 text", placeholder: "", productMetafield: "roarr.atelier_benefit_1_text" },
+            { type: "text", key: "benefit_2_title", formKey: "text.atelier_benefit_2_title", label: "Benefit 2 title", placeholder: "", productMetafield: "roarr.atelier_benefit_2_title" },
+            { type: "text", key: "benefit_2_text", formKey: "text.atelier_benefit_2_text", label: "Benefit 2 text", placeholder: "", productMetafield: "roarr.atelier_benefit_2_text" },
+            { type: "text", key: "benefit_3_title", formKey: "text.atelier_benefit_3_title", label: "Benefit 3 title", placeholder: "", productMetafield: "roarr.atelier_benefit_3_title" },
+            { type: "text", key: "benefit_3_text", formKey: "text.atelier_benefit_3_text", label: "Benefit 3 text", placeholder: "", productMetafield: "roarr.atelier_benefit_3_text" },
+            { type: "text", key: "specs_title", formKey: "text.atelier_specs_title", label: "Specifications heading", placeholder: "", productMetafield: "roarr.atelier_specs_title" },
+            { type: "text", key: "spec_1_label", formKey: "text.atelier_spec_1_label", label: "Spec 1 label", placeholder: "", productMetafield: "roarr.atelier_spec_1_label" },
+            { type: "text", key: "spec_1_value", formKey: "text.atelier_spec_1_value", label: "Spec 1 value", placeholder: "", productMetafield: "roarr.atelier_spec_1_value" },
+            { type: "text", key: "spec_2_label", formKey: "text.atelier_spec_2_label", label: "Spec 2 label", placeholder: "", productMetafield: "roarr.atelier_spec_2_label" },
+            { type: "text", key: "spec_2_value", formKey: "text.atelier_spec_2_value", label: "Spec 2 value", placeholder: "", productMetafield: "roarr.atelier_spec_2_value" },
+            { type: "text", key: "spec_3_label", formKey: "text.atelier_spec_3_label", label: "Spec 3 label", placeholder: "", productMetafield: "roarr.atelier_spec_3_label" },
+            { type: "text", key: "spec_3_value", formKey: "text.atelier_spec_3_value", label: "Spec 3 value", placeholder: "", productMetafield: "roarr.atelier_spec_3_value" },
+            { type: "text", key: "spec_4_label", formKey: "text.atelier_spec_4_label", label: "Spec 4 label", placeholder: "", productMetafield: "roarr.atelier_spec_4_label" },
+            { type: "text", key: "spec_4_value", formKey: "text.atelier_spec_4_value", label: "Spec 4 value", placeholder: "", productMetafield: "roarr.atelier_spec_4_value" },
+            { type: "text", key: "spec_5_label", formKey: "text.atelier_spec_5_label", label: "Spec 5 label", placeholder: "", productMetafield: "roarr.atelier_spec_5_label" },
+            { type: "text", key: "spec_5_value", formKey: "text.atelier_spec_5_value", label: "Spec 5 value", placeholder: "", productMetafield: "roarr.atelier_spec_5_value" },
+            { type: "text", key: "spec_6_label", formKey: "text.atelier_spec_6_label", label: "Spec 6 label", placeholder: "", productMetafield: "roarr.atelier_spec_6_label" },
+            { type: "text", key: "spec_6_value", formKey: "text.atelier_spec_6_value", label: "Spec 6 value", placeholder: "", productMetafield: "roarr.atelier_spec_6_value" }
+        ]
+    },
+    "atelier-proof": {
+        displayName: "Trust",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.atelier_proof_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.atelier_proof_eyebrow" },
+            { type: "text", key: "quote", formKey: "text.atelier_proof_quote", label: "Statement", placeholder: "", productMetafield: "roarr.atelier_proof_quote" },
+            { type: "text", key: "by", formKey: "text.atelier_proof_by", label: "Statement byline", placeholder: "", productMetafield: "roarr.atelier_proof_by" },
+            { type: "image", key: "image", formKey: "images.body_images.feature_image", label: "Wide image", productMetafield: "roarr.feature_image" },
+            { type: "text", key: "trust_1_title", formKey: "text.atelier_trust_1_title", label: "Promise 1 title", placeholder: "", productMetafield: "roarr.atelier_trust_1_title" },
+            { type: "text", key: "trust_1_text", formKey: "text.atelier_trust_1_text", label: "Promise 1 text", placeholder: "", productMetafield: "roarr.atelier_trust_1_text" },
+            { type: "text", key: "trust_2_title", formKey: "text.atelier_trust_2_title", label: "Promise 2 title", placeholder: "", productMetafield: "roarr.atelier_trust_2_title" },
+            { type: "text", key: "trust_2_text", formKey: "text.atelier_trust_2_text", label: "Promise 2 text", placeholder: "", productMetafield: "roarr.atelier_trust_2_text" },
+            { type: "text", key: "trust_3_title", formKey: "text.atelier_trust_3_title", label: "Promise 3 title", placeholder: "", productMetafield: "roarr.atelier_trust_3_title" },
+            { type: "text", key: "trust_3_text", formKey: "text.atelier_trust_3_text", label: "Promise 3 text", placeholder: "", productMetafield: "roarr.atelier_trust_3_text" },
+            { type: "text", key: "trust_4_title", formKey: "text.atelier_trust_4_title", label: "Promise 4 title", placeholder: "", productMetafield: "roarr.atelier_trust_4_title" },
+            { type: "text", key: "trust_4_text", formKey: "text.atelier_trust_4_text", label: "Promise 4 text", placeholder: "", productMetafield: "roarr.atelier_trust_4_text" }
+        ]
+    },
+    "atelier-related": {
+        displayName: "Related products",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.atelier_related_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.atelier_related_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.atelier_related_heading", label: "Heading", placeholder: "", productMetafield: "roarr.atelier_related_heading" }
+        ]
+    },
+    "atelier-closing": {
+        displayName: "Closing",
+        useForm: true,
+        fields: [
+            { type: "text", key: "eyebrow", formKey: "text.atelier_closing_eyebrow", label: "Label", placeholder: "", productMetafield: "roarr.atelier_closing_eyebrow" },
+            { type: "text", key: "heading", formKey: "text.atelier_closing_heading", label: "Heading", placeholder: "", productMetafield: "roarr.atelier_closing_heading" },
+            { type: "text", key: "text", formKey: "text.atelier_closing_text", label: "Text", placeholder: "", productMetafield: "roarr.atelier_closing_text" }
+        ]
+    },
+    "bloom-hero": {
+        displayName: "Purchase",
+        useForm: true,
+        fields: [
+            { type: "text", key: "perk_1", formKey: "text.bloom_perk_1", label: "Pill 1", placeholder: "", productMetafield: "roarr.bloom_perk_1" },
+            { type: "text", key: "perk_2", formKey: "text.bloom_perk_2", label: "Pill 2", placeholder: "", productMetafield: "roarr.bloom_perk_2" },
+            { type: "text", key: "perk_3", formKey: "text.bloom_perk_3", label: "Pill 3", placeholder: "", productMetafield: "roarr.bloom_perk_3" },
+            { type: "text", key: "badge_1", formKey: "text.bloom_badge_1", label: "Round badge 1", placeholder: "", productMetafield: "roarr.bloom_badge_1" },
+            { type: "text", key: "badge_2", formKey: "text.bloom_badge_2", label: "Round badge 2", placeholder: "", productMetafield: "roarr.bloom_badge_2" },
+            { type: "text", key: "badge_3", formKey: "text.bloom_badge_3", label: "Round badge 3", placeholder: "", productMetafield: "roarr.bloom_badge_3" },
+            { type: "text", key: "badge_4", formKey: "text.bloom_badge_4", label: "Round badge 4", placeholder: "", productMetafield: "roarr.bloom_badge_4" },
+            { type: "text", key: "seal_text", formKey: "text.bloom_seal_text", label: "Stamp text (leave empty to hide)", placeholder: "", productMetafield: "roarr.bloom_seal_text" },
+            { type: "text", key: "chip_1", formKey: "text.bloom_chip_1", label: "Benefit chip 1", placeholder: "", productMetafield: "roarr.bloom_chip_1" },
+            { type: "text", key: "chip_2", formKey: "text.bloom_chip_2", label: "Benefit chip 2", placeholder: "", productMetafield: "roarr.bloom_chip_2" },
+            { type: "text", key: "chip_3", formKey: "text.bloom_chip_3", label: "Benefit chip 3", placeholder: "", productMetafield: "roarr.bloom_chip_3" },
+            { type: "text", key: "chip_4", formKey: "text.bloom_chip_4", label: "Benefit chip 4", placeholder: "", productMetafield: "roarr.bloom_chip_4" },
+            { type: "text", key: "tab_desc", formKey: "text.bloom_tab_desc", label: "Description tab", placeholder: "", productMetafield: "roarr.bloom_tab_desc" },
+            { type: "text", key: "tab_benefits", formKey: "text.bloom_tab_benefits", label: "Benefits tab", placeholder: "", productMetafield: "roarr.bloom_tab_benefits" },
+            { type: "text", key: "tab_ingredients", formKey: "text.bloom_tab_ingredients", label: "Ingredients tab", placeholder: "", productMetafield: "roarr.bloom_tab_ingredients" },
+            { type: "text", key: "tab_1_label", formKey: "text.bloom_tab_1_label", label: "Tab 1 name", placeholder: "", productMetafield: "roarr.bloom_tab_1_label" },
+            { type: "text", key: "tab_2_label", formKey: "text.bloom_tab_2_label", label: "Tab 2 name", placeholder: "", productMetafield: "roarr.bloom_tab_2_label" },
+            { type: "text", key: "tab_3_label", formKey: "text.bloom_tab_3_label", label: "Tab 3 name", placeholder: "", productMetafield: "roarr.bloom_tab_3_label" },
+            { type: "text", key: "qty_heading", formKey: "text.bloom_qty_heading", label: "Quantity heading", placeholder: "", productMetafield: "roarr.bloom_qty_heading" },
+            { type: "text", key: "qty_unit", formKey: "text.bloom_qty_unit", label: "Quantity card word", placeholder: "", productMetafield: "roarr.bloom_qty_unit" },
+            { type: "text", key: "qty_short", formKey: "text.bloom_qty_short", label: "Quantity short word", placeholder: "", productMetafield: "roarr.bloom_qty_short" },
+            { type: "text", key: "best_deal", formKey: "text.bloom_best_deal", label: "Best deal tag", placeholder: "", productMetafield: "roarr.bloom_best_deal" },
+            { type: "text", key: "onetime_title", formKey: "text.bloom_onetime_title", label: "One-time title", placeholder: "", productMetafield: "roarr.bloom_onetime_title" },
+            { type: "text", key: "onetime_note", formKey: "text.bloom_onetime_note", label: "One-time note", placeholder: "", productMetafield: "roarr.bloom_onetime_note" },
+            { type: "text", key: "sub_title", formKey: "text.bloom_sub_title", label: "Subscription title", placeholder: "", productMetafield: "roarr.bloom_sub_title" },
+            { type: "text", key: "guarantee_bold", formKey: "text.bloom_guarantee_bold", label: "Guarantee (bold part)", placeholder: "", productMetafield: "roarr.bloom_guarantee_bold" },
+            { type: "text", key: "guarantee_text", formKey: "text.bloom_guarantee_text", label: "Guarantee text", placeholder: "", productMetafield: "roarr.bloom_guarantee_text" },
+            { type: "text", key: "proof_line", formKey: "text.bloom_proof_line", label: "Promise line", placeholder: "", productMetafield: "roarr.bloom_proof_line" },
+            { type: "image", key: "avatar_1", formKey: "images.body_images.bloom_avatar_1", label: "Avatar 1", productMetafield: "roarr.bloom_avatar_1" },
+            { type: "image", key: "avatar_2", formKey: "images.body_images.bloom_avatar_2", label: "Avatar 2", productMetafield: "roarr.bloom_avatar_2" },
+            { type: "image", key: "avatar_3", formKey: "images.body_images.bloom_avatar_3", label: "Avatar 3", productMetafield: "roarr.bloom_avatar_3" },
+            { type: "image", key: "avatar_4", formKey: "images.body_images.bloom_avatar_4", label: "Avatar 4", productMetafield: "roarr.bloom_avatar_4" },
+            { type: "image", key: "product_image_1", formKey: "images.product_images.product_image_1", label: "Product image 1", productMetafield: "roarr.product_image_1" },
+            { type: "image", key: "product_image_2", formKey: "images.product_images.product_image_2", label: "Product image 2", productMetafield: "roarr.product_image_2" },
+            { type: "image", key: "product_image_3", formKey: "images.product_images.product_image_3", label: "Product image 3", productMetafield: "roarr.product_image_3" },
+            { type: "image", key: "product_image_4", formKey: "images.product_images.product_image_4", label: "Product image 4", productMetafield: "roarr.product_image_4" },
+            { type: "image", key: "product_image_5", formKey: "images.product_images.product_image_5", label: "Product image 5", productMetafield: "roarr.product_image_5" }
+        ]
+    },
+    "bloom-experts": {
+        displayName: "Product showcase",
+        useForm: true,
+        fields: [
+            { type: "text", key: "experts_heading", formKey: "text.bloom_experts_heading", label: "Heading ([accent words])", placeholder: "", productMetafield: "roarr.bloom_experts_heading" },
+            { type: "text", key: "experts_cta", formKey: "text.bloom_experts_cta", label: "Button", placeholder: "", productMetafield: "roarr.bloom_experts_cta" },
+            { type: "text", key: "showcase_1_title", formKey: "text.bloom_showcase_1_title", label: "Card 1 title", placeholder: "", productMetafield: "roarr.bloom_showcase_1_title" },
+            { type: "text", key: "showcase_1_text", formKey: "text.bloom_showcase_1_text", label: "Card 1 text", placeholder: "", productMetafield: "roarr.bloom_showcase_1_text" },
+            { type: "text", key: "showcase_2_title", formKey: "text.bloom_showcase_2_title", label: "Card 2 title", placeholder: "", productMetafield: "roarr.bloom_showcase_2_title" },
+            { type: "text", key: "showcase_2_text", formKey: "text.bloom_showcase_2_text", label: "Card 2 text", placeholder: "", productMetafield: "roarr.bloom_showcase_2_text" },
+            { type: "text", key: "showcase_3_title", formKey: "text.bloom_showcase_3_title", label: "Card 3 title", placeholder: "", productMetafield: "roarr.bloom_showcase_3_title" },
+            { type: "text", key: "showcase_3_text", formKey: "text.bloom_showcase_3_text", label: "Card 3 text", placeholder: "", productMetafield: "roarr.bloom_showcase_3_text" }
+        ]
+    },
+    "bloom-compare": {
+        displayName: "Comparison",
+        useForm: true,
+        fields: [
+            { type: "text", key: "compare_us", formKey: "text.bloom_compare_us", label: "Our column name", placeholder: "", productMetafield: "roarr.bloom_compare_us" },
+            { type: "text", key: "compare_them", formKey: "text.bloom_compare_them", label: "Other column name", placeholder: "", productMetafield: "roarr.bloom_compare_them" },
+            { type: "image", key: "product_image_2", formKey: "images.product_images.product_image_2", label: "Product image", productMetafield: "roarr.product_image_2" },
+            { type: "text", key: "compare_row_1", formKey: "text.bloom_compare_row_1", label: "Row 1 (ours)", placeholder: "", productMetafield: "roarr.bloom_compare_row_1" },
+            { type: "text", key: "compare_them_row_1", formKey: "text.bloom_compare_them_row_1", label: "Row 1 (others)", placeholder: "", productMetafield: "roarr.bloom_compare_them_row_1" },
+            { type: "text", key: "compare_row_2", formKey: "text.bloom_compare_row_2", label: "Row 2 (ours)", placeholder: "", productMetafield: "roarr.bloom_compare_row_2" },
+            { type: "text", key: "compare_them_row_2", formKey: "text.bloom_compare_them_row_2", label: "Row 2 (others)", placeholder: "", productMetafield: "roarr.bloom_compare_them_row_2" },
+            { type: "text", key: "compare_row_3", formKey: "text.bloom_compare_row_3", label: "Row 3 (ours)", placeholder: "", productMetafield: "roarr.bloom_compare_row_3" },
+            { type: "text", key: "compare_them_row_3", formKey: "text.bloom_compare_them_row_3", label: "Row 3 (others)", placeholder: "", productMetafield: "roarr.bloom_compare_them_row_3" },
+            { type: "text", key: "compare_row_4", formKey: "text.bloom_compare_row_4", label: "Row 4 (ours)", placeholder: "", productMetafield: "roarr.bloom_compare_row_4" },
+            { type: "text", key: "compare_them_row_4", formKey: "text.bloom_compare_them_row_4", label: "Row 4 (others)", placeholder: "", productMetafield: "roarr.bloom_compare_them_row_4" },
+            { type: "text", key: "compare_row_5", formKey: "text.bloom_compare_row_5", label: "Row 5 (ours)", placeholder: "", productMetafield: "roarr.bloom_compare_row_5" },
+            { type: "text", key: "compare_them_row_5", formKey: "text.bloom_compare_them_row_5", label: "Row 5 (others)", placeholder: "", productMetafield: "roarr.bloom_compare_them_row_5" }
+        ]
+    },
+    "bloom-stories": {
+        displayName: "Customer videos",
+        useForm: true,
+        fields: [
+            { type: "text", key: "stories_heading", formKey: "text.bloom_stories_heading", label: "Heading ([accent words])", placeholder: "", productMetafield: "roarr.bloom_stories_heading" },
+            { type: "image", key: "story_1_image", formKey: "images.body_images.bloom_story_1_image", label: "Video 1 cover", productMetafield: "roarr.bloom_story_1_image" },
+            { type: "text", key: "story_1_video", formKey: "text.bloom_story_1_video", label: "Video 1 link", placeholder: "", productMetafield: "roarr.bloom_story_1_video" },
+            { type: "image", key: "story_2_image", formKey: "images.body_images.bloom_story_2_image", label: "Video 2 cover", productMetafield: "roarr.bloom_story_2_image" },
+            { type: "text", key: "story_2_video", formKey: "text.bloom_story_2_video", label: "Video 2 link", placeholder: "", productMetafield: "roarr.bloom_story_2_video" },
+            { type: "image", key: "story_3_image", formKey: "images.body_images.bloom_story_3_image", label: "Video 3 cover", productMetafield: "roarr.bloom_story_3_image" },
+            { type: "text", key: "story_3_video", formKey: "text.bloom_story_3_video", label: "Video 3 link", placeholder: "", productMetafield: "roarr.bloom_story_3_video" },
+            { type: "image", key: "story_4_image", formKey: "images.body_images.bloom_story_4_image", label: "Video 4 cover", productMetafield: "roarr.bloom_story_4_image" },
+            { type: "text", key: "story_4_video", formKey: "text.bloom_story_4_video", label: "Video 4 link", placeholder: "", productMetafield: "roarr.bloom_story_4_video" }
+        ]
+    },
+    "bloom-faq": {
+        displayName: "FAQ & community",
+        useForm: true,
+        fields: [
+            { type: "text", key: "faq_heading", formKey: "text.bloom_faq_heading", label: "Heading ([accent words])", placeholder: "", productMetafield: "roarr.bloom_faq_heading" },
+            { type: "text", key: "faq_q_1", formKey: "text.bloom_faq_q_1", label: "Question 1", placeholder: "", productMetafield: "roarr.bloom_faq_q_1" },
+            { type: "text", key: "faq_a_1", formKey: "text.bloom_faq_a_1", label: "Answer 1", placeholder: "", productMetafield: "roarr.bloom_faq_a_1" },
+            { type: "text", key: "faq_q_2", formKey: "text.bloom_faq_q_2", label: "Question 2", placeholder: "", productMetafield: "roarr.bloom_faq_q_2" },
+            { type: "text", key: "faq_a_2", formKey: "text.bloom_faq_a_2", label: "Answer 2", placeholder: "", productMetafield: "roarr.bloom_faq_a_2" },
+            { type: "text", key: "faq_q_3", formKey: "text.bloom_faq_q_3", label: "Question 3", placeholder: "", productMetafield: "roarr.bloom_faq_q_3" },
+            { type: "text", key: "faq_a_3", formKey: "text.bloom_faq_a_3", label: "Answer 3", placeholder: "", productMetafield: "roarr.bloom_faq_a_3" },
+            { type: "text", key: "faq_q_4", formKey: "text.bloom_faq_q_4", label: "Question 4", placeholder: "", productMetafield: "roarr.bloom_faq_q_4" },
+            { type: "text", key: "faq_a_4", formKey: "text.bloom_faq_a_4", label: "Answer 4", placeholder: "", productMetafield: "roarr.bloom_faq_a_4" },
+            { type: "text", key: "faq_q_5", formKey: "text.bloom_faq_q_5", label: "Question 5", placeholder: "", productMetafield: "roarr.bloom_faq_q_5" },
+            { type: "text", key: "faq_a_5", formKey: "text.bloom_faq_a_5", label: "Answer 5", placeholder: "", productMetafield: "roarr.bloom_faq_a_5" },
+            { type: "text", key: "community_heading", formKey: "text.bloom_community_heading", label: "Community headline", placeholder: "", productMetafield: "roarr.bloom_community_heading" },
+            { type: "text", key: "community_btn_1", formKey: "text.bloom_community_btn_1", label: "Button 1 text", placeholder: "", productMetafield: "roarr.bloom_community_btn_1" },
+            { type: "text", key: "fb_url", formKey: "text.bloom_fb_url", label: "Button 1 link", placeholder: "", productMetafield: "roarr.bloom_fb_url" },
+            { type: "text", key: "community_btn_2", formKey: "text.bloom_community_btn_2", label: "Button 2 text", placeholder: "", productMetafield: "roarr.bloom_community_btn_2" },
+            { type: "text", key: "wa_url", formKey: "text.bloom_wa_url", label: "Button 2 link (WhatsApp or contact page)", placeholder: "", productMetafield: "roarr.bloom_wa_url" },
+            { type: "image", key: "community_image", formKey: "images.body_images.bloom_community_image", label: "Community photo", productMetafield: "roarr.bloom_community_image" }
+        ]
+    },
+    "bloom-steps": {
+        displayName: "How to use",
+        useForm: true,
+        fields: [
+            { type: "text", key: "steps_heading", formKey: "text.bloom_steps_heading", label: "Heading ([accent words])", placeholder: "", productMetafield: "roarr.bloom_steps_heading" },
+            { type: "text", key: "step_1_title", formKey: "text.bloom_step_1_title", label: "Step 1 title", placeholder: "", productMetafield: "roarr.bloom_step_1_title" },
+            { type: "text", key: "step_1_text", formKey: "text.bloom_step_1_text", label: "Step 1 text", placeholder: "", productMetafield: "roarr.bloom_step_1_text" },
+            { type: "image", key: "product_highlight_1", formKey: "images.body_images.product_highlight_1", label: "Step 1 image", productMetafield: "roarr.product_highlight_1" },
+            { type: "text", key: "step_2_title", formKey: "text.bloom_step_2_title", label: "Step 2 title", placeholder: "", productMetafield: "roarr.bloom_step_2_title" },
+            { type: "text", key: "step_2_text", formKey: "text.bloom_step_2_text", label: "Step 2 text", placeholder: "", productMetafield: "roarr.bloom_step_2_text" },
+            { type: "image", key: "product_highlight_2", formKey: "images.body_images.product_highlight_2", label: "Step 2 image", productMetafield: "roarr.product_highlight_2" },
+            { type: "text", key: "step_3_title", formKey: "text.bloom_step_3_title", label: "Step 3 title", placeholder: "", productMetafield: "roarr.bloom_step_3_title" },
+            { type: "text", key: "step_3_text", formKey: "text.bloom_step_3_text", label: "Step 3 text", placeholder: "", productMetafield: "roarr.bloom_step_3_text" },
+            { type: "image", key: "product_highlight_3", formKey: "images.body_images.product_highlight_3", label: "Step 3 image", productMetafield: "roarr.product_highlight_3" }
+        ]
+    },
+    "bloom-nutrition": {
+        displayName: "Nutrition facts",
+        useForm: true,
+        fields: [
+            { type: "text", key: "facts_title", formKey: "text.bloom_facts_title", label: "Panel title", placeholder: "", productMetafield: "roarr.bloom_facts_title" },
+            { type: "text", key: "facts_servings", formKey: "text.bloom_facts_servings", label: "Servings line", placeholder: "", productMetafield: "roarr.bloom_facts_servings" },
+            { type: "text", key: "facts_size", formKey: "text.bloom_facts_size", label: "Serving size", placeholder: "", productMetafield: "roarr.bloom_facts_size" },
+            { type: "text", key: "facts_calories", formKey: "text.bloom_facts_calories", label: "Calories", placeholder: "", productMetafield: "roarr.bloom_facts_calories" },
+            { type: "text", key: "facts_rows", formKey: "text.bloom_facts_rows", label: "Rows (one per line: Name Amount | % \u2014 start with -- to indent)", placeholder: "", productMetafield: "roarr.bloom_facts_rows" },
+            { type: "text", key: "facts_note", formKey: "text.bloom_facts_note", label: "Small print", placeholder: "", productMetafield: "roarr.bloom_facts_note" },
+            { type: "image", key: "product_impact_image", formKey: "images.body_images.product_impact_image", label: "Photo", productMetafield: "roarr.product_impact_image" }
+        ]
+    },
+    "bloom-ingredients": {
+        displayName: "Ingredient spotlight",
+        useForm: true,
+        fields: [
+            { type: "text", key: "ing_heading", formKey: "text.bloom_ing_heading", label: "Heading ([accent words])", placeholder: "", productMetafield: "roarr.bloom_ing_heading" },
+            { type: "text", key: "ing_text", formKey: "text.bloom_ing_text", label: "Text under the heading", placeholder: "", productMetafield: "roarr.bloom_ing_text" },
+            { type: "text", key: "ing_1_name", formKey: "text.bloom_ing_1_name", label: "Ingredient 1", placeholder: "", productMetafield: "roarr.bloom_ing_1_name" },
+            { type: "text", key: "ing_1_text", formKey: "text.bloom_ing_1_text", label: "Ingredient 1 text", placeholder: "", productMetafield: "roarr.bloom_ing_1_text" },
+            { type: "text", key: "ing_2_name", formKey: "text.bloom_ing_2_name", label: "Ingredient 2", placeholder: "", productMetafield: "roarr.bloom_ing_2_name" },
+            { type: "text", key: "ing_2_text", formKey: "text.bloom_ing_2_text", label: "Ingredient 2 text", placeholder: "", productMetafield: "roarr.bloom_ing_2_text" },
+            { type: "text", key: "ing_3_name", formKey: "text.bloom_ing_3_name", label: "Ingredient 3", placeholder: "", productMetafield: "roarr.bloom_ing_3_name" },
+            { type: "text", key: "ing_3_text", formKey: "text.bloom_ing_3_text", label: "Ingredient 3 text", placeholder: "", productMetafield: "roarr.bloom_ing_3_text" },
+            { type: "text", key: "ing_4_name", formKey: "text.bloom_ing_4_name", label: "Ingredient 4", placeholder: "", productMetafield: "roarr.bloom_ing_4_name" },
+            { type: "text", key: "ing_4_text", formKey: "text.bloom_ing_4_text", label: "Ingredient 4 text", placeholder: "", productMetafield: "roarr.bloom_ing_4_text" }
+        ]
+    },
+    "bloom-benefits": {
+        displayName: "Benefits",
+        useForm: true,
+        fields: [
+            { type: "text", key: "benefits_heading", formKey: "text.bloom_benefits_heading", label: "Heading ([accent words])", placeholder: "", productMetafield: "roarr.bloom_benefits_heading" },
+            { type: "text", key: "benefit_1_title", formKey: "text.bloom_benefit_1_title", label: "Benefit 1 title", placeholder: "", productMetafield: "roarr.bloom_benefit_1_title" },
+            { type: "text", key: "benefit_1_text", formKey: "text.bloom_benefit_1_text", label: "Benefit 1 text", placeholder: "", productMetafield: "roarr.bloom_benefit_1_text" },
+            { type: "text", key: "benefit_2_title", formKey: "text.bloom_benefit_2_title", label: "Benefit 2 title", placeholder: "", productMetafield: "roarr.bloom_benefit_2_title" },
+            { type: "text", key: "benefit_2_text", formKey: "text.bloom_benefit_2_text", label: "Benefit 2 text", placeholder: "", productMetafield: "roarr.bloom_benefit_2_text" },
+            { type: "text", key: "benefit_3_title", formKey: "text.bloom_benefit_3_title", label: "Benefit 3 title", placeholder: "", productMetafield: "roarr.bloom_benefit_3_title" },
+            { type: "text", key: "benefit_3_text", formKey: "text.bloom_benefit_3_text", label: "Benefit 3 text", placeholder: "", productMetafield: "roarr.bloom_benefit_3_text" },
+            { type: "text", key: "benefit_4_title", formKey: "text.bloom_benefit_4_title", label: "Benefit 4 title", placeholder: "", productMetafield: "roarr.bloom_benefit_4_title" },
+            { type: "text", key: "benefit_4_text", formKey: "text.bloom_benefit_4_text", label: "Benefit 4 text", placeholder: "", productMetafield: "roarr.bloom_benefit_4_text" },
+            { type: "text", key: "benefit_5_title", formKey: "text.bloom_benefit_5_title", label: "Benefit 5 title", placeholder: "", productMetafield: "roarr.bloom_benefit_5_title" },
+            { type: "text", key: "benefit_5_text", formKey: "text.bloom_benefit_5_text", label: "Benefit 5 text", placeholder: "", productMetafield: "roarr.bloom_benefit_5_text" },
+            { type: "text", key: "benefit_6_title", formKey: "text.bloom_benefit_6_title", label: "Benefit 6 title", placeholder: "", productMetafield: "roarr.bloom_benefit_6_title" },
+            { type: "text", key: "benefit_6_text", formKey: "text.bloom_benefit_6_text", label: "Benefit 6 text", placeholder: "", productMetafield: "roarr.bloom_benefit_6_text" }
+        ]
+    },
+    "bloom-reviews": {
+        displayName: "Reviews",
+        useForm: true,
+        fields: [
+            { type: "text", key: "reviews_heading", formKey: "text.bloom_reviews_heading", label: "Heading", placeholder: "", productMetafield: "roarr.bloom_reviews_heading" },
+            { type: "text", key: "reviews_btn", formKey: "text.bloom_reviews_btn", label: "Write-a-review button", placeholder: "", productMetafield: "roarr.bloom_reviews_btn" },
+            { type: "text", key: "reviews_url", formKey: "text.bloom_reviews_url", label: "Write-a-review link", placeholder: "", productMetafield: "roarr.bloom_reviews_url" },
+            { type: "text", key: "reviews_more", formKey: "text.bloom_reviews_more", label: "See-more text", placeholder: "", productMetafield: "roarr.bloom_reviews_more" },
+            { type: "text", key: "reviews_more_url", formKey: "text.bloom_reviews_more_url", label: "See-more link", placeholder: "", productMetafield: "roarr.bloom_reviews_more_url" },
+            { type: "text", key: "review_1_name", formKey: "text.bloom_review_1_name", label: "Review 1 name", placeholder: "", productMetafield: "roarr.bloom_review_1_name" },
+            { type: "image", key: "review_1_avatar", formKey: "images.body_images.bloom_review_1_avatar", label: "Review 1 avatar", productMetafield: "roarr.bloom_review_1_avatar" },
+            { type: "text", key: "review_1_headline", formKey: "text.bloom_review_1_headline", label: "Review 1 short headline", placeholder: "", productMetafield: "roarr.bloom_review_1_headline" },
+            { type: "text", key: "review_1_meta", formKey: "text.bloom_review_1_meta", label: "Review 1 date line", placeholder: "", productMetafield: "roarr.bloom_review_1_meta" },
+            { type: "text", key: "review_1_title", formKey: "text.bloom_review_1_title", label: "Review 1 title", placeholder: "", productMetafield: "roarr.bloom_review_1_title" },
+            { type: "text", key: "review_1_body", formKey: "text.bloom_review_1_body", label: "Review 1 text", placeholder: "", productMetafield: "roarr.bloom_review_1_body" },
+            { type: "image", key: "review_1_photo_1", formKey: "images.body_images.bloom_review_1_photo_1", label: "Review 1 photo 1", productMetafield: "roarr.bloom_review_1_photo_1" },
+            { type: "image", key: "review_1_photo_2", formKey: "images.body_images.bloom_review_1_photo_2", label: "Review 1 photo 2", productMetafield: "roarr.bloom_review_1_photo_2" },
+            { type: "image", key: "review_1_photo_3", formKey: "images.body_images.bloom_review_1_photo_3", label: "Review 1 photo 3", productMetafield: "roarr.bloom_review_1_photo_3" },
+            { type: "text", key: "review_1_helpful_count", formKey: "text.bloom_review_1_helpful_count", label: "Review 1 helpful count", placeholder: "", productMetafield: "roarr.bloom_review_1_helpful_count" },
+            { type: "text", key: "review_2_name", formKey: "text.bloom_review_2_name", label: "Review 2 name", placeholder: "", productMetafield: "roarr.bloom_review_2_name" },
+            { type: "image", key: "review_2_avatar", formKey: "images.body_images.bloom_review_2_avatar", label: "Review 2 avatar", productMetafield: "roarr.bloom_review_2_avatar" },
+            { type: "text", key: "review_2_headline", formKey: "text.bloom_review_2_headline", label: "Review 2 short headline", placeholder: "", productMetafield: "roarr.bloom_review_2_headline" },
+            { type: "text", key: "review_2_meta", formKey: "text.bloom_review_2_meta", label: "Review 2 date line", placeholder: "", productMetafield: "roarr.bloom_review_2_meta" },
+            { type: "text", key: "review_2_title", formKey: "text.bloom_review_2_title", label: "Review 2 title", placeholder: "", productMetafield: "roarr.bloom_review_2_title" },
+            { type: "text", key: "review_2_body", formKey: "text.bloom_review_2_body", label: "Review 2 text", placeholder: "", productMetafield: "roarr.bloom_review_2_body" },
+            { type: "image", key: "review_2_photo_1", formKey: "images.body_images.bloom_review_2_photo_1", label: "Review 2 photo 1", productMetafield: "roarr.bloom_review_2_photo_1" },
+            { type: "image", key: "review_2_photo_2", formKey: "images.body_images.bloom_review_2_photo_2", label: "Review 2 photo 2", productMetafield: "roarr.bloom_review_2_photo_2" },
+            { type: "image", key: "review_2_photo_3", formKey: "images.body_images.bloom_review_2_photo_3", label: "Review 2 photo 3", productMetafield: "roarr.bloom_review_2_photo_3" },
+            { type: "text", key: "review_2_helpful_count", formKey: "text.bloom_review_2_helpful_count", label: "Review 2 helpful count", placeholder: "", productMetafield: "roarr.bloom_review_2_helpful_count" },
+            { type: "text", key: "review_3_name", formKey: "text.bloom_review_3_name", label: "Review 3 name", placeholder: "", productMetafield: "roarr.bloom_review_3_name" },
+            { type: "image", key: "review_3_avatar", formKey: "images.body_images.bloom_review_3_avatar", label: "Review 3 avatar", productMetafield: "roarr.bloom_review_3_avatar" },
+            { type: "text", key: "review_3_headline", formKey: "text.bloom_review_3_headline", label: "Review 3 short headline", placeholder: "", productMetafield: "roarr.bloom_review_3_headline" },
+            { type: "text", key: "review_3_meta", formKey: "text.bloom_review_3_meta", label: "Review 3 date line", placeholder: "", productMetafield: "roarr.bloom_review_3_meta" },
+            { type: "text", key: "review_3_title", formKey: "text.bloom_review_3_title", label: "Review 3 title", placeholder: "", productMetafield: "roarr.bloom_review_3_title" },
+            { type: "text", key: "review_3_body", formKey: "text.bloom_review_3_body", label: "Review 3 text", placeholder: "", productMetafield: "roarr.bloom_review_3_body" },
+            { type: "image", key: "review_3_photo_1", formKey: "images.body_images.bloom_review_3_photo_1", label: "Review 3 photo 1", productMetafield: "roarr.bloom_review_3_photo_1" },
+            { type: "image", key: "review_3_photo_2", formKey: "images.body_images.bloom_review_3_photo_2", label: "Review 3 photo 2", productMetafield: "roarr.bloom_review_3_photo_2" },
+            { type: "image", key: "review_3_photo_3", formKey: "images.body_images.bloom_review_3_photo_3", label: "Review 3 photo 3", productMetafield: "roarr.bloom_review_3_photo_3" },
+            { type: "text", key: "review_3_helpful_count", formKey: "text.bloom_review_3_helpful_count", label: "Review 3 helpful count", placeholder: "", productMetafield: "roarr.bloom_review_3_helpful_count" },
+            { type: "text", key: "review_4_name", formKey: "text.bloom_review_4_name", label: "Review 4 name", placeholder: "", productMetafield: "roarr.bloom_review_4_name" },
+            { type: "image", key: "review_4_avatar", formKey: "images.body_images.bloom_review_4_avatar", label: "Review 4 avatar", productMetafield: "roarr.bloom_review_4_avatar" },
+            { type: "text", key: "review_4_headline", formKey: "text.bloom_review_4_headline", label: "Review 4 short headline", placeholder: "", productMetafield: "roarr.bloom_review_4_headline" },
+            { type: "text", key: "review_4_meta", formKey: "text.bloom_review_4_meta", label: "Review 4 date line", placeholder: "", productMetafield: "roarr.bloom_review_4_meta" },
+            { type: "text", key: "review_4_title", formKey: "text.bloom_review_4_title", label: "Review 4 title", placeholder: "", productMetafield: "roarr.bloom_review_4_title" },
+            { type: "text", key: "review_4_body", formKey: "text.bloom_review_4_body", label: "Review 4 text", placeholder: "", productMetafield: "roarr.bloom_review_4_body" },
+            { type: "image", key: "review_4_photo_1", formKey: "images.body_images.bloom_review_4_photo_1", label: "Review 4 photo 1", productMetafield: "roarr.bloom_review_4_photo_1" },
+            { type: "image", key: "review_4_photo_2", formKey: "images.body_images.bloom_review_4_photo_2", label: "Review 4 photo 2", productMetafield: "roarr.bloom_review_4_photo_2" },
+            { type: "image", key: "review_4_photo_3", formKey: "images.body_images.bloom_review_4_photo_3", label: "Review 4 photo 3", productMetafield: "roarr.bloom_review_4_photo_3" },
+            { type: "text", key: "review_4_helpful_count", formKey: "text.bloom_review_4_helpful_count", label: "Review 4 helpful count", placeholder: "", productMetafield: "roarr.bloom_review_4_helpful_count" },
+            { type: "text", key: "review_5_name", formKey: "text.bloom_review_5_name", label: "Review 5 name", placeholder: "", productMetafield: "roarr.bloom_review_5_name" },
+            { type: "image", key: "review_5_avatar", formKey: "images.body_images.bloom_review_5_avatar", label: "Review 5 avatar", productMetafield: "roarr.bloom_review_5_avatar" },
+            { type: "text", key: "review_5_headline", formKey: "text.bloom_review_5_headline", label: "Review 5 short headline", placeholder: "", productMetafield: "roarr.bloom_review_5_headline" },
+            { type: "text", key: "review_5_meta", formKey: "text.bloom_review_5_meta", label: "Review 5 date line", placeholder: "", productMetafield: "roarr.bloom_review_5_meta" },
+            { type: "text", key: "review_5_title", formKey: "text.bloom_review_5_title", label: "Review 5 title", placeholder: "", productMetafield: "roarr.bloom_review_5_title" },
+            { type: "text", key: "review_5_body", formKey: "text.bloom_review_5_body", label: "Review 5 text", placeholder: "", productMetafield: "roarr.bloom_review_5_body" },
+            { type: "image", key: "review_5_photo_1", formKey: "images.body_images.bloom_review_5_photo_1", label: "Review 5 photo 1", productMetafield: "roarr.bloom_review_5_photo_1" },
+            { type: "image", key: "review_5_photo_2", formKey: "images.body_images.bloom_review_5_photo_2", label: "Review 5 photo 2", productMetafield: "roarr.bloom_review_5_photo_2" },
+            { type: "image", key: "review_5_photo_3", formKey: "images.body_images.bloom_review_5_photo_3", label: "Review 5 photo 3", productMetafield: "roarr.bloom_review_5_photo_3" },
+            { type: "text", key: "review_5_helpful_count", formKey: "text.bloom_review_5_helpful_count", label: "Review 5 helpful count", placeholder: "", productMetafield: "roarr.bloom_review_5_helpful_count" }
+        ]
+    },
+    "bloom-bundle": {
+        displayName: "Bundle builder",
+        useForm: true,
+        fields: [
+            { type: "text", key: "bundle_heading", formKey: "text.bloom_bundle_heading", label: "Heading ([accent words])", placeholder: "", productMetafield: "roarr.bloom_bundle_heading" },
+            { type: "text", key: "bundle_tab_1", formKey: "text.bloom_bundle_tab_1", label: "Tab 1 (preview only)", placeholder: "", productMetafield: "roarr.bloom_bundle_tab_1" },
+            { type: "text", key: "bundle_tab_2", formKey: "text.bloom_bundle_tab_2", label: "Tab 2 (preview only)", placeholder: "", productMetafield: "roarr.bloom_bundle_tab_2" },
+            { type: "text", key: "bundle_tab_3", formKey: "text.bloom_bundle_tab_3", label: "Tab 3 (preview only)", placeholder: "", productMetafield: "roarr.bloom_bundle_tab_3" },
+            { type: "text", key: "bundle_tab_4", formKey: "text.bloom_bundle_tab_4", label: "Tab 4 (preview only)", placeholder: "", productMetafield: "roarr.bloom_bundle_tab_4" },
+            { type: "text", key: "pack_1", formKey: "text.bloom_pack_1", label: "Pack 1", placeholder: "", productMetafield: "roarr.bloom_pack_1" },
+            { type: "text", key: "pack_2", formKey: "text.bloom_pack_2", label: "Pack 2", placeholder: "", productMetafield: "roarr.bloom_pack_2" },
+            { type: "text", key: "pack_3", formKey: "text.bloom_pack_3", label: "Pack 3", placeholder: "", productMetafield: "roarr.bloom_pack_3" },
+            { type: "text", key: "pack_save", formKey: "text.bloom_pack_save", label: "Star badge on pack 2 (empty hides it)", placeholder: "", productMetafield: "roarr.bloom_pack_save" },
+            { type: "text", key: "bundle_timer_label", formKey: "text.bloom_bundle_timer_label", label: "Offer timer label", placeholder: "", productMetafield: "roarr.bloom_bundle_timer_label" },
+            { type: "text", key: "offer_end", formKey: "text.bloom_offer_end", label: "Offer end date and time (ISO, e.g. 2026-12-31T23:59:00Z; empty hides the timer)", placeholder: "", productMetafield: "roarr.bloom_offer_end" },
+            { type: "text", key: "bundle_selected", formKey: "text.bloom_bundle_selected", label: "Selected label", placeholder: "", productMetafield: "roarr.bloom_bundle_selected" },
+            { type: "text", key: "bundle_empty", formKey: "text.bloom_bundle_empty", label: "Empty hint", placeholder: "", productMetafield: "roarr.bloom_bundle_empty" },
+            { type: "text", key: "bundle_ship", formKey: "text.bloom_bundle_ship", label: "Shipping line (empty hides it)", placeholder: "", productMetafield: "roarr.bloom_bundle_ship" },
+            { type: "text", key: "bundle_cta", formKey: "text.bloom_bundle_cta", label: "Add bundle button", placeholder: "", productMetafield: "roarr.bloom_bundle_cta" },
+            { type: "image", key: "product_image_3", formKey: "images.product_images.product_image_3", label: "Panel image", productMetafield: "roarr.product_image_3" }
+        ]
+    },
+    "bloom-recent": {
+        displayName: "Recently viewed",
+        useForm: true,
+        fields: [
+            { type: "text", key: "recent_heading", formKey: "text.bloom_recent_heading", label: "Heading ([accent words])", placeholder: "", productMetafield: "roarr.bloom_recent_heading" },
+            { type: "text", key: "recent_add", formKey: "text.bloom_recent_add", label: "Button text", placeholder: "", productMetafield: "roarr.bloom_recent_add" },
+            { type: "text", key: "recent_type", formKey: "text.bloom_recent_type", label: "Purchase type line", placeholder: "", productMetafield: "roarr.bloom_recent_type" }
+        ]
+    },
+    "bloom-closing": {
+        displayName: "Closing banner",
+        useForm: true,
+        fields: [
+            { type: "text", key: "closing_heading", formKey: "text.bloom_closing_heading", label: "Headline", placeholder: "", productMetafield: "roarr.bloom_closing_heading" },
+            { type: "text", key: "closing_text", formKey: "text.bloom_closing_text", label: "Text", placeholder: "", productMetafield: "roarr.bloom_closing_text" },
+            { type: "text", key: "closing_btn", formKey: "text.bloom_closing_btn", label: "Button", placeholder: "", productMetafield: "roarr.bloom_closing_btn" },
+            { type: "image", key: "product_image_1", formKey: "images.product_images.product_image_1", label: "Product image (left)", productMetafield: "roarr.product_image_1" },
+            { type: "image", key: "product_impact_image", formKey: "images.body_images.product_impact_image", label: "Photo (right)", productMetafield: "roarr.product_impact_image" }
         ]
     },
     "roarr-faq-section": {

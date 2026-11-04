@@ -1,0 +1,94 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign heading = m.bloom_experts_heading.value | default: m.bloom_experts_heading -%}
+{%- assign cta = m.bloom_experts_cta.value | default: m.bloom_experts_cta | default: 'Shop now' -%}
+{%- assign heading_h = heading | escape | replace: '[', '<span class="bl-ac">' | replace: ']', '</span>' -%}
+{%- capture cards -%}
+  {%- for i in (1..3) -%}
+    {%- assign e_title_k = 'bloom_showcase_' | append: i | append: '_title' -%}{%- assign e_title = m[e_title_k].value | default: m[e_title_k] -%}{%- assign e_text_k = 'bloom_showcase_' | append: i | append: '_text' -%}{%- assign e_text = m[e_text_k].value | default: m[e_text_k] -%}
+    {%- if product.media.size > 0 -%}
+      {%- assign e_idx = i | minus: 1 | modulo: product.media.size -%}{%- assign e_m = product.media[e_idx] -%}{%- assign e_img = e_m.preview_image | default: e_m -%}
+    {%- else -%}
+      {%- assign e_pk = 'product_image_' | append: i -%}{%- assign e_img = m[e_pk].value | default: m[e_pk] -%}
+    {%- endif -%}
+    {%- if e_img != blank -%}
+      <li class="bl-experts__card" data-bl-reveal style="--d:{{ i | minus: 1 | times: 0.07 }}s">
+        <div class="bl-experts__media">
+          <img src="{{ e_img | image_url: width: 720 }}" alt="{{ e_title | default: product.title | escape }}" loading="lazy">
+        </div>
+        {%- if e_title != blank -%}<h3 class="bl-experts__name bl-serif">{{ e_title }}</h3>{%- endif -%}
+        {%- if e_text != blank -%}<p class="bl-experts__role">{{ e_text }}</p>{%- endif -%}
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if cards != blank -%}
+<section class="bloom bl-experts" id="bl-experts">
+  <div class="bl-wrap">
+    {%- if heading != blank -%}<h2 class="bl-h bl-experts__h" data-bl-reveal>{{ heading_h }}</h2>{%- endif -%}
+    <ul class="bl-experts__grid" role="list">{{ cards }}</ul>
+    {%- if cta != blank -%}<div class="bl-experts__cta"><a class="bl-btn" href="#bl-hero">{{ cta }}</a></div>{%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .bloom { --bl-plum: #4A0E2B; --bl-ink: #3D1229; --bl-rose: #E5518E; --bl-rose-d: #B3235F; --bl-blush: #FDEBF5; --bl-pink: #FFDDEB; --bl-pink-2: #FFE9F2; --bl-peach: #FFE8E3; --bl-coral: #E8695C; --bl-cream: #FFF6E8; --bl-grad: linear-gradient(90deg, #E8695C 0%, #E5518E 100%); --bl-star: #F59E0B; --bl-muted: #6F5A67; --bl-line: #F1D5E1; --bl-serif: "Playfair Display", Georgia, serif; --bl-sans: "Open Sans", system-ui, sans-serif; --bl-pop: "Poppins", "Open Sans", sans-serif; --font-heading-family: "Playfair Display", serif; --font-body-family: "Open Sans", sans-serif; position: relative; font-family: var(--bl-sans); -webkit-font-smoothing: antialiased; }
+  :where(.bloom) { background: #fff; color: var(--bl-plum); }
+  .bloom *, .bloom *::before, .bloom *::after { box-sizing: border-box; }
+  :where(.bloom) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption, cite) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .bloom, .bloom :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption, cite) { font-family: var(--bl-sans) !important; }
+  .bloom :is(h1, h2, h3, h4, .bl-serif, .bl-serif *, .bl-h *) { font-family: var(--bl-serif) !important; }
+  .bloom .bl-pop, .bloom .bl-pop :is(p, li, a, span, label, button, input, select, strong, small, b, s, div, h3, h4) { font-family: var(--bl-pop) !important; }
+  :where(.bloom) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.bloom) :is(ul, ol) { list-style: none; }
+  :where(.bloom) img { display: block; max-width: 100%; }
+  :where(.bloom) button { font: inherit; }
+  :where(.bloom) .bl-wrap { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.bloom) .bl-h { font-weight: 600; line-height: 1.22; letter-spacing: 0; text-wrap: balance; text-align: center; color: var(--bl-plum); font-size: clamp(28px, 3.4vw, 40px); }
+  :where(.bloom) .bl-ac { color: var(--bl-rose); }
+  :where(.bloom) .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 28px; border: 1px solid #E5518E; border-radius: 8px; background: var(--bl-grad); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px -10px rgb(229 81 142 / .7); transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+  :where(.bloom) .bl-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 12px 24px -10px rgb(229 81 142 / .8); }
+  :where(.bloom) .bl-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .bloom [hidden] { display: none !important; }
+  :where(.bloom) .bl-fade { -webkit-mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); }
+  :where(.bloom) .bl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where(.bloom) .bl-stars { color: var(--bl-star); letter-spacing: 1px; }
+  @keyframes bl-rise { from { opacity: 0; transform: translate3d(0, 24px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .bloom [data-bl-reveal] { animation: bl-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.bloom) .bl-wrap { width: calc(100% - 32px); } }
+
+  .bl-experts { background: var(--bl-blush); padding: clamp(40px, 5vw, 68px) 0 clamp(40px, 5vw, 56px); }
+  .bl-experts__h { max-width: 560px; margin-inline: auto; margin-bottom: clamp(24px, 3vw, 40px); }
+  .bl-experts__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); width: min(960px, 100%); margin-inline: auto; }
+  .bl-experts__media { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 4.6; border-radius: 14px; overflow: hidden; background: #DAD4FF; box-shadow: 0 10px 24px -16px rgb(179 35 95 / .45); }
+  .bl-experts__card:nth-child(3n + 2) .bl-experts__media { background: #FFCFE0; }
+  .bl-experts__card:nth-child(3n) .bl-experts__media { background: #CFEBD0; }
+  .bl-experts__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .bl-experts__card:hover .bl-experts__media img { transform: scale(1.06); }
+  .bl-experts__name { margin-top: 14px; font-size: 18px; font-weight: 600; line-height: 1.3; color: #24121B; }
+  .bl-experts__role { margin-top: 4px; font-size: 13.5px; line-height: 1.5; color: var(--bl-muted); }
+  .bl-experts__cta { display: flex; justify-content: center; margin-top: clamp(24px, 3vw, 38px); }
+  .bl-experts__cta .bl-btn { min-height: 44px; padding: 0 30px; }
+  @media (max-width: 749px) { .bl-experts__grid { grid-template-columns: minmax(0, 1fr); width: min(380px, 100%); } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--bloom" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div, cite) { font-family: "Open Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Playfair Display", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .bl-flip { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}

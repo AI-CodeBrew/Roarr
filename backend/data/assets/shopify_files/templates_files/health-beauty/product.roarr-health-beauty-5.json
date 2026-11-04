@@ -10,12 +10,20 @@
       "type": "roarr-noir-ticker",
       "settings": {}
     },
+    "noir-signature": {
+      "type": "roarr-noir-signature",
+      "settings": {}
+    },
     "noir-statement": {
       "type": "roarr-noir-statement",
       "settings": {}
     },
     "noir-craft": {
       "type": "roarr-noir-craft",
+      "settings": {}
+    },
+    "noir-ritual": {
+      "type": "roarr-noir-ritual",
       "settings": {}
     },
     "noir-compare": {
@@ -34,8 +42,10 @@
   "order": [
     "noir-hero",
     "noir-ticker",
+    "noir-signature",
     "noir-statement",
     "noir-craft",
+    "noir-ritual",
     "noir-compare",
     "noir-faq",
     "noir-closing"

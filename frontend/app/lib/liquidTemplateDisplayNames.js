@@ -43,6 +43,9 @@ export function liquidPreviewSectionIdToTemplatePath(sectionId) {
         if (slug.startsWith("pf-amour-")) {
             return `packs/amour/home/${slug}`;
         }
+        if (slug.startsWith("pf-maison-")) {
+            return `packs/maison/home/${slug}`;
+        }
         if (slug.includes("/")) {
             return slug;
         }
@@ -105,6 +108,15 @@ const LIQUID_TEMPLATE_DISPLAY_NAMES = {
     "packs/amour/home/pf-amour-tabs": "Roarr - Amour Tabs",
     "packs/amour/home/pf-amour-promise": "Roarr - Amour Promise",
     "packs/amour/home/pf-amour-gallery": "Roarr - Amour Gallery",
+    "packs/maison/home/pf-maison-announce": "Roarr - Maison Announcement",
+    "packs/maison/home/pf-maison-hero": "Roarr - Maison Hero",
+    "packs/maison/home/pf-maison-intro": "Roarr - Maison Statement",
+    "packs/maison/home/pf-maison-piece": "Roarr - Maison The Piece",
+    "packs/maison/home/pf-maison-gallery": "Roarr - Maison Gallery",
+    "packs/maison/home/pf-maison-craft": "Roarr - Maison Craft",
+    "packs/maison/home/pf-maison-promise": "Roarr - Maison Promises",
+    "packs/maison/home/pf-maison-faq": "Roarr - Maison FAQ",
+    "packs/maison/home/pf-maison-closing": "Roarr - Maison Closing",
 
     "collection/pf-prem-collections": "Collections",
     "collection/collection-2": "Collection grid",
@@ -147,8 +159,10 @@ const LIQUID_TEMPLATE_DISPLAY_NAMES = {
     "lumen-mood": "Mood",
     "noir-hero": "Hero",
     "noir-ticker": "Ticker",
+    "noir-signature": "Signature details",
     "noir-statement": "Statement",
     "noir-craft": "The craft",
+    "noir-ritual": "The ritual",
     "noir-compare": "Comparison",
     "noir-faq": "FAQs",
     "noir-closing": "Closing",
@@ -159,6 +173,27 @@ const LIQUID_TEMPLATE_DISPLAY_NAMES = {
     "frost-promise": "Promise",
     "frost-faq": "Quick answers",
     "frost-closing": "Closing",
+    "atelier-hero": "Hero",
+    "atelier-story": "Story",
+    "atelier-features": "In detail",
+    "atelier-buy": "Purchase",
+    "atelier-specs": "Benefits & specs",
+    "atelier-proof": "Trust",
+    "atelier-related": "Related products",
+    "atelier-closing": "Closing",
+    "bloom-hero": "Hero",
+    "bloom-experts": "Product showcase",
+    "bloom-compare": "Comparison",
+    "bloom-stories": "Customer videos",
+    "bloom-faq": "FAQ & community",
+    "bloom-steps": "How to use",
+    "bloom-nutrition": "Nutrition facts",
+    "bloom-ingredients": "Ingredient spotlight",
+    "bloom-benefits": "Benefits",
+    "bloom-reviews": "Reviews",
+    "bloom-bundle": "Bundle builder",
+    "bloom-recent": "Recently viewed",
+    "bloom-closing": "Closing banner",
 };
 
 /**

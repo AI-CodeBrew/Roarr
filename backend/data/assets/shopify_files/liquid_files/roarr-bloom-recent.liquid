@@ -1,0 +1,165 @@
+{%- capture kl_rtl_html -%}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
+{%- assign m = product.metafields.roarr -%}
+{%- assign heading = m.bloom_recent_heading.value | default: m.bloom_recent_heading | default: 'Recently [Viewed]' -%}
+{%- assign heading_h = heading | escape | replace: '[', '<span class="bl-ac">' | replace: ']', '</span>' -%}
+{%- assign add_l = m.bloom_recent_add.value | default: m.bloom_recent_add | default: 'Add To Cart' -%}
+{%- assign once_l = m.bloom_recent_type.value | default: m.bloom_recent_type | default: 'One-Time Purchase' -%}
+{%- assign save_lbl = m.bloom_save_label.value | default: m.bloom_save_label | default: 'Save' -%}
+
+<section class="bloom bl-rec" id="bl-recent" data-handle="{{ product.handle }}" data-money="{{ 123456 | money }}" data-add="{{ add_l | escape }}" data-type="{{ once_l | escape }}" data-save="{{ save_lbl | escape }}" hidden>
+  <div class="bl-wrap">
+    <div class="bl-rec__head">
+      {%- if heading != blank -%}<h2 class="bl-rec__h bl-serif" data-bl-reveal>{{ heading_h }}</h2>{%- endif -%}
+      <div class="bl-rec__nav">
+        <button type="button" class="bl-rec__arrow" data-bl-prev aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button type="button" class="bl-rec__arrow" data-bl-next aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <div class="bl-rec__viewport" data-bl-track>
+      <ul class="bl-rec__list" role="list" data-bl-list>
+
+      </ul>
+    </div>
+  </div>
+</section>
+<style>
+  .bloom { --bl-plum: #4A0E2B; --bl-ink: #3D1229; --bl-rose: #E5518E; --bl-rose-d: #B3235F; --bl-blush: #FDEBF5; --bl-pink: #FFDDEB; --bl-pink-2: #FFE9F2; --bl-peach: #FFE8E3; --bl-coral: #E8695C; --bl-cream: #FFF6E8; --bl-grad: linear-gradient(90deg, #E8695C 0%, #E5518E 100%); --bl-star: #F59E0B; --bl-muted: #6F5A67; --bl-line: #F1D5E1; --bl-serif: "Playfair Display", Georgia, serif; --bl-sans: "Open Sans", system-ui, sans-serif; --bl-pop: "Poppins", "Open Sans", sans-serif; --font-heading-family: "Playfair Display", serif; --font-body-family: "Open Sans", sans-serif; position: relative; font-family: var(--bl-sans); -webkit-font-smoothing: antialiased; }
+  :where(.bloom) { background: #fff; color: var(--bl-plum); }
+  .bloom *, .bloom *::before, .bloom *::after { box-sizing: border-box; }
+  :where(.bloom) :is(p, li, a, span, strong, em, b, s, small, label, summary, td, th, button, figcaption, cite) { font-size: inherit; line-height: inherit; color: inherit; letter-spacing: inherit; }
+  .bloom, .bloom :is(p, li, a, span, label, button, input, select, option, summary, td, th, small, strong, em, b, s, div, figcaption, cite) { font-family: var(--bl-sans) !important; }
+  .bloom :is(h1, h2, h3, h4, .bl-serif, .bl-serif *, .bl-h *) { font-family: var(--bl-serif) !important; }
+  .bloom .bl-pop, .bloom .bl-pop :is(p, li, a, span, label, button, input, select, strong, small, b, s, div, h3, h4) { font-family: var(--bl-pop) !important; }
+  :where(.bloom) :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  :where(.bloom) :is(ul, ol) { list-style: none; }
+  :where(.bloom) img { display: block; max-width: 100%; }
+  :where(.bloom) button { font: inherit; }
+  :where(.bloom) .bl-wrap { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
+  :where(.bloom) .bl-h { font-weight: 600; line-height: 1.22; letter-spacing: 0; text-wrap: balance; text-align: center; color: var(--bl-plum); font-size: clamp(28px, 3.4vw, 40px); }
+  :where(.bloom) .bl-ac { color: var(--bl-rose); }
+  :where(.bloom) .bl-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 28px; border: 1px solid #E5518E; border-radius: 8px; background: var(--bl-grad); color: #fff; font-size: 14px; font-weight: 600; line-height: 1.2; text-decoration: none; cursor: pointer; box-shadow: 0 8px 20px -10px rgb(229 81 142 / .7); transition: transform .25s ease, box-shadow .25s ease, filter .25s ease; }
+  :where(.bloom) .bl-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 12px 24px -10px rgb(229 81 142 / .8); }
+  :where(.bloom) .bl-btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+  .bloom [hidden] { display: none !important; }
+  :where(.bloom) .bl-fade { -webkit-mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); mask-image: radial-gradient(closest-side, #000 68%, transparent 100%); }
+  :where(.bloom) .bl-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where(.bloom) .bl-stars { color: var(--bl-star); letter-spacing: 1px; }
+  @keyframes bl-rise { from { opacity: 0; transform: translate3d(0, 24px, 0); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .bloom [data-bl-reveal] { animation: bl-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+    }
+  }
+  @media (max-width: 749px) { :where(.bloom) .bl-wrap { width: calc(100% - 32px); } }
+
+  .bl-rec { background: var(--bl-blush); padding: clamp(36px, 5vw, 64px) 0 clamp(36px, 5vw, 56px); border-top: 1px solid #F6DCEA; }
+  .bl-rec[hidden] { display: none; }
+  .bl-rec__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: clamp(18px, 2.4vw, 28px); }
+  .bl-rec__h { font-size: clamp(28px, 3.4vw, 40px); font-weight: 600; line-height: 1.2; color: var(--bl-plum); }
+  .bl-rec__nav { display: flex; gap: 12px; }
+  .bl-rec__arrow { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 1px solid #E49BBB; border-radius: 50%; background: transparent; color: #3B1228; cursor: pointer; transition: background .25s ease, border-color .25s ease, opacity .25s ease; }
+  .bl-rec__arrow:hover { background: #fff; border-color: #3B1228; }
+  .bl-rec__arrow[disabled] { opacity: .45; cursor: default; }
+  .bl-rec__viewport { overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 8px; scrollbar-width: none; margin-inline: -8px; padding: 8px; }
+  .bl-rec__viewport::-webkit-scrollbar { display: none; }
+  .bl-rec__list { display: flex; gap: clamp(16px, 2.6vw, 34px); }
+  .bl-rec__card { flex: none; width: clamp(200px, 21vw, 262px); display: grid; align-content: start; gap: 6px; scroll-snap-align: start; }
+  .bl-rec__pic { position: relative; display: grid; place-items: center; aspect-ratio: 1; margin-bottom: 8px; border-radius: 12px; overflow: hidden; }
+  .bl-rec__pic img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+  .bl-rec__t { font-size: 16px; font-weight: 600; line-height: 1.3; color: #2A1020; }
+  .bl-rec__t a { color: inherit; text-decoration: none; }
+  .bl-rec__d { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 13px; line-height: 1.45; color: #7A6A72; }
+  .bl-rec__price { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font-size: 14px; }
+  .bl-rec__price strong { font-size: 16px; font-weight: 600; color: #1B0A14; }
+  .bl-rec__price s { font-size: 12px; color: #9A8C94; }
+  .bl-rec__type { font-size: 11.5px; font-weight: 600; color: #4A1A33; }
+  .bl-rec__add { width: 100%; min-height: 36px; margin-top: 4px; padding: 0 8px; border-radius: 6px; font-size: 13px; }
+  @media (max-width: 749px) { .bl-rec__card { width: 68vw; } }
+</style>
+<script>
+(function () {
+  var root = document.getElementById("bl-recent");
+  if (!root || root.dataset.blReady) return;
+  root.dataset.blReady = "1";
+  var track = root.querySelector("[data-bl-track]"), list = root.querySelector("[data-bl-list]");
+  var prev = root.querySelector("[data-bl-prev]"), next = root.querySelector("[data-bl-next]");
+  function arrows() {
+    if (!track) return;
+    prev.disabled = track.scrollLeft <= 4;
+    next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+  }
+  function step(dir) { var c = list.firstElementChild; track.scrollBy({ left: dir * (c ? c.getBoundingClientRect().width + 24 : 240), behavior: "smooth" }); }
+  prev.addEventListener("click", function () { step(-1); });
+  next.addEventListener("click", function () { step(1); });
+  track.addEventListener("scroll", arrows, { passive: true });
+  window.addEventListener("resize", arrows);
+
+  // Live storefront: fill the row from what this shopper has actually viewed.
+  if (!root.hasAttribute("hidden") && list.children.length) { arrows(); return; }
+  var handle = root.dataset.handle, seen = [];
+  try { seen = JSON.parse(localStorage.getItem("bl_recent") || "[]"); } catch (e) {}
+  var others = seen.filter(function (h) { return h && h !== handle; }).slice(0, 8);
+  try { localStorage.setItem("bl_recent", JSON.stringify([handle].concat(others).slice(0, 12))); } catch (e) {}
+  if (!others.length) return;
+  var sample = root.dataset.money || "";
+  var mm = sample.match(/^(.*?)([0-9][0-9.,\u00a0\u202f' ]*[0-9])(.*)$/);
+  var pre = mm ? mm[1] : "", suf = mm ? mm[3] : "", num = mm ? mm[2] : "1,234.56";
+  var dm = num.match(/([.,])(\d{1,2})$/), dsep = dm ? dm[1] : "", dlen = dm ? dm[2].length : 0;
+  var tm = num.replace(dm ? dm[0] : "", "").match(/[^0-9]/), tsep = tm ? tm[0] : "";
+  function fmt(c) { var v = (c / 100).toFixed(dlen).split("."); return pre + v[0].replace(/\B(?=(\d{3})+(?!\d))/g, tsep) + (dlen ? dsep + v[1] : "") + suf; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  var tints = ["#DAD4FF", "#FFCFE0", "#CFEBD0", "#E7BFD0"];
+  Promise.all(others.map(function (h) { return fetch("/products/" + encodeURIComponent(h) + ".js").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); }))
+    .then(function (items) {
+      items = items.filter(Boolean);
+      if (!items.length) return;
+      list.innerHTML = items.map(function (p, i) {
+        var v = (p.variants || []).filter(function (x) { return x.available; })[0] || (p.variants || [])[0] || {};
+        var cmp = p.compare_at_price || 0, save = cmp > p.price ? '<span class="bl-bu__tag">' + esc(root.dataset.save) + " " + fmt(cmp - p.price) + "</span>" : "";
+        var img = p.featured_image ? '<img src="' + esc(p.featured_image) + '" alt="" loading="lazy">' : "";
+        var d = String(p.description || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+        return '<li class="bl-rec__card"><a class="bl-rec__pic" href="' + esc(p.url) + '" style="background:' + tints[i % tints.length] + '">' + save + img + "</a>" +
+          '<h3 class="bl-rec__t bl-serif"><a href="' + esc(p.url) + '">' + esc(p.title) + "</a></h3>" +
+          (d ? '<p class="bl-rec__d">' + esc(d) + "</p>" : "") +
+          '<p class="bl-rec__price"><strong>' + fmt(p.price) + "</strong>" + (cmp > p.price ? " <s>" + fmt(cmp) + "</s>" : "") + "</p>" +
+          '<p class="bl-rec__type">' + esc(root.dataset.type) + "</p>" +
+          '<button type="button" class="bl-btn bl-rec__add" data-id="' + esc(v.id) + '"' + (v.available === false ? " disabled" : "") + ">" + esc(root.dataset.add) + " - " + fmt(v.price || p.price) + "</button></li>";
+      }).join("");
+      root.hidden = false;
+      arrows();
+    });
+  list.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-id]"); if (!b || b.disabled) return;
+    b.disabled = true;
+    fetch("/cart/add.js", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: [{ id: parseInt(b.dataset.id, 10), quantity: 1 }] }) })
+      .then(function () { window.location.href = "/cart"; }).catch(function () { b.disabled = false; });
+  });
+})();
+</script>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if kl_rtl_html contains 'ا' or kl_rtl_html contains 'ل' or kl_rtl_html contains 'ي' or kl_rtl_html contains 'ة' -%}
+<div class="kl-rtl kl-rtl--bloom" dir="rtl" style="display: contents">{{ kl_rtl_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+  .kl-rtl:is(#kl-rtl, *), .kl-rtl:is(#kl-rtl, *) * { letter-spacing: 0 !important; font-style: normal !important; text-transform: none !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, span, a, button, summary, label, input, select, small, strong, em, b, td, th, blockquote, div, cite) { font-family: "Open Sans", "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(p, li, summary, blockquote) { line-height: 1.8 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) { font-family: "Playfair Display", "Amiri", "Noto Naskh Arabic", serif !important; line-height: 1.5 !important; }
+  .kl-rtl:is(#kl-rtl, *) :is(h1, h2, h3, h4, h5, h6) * { font-family: inherit !important; }
+  .kl-rtl:is(#kl-rtl, *) .bl-flip { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ kl_rtl_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Roarr Bloom Recently viewed",
+  "tag": "section",
+  "class": "roarr-bloom-section",
+  "settings": [],
+  "presets": [{ "name": "Roarr Bloom Recently viewed" }]
+}
+{% endschema %}

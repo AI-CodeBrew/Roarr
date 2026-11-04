@@ -101,6 +101,8 @@ def _load_image_key_ratio_map() -> dict:
         # Amour first: shared keys (product_image_*, banner_image) keep the classic
         # ratios below; Amour-only keys (look_image_*, story_image, ...) come from here.
         os.path.join(base_dir, "packs", "amour", "image_keys.json"),
+        # Maison: all keys are maison_-prefixed, so no clash with the classic ratios.
+        os.path.join(base_dir, "packs", "maison", "image_keys.json"),
         os.path.join(base_dir, "single_store", "image_keys.json"),
         os.path.join(base_dir, "multi_store", "image_keys.json"),
         # Cinematic pack: banner_image 16:9 + banner_image_mobile 9:16
