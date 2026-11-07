@@ -121,6 +121,9 @@ const shopify = shopifyApp({
   scopes: process.env.SCOPES?.split(","),
   appUrl: process.env.SHOPIFY_APP_URL || "",
   sessionStorage: new PrismaSessionStorage(prisma),
+  future: {
+    expiringOfflineAccessTokens: true,
+  },
   hooks: {
     afterAuth: async ({ session, admin }) => {
       try {
