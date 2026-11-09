@@ -1,0 +1,342 @@
+{%- capture tp_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign hero_kicker_1 = section.settings.hero_kicker_1 | default: '#Made for every day' -%}
+{%- if use_mf and ht.hero_kicker_1 != blank -%}{%- assign hero_kicker_1 = ht.hero_kicker_1 -%}{%- endif -%}
+{%- assign hero_heading_1 = section.settings.hero_heading_1 | default: 'Minimal Watch' -%}
+{%- if use_mf and ht.hero_heading_1 != blank -%}{%- assign hero_heading_1 = ht.hero_heading_1 -%}{%- endif -%}
+{%- assign hero_text_1 = section.settings.hero_text_1 | default: 'Thoughtful design and dependable performance, built to fit into the way you already live.' -%}
+{%- if use_mf and ht.hero_text_1 != blank -%}{%- assign hero_text_1 = ht.hero_text_1 -%}{%- endif -%}
+{%- assign hero_kicker_2 = section.settings.hero_kicker_2 | default: '#Everyday ready' -%}
+{%- if use_mf and ht.hero_kicker_2 != blank -%}{%- assign hero_kicker_2 = ht.hero_kicker_2 -%}{%- endif -%}
+{%- assign hero_heading_2 = section.settings.hero_heading_2 | default: 'Power That Lasts' -%}
+{%- if use_mf and ht.hero_heading_2 != blank -%}{%- assign hero_heading_2 = ht.hero_heading_2 -%}{%- endif -%}
+{%- assign hero_text_2 = section.settings.hero_text_2 | default: 'From the first use to the hundredth, it feels just as good as the day it arrived.' -%}
+{%- if use_mf and ht.hero_text_2 != blank -%}{%- assign hero_text_2 = ht.hero_text_2 -%}{%- endif -%}
+{%- assign hero_kicker_3 = section.settings.hero_kicker_3 | default: '#Made to impress' -%}
+{%- if use_mf and ht.hero_kicker_3 != blank -%}{%- assign hero_kicker_3 = ht.hero_kicker_3 -%}{%- endif -%}
+{%- assign hero_heading_3 = section.settings.hero_heading_3 | default: 'Details You Notice' -%}
+{%- if use_mf and ht.hero_heading_3 != blank -%}{%- assign hero_heading_3 = ht.hero_heading_3 -%}{%- endif -%}
+{%- assign hero_text_3 = section.settings.hero_text_3 | default: 'Clean lines, honest materials and finishing that shows how much care went into it.' -%}
+{%- if use_mf and ht.hero_text_3 != blank -%}{%- assign hero_text_3 = ht.hero_text_3 -%}{%- endif -%}
+{%- assign hero_cta = section.settings.hero_cta | default: 'Explore More' -%}
+{%- if use_mf and ht.hero_cta != blank -%}{%- assign hero_cta = ht.hero_cta -%}{%- endif -%}
+{%- assign hero_video_label = section.settings.hero_video_label | default: 'View Video' -%}
+{%- if use_mf and ht.hero_video_label != blank -%}{%- assign hero_video_label = ht.hero_video_label -%}{%- endif -%}
+{%- assign hero_video_url = section.settings.hero_video_url -%}
+{%- assign tempo_hero_1 = section.settings.tempo_hero_1 -%}
+{%- if use_mf and hi.tempo_hero_1 != blank -%}{%- assign tempo_hero_1 = hi.tempo_hero_1 -%}{%- endif -%}
+{%- assign tempo_hero_2 = section.settings.tempo_hero_2 -%}
+{%- if use_mf and hi.tempo_hero_2 != blank -%}{%- assign tempo_hero_2 = hi.tempo_hero_2 -%}{%- endif -%}
+{%- assign tempo_hero_3 = section.settings.tempo_hero_3 -%}
+{%- if use_mf and hi.tempo_hero_3 != blank -%}{%- assign tempo_hero_3 = hi.tempo_hero_3 -%}{%- endif -%}
+{%- assign tp_product = blank -%}
+{%- if ht.selected_product != blank -%}{%- assign tp_product = all_products[ht.selected_product] -%}{%- endif -%}
+{%- if tp_product == blank and collections.all.products.first != blank -%}{%- assign tp_product = collections.all.products.first -%}{%- endif -%}
+{%- assign tp_url = routes.all_products_collection_url | default: '/collections/all' -%}
+{%- assign tp_title = section.settings.fallback_title -%}
+{%- assign tp_price = section.settings.fallback_price -%}
+{%- assign tp_compare = section.settings.fallback_compare -%}
+{%- if tp_product != blank and tp_product.title != blank -%}
+  {%- assign tp_url = tp_product.url -%}
+  {%- assign tp_title = tp_product.title -%}
+  {%- assign tp_price = tp_product.price | money -%}
+  {%- assign tp_compare = blank -%}
+  {%- if tp_product.compare_at_price > tp_product.price -%}{%- assign tp_compare = tp_product.compare_at_price | money -%}{%- endif -%}
+{%- endif -%}
+{%- assign tp_slide_count = 0 -%}
+<section class="tp tp-hero" id="tp-hero-{{ section.id }}" aria-roledescription="carousel" aria-label="{{ hero_heading_1 | escape }}">
+  <div class="tp-hero__track" tabindex="0">
+    {%- if hero_heading_1 != blank -%}
+    {%- assign tp_slide_count = tp_slide_count | plus: 1 -%}
+    <article class="tp-slide" role="group" aria-roledescription="slide" aria-label="1">
+      <div class="tp-wrap tp-slide__grid">
+        <span class="tp-slide__ring" aria-hidden="true"></span>
+        <div class="tp-slide__copy">
+          {%- if hero_kicker_1 != blank -%}<p class="tp-slide__kicker">{{ hero_kicker_1 | escape }}</p>{%- endif -%}
+          <h1 class="tp-slide__h">{{ hero_heading_1 | escape }}</h1>
+          {%- if hero_text_1 != blank -%}<p class="tp-slide__text">{{ hero_text_1 | escape }}</p>{%- endif -%}
+          <div class="tp-slide__actions">
+            {%- if hero_cta != blank -%}<a class="tp-btn" href="{{ tp_url }}">{{ hero_cta | escape }}<svg class="tp-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4l7 6-7 6v-3.6C8.6 12.4 5.4 14 3 18c.4-6.2 4-10.4 11-11z"/></svg></a>{%- endif -%}
+            {%- if hero_video_url != blank -%}<a class="tp-play" href="{{ hero_video_url }}" target="_blank" rel="noopener"><span class="tp-play__halo"><span class="tp-play__disc"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M8 6.5v11l9-5.5z"/></svg></span></span><span class="tp-play__label">{{ hero_video_label | escape }}</span></a>{%- endif -%}
+          </div>
+        </div>
+        <div class="tp-slide__media">{%- if tempo_hero_1 != blank -%}{%- if tempo_hero_1 contains 'http' or tempo_hero_1 contains '//' -%}<img class="tp-cut" src="{{ tempo_hero_1 }}" alt="{{ hero_heading_1 | escape }}" fetchpriority="high" width="1200" height="1500" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_hero_1 | image_url: width: 1200 }}" alt="{{ hero_heading_1 | escape }}" fetchpriority="high" width="1200" height="1500" decoding="async">{%- endif -%}{%- endif -%}</div>
+      </div>
+    </article>
+    {%- endif -%}
+    {%- if hero_heading_2 != blank -%}
+    {%- assign tp_slide_count = tp_slide_count | plus: 1 -%}
+    <article class="tp-slide" role="group" aria-roledescription="slide" aria-label="2">
+      <div class="tp-wrap tp-slide__grid">
+        <span class="tp-slide__ring" aria-hidden="true"></span>
+        <div class="tp-slide__copy">
+          {%- if hero_kicker_2 != blank -%}<p class="tp-slide__kicker">{{ hero_kicker_2 | escape }}</p>{%- endif -%}
+          <h2 class="tp-slide__h">{{ hero_heading_2 | escape }}</h2>
+          {%- if hero_text_2 != blank -%}<p class="tp-slide__text">{{ hero_text_2 | escape }}</p>{%- endif -%}
+          <div class="tp-slide__actions">
+            {%- if hero_cta != blank -%}<a class="tp-btn" href="{{ tp_url }}">{{ hero_cta | escape }}<svg class="tp-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4l7 6-7 6v-3.6C8.6 12.4 5.4 14 3 18c.4-6.2 4-10.4 11-11z"/></svg></a>{%- endif -%}
+            {%- if hero_video_url != blank -%}<a class="tp-play" href="{{ hero_video_url }}" target="_blank" rel="noopener"><span class="tp-play__halo"><span class="tp-play__disc"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M8 6.5v11l9-5.5z"/></svg></span></span><span class="tp-play__label">{{ hero_video_label | escape }}</span></a>{%- endif -%}
+          </div>
+        </div>
+        <div class="tp-slide__media">{%- if tempo_hero_2 != blank -%}{%- if tempo_hero_2 contains 'http' or tempo_hero_2 contains '//' -%}<img class="tp-cut" src="{{ tempo_hero_2 }}" alt="{{ hero_heading_2 | escape }}" loading="lazy" width="1200" height="1500" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_hero_2 | image_url: width: 1200 }}" alt="{{ hero_heading_2 | escape }}" loading="lazy" width="1200" height="1500" decoding="async">{%- endif -%}{%- endif -%}</div>
+      </div>
+    </article>
+    {%- endif -%}
+    {%- if hero_heading_3 != blank -%}
+    {%- assign tp_slide_count = tp_slide_count | plus: 1 -%}
+    <article class="tp-slide" role="group" aria-roledescription="slide" aria-label="3">
+      <div class="tp-wrap tp-slide__grid">
+        <span class="tp-slide__ring" aria-hidden="true"></span>
+        <div class="tp-slide__copy">
+          {%- if hero_kicker_3 != blank -%}<p class="tp-slide__kicker">{{ hero_kicker_3 | escape }}</p>{%- endif -%}
+          <h2 class="tp-slide__h">{{ hero_heading_3 | escape }}</h2>
+          {%- if hero_text_3 != blank -%}<p class="tp-slide__text">{{ hero_text_3 | escape }}</p>{%- endif -%}
+          <div class="tp-slide__actions">
+            {%- if hero_cta != blank -%}<a class="tp-btn" href="{{ tp_url }}">{{ hero_cta | escape }}<svg class="tp-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4l7 6-7 6v-3.6C8.6 12.4 5.4 14 3 18c.4-6.2 4-10.4 11-11z"/></svg></a>{%- endif -%}
+            {%- if hero_video_url != blank -%}<a class="tp-play" href="{{ hero_video_url }}" target="_blank" rel="noopener"><span class="tp-play__halo"><span class="tp-play__disc"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M8 6.5v11l9-5.5z"/></svg></span></span><span class="tp-play__label">{{ hero_video_label | escape }}</span></a>{%- endif -%}
+          </div>
+        </div>
+        <div class="tp-slide__media">{%- if tempo_hero_3 != blank -%}{%- if tempo_hero_3 contains 'http' or tempo_hero_3 contains '//' -%}<img class="tp-cut" src="{{ tempo_hero_3 }}" alt="{{ hero_heading_3 | escape }}" loading="lazy" width="1200" height="1500" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_hero_3 | image_url: width: 1200 }}" alt="{{ hero_heading_3 | escape }}" loading="lazy" width="1200" height="1500" decoding="async">{%- endif -%}{%- endif -%}</div>
+      </div>
+    </article>
+    {%- endif -%}
+  </div>
+  {%- if tp_slide_count > 1 -%}
+  <div class="tp-hero__dots">
+    {%- for n in (1..tp_slide_count) -%}<button type="button" class="tp-hero__dot" data-tp-go="{{ forloop.index0 }}" aria-label="{{ n }}"{% if forloop.first %} aria-current="true"{% endif %}></button>{%- endfor -%}
+  </div>
+  {%- endif -%}
+</section>
+<script>
+  (function () {
+    var root = document.getElementById('tp-hero-{{ section.id }}');
+    if (!root || root.getAttribute('data-ready')) return;
+    root.setAttribute('data-ready', '1');
+    var track = root.querySelector('.tp-hero__track');
+    var dots = root.querySelectorAll('.tp-hero__dot');
+    var count = dots.length;
+    if (!track || count < 2) return;
+    var rtl = getComputedStyle(root).direction === 'rtl';
+    var timer = null, stopped = false, current = 0;
+    function show(i) { current = i; for (var d = 0; d < dots.length; d++) { if (d === i) dots[d].setAttribute('aria-current', 'true'); else dots[d].removeAttribute('aria-current'); } }
+    function go(i) { i = (i + count) % count; track.scrollTo({ left: (rtl ? -1 : 1) * i * track.clientWidth, behavior: 'smooth' }); show(i); }
+    track.addEventListener('scroll', function () { var i = Math.round(Math.abs(track.scrollLeft) / (track.clientWidth || 1)); if (i !== current) show(i); }, { passive: true });
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-tp-go]');
+      if (!b) return;
+      stopped = true; clearInterval(timer);
+      go(parseInt(b.getAttribute('data-tp-go'), 10));
+    });
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    function start() { clearInterval(timer); if (!stopped) timer = setInterval(function () { go(current + 1); }, 6500); }
+    root.addEventListener('mouseenter', function () { clearInterval(timer); });
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', function () { clearInterval(timer); });
+    root.addEventListener('touchstart', function () { stopped = true; clearInterval(timer); }, { passive: true });
+    start();
+  })();
+</script>
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.tp) { --tp-peach: #FAF1ED; --tp-navy: #06264B; --tp-navy-deep: #05264D; --tp-orange: #FC6539; --tp-orange-text: #CF4318; --tp-ink: #222222; --tp-grey: #F1F1F1; --tp-grey-2: #EEEEEE; --tp-line: #EAEAEA; --tp-blob: #FBC3B3; --tp-serif: "Playfair Display", Georgia, "Times New Roman", serif; --tp-sans: "Poppins", "Helvetica Neue", Arial, sans-serif; --tp-pad: clamp(20px, 7.32vw, 100px); font-family: var(--tp-sans); font-size: 16px; line-height: 1.7; color: var(--tp-navy); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .tp *, .tp *::before, .tp *::after { box-sizing: border-box; }
+  :where(.tp) :where(h1, h2, h3, p, ul, ol, dl, dd, figure) { margin: 0; padding: 0; }
+  :where(.tp) :where(ul, ol) { list-style: none; }
+  :where(.tp) img { display: block; max-width: 100%; }
+  .tp-wrap { width: 100%; max-width: 1366px; margin-inline: auto; padding-inline: var(--tp-pad); }
+  .tp-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tp-label { font: 400 18px/1.4 var(--tp-sans); text-transform: uppercase; color: var(--tp-orange-text); }
+  .tp-h2 { font: 700 clamp(32px, 3.7vw, 50px)/1.2 var(--tp-serif); color: var(--tp-navy); text-wrap: balance; }
+  .tp-sechead { display: grid; justify-items: center; gap: 12px; margin-bottom: clamp(36px, 5vw, 64px); text-align: center; }
+  .tp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 62px; padding: 0 40px; border: 0; border-radius: 999px; background: var(--tp-navy); color: var(--tp-orange); font: 500 18px/1 var(--tp-sans); text-decoration: none; cursor: pointer; transition: background .3s ease, color .3s ease, transform .3s ease, box-shadow .3s ease; }
+  .tp-btn:hover { background: var(--tp-orange); color: var(--tp-navy); transform: translateY(-2px); box-shadow: 0 12px 26px rgb(252 101 57 / .32); }
+  .tp-btn:focus-visible, .tp a:focus-visible, .tp button:focus-visible, .tp input:focus-visible { outline: 3px solid var(--tp-orange); outline-offset: 3px; }
+  .tp-ico { flex: none; }
+  .tp-cut { mix-blend-mode: multiply; }
+  .tp-rule { display: block; width: 70px; height: 4px; background: var(--tp-orange); }
+  @keyframes tp-reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tp-reveal { animation: tp-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) { .tp *, .tp *::before, .tp *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  .tp-hero { position: relative; overflow: hidden; background: var(--tp-peach); }
+  .tp-hero::before { content: ""; position: absolute; width: 760px; height: 760px; left: -280px; top: 120px; border: 60px solid rgb(252 101 57 / .035); border-radius: 50%; pointer-events: none; }
+  .tp-hero__track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .tp-hero__track::-webkit-scrollbar { display: none; }
+  .tp-slide { display: grid; align-items: center; flex: 0 0 100%; min-height: clamp(620px, 52vw, 700px); padding-block: 40px 70px; scroll-snap-align: start; }
+  .tp-slide__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); align-items: center; gap: 24px; }
+  .tp-slide__ring { position: absolute; left: min(50%, 560px); top: 31%; width: 60px; height: 60px; border: 8px solid #F8DDD6; border-radius: 50%; pointer-events: none; }
+  .tp-slide__copy { position: relative; z-index: 1; display: grid; justify-items: start; gap: 0; }
+  .tp-slide__kicker { font: 400 clamp(18px, 1.75vw, 24px)/1.4 var(--tp-sans); color: var(--tp-orange-text); }
+  .tp-slide__h { margin-top: 6px; font: 700 clamp(54px, 8.3vw, 118px)/1.08 var(--tp-serif); letter-spacing: -.01em; color: var(--tp-navy); text-wrap: balance; }
+  .tp-slide__text { max-width: 25em; margin-top: 22px; font-size: 18px; line-height: 1.7; color: var(--tp-navy); }
+  .tp-slide__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 22px; margin-top: 44px; }
+  .tp-play { display: inline-flex; align-items: center; gap: 8px; color: #333; text-decoration: none; font: 400 20px/1.2 var(--tp-sans); }
+  .tp-play__halo { display: grid; place-items: center; width: 100px; height: 100px; border-radius: 50%; background: rgb(6 38 75 / .12); transition: background .3s ease, transform .3s ease; }
+  .tp-play:hover .tp-play__halo { background: rgb(252 101 57 / .28); transform: scale(1.05); }
+  .tp-play__disc { display: grid; place-items: center; width: 64px; height: 64px; border: 1px solid #555; border-radius: 50%; background: #fff; color: #444; }
+  .tp-slide__media { display: grid; justify-items: center; }
+  .tp-slide__media img { width: min(100%, 580px); height: auto; aspect-ratio: 4 / 5; object-fit: contain; }
+  .tp-hero__dots { position: absolute; inset: auto 0 26px; z-index: 2; display: flex; justify-content: center; gap: 12px; }
+  .tp-hero__dot { position: relative; width: 18px; height: 18px; padding: 0; border: 2px solid var(--tp-orange); border-radius: 50%; background: transparent; cursor: pointer; transition: width .35s ease, background .35s ease; }
+  .tp-hero__dot::before { content: ""; position: absolute; inset: 50% auto auto 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--tp-orange); transition: opacity .3s ease; }
+  .tp-hero__dot::after { content: ""; position: absolute; inset: -9px -3px; }
+  .tp-hero__dot[aria-current] { width: 48px; border-radius: 9px; background: var(--tp-orange); }
+  .tp-hero__dot[aria-current]::before { opacity: 0; }
+  @media (max-width: 899px) {
+    .tp-slide { min-height: 0; padding-block: 36px 74px; }
+    .tp-slide__grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .tp-slide__ring { display: none; }
+    .tp-slide__media { order: -1; }
+    .tp-slide__media img { width: min(100%, 360px); }
+    .tp-slide__h { font-size: clamp(46px, 13vw, 72px); }
+  }
+  @media (max-width: 559px) { .tp-slide__actions { margin-top: 30px; } .tp-slide__actions .tp-btn { width: 100%; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if tp_html contains 'ا' or tp_html contains 'ل' or tp_html contains 'ي' or tp_html contains 'ة' -%}
+<div class="tp-rtl" dir="rtl" style="display: contents">{{ tp_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .tp-rtl:is(#tp-rtl, *), .tp-rtl:is(#tp-rtl, *) * { letter-spacing: 0 !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3, p, li, span, a, button, strong, label, input, div) { font-family: "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3) { line-height: 1.35 !important; }
+  .tp-rtl:is(#tp-rtl, *) .tp-btn svg { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ tp_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Tempo Hero",
+  "tag": "section",
+  "class": "roarr-tempo-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr generated content",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hero_kicker_1",
+      "label": "Slide 1 small line",
+      "default": "#Made for every day"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading_1",
+      "label": "Slide 1 heading",
+      "default": "Minimal Watch"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_text_1",
+      "label": "Slide 1 text",
+      "default": "Thoughtful design and dependable performance, built to fit into the way you already live."
+    },
+    {
+      "type": "text",
+      "id": "hero_kicker_2",
+      "label": "Slide 2 small line",
+      "default": "#Everyday ready"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading_2",
+      "label": "Slide 2 heading",
+      "default": "Power That Lasts"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_text_2",
+      "label": "Slide 2 text",
+      "default": "From the first use to the hundredth, it feels just as good as the day it arrived."
+    },
+    {
+      "type": "text",
+      "id": "hero_kicker_3",
+      "label": "Slide 3 small line",
+      "default": "#Made to impress"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading_3",
+      "label": "Slide 3 heading",
+      "default": "Details You Notice"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_text_3",
+      "label": "Slide 3 text",
+      "default": "Clean lines, honest materials and finishing that shows how much care went into it."
+    },
+    {
+      "type": "text",
+      "id": "hero_cta",
+      "label": "Button label",
+      "default": "Explore More"
+    },
+    {
+      "type": "text",
+      "id": "hero_video_label",
+      "label": "Video link label",
+      "default": "View Video"
+    },
+    {
+      "type": "url",
+      "id": "hero_video_url",
+      "label": "Video link (optional, hides the play button when empty)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_hero_1",
+      "label": "Slide 1 image (4:5)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_hero_2",
+      "label": "Slide 2 image (4:5)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_hero_3",
+      "label": "Slide 3 image (4:5)"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Product name when no product is found",
+      "default": "Your product"
+    },
+    {
+      "type": "text",
+      "id": "fallback_price",
+      "label": "Price when no product is found",
+      "default": "$49.00"
+    },
+    {
+      "type": "text",
+      "id": "fallback_compare",
+      "label": "Compare-at price when no product is found"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tempo Hero"
+    }
+  ]
+}
+{% endschema %}

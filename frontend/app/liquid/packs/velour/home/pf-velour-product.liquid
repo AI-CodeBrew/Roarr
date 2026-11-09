@@ -1,0 +1,317 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign current = product.selected_or_first_available_variant | default: product.variants[0] -%}
+{%- assign rating = product.metafields.reviews.rating.value.rating | default: 0 -%}
+{%- assign rating_count = product.metafields.reviews.rating_count.value | default: 0 -%}
+{%- assign shipping_tab = shop.shipping_policy.body | default: homeData.demo_shipping_tab -%}
+{%- assign returns_tab = shop.refund_policy.body | default: homeData.demo_returns_tab -%}
+{%- assign related = homeData.demo_products | default: product.collections.first.products | default: collections.all.products -%}
+{%- assign benefit_icons = 'truck,card,swap,shield' | split: ',' -%}
+{%- capture vr_html -%}
+<section class="vr-pd" data-vr-product>
+  <div class="vr-wrap">
+    <p class="vr-crumbs vr-pd__crumbs"><a href="{{ routes.root_url | default: '/' }}">{{ ht.label_home | default: 'Home' }}</a><i aria-hidden="true"></i><span>{{ product.title }}</span></p>
+    <div class="vr-pd__main">
+      <div class="vr-pd__gallery">
+        <div class="vr-pd__stage">
+          {%- for media in product.media -%}
+            <div class="vr-pd__shot{% if forloop.first %} is-on{% endif %}" data-vr-shot data-media-id="{{ media.id }}">
+              {%- render 'snippets/roarr-velour-img', src: media.preview_image, alt: product.title, width: 1400 -%}
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="vr-pd__thumbs">
+            {%- for media in product.media -%}
+              <button class="vr-pd__thumb{% if forloop.first %} is-on{% endif %}" type="button" aria-label="{{ ht.label_show_image | default: 'Show image' | escape }} {{ forloop.index }}" data-vr-thumb="{{ forloop.index0 }}">
+                {%- render 'snippets/roarr-velour-img', src: media.preview_image, alt: '', width: 300, lazy: true -%}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="vr-pd__info">
+        <h1 class="vr-pd__title">{{ product.title }}</h1>
+        <p class="vr-pd__review">
+          <span class="vr-stars" role="img" aria-label="{{ rating }} / 5">★★★★★<i style="width: {{ rating | times: 20 }}%">★★★★★</i></span>
+          <span>({{ rating_count }})</span>
+        </p>
+        <p class="vr-pd__price"><span data-vr-price>{{ current.price | default: product.price | money }}</span><s data-vr-compare{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{{ current.compare_at_price | money }}</s></p>
+        {%- assign summary = product.description | replace: '</', ' </' | strip_html | truncatewords: 34 -%}
+        {%- if summary != blank -%}<p class="vr-pd__summary">{{ summary }}</p>{%- endif -%}
+
+        <dl class="vr-pd__facts">
+          <div><dt>{{ ht.label_available | default: 'Available' }}:</dt><dd class="vr-pd__stock" data-vr-stock data-in="{{ ht.label_in_stock | default: 'In Stock' | escape }}" data-out="{{ ht.label_out_of_stock | default: 'Out of Stock' | escape }}">{%- if current.available -%}{{ ht.label_in_stock | default: 'In Stock' }}{%- else -%}{{ ht.label_out_of_stock | default: 'Out of Stock' }}{%- endif -%}</dd></div>
+          {%- if product.tags.size > 0 -%}<div><dt>{{ ht.label_tags | default: 'Tags' }}:</dt><dd>{{ product.tags | join: ', ' }}</dd></div>{%- endif -%}
+          <div data-vr-sku-row{% if current.sku == blank %} hidden{% endif %}><dt>SKU:</dt><dd data-vr-sku>{{ current.sku }}</dd></div>
+          {%- if product.type != blank -%}<div><dt>{{ ht.label_category | default: 'Category' }}:</dt><dd>{{ product.type }}</dd></div>{%- endif -%}
+        </dl>
+
+        {%- form 'product', product, class: 'vr-pd__form' -%}
+          <input type="hidden" name="id" value="{{ current.id }}" data-vr-variant-id>
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <fieldset class="vr-pd__option" data-vr-option="{{ forloop.index0 }}">
+                <legend>{{ option.name }}: <b data-vr-option-value>{{ option.selected_value }}</b></legend>
+                <div class="vr-pills">
+                  {%- for value in option.values -%}
+                    <label class="vr-pill vr-pd__pill{% if value == option.selected_value %} is-on{% endif %}">
+                      <input type="radio" name="vr-option-{{ section.id }}-{{ forloop.parentloop.index0 }}" value="{{ value | escape }}"{% if value == option.selected_value %} checked{% endif %}>
+                      <span>{{ value }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <p class="vr-pd__label">{{ ht.label_quantity | default: 'Quantity' }}:</p>
+          <div class="vr-pd__buy">
+            <div class="vr-pd__qty">
+              <button type="button" aria-label="Decrease quantity" data-vr-step="-1">−</button>
+              <input type="number" name="quantity" value="1" min="1" aria-label="{{ ht.label_quantity | default: 'Quantity' | escape }}">
+              <button type="button" aria-label="Increase quantity" data-vr-step="1">+</button>
+            </div>
+            <button class="vr-btn vr-pd__add" type="submit" data-vr-add{% unless current.available %} disabled{% endunless %} data-label-add="{{ ht.label_add_to_bag | default: 'Add To Bag' | escape }}" data-label-out="{% render 'snippets/roarr-ui-string', key: 'sold_out' %}">{%- if current.available -%}{{ ht.label_add_to_bag | default: 'Add To Bag' }}{%- else -%}{% render 'snippets/roarr-ui-string', key: 'sold_out' %}{%- endif -%}</button>
+            <button class="vr-pd__heart" type="button" aria-pressed="false" aria-label="{{ ht.label_wishlist | default: 'Wishlist' | escape }}: {{ product.title | escape }}" data-vr-wish="{{ product.url }}" data-title="{{ product.title | escape }}" data-image="{% if product.featured_image contains '/' %}{{ product.featured_image }}{% else %}{{ product.featured_image | image_url: width: 200 }}{% endif %}">{%- render 'snippets/roarr-velour-icon', name: 'heart', size: 18 -%}</button>
+          </div>
+          <div class="vr-pd__now">
+            {%- if homeData == blank -%}{{ form | payment_button }}{%- else -%}<button class="vr-btn vr-btn--line" type="button" data-vr-demo-buy>{{ ht.label_buy_now | default: 'Buy It Now' }}</button>{%- endif -%}
+          </div>
+        {%- endform -%}
+
+        <ul class="vr-pd__links">
+          <li><button type="button" data-vr-share>{%- render 'snippets/roarr-velour-icon', name: 'share', size: 16 -%}{{ ht.label_share | default: 'Share' }}</button></li>
+          <li><a href="{{ ht.contact_url | default: '/pages/contact' }}">{%- render 'snippets/roarr-velour-icon', name: 'help', size: 16 -%}{{ ht.label_ask | default: 'Ask A Question' }}</a></li>
+          <li><a href="{{ ht.faq_url | default: '/pages/faq' }}">{%- render 'snippets/roarr-velour-icon', name: 'chat', size: 16 -%}{{ ht.label_faq | default: 'FAQ' }}</a></li>
+        </ul>
+
+        {%- if ht.policy_1_title != blank -%}
+          <div class="vr-pd__benefits">
+            <p class="vr-pd__benefits-head"><span>{{ ht.label_benefits | default: 'The Benefits Of Choosing Us' }}</span></p>
+            <ul>
+              {%- for i in (1..4) -%}
+                {%- assign title_key = 'policy_' | append: i | append: '_title' -%}
+                {%- assign icon_at = i | minus: 1 -%}
+                {%- if ht[title_key] != blank -%}<li>{%- render 'snippets/roarr-velour-icon', name: benefit_icons[icon_at], size: 34, stroke: 1 -%}<span>{{ ht[title_key] }}</span></li>{%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.note_1 != blank or section.settings.note_2 != blank -%}
+          <ul class="vr-pd__notes">
+            {%- if section.settings.note_1 != blank -%}<li>{%- render 'snippets/roarr-velour-icon', name: 'box', size: 22, stroke: 1 -%}{{ section.settings.note_1 }}</li>{%- endif -%}
+            {%- if section.settings.note_2 != blank -%}<li>{%- render 'snippets/roarr-velour-icon', name: 'truck', size: 22, stroke: 1 -%}{{ section.settings.note_2 }}</li>{%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="vr-pd__tabs" data-vr-tabs>
+      <div class="vr-pd__tablist" role="tablist">
+        <button class="is-on" type="button" role="tab" aria-selected="true" data-vr-tab="0">{{ ht.label_description | default: 'Description' }}</button>
+        {%- if shipping_tab != blank -%}<button type="button" role="tab" aria-selected="false" data-vr-tab="1">{{ ht.label_shipping_tab | default: 'Shipping Policy' }}</button>{%- endif -%}
+        {%- if returns_tab != blank -%}<button type="button" role="tab" aria-selected="false" data-vr-tab="2">{{ ht.label_returns_tab | default: 'Returns' }}</button>{%- endif -%}
+      </div>
+      <div class="vr-pd__panel" role="tabpanel" data-vr-panel="0">{{ product.description }}</div>
+      {%- if shipping_tab != blank -%}<div class="vr-pd__panel" role="tabpanel" data-vr-panel="1" hidden>{{ shipping_tab }}</div>{%- endif -%}
+      {%- if returns_tab != blank -%}<div class="vr-pd__panel" role="tabpanel" data-vr-panel="2" hidden>{{ returns_tab }}</div>{%- endif -%}
+    </div>
+  </div>
+  <script type="application/json" data-vr-variants>{{ product.variants | json }}</script>
+</section>
+
+{%- if related != blank -%}
+<section class="vr-pr" data-vr-rail>
+  <div class="vr-wrap">
+    <h2 class="vr-pr__title">{{ ht.label_related | default: 'Product Related' }}</h2>
+    <div class="vr-rail__track" data-vr-track>
+      {%- assign shown = 0 -%}
+      {%- for item in related limit: 9 -%}
+        {%- if item.handle != product.handle and shown < 8 -%}
+          {%- assign shown = shown | plus: 1 -%}
+          {%- render 'snippets/roarr-velour-card', product: item, quick_add_label: ht.label_quick_add -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="vr-dots vr-pr__dots" data-vr-rail-dots></div>
+  </div>
+</section>
+{%- endif -%}
+
+<style>
+  .vr .vr-pd { padding-block: 24px 60px; background: #fff; color: var(--vr-text); }
+  .vr .vr-pd__crumbs { justify-content: flex-start; margin: 0 0 20px; font-size: 12px; }
+  .vr .vr-pd__main { display: grid; grid-template-columns: minmax(0, 693fr) minmax(0, 645fr); gap: 72px; align-items: start; }
+  .vr .vr-pd__stage { position: relative; aspect-ratio: 693 / 890; overflow: hidden; border-radius: 5px; background: var(--vr-tile); }
+  .vr .vr-pd__shot { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s; }
+  .vr .vr-pd__shot.is-on { opacity: 1; visibility: visible; }
+  .vr .vr-pd__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .vr .vr-pd__thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+  .vr .vr-pd__thumb { aspect-ratio: 131 / 168; padding: 0; overflow: hidden; border: 1px solid transparent; border-radius: 5px; background: var(--vr-tile); cursor: pointer; transition: border-color .2s ease; }
+  .vr .vr-pd__thumb.is-on, .vr .vr-pd__thumb:hover { border-color: var(--vr-accent); }
+  .vr .vr-pd__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .vr .vr-pd__info { position: sticky; top: 80px; min-width: 0; }
+  .vr .vr-pd__title { font-size: 21px; line-height: 30px; font-weight: 500 !important; color: var(--vr-ink); }
+  .vr .vr-pd__review { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; color: var(--vr-text); }
+  .vr .vr-pd__review .vr-stars { margin: 0; font-size: 14px; }
+  .vr .vr-pd__price { display: flex; align-items: baseline; gap: 12px; margin-top: 20px; font-size: 24px; line-height: 32px; font-weight: 800; color: var(--vr-ink); }
+  .vr .vr-pd__price s { font-size: 15px; font-weight: 400; color: var(--vr-muted); text-decoration-color: #db0000; }
+  .vr .vr-pd__summary { margin-top: 14px; font-size: 13.44px; line-height: 20px; }
+  .vr .vr-pd__facts { margin: 30px 0 0; font-size: 12px; line-height: 18px; }
+  .vr .vr-pd__facts > div { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 10px; margin-bottom: 9px; }
+  .vr .vr-pd__facts > div[hidden] { display: none; }
+  .vr .vr-pd__facts dt { font-weight: 700; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-pd__facts dd { margin: 0; color: var(--vr-text); }
+  .vr .vr-pd__stock { color: #1a9c3e !important; font-weight: 600; text-transform: uppercase; font-size: 11px; }
+  .vr .vr-pd__stock.is-out { color: #db0000 !important; }
+  .vr .vr-pd__form { margin: 26px 0 0; }
+  .vr .vr-pd__option { margin: 0 0 26px; padding: 0; border: 0; }
+  .vr .vr-pd__option legend, .vr .vr-pd__label { padding: 0; margin-bottom: 12px; font-size: 12px; line-height: 18px; font-weight: 700; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-pd__option legend b { font-weight: 700; }
+  .vr .vr-pd__pill { display: inline-grid; place-items: center; }
+  .vr .vr-pd__pill input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .vr .vr-pd__pill:has(input:focus-visible) { outline: 2px solid var(--vr-ink); outline-offset: 2px; }
+  .vr .vr-pd__pill.is-out { opacity: .4; text-decoration: line-through; }
+  .vr .vr-pd__buy { display: grid; grid-template-columns: 120px minmax(0, 1fr) 50px; gap: 10px; align-items: center; }
+  .vr .vr-pd__qty { display: grid; grid-template-columns: 34px minmax(0, 1fr) 34px; align-items: center; height: 50px; border: 1px solid var(--vr-line); border-radius: 50px; }
+  .vr .vr-pd__qty button { height: 100%; padding: 0; border: 0; background: none; font-size: 16px; color: var(--vr-ink); cursor: pointer; }
+  .vr .vr-pd__qty input { width: 100%; padding: 0; border: 0; background: none; text-align: center; font-size: 13.44px; font-weight: 500; color: var(--vr-ink); appearance: textfield; -moz-appearance: textfield; }
+  .vr .vr-pd__qty input::-webkit-outer-spin-button, .vr .vr-pd__qty input::-webkit-inner-spin-button { appearance: none; margin: 0; }
+  .vr .vr-pd__add { width: 100%; min-width: 0; height: 50px; background: #e9e9e9; color: var(--vr-ink); }
+  .vr .vr-pd__heart { width: 50px; height: 50px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #efefef; color: var(--vr-ink); cursor: pointer; transition: background-color .25s ease, color .25s ease; }
+  .vr .vr-pd__heart:hover { background: var(--vr-accent); color: #fff; }
+  .vr .vr-pd__heart[aria-pressed="true"] svg { fill: currentColor; }
+  .vr .vr-pd__now { margin-top: 10px; }
+  .vr .vr-pd__now .vr-btn { width: 100%; height: 50px; box-shadow: 0 2px 8px rgb(0 0 0 / .06); }
+  .vr .vr-pd__now :is(.shopify-payment-button__button) { min-height: 50px; border-radius: 50px; overflow: hidden; }
+  .vr .vr-pd__links { display: flex; flex-wrap: wrap; gap: 12px 30px; margin-top: 26px; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-pd__links :is(a, button) { display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; font-weight: 600; text-transform: uppercase; color: var(--vr-ink); cursor: pointer; transition: color .2s ease; }
+  .vr .vr-pd__links :is(a, button):hover { color: var(--vr-accent); }
+  .vr .vr-pd__benefits { position: relative; margin-top: 44px; padding: 30px 14px 22px; border: 1px solid var(--vr-line); border-radius: 5px; }
+  .vr .vr-pd__benefits-head { position: absolute; inset-inline: 0; top: -9px; text-align: center; }
+  .vr .vr-pd__benefits-head span { padding-inline: 12px; background: #fff; font-size: 12px; line-height: 18px; font-weight: 700; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-pd__benefits ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .vr .vr-pd__benefits li { display: grid; justify-items: center; gap: 10px; font-size: 10.5px; line-height: 15px; font-weight: 600; text-align: center; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-pd__notes { margin-top: 26px; font-size: 13.44px; }
+  .vr .vr-pd__notes li { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .vr .vr-pd__tablist { display: flex; flex-wrap: wrap; gap: 14px 66px; margin-top: 90px; }
+  .vr .vr-pd__tablist button { padding: 0; border: 0; background: none; font-size: 24px; line-height: 34px; font-weight: 500; color: var(--vr-ink); cursor: pointer; transition: color .2s ease; }
+  .vr .vr-pd__tablist button:hover, .vr .vr-pd__tablist button.is-on { color: var(--vr-accent); }
+  .vr .vr-pd__panel { margin-top: 30px; padding-block-end: 60px; border-bottom: 1px solid var(--vr-line); font-size: 13.44px; line-height: 24px; color: var(--vr-text); }
+  .vr .vr-pd__panel :is(p, ul, ol) { margin-block-end: 12px; }
+  .vr .vr-pd__panel ul { padding-inline-start: 22px; list-style: disc; }
+  .vr .vr-pd__panel h3 { margin-block: 14px 8px; font-size: 16px; }
+  .vr .vr-pr { padding-block: 0 120px; background: #fff; }
+  .vr .vr-pr__title { margin-bottom: 40px; font-size: 19.2px; line-height: 28px; font-weight: 500 !important; text-align: center; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-pr .vr-rail__track { --vr-gap: 30px; --vr-col: calc((100% - 90px) / 4); }
+  .vr .vr-pr__dots { margin-top: 44px; color: var(--vr-ink); }
+  @media (max-width: 1024px) {
+    .vr .vr-pd__main { grid-template-columns: 1fr; gap: 30px; }
+    .vr .vr-pd__info { position: static; }
+    .vr .vr-pd__tablist { margin-top: 50px; gap: 12px 30px; }
+    .vr .vr-pd__tablist button { font-size: 18px; line-height: 26px; }
+    .vr .vr-pr .vr-rail__track { --vr-gap: 10px; --vr-col: calc((100% - 10px) / 2); }
+    .vr .vr-pr { padding-block-end: 70px; }
+  }
+  @media (max-width: 749px) {
+    .vr .vr-pd__buy { grid-template-columns: 104px minmax(0, 1fr) 44px; gap: 8px; }
+    .vr .vr-pd__heart { width: 44px; height: 44px; }
+    .vr .vr-pd__benefits ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; }
+  }
+</style>
+<script>
+  (function () {
+    document.querySelectorAll("[data-vr-product]:not([data-ready])").forEach(function (root) {
+      root.dataset.ready = "1";
+      var shots = root.querySelectorAll("[data-vr-shot]"), thumbs = root.querySelectorAll("[data-vr-thumb]");
+      function showShot(n) {
+        shots.forEach(function (s, i) { s.classList.toggle("is-on", i === n); });
+        thumbs.forEach(function (t, i) { t.classList.toggle("is-on", i === n); });
+      }
+      thumbs.forEach(function (t, i) { t.addEventListener("click", function () { showShot(i); }); });
+
+      var qty = root.querySelector('[name="quantity"]');
+      root.querySelectorAll("[data-vr-step]").forEach(function (b) {
+        b.addEventListener("click", function () { qty.value = Math.max(1, (Number(qty.value) || 1) + Number(b.dataset.vrStep)); });
+      });
+
+      root.querySelectorAll("[data-vr-tab]").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          root.querySelectorAll("[data-vr-tab]").forEach(function (t) { var on = t === tab; t.classList.toggle("is-on", on); t.setAttribute("aria-selected", on ? "true" : "false"); });
+          root.querySelectorAll("[data-vr-panel]").forEach(function (p) { p.hidden = p.dataset.vrPanel !== tab.dataset.vrTab; });
+        });
+      });
+
+      var share = root.querySelector("[data-vr-share]");
+      if (share) share.addEventListener("click", function () {
+        var url = window.location.href;
+        if (navigator.share) { navigator.share({ url: url, title: document.title }).catch(function () {}); return; }
+        if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { if (window.__vr) window.__vr.toast("Link copied"); });
+      });
+
+      var data = root.querySelector("[data-vr-variants]"), variants = [];
+      try { variants = JSON.parse(data.textContent) || []; } catch (e) {}
+      var fields = root.querySelectorAll("[data-vr-option]");
+      if (!fields.length || !variants.length) return;
+      var idInput = root.querySelector("[data-vr-variant-id]"), add = root.querySelector(".vr-pd__add");
+      var price = root.querySelector("[data-vr-price]"), compare = root.querySelector("[data-vr-compare]");
+      var stock = root.querySelector("[data-vr-stock]"), sku = root.querySelector("[data-vr-sku]"), skuRow = root.querySelector("[data-vr-sku-row]");
+      function money(cents) { return window.__vr ? window.__vr.money(cents) : (cents / 100).toFixed(2); }
+      function chosen() { return Array.prototype.map.call(fields, function (f) { var c = f.querySelector("input:checked"); return c ? c.value : null; }); }
+      function paint() {
+        var values = chosen();
+        fields.forEach(function (f, i) {
+          var label = f.querySelector("[data-vr-option-value]");
+          if (label) label.textContent = values[i];
+          f.querySelectorAll(".vr-pd__pill").forEach(function (p) {
+            var input = p.querySelector("input");
+            p.classList.toggle("is-on", input.checked);
+            var test = values.slice(); test[i] = input.value;
+            var exists = variants.some(function (v) { return v.available && (v.options || []).every(function (o, x) { return o === test[x]; }); });
+            p.classList.toggle("is-out", !exists);
+          });
+        });
+        var variant = variants.filter(function (v) { return (v.options || []).every(function (o, x) { return o === values[x]; }); })[0];
+        var ok = Boolean(variant && variant.available);
+        add.disabled = !ok;
+        add.textContent = ok ? add.dataset.labelAdd : add.dataset.labelOut;
+        if (stock) { stock.textContent = ok ? stock.dataset.in : stock.dataset.out; stock.classList.toggle("is-out", !ok); }
+        if (!variant) return;
+        idInput.value = variant.id;
+        price.textContent = money(variant.price);
+        var discounted = variant.compare_at_price > variant.price;
+        compare.hidden = !discounted;
+        if (discounted) compare.textContent = money(variant.compare_at_price);
+        if (sku) sku.textContent = variant.sku || "";
+        if (skuRow) skuRow.hidden = !variant.sku;
+        if (variant.featured_media) {
+          shots.forEach(function (s, i) { if (s.dataset.mediaId === String(variant.featured_media.id)) showShot(i); });
+        }
+        if (variant.id && window.location.search.indexOf("variant=") > -1 && window.history.replaceState) {
+          var url = new URL(window.location.href); url.searchParams.set("variant", variant.id); window.history.replaceState({}, "", url);
+        }
+      }
+      fields.forEach(function (f) { f.addEventListener("change", paint); });
+      paint();
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- render 'snippets/roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Product",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "note_1", "label": "Delivery note", "info": "For example your real processing time." },
+    { "type": "text", "id": "note_2", "label": "Shipping note", "info": "For example your real shipping offer." }
+  ],
+  "presets": [{ "name": "Velour Product" }]
+}
+{% endschema %}

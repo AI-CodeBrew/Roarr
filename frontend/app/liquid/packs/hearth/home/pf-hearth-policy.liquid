@@ -1,0 +1,62 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign icons = 'truck,card,cash,shield' | split: ',' -%}
+{%- capture hh_html -%}
+<section class="hh-pol{% if section.settings.row %} hh-pol--row{% endif %}">
+  <div class="hh-wrap hh-pol__grid">
+    {%- for i in (1..4) -%}
+      {%- assign title_key = 'policy_' | append: i | append: '_title' -%}
+      {%- assign text_key = 'policy_' | append: i | append: '_text' -%}
+      {%- assign icon_at = i | minus: 1 -%}
+      {%- assign keep = true -%}
+      {%- if section.settings.row and i == 4 -%}{%- assign keep = false -%}{%- endif -%}
+      {%- if ht[title_key] != blank and keep -%}
+        <div class="hh-pol__item" data-hh-reveal style="--hh-delay: .{{ i }}s">
+          <span class="hh-pol__icon">{%- render 'snippets/roarr-hearth-icon', name: icons[icon_at], size: 40, stroke: 1 -%}</span>
+          <div>
+            <h3 class="hh-pol__title">{{ ht[title_key] }}</h3>
+            {%- if ht[text_key] != blank -%}<p class="hh-pol__text">{{ ht[text_key] }}</p>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+  .hh .hh-pol { padding-block: 120px; background: #fff; }
+  .hh .hh-pol__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px; }
+  .hh .hh-pol__item { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .hh .hh-pol__icon { display: block; width: 40px; height: 40px; margin-bottom: 10px; color: var(--hh-ink); }
+  .hh .hh-pol__item:hover .hh-pol__icon { animation: hh-nudge 1.2s linear; }
+  .hh .hh-pol__title { font-size: 15.36px; line-height: 23px; font-weight: 500 !important; color: var(--hh-ink); }
+  .hh .hh-pol__text { max-width: 305px; margin: 10px auto 0; font-size: 13.44px; line-height: 20px; color: var(--hh-text); }
+  .hh .hh-pol--row { padding-block: 60px 80px; border-top: 1px solid var(--hh-line); }
+  .hh .hh-pol--row .hh-pol__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hh .hh-pol--row .hh-pol__item { flex-direction: row; align-items: flex-start; gap: 24px; text-align: start; }
+  .hh .hh-pol--row .hh-pol__icon { flex: none; margin: 0; }
+  .hh .hh-pol--row .hh-pol__text { margin: 10px 0 0; }
+  @media (max-width: 989px) { .hh .hh-pol__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; } }
+  @media (max-width: 749px) {
+    .hh .hh-pol, .hh .hh-pol--row { padding-block: 60px 60px; }
+    .hh .hh-pol__grid, .hh .hh-pol--row .hh-pol__grid { grid-template-columns: 1fr; gap: 30px; }
+    .hh .hh-pol__item { flex-direction: row; align-items: flex-start; gap: 22px; text-align: start; }
+    .hh .hh-pol__icon { flex: none; margin: 0; }
+    .hh .hh-pol__title { font-size: 14.08px; line-height: 21px; }
+    .hh .hh-pol__text { margin: 10px 0 0; max-width: none; font-size: 12.32px; line-height: 18.5px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Policies",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "row", "label": "Show three in a row with the icon on the side", "default": false }
+  ],
+  "presets": [{ "name": "Hearth Policies" }]
+}
+{% endschema %}

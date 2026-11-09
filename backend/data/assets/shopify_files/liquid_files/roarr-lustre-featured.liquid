@@ -1,0 +1,24 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign source = section.settings.collection | default: collections.all -%}
+{%- assign products = homeData.demo_products | default: source.products -%}
+{%- comment -%} Trending shows the first four of all products; start after them when there are enough. {%- endcomment -%}
+{%- assign offset = 0 -%}
+{%- if section.settings.collection == blank and products.size > 4 -%}{%- assign offset = 4 -%}{%- endif -%}
+{%- capture lx_html -%}
+  {%- render 'roarr-lustre-grid', heading: ht.featured_heading, text: ht.featured_text, products: products, offset: offset, options_label: ht.label_options -%}
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Featured",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection (defaults to all products)" }
+  ],
+  "presets": [{ "name": "Lustre Featured" }]
+}
+{% endschema %}

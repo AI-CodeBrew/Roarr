@@ -1,0 +1,35 @@
+{
+  "sections": {
+    "hearth-header": {
+      "type": "roarr-hearth-header",
+      "settings": {
+        "overlay": false
+      }
+    },
+    "hearth-product": {
+      "type": "roarr-hearth-product",
+      "settings": {}
+    },
+    "hearth-policy": {
+      "type": "roarr-hearth-policy",
+      "settings": {
+        "row": true
+      }
+    },
+    "hearth-footer": {
+      "type": "roarr-hearth-footer",
+      "settings": {}
+    },
+    "hearth-related": {
+      "type": "roarr-hearth-related",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hearth-header",
+    "hearth-product",
+    "hearth-policy",
+    "hearth-related",
+    "hearth-footer"
+  ]
+}

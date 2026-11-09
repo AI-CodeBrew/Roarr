@@ -1,6 +1,8 @@
 name = "React Router"
 roles = ["frontend", "backend"]
 webhooks_path = "/webhooks/app/uninstalled"
+# Fixed so the local backend can reach this app through FRONTEND_URL.
+port = 3000
 
 [commands]
 predev = "npx prisma generate"

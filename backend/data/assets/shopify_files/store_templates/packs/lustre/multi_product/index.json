@@ -1,0 +1,83 @@
+{
+  "sections": {
+    "lustre-header": {
+      "type": "roarr-lustre-header",
+      "settings": {
+        "overlay": true
+      }
+    },
+    "lustre-hero": {
+      "type": "roarr-lustre-hero",
+      "settings": {}
+    },
+    "lustre-marquee": {
+      "type": "roarr-lustre-marquee",
+      "settings": {}
+    },
+    "lustre-about": {
+      "type": "roarr-lustre-about",
+      "settings": {}
+    },
+    "lustre-categories": {
+      "type": "roarr-lustre-categories",
+      "settings": {}
+    },
+    "lustre-banners": {
+      "type": "roarr-lustre-banners",
+      "settings": {}
+    },
+    "lustre-trending": {
+      "type": "roarr-lustre-trending",
+      "settings": {}
+    },
+    "lustre-split": {
+      "type": "roarr-lustre-split",
+      "settings": {}
+    },
+    "lustre-services": {
+      "type": "roarr-lustre-services",
+      "settings": {}
+    },
+    "lustre-promos": {
+      "type": "roarr-lustre-promos",
+      "settings": {}
+    },
+    "lustre-featured": {
+      "type": "roarr-lustre-featured",
+      "settings": {}
+    },
+    "lustre-testimonials": {
+      "type": "roarr-lustre-testimonials",
+      "settings": {}
+    },
+    "lustre-blog": {
+      "type": "roarr-lustre-blog",
+      "settings": {}
+    },
+    "lustre-cross-ticker": {
+      "type": "roarr-lustre-cross-ticker",
+      "settings": {}
+    },
+    "lustre-footer": {
+      "type": "roarr-lustre-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "lustre-header",
+    "lustre-hero",
+    "lustre-marquee",
+    "lustre-about",
+    "lustre-categories",
+    "lustre-banners",
+    "lustre-trending",
+    "lustre-split",
+    "lustre-services",
+    "lustre-promos",
+    "lustre-featured",
+    "lustre-testimonials",
+    "lustre-blog",
+    "lustre-cross-ticker",
+    "lustre-footer"
+  ]
+}

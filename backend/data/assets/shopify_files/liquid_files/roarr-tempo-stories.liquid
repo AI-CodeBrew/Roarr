@@ -1,0 +1,177 @@
+{%- capture tp_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign stories_label = section.settings.stories_label | default: 'Featured stories' -%}
+{%- if use_mf and ht.stories_label != blank -%}{%- assign stories_label = ht.stories_label -%}{%- endif -%}
+{%- assign stories_heading = section.settings.stories_heading | default: 'Life With It' -%}
+{%- if use_mf and ht.stories_heading != blank -%}{%- assign stories_heading = ht.stories_heading -%}{%- endif -%}
+{%- assign story_1_title = section.settings.story_1_title | default: 'At work' -%}
+{%- if use_mf and ht.story_1_title != blank -%}{%- assign story_1_title = ht.story_1_title -%}{%- endif -%}
+{%- assign story_1_text = section.settings.story_1_text | default: 'Keeps pace with a busy day, from the first task to the last.' -%}
+{%- if use_mf and ht.story_1_text != blank -%}{%- assign story_1_text = ht.story_1_text -%}{%- endif -%}
+{%- assign story_2_title = section.settings.story_2_title | default: 'On the move' -%}
+{%- if use_mf and ht.story_2_title != blank -%}{%- assign story_2_title = ht.story_2_title -%}{%- endif -%}
+{%- assign story_2_text = section.settings.story_2_text | default: 'Light and ready, so it comes along wherever you are headed.' -%}
+{%- if use_mf and ht.story_2_text != blank -%}{%- assign story_2_text = ht.story_2_text -%}{%- endif -%}
+{%- assign story_3_title = section.settings.story_3_title | default: 'At home' -%}
+{%- if use_mf and ht.story_3_title != blank -%}{%- assign story_3_title = ht.story_3_title -%}{%- endif -%}
+{%- assign story_3_text = section.settings.story_3_text | default: 'Just as good for quiet moments as it is for busy ones.' -%}
+{%- if use_mf and ht.story_3_text != blank -%}{%- assign story_3_text = ht.story_3_text -%}{%- endif -%}
+{%- assign tempo_story_1 = section.settings.tempo_story_1 -%}
+{%- if use_mf and hi.tempo_story_1 != blank -%}{%- assign tempo_story_1 = hi.tempo_story_1 -%}{%- endif -%}
+{%- assign tempo_story_2 = section.settings.tempo_story_2 -%}
+{%- if use_mf and hi.tempo_story_2 != blank -%}{%- assign tempo_story_2 = hi.tempo_story_2 -%}{%- endif -%}
+{%- assign tempo_story_3 = section.settings.tempo_story_3 -%}
+{%- if use_mf and hi.tempo_story_3 != blank -%}{%- assign tempo_story_3 = hi.tempo_story_3 -%}{%- endif -%}
+<section class="tp tp-stories">
+  <div class="tp-wrap">
+    <header class="tp-sechead tp-reveal">
+      {%- if stories_label != blank -%}<p class="tp-label">{{ stories_label | escape }}</p>{%- endif -%}
+      <h2 class="tp-h2">{{ stories_heading | escape }}</h2>
+    </header>
+    <ul class="tp-stories__grid tp-reveal" role="list">
+      {%- if story_1_title != blank -%}<li class="tp-story"><div class="tp-story__img">{%- if tempo_story_1 != blank -%}{%- if tempo_story_1 contains 'http' or tempo_story_1 contains '//' -%}<img src="{{ tempo_story_1 }}" alt="{{ story_1_title | escape }}" loading="lazy" width="900" height="675" decoding="async">{%- else -%}<img src="{{ tempo_story_1 | image_url: width: 900 }}" alt="{{ story_1_title | escape }}" loading="lazy" width="900" height="675" decoding="async">{%- endif -%}{%- endif -%}</div><h3>{{ story_1_title | escape }}</h3><p>{{ story_1_text | escape }}</p></li>{%- endif -%}
+      {%- if story_2_title != blank -%}<li class="tp-story"><div class="tp-story__img">{%- if tempo_story_2 != blank -%}{%- if tempo_story_2 contains 'http' or tempo_story_2 contains '//' -%}<img src="{{ tempo_story_2 }}" alt="{{ story_2_title | escape }}" loading="lazy" width="900" height="675" decoding="async">{%- else -%}<img src="{{ tempo_story_2 | image_url: width: 900 }}" alt="{{ story_2_title | escape }}" loading="lazy" width="900" height="675" decoding="async">{%- endif -%}{%- endif -%}</div><h3>{{ story_2_title | escape }}</h3><p>{{ story_2_text | escape }}</p></li>{%- endif -%}
+      {%- if story_3_title != blank -%}<li class="tp-story"><div class="tp-story__img">{%- if tempo_story_3 != blank -%}{%- if tempo_story_3 contains 'http' or tempo_story_3 contains '//' -%}<img src="{{ tempo_story_3 }}" alt="{{ story_3_title | escape }}" loading="lazy" width="900" height="675" decoding="async">{%- else -%}<img src="{{ tempo_story_3 | image_url: width: 900 }}" alt="{{ story_3_title | escape }}" loading="lazy" width="900" height="675" decoding="async">{%- endif -%}{%- endif -%}</div><h3>{{ story_3_title | escape }}</h3><p>{{ story_3_text | escape }}</p></li>{%- endif -%}
+    </ul>
+  </div>
+</section>
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.tp) { --tp-peach: #FAF1ED; --tp-navy: #06264B; --tp-navy-deep: #05264D; --tp-orange: #FC6539; --tp-orange-text: #CF4318; --tp-ink: #222222; --tp-grey: #F1F1F1; --tp-grey-2: #EEEEEE; --tp-line: #EAEAEA; --tp-blob: #FBC3B3; --tp-serif: "Playfair Display", Georgia, "Times New Roman", serif; --tp-sans: "Poppins", "Helvetica Neue", Arial, sans-serif; --tp-pad: clamp(20px, 7.32vw, 100px); font-family: var(--tp-sans); font-size: 16px; line-height: 1.7; color: var(--tp-navy); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .tp *, .tp *::before, .tp *::after { box-sizing: border-box; }
+  :where(.tp) :where(h1, h2, h3, p, ul, ol, dl, dd, figure) { margin: 0; padding: 0; }
+  :where(.tp) :where(ul, ol) { list-style: none; }
+  :where(.tp) img { display: block; max-width: 100%; }
+  .tp-wrap { width: 100%; max-width: 1366px; margin-inline: auto; padding-inline: var(--tp-pad); }
+  .tp-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tp-label { font: 400 18px/1.4 var(--tp-sans); text-transform: uppercase; color: var(--tp-orange-text); }
+  .tp-h2 { font: 700 clamp(32px, 3.7vw, 50px)/1.2 var(--tp-serif); color: var(--tp-navy); text-wrap: balance; }
+  .tp-sechead { display: grid; justify-items: center; gap: 12px; margin-bottom: clamp(36px, 5vw, 64px); text-align: center; }
+  .tp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 62px; padding: 0 40px; border: 0; border-radius: 999px; background: var(--tp-navy); color: var(--tp-orange); font: 500 18px/1 var(--tp-sans); text-decoration: none; cursor: pointer; transition: background .3s ease, color .3s ease, transform .3s ease, box-shadow .3s ease; }
+  .tp-btn:hover { background: var(--tp-orange); color: var(--tp-navy); transform: translateY(-2px); box-shadow: 0 12px 26px rgb(252 101 57 / .32); }
+  .tp-btn:focus-visible, .tp a:focus-visible, .tp button:focus-visible, .tp input:focus-visible { outline: 3px solid var(--tp-orange); outline-offset: 3px; }
+  .tp-ico { flex: none; }
+  .tp-cut { mix-blend-mode: multiply; }
+  .tp-rule { display: block; width: 70px; height: 4px; background: var(--tp-orange); }
+  @keyframes tp-reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tp-reveal { animation: tp-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) { .tp *, .tp *::before, .tp *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  .tp-stories { padding-block: clamp(40px, 5vw, 70px) clamp(40px, 5vw, 70px); background: #fff; }
+  .tp-stories__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; align-items: start; }
+  .tp-story { display: grid; gap: 14px; padding: 10px 10px 26px; border: 1px solid var(--tp-line); background: #fff; }
+  .tp-story__img { aspect-ratio: 4 / 3; overflow: hidden; background: var(--tp-grey-2); }
+  .tp-story__img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s cubic-bezier(.2, .7, .2, 1); }
+  .tp-story:hover .tp-story__img img { transform: scale(1.04); }
+  .tp-story h3 { padding: 10px 10px 14px; border-bottom: 1px solid var(--tp-line); font: 500 22px/1.35 var(--tp-sans); color: #333; }
+  .tp-story p { padding-inline: 10px; font-size: 15px; line-height: 1.7; color: #333; }
+  @media (max-width: 899px) { .tp-stories__grid { grid-template-columns: minmax(0, 1fr); max-width: 520px; margin-inline: auto; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if tp_html contains 'ا' or tp_html contains 'ل' or tp_html contains 'ي' or tp_html contains 'ة' -%}
+<div class="tp-rtl" dir="rtl" style="display: contents">{{ tp_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .tp-rtl:is(#tp-rtl, *), .tp-rtl:is(#tp-rtl, *) * { letter-spacing: 0 !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3, p, li, span, a, button, strong, label, input, div) { font-family: "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3) { line-height: 1.35 !important; }
+  .tp-rtl:is(#tp-rtl, *) .tp-btn svg { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ tp_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Tempo Stories",
+  "tag": "section",
+  "class": "roarr-tempo-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr generated content",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stories_label",
+      "label": "Label",
+      "default": "Featured stories"
+    },
+    {
+      "type": "text",
+      "id": "stories_heading",
+      "label": "Heading",
+      "default": "Life With It"
+    },
+    {
+      "type": "text",
+      "id": "story_1_title",
+      "label": "Story 1 title",
+      "default": "At work"
+    },
+    {
+      "type": "textarea",
+      "id": "story_1_text",
+      "label": "Story 1 text",
+      "default": "Keeps pace with a busy day, from the first task to the last."
+    },
+    {
+      "type": "text",
+      "id": "story_2_title",
+      "label": "Story 2 title",
+      "default": "On the move"
+    },
+    {
+      "type": "textarea",
+      "id": "story_2_text",
+      "label": "Story 2 text",
+      "default": "Light and ready, so it comes along wherever you are headed."
+    },
+    {
+      "type": "text",
+      "id": "story_3_title",
+      "label": "Story 3 title",
+      "default": "At home"
+    },
+    {
+      "type": "textarea",
+      "id": "story_3_text",
+      "label": "Story 3 text",
+      "default": "Just as good for quiet moments as it is for busy ones."
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_story_1",
+      "label": "Story 1 image (4:3)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_story_2",
+      "label": "Story 2 image (4:3)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_story_3",
+      "label": "Story 3 image (4:3)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tempo Stories"
+    }
+  ]
+}
+{% endschema %}

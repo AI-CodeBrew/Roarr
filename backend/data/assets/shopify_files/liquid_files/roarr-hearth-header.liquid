@@ -1,0 +1,301 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign store_name = ht.store_name | default: shop.name -%}
+{%- assign menu_handle = section.settings.menu | default: 'main-menu' -%}
+{%- assign nav = linklists[menu_handle].links -%}
+{%- if nav == blank -%}{%- assign nav = homeData.demo_nav -%}{%- endif -%}
+{%- assign label_search = ht.label_search | default: 'Search' -%}
+{%- assign label_account = ht.label_account | default: 'Account' -%}
+{%- assign label_wishlist = ht.label_wishlist | default: 'Wishlist' -%}
+{%- assign label_cart = ht.label_cart | default: 'Cart' -%}
+{%- assign shop_products = homeData.demo_products | default: collections.all.products -%}
+{%- assign featured = shop_products | first -%}
+{%- assign shop_categories = homeData.demo_collection_list | default: collections -%}
+{%- capture trending -%}
+  {%- assign seen = '' -%}
+  {%- for item in shop_products limit: 12 -%}
+    {%- if item.type != blank -%}
+      {%- unless seen contains item.type -%}
+        <li><a href="{{ routes.search_url | default: '/search' }}?q={{ item.type | url_encode }}&type=product">{{ item.type }}</a></li>
+        {%- assign seen = seen | append: item.type | append: '|' -%}
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture hh_html -%}
+<div class="hh-hd-slot{% if section.settings.overlay %} hh-hd-slot--over{% endif %}">
+  <header class="hh-hd{% if section.settings.overlay %} hh-hd--over{% endif %}" data-hh-header>
+    <div class="hh-hd__veil" aria-hidden="true"></div>
+    <div class="hh-hd__bar">
+      <div class="hh-hd__start">
+        <button class="hh-hd__tool hh-hd__burger" type="button" aria-label="Menu" data-hh-open="menu">{%- render 'roarr-hearth-icon', name: 'menu', size: 26 -%}</button>
+        <button class="hh-hd__tool hh-hd__find" type="button" aria-label="{{ label_search | escape }}" data-hh-open="search">{%- render 'roarr-hearth-icon', name: 'search', size: 22 -%}</button>
+        <nav class="hh-hd__nav" aria-label="Main">
+          <ul>
+            {%- for link in nav -%}
+              {%- assign has_cols = false -%}
+              {%- for child in link.links -%}{%- if child.links != blank -%}{%- assign has_cols = true -%}{%- endif -%}{%- endfor -%}
+              <li class="hh-hd__item{% if link.links != blank and has_cols == false %} hh-hd__item--drop{% endif %}{% if has_cols %} hh-hd__item--mega{% endif %}">
+                <a class="hh-hd__link{% if link.active or link.current %} is-on{% endif %}" href="{{ link.url }}"><span>{{ link.title }}</span>{%- if link.links != blank -%}{%- render 'roarr-hearth-icon', name: 'chevron', size: 12, stroke: 2 -%}{%- endif -%}</a>
+                {%- if link.links != blank -%}
+                  {%- if has_cols -%}
+                    <div class="hh-hd__mega">
+                      {%- capture lead -%}{%- for child in link.links -%}{%- if child.links == blank -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endif -%}{%- endfor -%}{%- endcapture -%}
+                      {%- if lead != blank -%}<ul class="hh-hd__lead">{{ lead }}</ul>{%- endif -%}
+                      {%- for child in link.links -%}
+                        {%- if child.links != blank -%}
+                          <div class="hh-hd__col">
+                            <a class="hh-hd__colhead" href="{{ child.url }}">{{ child.title }}</a>
+                            <ul>{%- for grand in child.links -%}<li><a href="{{ grand.url }}">{{ grand.title }}</a></li>{%- endfor -%}</ul>
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                      {%- if lead == blank and featured != blank -%}
+                        <div class="hh-hd__col hh-hd__feat">
+                          <p class="hh-hd__colhead">{{ ht.label_featured | default: 'Featured Product' }}</p>
+                          <a class="hh-hd__featpic" href="{{ featured.url }}" tabindex="-1" aria-hidden="true">{%- render 'roarr-hearth-img', src: featured.featured_image, alt: featured.title, width: 400, lazy: true -%}</a>
+                          <a class="hh-hd__feattitle" href="{{ featured.url }}">{{ featured.title }}</a>
+                          <p class="hh-hd__featprice">{{ featured.price | money }}</p>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- else -%}
+                    <ul class="hh-hd__drop">{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}</ul>
+                  {%- endif -%}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+      <a class="hh-hd__brand hh-logo" href="{{ routes.root_url | default: '/' }}">
+        {%- if shop.brand.logo != blank -%}
+          <img src="{{ shop.brand.logo | image_url: width: 320 }}" alt="{{ store_name | escape }}" width="{{ shop.brand.logo.width }}" height="{{ shop.brand.logo.height }}">
+        {%- else -%}
+          {{ store_name }}
+        {%- endif -%}
+      </a>
+      <div class="hh-hd__end">
+        <button class="hh-hd__tool hh-hd__tool--search" type="button" data-hh-open="search">{%- render 'roarr-hearth-icon', name: 'search', size: 22 -%}<span>{{ label_search }}</span></button>
+        <a class="hh-hd__tool hh-hd__tool--account" href="{{ routes.account_url | default: '/account' }}">{%- render 'roarr-hearth-icon', name: 'user', size: 22 -%}<span>{{ label_account }}</span></a>
+        <a class="hh-hd__tool" href="{{ routes.cart_url | default: '/cart' }}" data-hh-open="cart"><i class="hh-hd__ico">{%- render 'roarr-hearth-icon', name: 'bag', size: 22 -%}<b data-hh-cart-count>{{ cart.item_count | default: 0 }}</b></i><span>{{ label_cart }}</span></a>
+      </div>
+    </div>
+  </header>
+</div>
+
+<nav class="hh-dock" aria-label="Shortcuts">
+  <a href="{{ routes.root_url | default: '/' }}">{%- render 'roarr-hearth-icon', name: 'home', size: 24 -%}<span>{{ ht.label_home | default: 'Home' }}</span></a>
+  <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}">{%- render 'roarr-hearth-icon', name: 'grid', size: 24 -%}<span>{{ ht.label_shopping | default: 'Shopping' }}</span></a>
+  <a href="{{ routes.account_url | default: '/account' }}">{%- render 'roarr-hearth-icon', name: 'user', size: 24 -%}<span>{{ label_account }}</span></a>
+</nav>
+
+<dialog class="hh-canvas hh-canvas--start" data-hh-dialog="menu" aria-label="Menu">
+  <div class="hh-panel-head"><h2>{{ ht.label_menu | default: 'Menu' }}</h2><button class="hh-x" type="button" aria-label="Close" data-hh-close>{%- render 'roarr-hearth-icon', name: 'close', size: 18 -%}</button></div>
+  <ul class="hh-mnav">
+    {%- for link in nav -%}
+      <li>
+        {%- if link.links != blank -%}
+          <details>
+            <summary>{{ link.title }}{%- render 'roarr-hearth-icon', name: 'plus', size: 16 -%}</summary>
+            <ul>
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- for child in link.links -%}
+                <li><a href="{{ child.url }}">{{ child.title }}</a>
+                  {%- if child.links != blank -%}<ul>{%- for grand in child.links -%}<li><a href="{{ grand.url }}">{{ grand.title }}</a></li>{%- endfor -%}</ul>{%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </details>
+        {%- else -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</dialog>
+
+<dialog class="hh-search" data-hh-dialog="search" aria-label="{{ label_search | escape }}">
+  <div class="hh-search__in">
+    <form action="{{ routes.search_url | default: '/search' }}" method="get" role="search">
+      <input class="hh-search__field" type="search" name="q" placeholder="{{ ht.label_search_placeholder | default: 'Enter Your Keywords' | escape }}" aria-label="{{ label_search | escape }}" autocomplete="off">
+      <input type="hidden" name="type" value="product">
+      <button class="hh-search__go" type="submit" aria-label="{{ label_search | escape }}">{%- render 'roarr-hearth-icon', name: 'search', size: 16, stroke: 2.4 -%}</button>
+    </form>
+    {%- if trending != blank -%}
+      <p class="hh-search__head">{{ ht.label_trending | default: 'Search Trending' }} :</p>
+      <ul class="hh-search__tags">{{ trending }}</ul>
+    {%- endif -%}
+  </div>
+</dialog>
+
+<dialog class="hh-canvas hh-cart" data-hh-dialog="cart" aria-label="{{ label_cart | escape }}" data-hh-label-items="{{ ht.label_items | default: 'items' | escape }}">
+  <div class="hh-panel-head">
+    <h2>{{ label_cart }}<span class="hh-cart__bubble" data-hh-cart-bubble>0 {{ ht.label_items | default: 'items' }}</span></h2>
+    <button class="hh-x" type="button" aria-label="Close" data-hh-close>{%- render 'roarr-hearth-icon', name: 'close', size: 18 -%}</button>
+  </div>
+  <div class="hh-list" data-hh-cart-list></div>
+  <div class="hh-cart__empty" data-hh-cart-empty hidden>
+    <svg class="hh-cart__art" width="210" height="180" viewBox="0 0 210 180" fill="none" stroke="#1c1c1c" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <ellipse cx="105" cy="152" rx="66" ry="7" fill="#eeeeee" stroke="none"/>
+      <path d="M52 72h106v62a16 16 0 0 1-16 16H68a16 16 0 0 1-16-16z" fill="#f2f2f2"/>
+      <path d="M46 72h118"/>
+      <path d="M52 86H36a6 6 0 0 1 0-12h16M158 86h16a6 6 0 0 0 0-12h-16"/>
+      <path d="M74 72c0-12 14-18 31-18s31 6 31 18" fill="#ffffff"/>
+      <circle cx="105" cy="50" r="4" fill="#1c1c1c"/>
+      <path d="M86 108c3 3 7 3 10 0M114 108c3 3 7 3 10 0"/>
+      <path d="M100 124c3 2 7 2 10 0"/>
+      <path d="M84 36c-4-6 4-8 0-14M105 30c-4-6 4-8 0-14M126 36c-4-6 4-8 0-14" stroke="#b5b5b5"/>
+    </svg>
+    <p>{{ ht.label_cart_empty | default: 'Your cart is currently empty.' }}</p>
+    <ul>{%- for category in shop_categories limit: 5 -%}<li><a href="{{ category.url }}">{{ category.title }}</a></li>{%- endfor -%}</ul>
+  </div>
+  <div class="hh-panel-foot" data-hh-cart-foot hidden>
+    <p class="hh-sub"><span>{{ ht.label_subtotal | default: 'Subtotal' }}</span><span data-hh-cart-total></span></p>
+    <a class="hh-btn hh-btn--dark" href="{{ routes.root_url | default: '/' }}checkout">{{ ht.label_checkout | default: 'Checkout' }}</a>
+    <a class="hh-btn hh-btn--line" href="{{ routes.cart_url | default: '/cart' }}">{{ ht.label_view_cart | default: 'View Cart' }}</a>
+  </div>
+</dialog>
+
+<dialog class="hh-canvas" data-hh-dialog="wishlist" aria-label="{{ label_wishlist | escape }}">
+  <div class="hh-panel-head"><h2>{{ label_wishlist }}</h2><button class="hh-x" type="button" aria-label="Close" data-hh-close>{%- render 'roarr-hearth-icon', name: 'close', size: 18 -%}</button></div>
+  <div class="hh-list" data-hh-wish-list></div>
+  <p class="hh-none" data-hh-wish-empty>{{ ht.label_wishlist_empty | default: 'No saved styles yet.' }}</p>
+</dialog>
+
+<dialog class="hh-modal hh-modal--qv" data-hh-dialog="quick" aria-label="{{ ht.label_quick_view | default: 'Quick view' | escape }}" data-hh-label-add="{{ ht.label_add_to_bag | default: 'Add To Bag' | escape }}" data-hh-label-sold-out="{% render 'roarr-ui-string', key: 'sold_out' %}" data-hh-label-buy="{{ ht.label_buy_now | default: 'Buy It Now' | escape }}" data-hh-label-qty="{{ ht.label_quantity | default: 'Quantity' | escape }}:" data-hh-label-sku="SKU:" data-hh-label-category="{{ ht.label_category | default: 'Category' | escape }}:">
+  <button class="hh-x hh-corner" type="button" aria-label="Close" data-hh-close>{%- render 'roarr-hearth-icon', name: 'close', size: 18 -%}</button>
+  <div data-hh-quick-body></div>
+</dialog>
+
+<style>
+  .hh .hh-hd-slot { height: 83px; }
+  .hh .hh-hd-slot--over { height: 0; }
+  .hh .hh-hd { position: relative; z-index: 60; color: var(--hh-ink); }
+  .hh .hh-hd--over { position: absolute; top: 20px; inset-inline: 75px; }
+  .hh .hh-hd__veil { position: fixed; inset: 0; z-index: -1; pointer-events: none; -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); opacity: 0; visibility: hidden; transition: opacity .3s linear, visibility .3s linear; }
+  .hh .hh-hd:has(.hh-hd__item--mega:hover) .hh-hd__veil, .hh .hh-hd:has(.hh-hd__item--mega:focus-within) .hh-hd__veil { opacity: 1; visibility: visible; }
+  .hh .hh-hd__bar { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px; height: 83px; padding-inline: 15px; background: #fff; border-bottom: 1px solid #efefef; }
+  .hh .hh-hd--over .hh-hd__bar { padding-inline: 30px; border: 0; border-radius: 5px; box-shadow: 8px 10px 20px rgb(0 0 0 / .06); }
+  .hh .hh-hd__start { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .hh .hh-hd__end { display: flex; align-items: center; justify-content: flex-end; gap: 20px; min-width: 0; }
+  .hh .hh-hd__brand { font-size: 38px; line-height: 1; font-weight: 400; color: var(--hh-ink); white-space: nowrap; }
+  .hh .hh-hd__brand img { max-height: 46px; width: auto; }
+  .hh .hh-hd__nav > ul { display: flex; flex-wrap: nowrap; gap: 36px; }
+  .hh .hh-hd__item { position: static; }
+  .hh .hh-hd__item--drop { position: relative; }
+  .hh .hh-hd__link { position: relative; display: inline-flex; align-items: center; height: 83px; font-size: 15.36px; line-height: 23px; color: var(--hh-ink); }
+  .hh .hh-hd__link > span { position: relative; padding-block: 2px; }
+  .hh .hh-hd__link > span::after { content: ""; position: absolute; inset-inline-end: 0; bottom: 0; width: 0; height: 1px; background: currentColor; transition: all .3s linear; }
+  .hh .hh-hd__link.is-on > span::after, .hh .hh-hd__item:hover .hh-hd__link > span::after { inset-inline: 0 auto; width: 100%; }
+  .hh .hh-hd__link svg { position: absolute; top: calc(50% - 6px); inset-inline-start: calc(100% + 8px); transition: transform .3s ease; }
+  .hh .hh-hd__item:hover .hh-hd__link svg, .hh .hh-hd__item:focus-within .hh-hd__link svg { transform: rotate(180deg); }
+  .hh .hh-hd__mega, .hh .hh-hd__drop { position: absolute; top: 100%; z-index: 5; background: #fff; opacity: 0; visibility: hidden; transform: translateY(20px); transition: opacity .3s ease-in-out, transform .3s ease-in-out, visibility .3s ease-in-out; }
+  .hh .hh-hd__mega { inset-inline: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 275px)); gap: 30px; padding: 30px 45px 40px 55px; border-top: 1px solid #efefef; border-radius: 0 0 5px 5px; box-shadow: 0 10px 10px rgb(0 0 0 / .05); }
+  .hh .hh-hd__mega:has(.hh-hd__lead) { grid-template-columns: minmax(0, 275px) repeat(3, minmax(0, 241px)); }
+  .hh .hh-hd__mega > *, .hh .hh-hd__drop > li { transform: translateY(40px); transition: transform .8s ease; }
+  .hh .hh-hd__item:hover :is(.hh-hd__mega > *, .hh-hd__drop > li), .hh .hh-hd__item:focus-within :is(.hh-hd__mega > *, .hh-hd__drop > li) { transform: none; }
+  .hh .hh-hd__drop { inset-inline-start: -15px; width: 270px; padding: 30px 0 44px; border-radius: 0 0 10px 10px; box-shadow: 0 10px 10px rgb(0 0 0 / .05); }
+  .hh .hh-hd__item:hover :is(.hh-hd__mega, .hh-hd__drop), .hh .hh-hd__item:focus-within :is(.hh-hd__mega, .hh-hd__drop) { opacity: 1; visibility: visible; transform: none; }
+  .hh .hh-hd__drop a { display: block; padding: 7px 40px; font-size: 13.44px; color: var(--hh-text); }
+  .hh .hh-hd__drop a:hover, .hh .hh-hd__mega a:hover { color: var(--hh-accent); }
+  .hh .hh-hd__lead li { margin-bottom: 24px; }
+  .hh .hh-hd__lead a, .hh .hh-hd__colhead { font-size: 15.36px; font-weight: 500; line-height: 24px; color: var(--hh-ink); }
+  .hh .hh-hd__colhead { display: block; margin-bottom: 22px; }
+  .hh .hh-hd__featpic { display: block; width: 174px; aspect-ratio: 174 / 225; overflow: hidden; border-radius: 5px; background: var(--hh-tile); }
+  .hh .hh-hd__featpic img { width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-hd__feattitle { display: block; margin-top: 28px; font-size: 13.44px; line-height: 20px; font-weight: 500; color: var(--hh-ink); }
+  .hh .hh-hd__featprice { margin-top: 14px; font-size: 15.36px; line-height: 23px; font-weight: 700; color: var(--hh-ink); }
+  .hh .hh-hd__col li { margin-bottom: 14px; font-size: 13.44px; line-height: 20px; color: var(--hh-text); }
+  .hh .hh-hd__tool { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; color: var(--hh-ink); font-size: 12px; line-height: 1; cursor: pointer; white-space: nowrap; transition: color .2s ease; }
+  .hh .hh-hd__tool:hover { color: var(--hh-accent); }
+  .hh .hh-hd__ico { position: relative; display: inline-grid; font-style: normal; }
+  .hh .hh-hd__ico b { position: absolute; top: -9px; inset-inline-end: -8px; min-width: 16px; height: 16px; display: grid; place-items: center; padding-inline: 3px; border-radius: 999px; background: var(--hh-ink); color: #fff; font-size: 10px; font-weight: 600; line-height: 1; }
+  .hh .hh-hd__burger, .hh .hh-hd__find { display: none; }
+
+  @keyframes hh-hd-in { from { transform: translateY(-100%); } to { transform: none; } }
+  .hh .hh-hd.is-stuck { position: fixed; top: 0; inset-inline: 0; animation: hh-hd-in .3s linear both; }
+  .hh .hh-hd.is-stuck .hh-hd__bar { grid-template-columns: auto minmax(0, 1fr) auto; height: 60px; padding-inline: 15px; border: 0; border-radius: 0; box-shadow: 8px 10px 20px rgb(0 0 0 / .06); }
+  .hh .hh-hd.is-stuck .hh-hd__brand { order: -1; font-size: 32px; }
+  .hh .hh-hd.is-stuck .hh-hd__start { justify-content: center; }
+  .hh .hh-hd.is-stuck .hh-hd__link { height: 60px; }
+  .hh .hh-hd.is-stuck :is(.hh-hd__tool--search, .hh-hd__tool--account) { display: none; }
+
+  .hh .hh-dock { display: none; }
+  .hh .hh-mnav { flex: 1; overflow: auto; padding: 8px 24px 24px; }
+  .hh .hh-mnav > li { border-bottom: 1px solid var(--hh-line); }
+  .hh .hh-mnav > li > a, .hh .hh-mnav summary { display: flex; align-items: center; justify-content: space-between; padding-block: 15px; font-size: 15.36px; font-weight: 500; color: var(--hh-ink); list-style: none; cursor: pointer; }
+  .hh .hh-mnav summary::-webkit-details-marker { display: none; }
+  .hh .hh-mnav details[open] summary svg { transform: rotate(45deg); }
+  .hh .hh-mnav summary svg { transition: transform .25s ease; }
+  .hh .hh-mnav details ul { padding: 0 0 14px 14px; }
+  .hh .hh-mnav details a { display: block; padding-block: 7px; font-size: 14px; color: var(--hh-text); }
+  .hh .hh-mnav details ul ul { padding-bottom: 4px; }
+
+  .hh .hh-search { position: fixed; inset: 0 0 auto 0; width: 100%; margin: 0; padding: 40px 15px; }
+  .hh .hh-search[open] { animation: hh-from-top .35s ease both; }
+  .hh .hh-search form { position: relative; margin: 0; }
+  .hh .hh-search__field { width: 100%; height: 50px; padding-inline: 20px 60px; border: 1px solid #ececec; border-radius: 50px; background: #fff; color: var(--hh-ink); font-size: 13.44px; box-shadow: 0 4px 14px rgb(0 0 0 / .08); outline: none; }
+  .hh .hh-search__field::placeholder { color: #a8a8a8; opacity: 1; }
+  .hh .hh-search__field:focus { border-color: var(--hh-ink); }
+  .hh .hh-search__go { position: absolute; inset-inline-end: 3px; top: 3px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: var(--hh-ink); color: #fff; cursor: pointer; transition: background-color .2s ease; }
+  .hh .hh-search__go:hover { background: var(--hh-accent); }
+  .hh .hh-search__head { margin: 64px 20px 0; font-size: 15.36px; line-height: 23px; font-weight: 700; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-search__tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 20px 0; }
+  .hh .hh-search__tags a { display: grid; place-items: center; height: 34px; padding-inline: 20px; border-radius: 34px; background: #f2f2f2; font-size: 12px; font-weight: 500; color: var(--hh-ink); transition: all .2s ease; }
+  .hh .hh-search__tags a:hover { background: var(--hh-accent); color: #fff; }
+
+  .hh .hh-cart .hh-panel-head h2 { display: flex; align-items: center; gap: 20px; font-size: 15.36px; font-weight: 800 !important; text-transform: uppercase; }
+  .hh .hh-cart__bubble { position: relative; padding: 4px 8px; border-radius: 5px; background: var(--hh-ink); color: #fff; font-size: 11px; line-height: 16px; font-weight: 500; text-transform: none; white-space: nowrap; }
+  .hh .hh-cart__bubble::before { content: ""; position: absolute; top: 50%; inset-inline-end: 100%; border: 5px solid transparent; border-inline-end-color: var(--hh-ink); transform: translateY(-50%); }
+  .hh .hh-cart__empty { flex: 1; overflow: auto; padding: 50px 80px 30px; text-align: center; }
+  .hh .hh-cart__empty[hidden] { display: none; }
+  .hh .hh-cart__art { display: block; margin: 0 auto 28px; max-width: 100%; }
+  .hh .hh-cart__empty p { font-size: 13.44px; line-height: 20px; color: var(--hh-text); }
+  .hh .hh-cart__empty ul { display: grid; gap: 10px; margin-top: 40px; }
+  .hh .hh-cart__empty a { display: grid; place-items: center; height: 60px; border-radius: 50px; background: #f5f5f5; font-size: 13.44px; font-weight: 500; color: var(--hh-ink); transition: all .2s ease; }
+  .hh .hh-cart__empty a:hover { background: var(--hh-accent); color: #fff; }
+
+  @media (max-width: 1240px) {
+    .hh .hh-hd--over { inset-inline: 20px; }
+    .hh .hh-hd__nav > ul { gap: 20px; }
+    .hh .hh-hd__tool > span { display: none; }
+  }
+  @media (max-width: 1024px) {
+    .hh .hh-hd-slot, .hh .hh-hd-slot--over { height: 60px; }
+    .hh .hh-hd--over { position: relative; top: auto; inset-inline: auto; }
+    .hh .hh-hd__bar, .hh .hh-hd--over .hh-hd__bar, .hh .hh-hd.is-stuck .hh-hd__bar { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); height: 60px; padding-inline: 15px; border: 0; border-radius: 0; box-shadow: none; }
+    .hh .hh-hd.is-stuck .hh-hd__brand { order: 0; }
+    .hh .hh-hd.is-stuck .hh-hd__start { justify-content: flex-start; }
+    .hh .hh-hd__nav, .hh .hh-hd__tool--search, .hh .hh-hd__tool--account, .hh .hh-hd__tool--wish { display: none; }
+    .hh .hh-hd__burger, .hh .hh-hd__find { display: inline-flex; }
+    .hh .hh-hd__brand, .hh .hh-hd.is-stuck .hh-hd__brand { font-size: 30px; }
+    .hh .hh-hd__brand img { max-height: 36px; }
+    .hh .hh-dock { position: fixed; inset-inline: 0; bottom: 0; z-index: 55; display: grid; grid-template-columns: repeat(3, 1fr); background: #fff; border-top: 1px solid var(--hh-line); }
+    .hh .hh-dock > * { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 56px; padding: 0; border: 0; border-inline-start: 1px solid var(--hh-line); background: none; color: var(--hh-ink); font-size: 11px; line-height: 1; cursor: pointer; }
+    .hh .hh-dock > *:first-child { border-inline-start: 0; }
+    .hh .hh-dock span { font-size: 11px; color: var(--hh-text); }
+  }
+  @media (max-width: 749px) {
+    .hh .hh-search { padding-block: 20px 28px; }
+    .hh .hh-search__field { font-size: 16px; }
+    .hh .hh-search__head { margin-top: 28px; }
+    .hh .hh-cart__empty { padding-inline: 40px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-base', accent: ht.accent_color -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "overlay", "label": "Float over the next section", "default": false }
+  ],
+  "presets": [{ "name": "Hearth Header" }]
+}
+{% endschema %}

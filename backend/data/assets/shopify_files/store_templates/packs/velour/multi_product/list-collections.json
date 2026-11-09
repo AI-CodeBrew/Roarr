@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "velour-header": {
+      "type": "roarr-velour-header",
+      "settings": {
+        "overlay": false
+      }
+    },
+    "velour-list-collections": {
+      "type": "roarr-velour-list-collections",
+      "settings": {
+        "per_page": 36
+      }
+    },
+    "velour-footer": {
+      "type": "roarr-velour-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "velour-header",
+    "velour-list-collections",
+    "velour-footer"
+  ]
+}

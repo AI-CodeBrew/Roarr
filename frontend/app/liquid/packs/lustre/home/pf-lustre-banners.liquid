@@ -1,0 +1,57 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture lx_html -%}
+<section class="lx-section lx-bn">
+  <div class="lx-wrap lx-bn__grid">
+    {%- for i in (1..3) -%}
+      {%- assign title_key = 'card_title_' | append: i -%}
+      {%- assign image_key = 'feature_image_' | append: i -%}
+      {%- assign handle_key = 'collection_' | append: i -%}
+      {%- assign url = routes.all_products_collection_url | default: '/collections/all' -%}
+      {%- if ht[handle_key] != blank -%}{%- assign url = '/collections/' | append: ht[handle_key] -%}{%- endif -%}
+      {%- if ht[title_key] != blank -%}
+        <a class="lx-bn__card" href="{{ url }}">
+          {%- render 'snippets/roarr-lustre-img', src: hi[image_key], alt: ht[title_key], width: 900, lazy: true -%}
+          <span class="lx-bn__label">
+            <span class="lx-bn__title lx-serif">{{ ht[title_key] }}</span>
+            <span class="lx-link lx-link--accent">{% render 'snippets/roarr-ui-string', key: 'shop_now' %}</span>
+          </span>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+  .lx .lx-bn__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
+  .lx .lx-bn__card { position: relative; display: block; aspect-ratio: 412 / 600; overflow: hidden; background: var(--lx-soft); }
+  .lx .lx-bn__card img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .lx .lx-bn__card:hover img { transform: scale(1.04); }
+  .lx .lx-bn__label { position: absolute; inset-inline: 30px; bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 18px 12px 20px; background: #fff; text-align: center; }
+  .lx .lx-bn__title { font-size: 23px; line-height: 1.3; color: var(--lx-ink); }
+  @media (max-width: 989px) {
+    .lx .lx-bn__grid { gap: 14px; }
+    .lx .lx-bn__label { inset-inline: 12px; bottom: 12px; padding: 12px 8px; gap: 8px; }
+    .lx .lx-bn__title { font-size: 17px; }
+  }
+  @media (max-width: 749px) {
+    .lx .lx-bn__grid { grid-template-columns: 1fr; }
+    .lx .lx-bn__card { aspect-ratio: 4 / 5; }
+    .lx .lx-bn__label { inset-inline: 24px; bottom: 24px; padding: 16px; }
+    .lx .lx-bn__title { font-size: 20px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Banners",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Banners" }]
+}
+{% endschema %}

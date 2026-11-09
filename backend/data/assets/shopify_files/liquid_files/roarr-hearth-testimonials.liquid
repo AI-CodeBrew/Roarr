@@ -1,0 +1,76 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture hh_html -%}
+<section class="hh-rv" data-hh-rail>
+  <div class="hh-wrap">
+    <div class="hh-head">
+      {%- if ht.testimonials_kicker != blank -%}<p class="hh-kick">{{ ht.testimonials_kicker }}</p>{%- endif -%}
+      <h2 class="hh-title">{{ ht.testimonials_heading }}</h2>
+    </div>
+    <div class="hh-rail__track" data-hh-track data-hh-reveal="right">
+      {%- for i in (1..3) -%}
+        {%- assign name_key = 'customer_name_' | append: i -%}
+        {%- assign review_key = 'customer_review_' | append: i -%}
+        {%- assign role_key = 'customer_role_' | append: i -%}
+        {%- assign avatar_key = 'customer_avatar_' | append: i -%}
+        {%- if ht[review_key] != blank -%}
+          <figure class="hh-rv__card">
+            <div class="hh-rv__panel">
+              <span class="hh-rv__stars" role="img" aria-label="5 / 5">★★★★★</span>
+              <blockquote class="hh-rv__quote">{{ ht[review_key] }}</blockquote>
+              <figcaption>
+                <span class="hh-rv__name">{{ ht[name_key] }}</span>
+                {%- if ht[role_key] != blank -%}<span class="hh-rv__role">{{ ht[role_key] }}</span>{%- endif -%}
+              </figcaption>
+            </div>
+            <div class="hh-rv__pic">
+              {%- if hi[avatar_key] != blank -%}
+                {%- render 'roarr-hearth-img', src: hi[avatar_key], alt: ht[name_key], width: 320, lazy: true -%}
+              {%- else -%}
+                <span class="hh-rv__initial" aria-hidden="true">{{ ht[name_key] | slice: 0 }}</span>
+              {%- endif -%}
+            </div>
+          </figure>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <hr class="hh-rule hh-rv__rule" data-hh-reveal>
+  </div>
+</section>
+<style>
+  .hh .hh-rv { padding-block: 120px; background: #fff; }
+  .hh .hh-rv .hh-rail__track { --hh-gap: 30px; --hh-col: calc((100% - 60px) / 3); }
+  .hh .hh-rv__card { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 5px; min-height: 255px; }
+  .hh .hh-rv__panel { display: flex; flex-direction: column; padding: 23px 22px; border-radius: 5px; background: var(--hh-review); }
+  .hh .hh-rv__stars { font-size: 14px; line-height: 18px; letter-spacing: 2px; color: var(--hh-ink); }
+  .hh .hh-rv__quote { flex: 1; margin-top: 22px; font-size: 15.36px; line-height: 23.04px; color: var(--hh-text); }
+  .hh .hh-rv__name { display: block; margin-top: 20px; font-size: 11.52px; line-height: 17.28px; font-weight: 500; color: var(--hh-ink); }
+  .hh .hh-rv__role { display: block; font-size: 11.52px; line-height: 17.28px; font-weight: 500; color: var(--hh-text); }
+  .hh .hh-rv__pic { overflow: hidden; border-radius: 5px; background: var(--hh-review); }
+  .hh .hh-rv__pic img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s linear; }
+  .hh .hh-rv__card:hover .hh-rv__pic img { transform: scale(1.07); }
+  .hh .hh-rv__initial { display: grid; place-items: center; height: 100%; font-size: 34px; font-weight: 500; color: var(--hh-muted); }
+  .hh .hh-rv__rule { margin-top: 120px; }
+  @media (max-width: 1100px) { .hh .hh-rv .hh-rail__track { --hh-col: calc((100% - 30px) / 2); } }
+  @media (max-width: 749px) {
+    .hh .hh-rv { padding-block: 60px; }
+    .hh .hh-rv .hh-rail__track { --hh-col: 100%; --hh-gap: 10px; }
+    .hh .hh-rv__card { grid-template-columns: minmax(0, 1fr) 100px; }
+    .hh .hh-rv__rule { margin-top: 60px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Testimonials",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Hearth Testimonials" }]
+}
+{% endschema %}

@@ -1,0 +1,99 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign source = section.settings.collection | default: collections.all -%}
+{%- assign products = homeData.demo_products | default: source.products -%}
+{%- assign pin_x = '46,62' | split: ',' -%}
+{%- assign pin_y = '32,66' | split: ',' -%}
+{%- capture vr_html -%}
+<section class="vr-lb">
+  <div class="vr-wrap vr-lb__grid">
+    <div class="vr-lb__stage">
+      {%- render 'snippets/roarr-velour-img', src: hi.lookbook_image, alt: ht.lookbook_heading, width: 1400, lazy: true -%}
+      {%- for product in products limit: 2 -%}
+        {%- assign at = forloop.index0 -%}
+        <div class="vr-pin vr-pin--{{ forloop.index }}" style="inset-inline-start: {{ pin_x[at] }}%; top: {{ pin_y[at] }}%">
+          <button class="vr-pin__dot" type="button" aria-expanded="false" aria-label="{{ product.title | escape }}" data-vr-pin></button>
+          <div class="vr-pin__card">
+            <a class="vr-pin__pic" href="{{ product.url }}" tabindex="-1" aria-hidden="true">{%- render 'snippets/roarr-velour-img', src: product.featured_image, alt: product.title, width: 200, lazy: true -%}</a>
+            <div>
+              <a class="vr-pin__title" href="{{ product.url }}">{{ product.title }}</a>
+              <p class="vr-pin__price">{{ product.price | money }}</p>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="vr-lb__side" data-vr-rail>
+      <div class="vr-lb__head">
+        {%- if ht.lookbook_kicker != blank -%}<p class="vr-kick">{{ ht.lookbook_kicker }}</p>{%- endif -%}
+        <h2 class="vr-title">{{ ht.lookbook_heading }}</h2>
+      </div>
+      <div class="vr-lb__rail">
+        <button class="vr-round vr-lb__prev" type="button" aria-label="Previous products" data-vr-prev>{%- render 'snippets/roarr-velour-icon', name: 'prev', size: 20 -%}</button>
+        <div class="vr-rail__track" data-vr-track>
+          {%- for product in products limit: 6 -%}
+            {%- render 'snippets/roarr-velour-card', product: product, quick_add_label: ht.label_quick_add -%}
+          {%- endfor -%}
+        </div>
+        <button class="vr-round vr-lb__next" type="button" aria-label="Next products" data-vr-next>{%- render 'snippets/roarr-velour-icon', name: 'next', size: 20 -%}</button>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  @keyframes vr-pin-pulse { 0% { box-shadow: 0 0 0 0 rgb(255 255 255 / .7); } 100% { box-shadow: 0 0 0 13px rgb(255 255 255 / 0); } }
+  .vr .vr-lb { padding-block: 93px; background: var(--vr-panel); }
+  .vr .vr-lb__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: center; }
+  .vr .vr-lb__stage { position: relative; aspect-ratio: 690 / 625; border-radius: 5px; background: var(--vr-tile); }
+  .vr .vr-lb__stage > img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
+  .vr .vr-pin { position: absolute; z-index: 2; width: 40px; height: 40px; margin: -20px 0 0 -20px; }
+  .vr .vr-pin.is-open { z-index: 4; }
+  .vr .vr-pin__dot { position: relative; display: block; width: 40px; height: 40px; padding: 0; border: 2px solid #fff; border-radius: 50%; background: none; cursor: pointer; }
+  .vr .vr-pin__dot::before { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: #fff; animation: vr-pin-pulse 1.6s linear infinite; transition: transform .25s ease; }
+  .vr .vr-pin.is-open .vr-pin__dot::before { transform: scale(.6); }
+  .vr .vr-pin__card { position: absolute; top: 50px; inset-inline-start: -30px; display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 12px; align-items: center; width: 270px; padding: 10px; border-radius: 5px; background: #fff; box-shadow: 0 10px 28px rgb(0 0 0 / .14); opacity: 0; visibility: hidden; transform: translateY(14px); transition: opacity .5s ease, visibility .5s ease, transform 1s ease; }
+  .vr .vr-pin.is-open .vr-pin__card { opacity: 1; visibility: visible; transform: none; }
+  .vr .vr-pin--2 .vr-pin__card { top: auto; bottom: 50px; inset-inline: auto -30px; }
+  .vr .vr-pin__pic { display: block; aspect-ratio: 345 / 444; overflow: hidden; border-radius: 3px; background: var(--vr-tile); }
+  .vr .vr-pin__pic img { width: 100%; height: 100%; object-fit: cover; }
+  .vr .vr-pin__title { display: block; font-size: 13.44px; line-height: 19px; font-weight: 500; color: var(--vr-ink); }
+  .vr .vr-pin__title:hover { color: var(--vr-accent); }
+  .vr .vr-pin__price { margin-top: 5px; font-size: 13.44px; color: var(--vr-ink); }
+  .vr .vr-lb__head { text-align: center; margin-bottom: 50px; }
+  .vr .vr-lb__rail { position: relative; padding-inline: 59px; }
+  .vr .vr-lb__rail .vr-rail__track { --vr-gap: 30px; --vr-col: calc((100% - 30px) / 2); }
+  .vr .vr-lb__prev { inset-inline-start: 34px; margin-top: -60px; }
+  .vr .vr-lb__next { inset-inline-end: 34px; margin-top: -60px; }
+  .vr .vr-lb .vr-card__title { line-height: 20px; }
+  @media (max-width: 1024px) {
+    .vr .vr-lb { padding-block: 60px; }
+    .vr .vr-lb__grid { grid-template-columns: 1fr; }
+    .vr .vr-lb__head { margin-bottom: 30px; }
+  }
+  @media (max-width: 749px) {
+    .vr .vr-lb__rail { padding-inline: 44px; }
+    .vr .vr-lb__rail .vr-rail__track { --vr-col: 100%; --vr-gap: 10px; }
+    .vr .vr-lb__prev { inset-inline-start: 0; }
+    .vr .vr-lb__next { inset-inline-end: 0; }
+    .vr .vr-lb__rail .vr-round { width: 40px; height: 40px; }
+    .vr .vr-pin__card { width: 230px; inset-inline-start: -70px; }
+    .vr .vr-pin--2 .vr-pin__card { inset-inline: auto -70px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Lookbook",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection (defaults to all products)" }
+  ],
+  "presets": [{ "name": "Velour Lookbook" }]
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign source = section.settings.collection | default: collections.all -%}
+{%- assign products = homeData.demo_products | default: source.products -%}
+{%- capture lx_html -%}
+  {%- render 'roarr-lustre-grid', heading: ht.trending_heading, text: ht.trending_text, products: products, offset: 0, options_label: ht.label_options -%}
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Trending",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection (defaults to all products)" }
+  ],
+  "presets": [{ "name": "Lustre Trending" }]
+}
+{% endschema %}

@@ -651,22 +651,41 @@ def create_collections_from_products(
                 "error_message": "Could not map enough product indices to numeric Shopify product IDs.",
             }
 
-        payload = {
-            "custom_collection": {
-                "title": title[:255],
-                "body_html": f"<p>{desc}</p>" if desc else None,
-                "collects": [{"product_id": int(pid)} for pid in product_ids[:50]],
-            }
+        mutation = """
+        mutation CollectionCreate($input: CollectionInput!) {
+          collectionCreate(input: $input) {
+            collection { id title handle }
+            userErrors { field message }
+          }
         }
+        """
+        collection_input: Dict[str, Any] = {
+            "title": title[:255],
+            "products": [f"gid://shopify/Product/{int(pid)}" for pid in product_ids[:50]],
+        }
+        if desc:
+            collection_input["descriptionHtml"] = f"<p>{desc}</p>"
 
-        # Create custom collection with collects
-        create_resp = shopify_utils._make_request(
-            "custom_collections.json",
-            "POST",
-            data=payload,
-            user_id=user_id,
+        # Create a manual collection with its products (GraphQL Admin API)
+        create_resp = shopify_utils._make_graphql_request(
+            mutation, {"input": collection_input}, user_id
         )
-        cc = (create_resp or {}).get("custom_collection") or {}
+        payload = ((create_resp or {}).get("data") or {}).get("collectionCreate") or {}
+        user_errors = payload.get("userErrors") or []
+        if user_errors:
+            raise Exception(
+                "collectionCreate failed: "
+                + "; ".join(str((e or {}).get("message")) for e in user_errors)
+            )
+        gql_col = payload.get("collection") or {}
+        cc = {
+            "id": shopify_utils._from_gid(gql_col.get("id")),
+            "title": gql_col.get("title"),
+            "handle": gql_col.get("handle"),
+        }
+        # GraphQL-created collections are unpublished by default (REST used to publish them).
+        if cc["id"]:
+            shopify_utils.publish_collection_to_online_store(str(cc["id"]), user_id)
         created.append(
             {
                 "title": cc.get("title") or title,

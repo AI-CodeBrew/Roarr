@@ -1,0 +1,51 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- capture lx_html -%}
+<section class="lx-section lx-sv">
+  <div class="lx-wrap lx-sv__row">
+    {%- for i in (1..4) -%}
+      {%- assign title_key = 'service_' | append: i | append: '_title' -%}
+      {%- assign text_key = 'service_' | append: i | append: '_text' -%}
+      {%- if ht[title_key] != blank -%}
+        <div class="lx-sv__item">
+          <svg width="56" height="48" viewBox="0 0 56 48" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            {%- case i -%}
+              {%- when 1 -%}<path d="M14 11h24v24H22M38 18h8l6 8v9h-5M38 35h-1M2 17h12M5 23h9M8 29h6"/><circle cx="19" cy="37" r="4"/><circle cx="42" cy="37" r="4"/>
+              {%- when 2 -%}<path d="M9 24c0-8 8-14 18-14 4 0 8 1 11 3l6-3-1 8c2 2 4 4 4 6h4v8h-5c-1 2-3 4-5 5v5h-7v-3h-11v3h-7v-6c-4-3-7-7-7-12z"/><circle cx="27" cy="7" r="5"/><circle cx="39" cy="22" r=".6"/>
+              {%- when 3 -%}<path d="M28 3l5 4 6-1 2 6 6 3-1 6 3 5-3 5 1 6-6 3-2 6-6-1-5 4-5-4-6 1-2-6-6-3 1-6-3-5 3-5-1-6 6-3 2-6 6 1z" transform="translate(0 -1) scale(1 .96)"/><path d="M21 30 35 16"/><circle cx="22" cy="18" r="2.5"/><circle cx="34" cy="28" r="2.5"/>
+              {%- else -%}<path d="M12 24v-5a16 16 0 0 1 32 0v5"/><rect x="8" y="23" width="8" height="13" rx="3"/><rect x="40" y="23" width="8" height="13" rx="3"/><path d="M44 36v2a6 6 0 0 1-6 6h-6"/><rect x="24" y="41" width="9" height="5" rx="2"/>
+            {%- endcase -%}
+          </svg>
+          <h3 class="lx-sv__title">{{ ht[title_key] }}</h3>
+          <p class="lx-sv__text">{{ ht[text_key] }}</p>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+  .lx .lx-sv { padding-block: 80px 40px; }
+  .lx .lx-sv__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .lx .lx-sv__item { display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--lx-ink); }
+  .lx .lx-sv__title { margin-top: 16px; font-size: 17.5px; line-height: 1.35; color: var(--lx-ink); }
+  .lx .lx-sv__text { margin-top: 8px; font-size: 14px; line-height: 1.45; color: var(--lx-muted); }
+  @media (max-width: 749px) {
+    .lx .lx-sv { padding-block: 40px 20px; }
+    .lx .lx-sv__row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 14px; }
+    .lx .lx-sv__title { font-size: 15px; }
+    .lx .lx-sv__text { font-size: 13px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Services",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Services" }]
+}
+{% endschema %}

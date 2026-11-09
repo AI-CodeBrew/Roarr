@@ -2,4 +2,9 @@ export { HOME_SINGLE_TEMPLATE_SCHEMAS, HOME_MULTI_TEMPLATE_SCHEMAS } from "./liq
 export { HOME_CINEMATIC_TEMPLATE_SCHEMAS } from "./liquid-templates-home-cinematic.js";
 export { HOME_AMOUR_TEMPLATE_SCHEMAS } from "./liquid-templates-home-amour.js";
 export { HOME_MAISON_TEMPLATE_SCHEMAS } from "./liquid-templates-home-maison.js";
+export { HOME_TEMPO_TEMPLATE_SCHEMAS } from "./liquid-templates-home-tempo.js";
 export { HOME_LUMENOOK_TEMPLATE_SCHEMAS } from "./liquid-templates-home-lumenook.js";
+export { HOME_LUSTRE_TEMPLATE_SCHEMAS } from "./liquid-templates-home-lustre.js";
+export { HOME_VELOUR_TEMPLATE_SCHEMAS } from "./liquid-templates-home-velour.js";
+export { HOME_HEARTH_TEMPLATE_SCHEMAS } from "./liquid-templates-home-hearth.js";
+export { HOME_SIMMER_TEMPLATE_SCHEMAS } from "./liquid-templates-home-simmer.js";

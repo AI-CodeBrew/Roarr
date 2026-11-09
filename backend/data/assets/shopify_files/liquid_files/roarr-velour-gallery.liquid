@@ -1,0 +1,142 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- comment -%}
+  Collection cards: picture, dark gradient, title, product count and Shop Now. On desktop the hovered card
+  widens while the others narrow and dim, and its Shop Now fades in. Cards come from blocks when the
+  merchant adds them, otherwise from the generated store text (gallery_title_N, collection_N) and pictures
+  (gallery_image_N).
+{%- endcomment -%}
+{%- assign all_url = routes.all_products_collection_url | default: '/collections/all' -%}
+{%- assign show_count = true -%}{%- if section.settings.show_count == false -%}{%- assign show_count = false -%}{%- endif -%}
+{%- assign show_link = true -%}{%- if section.settings.show_link == false -%}{%- assign show_link = false -%}{%- endif -%}
+{%- assign shade = section.settings.overlay | default: 45 -%}
+{%- assign label_products = ht.label_products | default: 'Products' -%}
+{%- assign label_product = ht.label_product | default: 'Product' -%}
+{%- assign card_total = 4 -%}
+{%- if section.blocks.size > 0 -%}{%- assign card_total = section.blocks.size -%}{%- endif -%}
+{%- capture cards -%}
+  {%- for i in (1..card_total) -%}
+    {%- assign title = '' -%}{%- assign url = all_url -%}{%- assign image = '' -%}{%- assign count = 0 -%}{%- assign attrs = '' -%}
+    {%- if section.blocks.size > 0 -%}
+      {%- assign at = i | minus: 1 -%}
+      {%- assign block = section.blocks[at] -%}
+      {%- assign picked = block.settings.collection -%}
+      {%- assign title = block.settings.title | default: picked.title -%}
+      {%- assign image = block.settings.image | default: picked.featured_image -%}
+      {%- if picked != blank -%}{%- assign url = picked.url -%}{%- assign count = picked.products_count -%}{%- endif -%}
+      {%- capture attrs -%}{{ block.shopify_attributes }}{%- endcapture -%}
+    {%- else -%}
+      {%- assign title_key = 'gallery_title_' | append: i -%}
+      {%- assign image_key = 'gallery_image_' | append: i -%}
+      {%- assign handle_key = 'collection_' | append: i -%}
+      {%- assign handle = ht[handle_key] -%}
+      {%- assign title = ht[title_key] -%}
+      {%- assign image = hi[image_key] -%}
+      {%- if handle != blank -%}
+        {%- assign url = '/collections/' | append: handle -%}
+        {%- assign picked = collections[handle] -%}
+        {%- if picked != blank and picked.url != blank -%}
+          {%- assign url = picked.url -%}
+          {%- assign count = picked.products_count -%}
+          {%- if image == blank -%}{%- assign image = picked.featured_image -%}{%- endif -%}
+        {%- else -%}
+          {%- for sample in homeData.demo_collection_list -%}{%- if sample.handle == handle -%}{%- assign count = sample.products_count -%}{%- endif -%}{%- endfor -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+    {%- if title != blank -%}
+      <a class="vr-gal__tile" href="{{ url }}" {{ attrs }}>
+        <span class="vr-gal__pics">{%- render 'roarr-velour-img', src: image, alt: title, width: 1000, lazy: true -%}</span>
+        <span class="vr-gal__shade" aria-hidden="true"></span>
+        <span class="vr-gal__copy">
+          <span class="vr-gal__text">
+            <span class="vr-gal__name">{{ title }}</span>
+            {%- if show_count and count > 0 -%}<span class="vr-gal__count">{{ count }} {% if count == 1 %}{{ label_product }}{% else %}{{ label_products }}{% endif %}</span>{%- endif -%}
+          </span>
+          {%- if show_link -%}<span class="vr-gal__go"><span>{% render 'roarr-ui-string', key: 'shop_now' %}</span>{%- render 'roarr-velour-icon', name: 'arrow', size: 14 -%}</span>{%- endif -%}
+        </span>
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture vr_html -%}
+{%- if cards != blank -%}
+<section class="vr-gal" data-vr-rail style="--vr-gal-shade: {{ shade | divided_by: 100.0 }}">
+  <div class="vr-gal__wrap" data-vr-reveal>
+    <div class="vr-rail__track vr-gal__track" data-vr-track data-vr-speed="500">{{ cards }}</div>
+    <div class="vr-dots vr-gal__dots" data-vr-rail-dots></div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .vr .vr-gal { padding-block-end: 120px; background: #fff; }
+  .vr .vr-gal__track { --vr-col: calc((100% - 30px) / 4); --vr-gap: 10px; }
+  .vr .vr-gal__tile { position: relative; display: block; aspect-ratio: 353 / 485; overflow: hidden; background: var(--vr-tile); color: #fff; isolation: isolate; }
+  .vr .vr-gal__pics { position: absolute; inset: 0; overflow: hidden; }
+  .vr .vr-gal__pics img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .vr .vr-gal__shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgb(12 10 9 / var(--vr-gal-shade, .45)) 0%, rgb(12 10 9 / calc(var(--vr-gal-shade, .45) * .4)) 38%, rgb(12 10 9 / 0) 68%); }
+  .vr .vr-gal__copy { position: absolute; inset-inline: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding: 30px; }
+  .vr .vr-gal__text { display: flex; flex-direction: column; min-width: 0; }
+  .vr .vr-gal__name { font-size: 26px; line-height: 34px; font-weight: 500; letter-spacing: .02em; text-transform: uppercase; color: #fff; }
+  .vr .vr-gal__count { margin-top: 4px; font-size: 12px; line-height: 18px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: rgb(255 255 255 / .82); }
+  .vr .vr-gal__go { flex: none; display: inline-flex; align-items: center; gap: 7px; font-size: 13.44px; line-height: 20px; font-weight: 400; text-transform: capitalize; white-space: nowrap; color: #fff; }
+  .vr .vr-gal__go svg { transform: rotate(-45deg); transition: transform .17s linear; }
+  .vr[dir="rtl"] .vr-gal__go svg { transform: scaleX(-1) rotate(-45deg); }
+  .vr .vr-gal__go:hover svg, .vr .vr-gal__tile:hover .vr-gal__go svg { transform: none; }
+  .vr[dir="rtl"] .vr-gal__tile:hover .vr-gal__go svg { transform: scaleX(-1); }
+  .vr .vr-gal__tile:focus-visible { outline: 2px solid var(--vr-ink); outline-offset: 2px; }
+  .vr .vr-gal__dots { justify-content: center; margin-top: 22px; color: var(--vr-ink); }
+  .vr .vr-gal__dots:empty { display: none; }
+  @media (min-width: 992px) {
+    /* Split row: the hovered card widens to 1.6 shares while the others narrow and dim; its Shop Now fades in. */
+    .vr .vr-gal__track { display: flex; gap: 10px; overflow: visible; }
+    .vr .vr-gal__tile { flex: 1 1 0; min-width: 0; aspect-ratio: auto; height: min(calc((100vw - 30px) * .3435), 650px); transition: flex .6s cubic-bezier(.25, .46, .45, .94), filter .3s; }
+    .vr .vr-gal__tile:hover, .vr .vr-gal__tile:focus-visible { flex-grow: 1.6; }
+    .vr .vr-gal__track:hover .vr-gal__tile { filter: brightness(70%); }
+    .vr .vr-gal__track .vr-gal__tile:hover { filter: brightness(100%); }
+    .vr .vr-gal__go { opacity: 0; visibility: hidden; }
+    .vr .vr-gal__tile:hover .vr-gal__go, .vr .vr-gal__tile:focus-visible .vr-gal__go { opacity: 1; visibility: visible; transition: .4s linear; }
+    .vr .vr-gal__dots { display: none; }
+  }
+  @media (max-width: 989px) {
+    .vr .vr-gal { padding-block-end: 80px; }
+    .vr .vr-gal__track { --vr-col: calc((100% - 10px) / 2); }
+  }
+  @media (max-width: 749px) {
+    .vr .vr-gal { padding-block-end: 60px; }
+    .vr .vr-gal__track { --vr-col: 78%; padding-inline: 15px; scroll-padding-inline: 15px; }
+    .vr .vr-gal__copy { flex-direction: column; align-items: flex-start; gap: 14px; padding: 22px; }
+    .vr .vr-gal__name { font-size: 22px; line-height: 30px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Collections",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_count", "label": "Show product count", "default": true },
+    { "type": "checkbox", "id": "show_link", "label": "Show Shop Now link", "info": "On desktop it appears when a card is hovered.", "default": true },
+    { "type": "range", "id": "overlay", "label": "Dark gradient strength", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 45 }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Collection card",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "title", "label": "Title", "info": "Defaults to the collection title." },
+        { "type": "image_picker", "id": "image", "label": "Picture", "info": "Defaults to the collection picture." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "Velour Collections" }]
+}
+{% endschema %}

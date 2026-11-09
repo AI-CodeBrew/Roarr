@@ -127,8 +127,23 @@ export default function LiquidPreviewEditorPanel({
         if (normalized.startsWith("packs/maison/home/")) {
             normalized = normalized.slice("packs/maison/home/".length);
         }
+        if (normalized.startsWith("packs/tempo/home/")) {
+            normalized = normalized.slice("packs/tempo/home/".length);
+        }
         if (normalized.startsWith("packs/lumenook/home/")) {
             normalized = normalized.slice("packs/lumenook/home/".length);
+        }
+        if (normalized.startsWith("packs/lustre/home/")) {
+            normalized = normalized.slice("packs/lustre/home/".length);
+        }
+        if (normalized.startsWith("packs/velour/home/")) {
+            normalized = normalized.slice("packs/velour/home/".length);
+        }
+        if (normalized.startsWith("packs/hearth/home/")) {
+            normalized = normalized.slice("packs/hearth/home/".length);
+        }
+        if (normalized.startsWith("packs/simmer/home/")) {
+            normalized = normalized.slice("packs/simmer/home/".length);
         }
         if (normalized.startsWith("product/")) {
             normalized = normalized.slice("product/".length);

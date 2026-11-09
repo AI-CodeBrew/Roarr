@@ -1,0 +1,107 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign video = section.settings.video_url | default: homeData.demo_video_url -%}
+{%- capture hh_html -%}
+<section class="hh-sy">
+  <div class="hh-wrap">
+    <div class="hh-sy__box" data-hh-slides="3000" data-hh-reveal>
+      <div class="hh-sy__side">
+        <div class="hh-sy__window">
+          <div class="hh-sy__track">
+            {%- for i in (1..3) -%}
+              {%- assign heading_key = 'story_heading_' | append: i -%}
+              {%- assign text_key = 'story_text_' | append: i -%}
+              {%- if ht[heading_key] != blank -%}
+                <div class="hh-sy__copy" data-hh-panel>
+                  {%- if ht.story_kicker != blank -%}<p class="hh-sy__kick">{{ ht.story_kicker }}</p>{%- endif -%}
+                  <h2 class="hh-sy__title">{{ ht[heading_key] }}</h2>
+                  {%- if ht[text_key] != blank -%}<p class="hh-sy__text">{{ ht[text_key] }}</p>{%- endif -%}
+                  {%- if video != blank -%}
+                    <a class="hh-btn hh-btn--dark hh-sy__cta" href="{{ video }}" data-hh-video="{{ video }}">{%- render 'snippets/roarr-hearth-icon', name: 'play', size: 20 -%}{{ ht.label_play_video | default: 'Play Video' }}</a>
+                  {%- else -%}
+                    <a class="hh-btn hh-btn--dark hh-sy__cta" href="{{ routes.all_products_collection_url | default: '/collections/all' }}">{% render 'snippets/roarr-ui-string', key: 'shop_now' %}<span class="hh-tilt">{%- render 'snippets/roarr-hearth-icon', name: 'arrow', size: 14 -%}</span></a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="hh-dots hh-sy__dots">
+          {%- for i in (1..3) -%}
+            {%- assign heading_key = 'story_heading_' | append: i -%}
+            {%- if ht[heading_key] != blank -%}<button type="button" data-hh-dot aria-label="Slide {{ i }}">{{ i }}</button>{%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="hh-sy__media">
+        {%- for i in (1..3) -%}
+          {%- assign heading_key = 'story_heading_' | append: i -%}
+          {%- assign image_key = 'story_image_' | append: i -%}
+          {%- if ht[heading_key] != blank -%}
+            <div class="hh-sy__pic" data-hh-slide>{%- render 'snippets/roarr-hearth-img', src: hi[image_key], alt: ht[heading_key], width: 1500, lazy: true -%}</div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <hr class="hh-rule hh-sy__rule" data-hh-reveal>
+  </div>
+  {%- if video != blank -%}
+    <dialog class="hh-modal hh-sy__video" data-hh-dialog="video" aria-label="{{ ht.label_play_video | default: 'Play Video' | escape }}">
+      <button class="hh-x hh-corner" type="button" aria-label="Close" data-hh-close>{%- render 'snippets/roarr-hearth-icon', name: 'close', size: 18 -%}</button>
+      <div class="hh-sy__frame" data-hh-video-box></div>
+    </dialog>
+  {%- endif -%}
+</section>
+<style>
+  .hh .hh-sy { padding-block-end: 120px; background: #fff; }
+  .hh .hh-sy__box { display: grid; grid-template-columns: minmax(0, 461fr) minmax(0, 736fr); gap: 77px; padding: 80px 63px 80px 73px; border-radius: 5px; background: var(--hh-panel); }
+  [dir="rtl"] .hh-sy__box { padding: 80px 73px 80px 63px; }
+  .hh .hh-sy__side { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; min-width: 0; }
+  .hh .hh-sy__window { overflow: hidden; }
+  .hh .hh-sy__track { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; column-gap: 30px; transform: translateX(calc(var(--hh-at, 0) * (-100% - 30px))); transition: transform .9s ease; }
+  .hh[dir="rtl"] .hh-sy__track { transform: translateX(calc(var(--hh-at, 0) * (100% + 30px))); }
+  .hh .hh-sy__copy { min-width: 0; visibility: hidden; transition: visibility .9s; }
+  .hh .hh-sy__copy.is-on { visibility: visible; }
+  .hh .hh-sy__kick { font-size: 12.48px; line-height: 18.72px; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-sy__title { margin-top: 9px; font-size: 28.8px; line-height: 43.2px; font-weight: 500 !important; color: var(--hh-ink); }
+  .hh .hh-sy__text { margin-top: 11px; font-size: 15.36px; line-height: 23.04px; color: var(--hh-text); }
+  .hh .hh-sy__cta { margin-top: 30px; }
+  .hh .hh-sy__dots { color: var(--hh-ink); }
+  .hh .hh-sy__media { position: relative; display: grid; aspect-ratio: 736 / 484; min-width: 0; overflow: hidden; border-radius: 5px; background: var(--hh-tile); }
+  .hh .hh-sy__pic { grid-area: 1 / 1; min-height: 0; overflow: hidden; opacity: 0; transition: opacity .9s ease; }
+  .hh .hh-sy__pic.is-on { opacity: 1; }
+  .hh .hh-sy__pic img { width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-sy__rule { margin-top: 120px; }
+  .hh .hh-sy__video { width: min(1000px, calc(100% - 32px)); border-radius: 10px; overflow: hidden; background: #000; }
+  .hh .hh-sy__frame { aspect-ratio: 16 / 9; }
+  .hh .hh-sy__frame :is(iframe, video) { display: block; width: 100%; height: 100%; border: 0; }
+  @media (max-width: 1024px) {
+    .hh .hh-sy__box { grid-template-columns: 1fr; gap: 30px; padding: 40px 30px; }
+    [dir="rtl"] .hh-sy__box { padding: 40px 30px; }
+  }
+  @media (max-width: 749px) {
+    .hh .hh-sy { padding-block-end: 60px; }
+    .hh .hh-sy__box { padding: 26px 18px; }
+    [dir="rtl"] .hh-sy__box { padding: 26px 18px; }
+    .hh .hh-sy__title { font-size: 22px; line-height: 33px; }
+    .hh .hh-sy__text { font-size: 13.44px; line-height: 20px; }
+    .hh .hh-sy__rule { margin-top: 60px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Story",
+  "tag": "section",
+  "settings": [
+    { "type": "video_url", "id": "video_url", "label": "Video link", "accept": ["youtube", "vimeo"], "info": "Adds a Play Video button. Without a video the button links to your products." }
+  ],
+  "presets": [{ "name": "Hearth Story" }]
+}
+{% endschema %}

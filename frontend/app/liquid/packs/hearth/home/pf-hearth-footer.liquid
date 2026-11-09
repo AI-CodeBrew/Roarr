@@ -1,0 +1,252 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign store_name = ht.store_name | default: shop.name -%}
+{%- assign menu_handle = section.settings.menu | default: 'footer' -%}
+{%- assign care = linklists[menu_handle].links -%}
+{%- if care == blank -%}{%- assign care = homeData.demo_footer_links -%}{%- endif -%}
+{%- assign policies = shop.policies -%}
+{%- if policies == blank or policies.size == 0 -%}{%- assign policies = homeData.demo_policies -%}{%- endif -%}
+{%- assign social = shop.brand.metafields.social_links -%}
+{%- assign s_facebook = ht.social_facebook | default: social.facebook.value -%}
+{%- assign s_instagram = ht.social_instagram | default: social.instagram.value -%}
+{%- assign s_x = ht.social_x | default: social.twitter.value -%}
+{%- assign s_youtube = ht.social_youtube | default: social.youtube.value -%}
+{%- assign s_tiktok = ht.social_tiktok | default: social.tiktok.value -%}
+{%- assign s_pinterest = ht.social_pinterest | default: social.pinterest.value -%}
+{%- assign popup_image = hi.popup_image | default: hi.gallery_image_1 -%}
+{%- capture hh_html -%}
+<footer class="hh-ft">
+  <div class="hh-wrap">
+    <div class="hh-ft__cols" data-hh-fold>
+      <div class="hh-ft__about" data-hh-reveal style="--hh-delay: .1s">
+        <a class="hh-ft__brand hh-logo" href="{{ routes.root_url | default: '/' }}">
+          {%- if shop.brand.logo != blank -%}<img src="{{ shop.brand.logo | image_url: width: 320 }}" alt="{{ store_name | escape }}" width="{{ shop.brand.logo.width }}" height="{{ shop.brand.logo.height }}">{%- else -%}{{ store_name }}{%- endif -%}
+        </a>
+        <ul class="hh-ft__info">
+          {%- if ht.store_address != blank -%}<li>{%- render 'snippets/roarr-hearth-icon', name: 'pin', size: 16 -%}<span>{{ ht.store_address | newline_to_br }}</span></li>{%- endif -%}
+          {%- if ht.store_phone != blank -%}<li>{%- render 'snippets/roarr-hearth-icon', name: 'phone', size: 16 -%}<a href="tel:{{ ht.store_phone | remove: ' ' }}">{{ ht.store_phone }}</a></li>{%- endif -%}
+          {%- if ht.store_email != blank -%}<li>{%- render 'snippets/roarr-hearth-icon', name: 'mail', size: 16 -%}<a href="mailto:{{ ht.store_email }}">{{ ht.store_email }}</a></li>{%- endif -%}
+          {%- if ht.store_hours != blank -%}<li>{%- render 'snippets/roarr-hearth-icon', name: 'clock', size: 16 -%}<span>{{ ht.store_hours }}</span></li>{%- endif -%}
+        </ul>
+      </div>
+
+      <div class="hh-ft__col" data-hh-fold-item data-hh-reveal style="--hh-delay: .2s">
+        <h2 class="hh-ft__h"><button type="button" aria-expanded="false">{{ ht.footer_account_heading | default: 'My Account' }}<i aria-hidden="true"></i></button></h2>
+        <div class="hh-ft__fold"><ul class="hh-ft__links">
+          <li><a href="{{ routes.account_login_url | default: '/account/login' }}">{{ ht.label_login | default: 'Login / Register' }}</a></li>
+          <li><a href="#" data-hh-open="wishlist">{{ ht.label_wishlist | default: 'Wishlist' }}</a></li>
+          <li><a href="{{ routes.cart_url | default: '/cart' }}">{{ ht.label_cart | default: 'Cart' }}</a></li>
+        </ul></div>
+      </div>
+
+      {%- if policies != blank -%}
+        <div class="hh-ft__col" data-hh-fold-item data-hh-reveal style="--hh-delay: .3s">
+          <h2 class="hh-ft__h"><button type="button" aria-expanded="false">{{ ht.footer_policies_heading | default: 'Our Policies' }}<i aria-hidden="true"></i></button></h2>
+          <div class="hh-ft__fold"><ul class="hh-ft__links">{%- for policy in policies -%}{%- unless policy.url contains 'refund' -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endunless -%}{%- endfor -%}</ul></div>
+        </div>
+      {%- endif -%}
+
+      {%- if care != blank -%}
+        <div class="hh-ft__col" data-hh-fold-item data-hh-reveal style="--hh-delay: .4s">
+          <h2 class="hh-ft__h"><button type="button" aria-expanded="false">{{ ht.footer_care_heading | default: 'Customer Care' }}<i aria-hidden="true"></i></button></h2>
+          <div class="hh-ft__fold"><ul class="hh-ft__links">{%- for link in care -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul></div>
+        </div>
+      {%- endif -%}
+
+      <div class="hh-ft__col hh-ft__col--news" data-hh-fold-item data-hh-reveal style="--hh-delay: .5s">
+        <h2 class="hh-ft__h"><button type="button" aria-expanded="false">{{ ht.footer_newsletter_heading | default: 'Subscribe Our Newsletter' }}<i aria-hidden="true"></i></button></h2>
+        <div class="hh-ft__fold">
+          {%- if ht.footer_newsletter_text != blank -%}<p class="hh-ft__news">{{ ht.footer_newsletter_text }}</p>{%- endif -%}
+          {%- form 'customer', id: 'hh-newsletter', class: 'hh-ft__form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            {%- if form.posted_successfully? -%}
+              <p class="hh-ft__ok" role="status">{{ ht.label_subscribed | default: 'Thanks for subscribing.' }}</p>
+            {%- else -%}
+              <input class="hh-ft__input" type="email" name="contact[email]" placeholder="{{ ht.label_email | default: 'Enter your email' | escape }}" aria-label="{{ ht.label_email | default: 'Enter your email' | escape }}" autocomplete="email" required>
+              <button class="hh-btn hh-btn--dark" type="submit">{{ ht.label_subscribe | default: 'Subscribe' }}</button>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hh-ft__mid">
+    <div class="hh-wrap hh-ft__midin">
+      <div class="hh-ft__pays">
+        <p class="hh-ft__tiny">{{ ht.label_payments | default: 'We Accept Payments' }}</p>
+        <div class="hh-ft__pay">
+          {%- if shop.enabled_payment_types != blank -%}
+            {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'hh-ft__payicon' }}{%- endfor -%}
+          {%- else -%}
+            {{ homeData.demo_payments }}
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="hh-ft__thanks">
+        {%- if ht.footer_thanks_heading != blank -%}<h3>{{ ht.footer_thanks_heading }}</h3>{%- endif -%}
+        {%- if ht.footer_thanks_text != blank -%}<p>{{ ht.footer_thanks_text }}</p>{%- endif -%}
+      </div>
+      <div class="hh-ft__social">
+        <p class="hh-ft__tiny">{{ ht.label_follow | default: 'Follow Us' }}</p>
+        <ul>
+          {%- if s_facebook != blank -%}<li><a href="{{ s_facebook }}" aria-label="Facebook" rel="noopener" target="_blank">{%- render 'snippets/roarr-hearth-icon', name: 'facebook', size: 20 -%}</a></li>{%- endif -%}
+          {%- if s_instagram != blank -%}<li><a href="{{ s_instagram }}" aria-label="Instagram" rel="noopener" target="_blank">{%- render 'snippets/roarr-hearth-icon', name: 'instagram', size: 20 -%}</a></li>{%- endif -%}
+          {%- if s_x != blank -%}<li><a href="{{ s_x }}" aria-label="X" rel="noopener" target="_blank">{%- render 'snippets/roarr-hearth-icon', name: 'x', size: 18 -%}</a></li>{%- endif -%}
+          {%- if s_youtube != blank -%}<li><a href="{{ s_youtube }}" aria-label="YouTube" rel="noopener" target="_blank">{%- render 'snippets/roarr-hearth-icon', name: 'youtube', size: 20 -%}</a></li>{%- endif -%}
+          {%- if s_tiktok != blank -%}<li><a href="{{ s_tiktok }}" aria-label="TikTok" rel="noopener" target="_blank">{%- render 'snippets/roarr-hearth-icon', name: 'tiktok', size: 20 -%}</a></li>{%- endif -%}
+          {%- if s_pinterest != blank -%}<li><a href="{{ s_pinterest }}" aria-label="Pinterest" rel="noopener" target="_blank">{%- render 'snippets/roarr-hearth-icon', name: 'pinterest', size: 20 -%}</a></li>{%- endif -%}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="hh-wrap hh-ft__bar">
+    <p class="hh-ft__copy">&copy; {{ 'now' | date: '%Y' }} {{ store_name }}. {{ ht.label_rights | default: 'All Rights Reserved.' }}{% if powered_by_link != blank %} {{ powered_by_link }}{% endif %}</p>
+    <div class="hh-ft__local">
+      {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+        {%- form 'localization', class: 'hh-ft__locform' -%}
+          {%- if localization.available_countries.size > 1 -%}
+            <select name="country_code" aria-label="Country" onchange="this.form.submit()">
+              {%- for country in localization.available_countries -%}<option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>{{ country.name }} | {{ country.currency.iso_code }} {{ country.currency.symbol }}</option>{%- endfor -%}
+            </select>
+          {%- endif -%}
+          {%- if localization.available_languages.size > 1 -%}
+            <select name="language_code" aria-label="Language" onchange="this.form.submit()">
+              {%- for language in localization.available_languages -%}<option value="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>{{ language.endonym_name }}</option>{%- endfor -%}
+            </select>
+          {%- endif -%}
+        {%- endform -%}
+      {%- elsif homeData.demo_locale != blank -%}
+        <span>{{ homeData.demo_locale }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+<button class="hh-top" type="button" aria-label="{{ ht.label_top | default: 'Back to top' | escape }}" data-hh-top>
+  <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="none" stroke="rgb(28 28 28 / .15)" stroke-width="2"/><circle data-hh-ring cx="24" cy="24" r="21" fill="none" stroke="#1c1c1c" stroke-width="2" transform="rotate(-90 24 24)"/></svg>
+  <span>{%- render 'snippets/roarr-hearth-icon', name: 'up', size: 16, stroke: 2.2 -%}</span>
+</button>
+
+{%- if ht.popup_heading != blank -%}
+<dialog class="hh-modal hh-pop" data-hh-dialog="popup" aria-label="{{ ht.popup_heading | escape }}">
+  <button class="hh-x hh-corner" type="button" aria-label="Close" data-hh-close>{%- render 'snippets/roarr-hearth-icon', name: 'close', size: 18 -%}</button>
+  <div class="hh-pop__in">
+    <div class="hh-pop__pic">{%- render 'snippets/roarr-hearth-img', src: popup_image, alt: '', width: 820, lazy: true -%}</div>
+    <div class="hh-pop__body">
+      <h2 class="hh-pop__title">{{ ht.popup_heading }}</h2>
+      {%- if ht.popup_text != blank -%}<p class="hh-pop__text">{{ ht.popup_text }}</p>{%- endif -%}
+      {%- form 'customer', id: 'hh-popup-news', class: 'hh-pop__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input class="hh-field hh-pop__field" type="email" name="contact[email]" placeholder="{{ ht.label_email | default: 'Enter your email' | escape }}" aria-label="{{ ht.label_email | default: 'Enter your email' | escape }}" autocomplete="email" required>
+        <button class="hh-btn hh-btn--dark" type="submit">{{ ht.label_submit | default: 'Submit' }}</button>
+      {%- endform -%}
+      <label class="hh-pop__off"><input type="checkbox" data-hh-popup-off><span>{{ ht.label_popup_off | default: "Don't show this popup again" }}</span></label>
+    </div>
+  </div>
+</dialog>
+{%- endif -%}
+
+<style>
+  .hh .hh-ft { position: relative; background: var(--hh-foot); color: var(--hh-text); }
+  .hh .hh-ft__cols { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 30px; padding-block: 90px 46px; }
+  .hh .hh-ft__about { margin-top: -10px; }
+  .hh .hh-ft__brand { display: inline-block; font-size: 38px; line-height: 1; color: var(--hh-ink); }
+  .hh .hh-ft__brand img { max-height: 46px; width: auto; }
+  .hh .hh-ft__info { margin-top: 18px; }
+  .hh .hh-ft__info li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; font-size: 13.44px; line-height: 22px; }
+  .hh .hh-ft__info svg { flex: none; margin-top: 3px; color: var(--hh-ink); }
+  .hh .hh-ft__info a:hover, .hh .hh-ft__links a:hover { color: var(--hh-accent); }
+  .hh .hh-ft__h { font-size: inherit; }
+  .hh .hh-ft__h button { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0; border: 0; background: none; font-size: 17.28px; line-height: 25.92px; font-weight: 500; text-align: start; color: var(--hh-ink); cursor: default; }
+  .hh .hh-ft__h i { display: none; }
+  .hh .hh-ft__fold { margin-top: 20px; }
+  .hh .hh-ft__links li { margin-bottom: 20.5px; font-size: 13.44px; line-height: 20px; }
+  .hh .hh-ft__news { font-size: 13.44px; line-height: 20px; }
+  .hh .hh-ft__form { margin: 21px 0 0; }
+  .hh .hh-ft__input { display: block; width: 100%; height: 60px; margin-bottom: 10px; padding-inline: 22px; border: 0; border-radius: 50px; background: #fff; color: var(--hh-ink); font-size: 13px; box-shadow: 1px 1px 10px rgb(0 0 0 / .06); outline-offset: 2px; }
+  .hh .hh-ft__input::placeholder { color: var(--hh-muted); opacity: 1; }
+  .hh .hh-ft__form .hh-btn { width: 100%; }
+  .hh .hh-ft__ok { font-size: 13.44px; color: var(--hh-ink); }
+  .hh .hh-ft__mid { border-block: 1px solid #e8e9ef; }
+  .hh .hh-ft__midin { display: grid; grid-template-columns: 345px minmax(0, 1fr) 345px; align-items: center; padding-block: 78px; }
+  .hh .hh-ft__tiny { margin-bottom: 15px; font-size: 11.52px; line-height: 17px; color: var(--hh-ink); }
+  .hh .hh-ft__pays { padding-inline-end: 30px; }
+  .hh .hh-ft__pay { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hh .hh-ft__payicon, .hh .hh-ft__pay svg { width: 38px; height: 24px; }
+  .hh .hh-ft__thanks { padding-inline: 40px; border-inline: 1px solid #dddee6; text-align: center; }
+  .hh .hh-ft__thanks h3 { font-size: 17.28px; line-height: 25.92px; font-weight: 500 !important; color: var(--hh-ink); }
+  .hh .hh-ft__thanks p { max-width: 425px; margin: 10px auto 0; font-size: 13.44px; line-height: 20px; }
+  .hh .hh-ft__social { justify-self: end; text-align: start; }
+  .hh .hh-ft__social ul { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 19px; color: var(--hh-ink); }
+  .hh .hh-ft__social a:hover { color: var(--hh-accent); }
+  .hh .hh-ft__bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding-block: 37px 30px; font-size: 13.44px; color: var(--hh-ink); }
+  .hh .hh-ft__locform { display: flex; flex-wrap: wrap; gap: 14px; margin: 0; }
+  .hh .hh-ft__locform select { max-width: 220px; border: 0; background: transparent; color: var(--hh-ink); font-size: 13.44px; font-weight: 500; cursor: pointer; }
+
+  .hh .hh-top { position: fixed; inset-inline-end: 15px; bottom: 70px; z-index: 40; width: 48px; height: 48px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(14px); transition: opacity .3s ease, transform .3s ease, visibility .3s; }
+  .hh .hh-top.is-on { opacity: 1; visibility: visible; transform: none; }
+  .hh .hh-top > svg { position: absolute; inset: 0; }
+  .hh .hh-top > span { position: absolute; inset: 5px; display: grid; place-items: center; border-radius: 50%; background: var(--hh-ink); color: #fff; transition: background-color .25s ease; }
+  .hh .hh-top:hover > span { background: var(--hh-accent); }
+
+  .hh .hh-pop__in { display: grid; grid-template-columns: 46.3% minmax(0, 1fr); min-height: 516px; }
+  .hh .hh-pop__pic { background: var(--hh-tile); }
+  .hh .hh-pop__pic img { width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-pop__body { display: flex; flex-direction: column; justify-content: center; padding: 60px 67px 44px 43px; }
+  .hh .hh-pop__title { font-size: 21px; line-height: 30px; font-weight: 800 !important; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-pop__text { margin-top: 18px; font-size: 13.44px; line-height: 18px; color: var(--hh-text); }
+  .hh .hh-pop__form { display: grid; gap: 10px; margin: 26px 0 0; }
+  .hh .hh-pop__field { text-align: center; }
+  .hh .hh-pop__form .hh-btn { width: 100%; height: 50px; }
+  .hh .hh-pop__off { display: flex; align-items: center; gap: 14px; margin-top: 70px; font-size: 11px; text-transform: uppercase; color: var(--hh-text); cursor: pointer; }
+  .hh .hh-pop__off input { width: 18px; height: 18px; margin: 0; accent-color: var(--hh-ink); }
+
+  @media (max-width: 1100px) {
+    .hh .hh-ft__midin { grid-template-columns: 1fr; gap: 26px; justify-items: center; padding-block: 44px; text-align: center; }
+    .hh .hh-ft__pays { padding: 0; }
+    .hh .hh-ft__pay { justify-content: center; }
+    .hh .hh-ft__thanks { padding: 0; border: 0; }
+    .hh .hh-ft__social { justify-self: center; }
+    .hh .hh-ft__social ul { justify-content: center; }
+  }
+  @media (max-width: 1024px) {
+    .hh .hh-ft { padding-block-end: 56px; }
+    .hh .hh-top { bottom: 70px; }
+    .hh .hh-ft__cols { grid-template-columns: 1fr; gap: 0; padding-block: 44px 24px; }
+    .hh .hh-ft__about { margin-bottom: 18px; }
+    .hh .hh-ft__h button { padding-block: 16px; cursor: pointer; }
+    .hh .hh-ft__h i { position: relative; display: block; flex: none; width: 13px; height: 13px; }
+    .hh .hh-ft__h i::before, .hh .hh-ft__h i::after { content: ""; position: absolute; inset-inline-start: 0; top: 6px; width: 13px; height: 1.5px; background: currentColor; transition: transform .3s ease; }
+    .hh .hh-ft__h i::after { transform: rotate(90deg); }
+    .hh .hh-ft__col.is-open .hh-ft__h i::after { transform: none; }
+    .hh .hh-ft__fold { display: none; margin: 0 0 14px; }
+    .hh .hh-ft__col.is-open .hh-ft__fold { display: block; }
+    .hh .hh-ft__bar { flex-direction: column; text-align: center; padding-block: 28px; }
+  }
+  @media (max-width: 749px) {
+    .hh .hh-pop__in { grid-template-columns: 1fr; min-height: 0; }
+    .hh .hh-pop__pic { display: none; }
+    .hh .hh-pop__body { padding: 56px 24px 28px; }
+    .hh .hh-pop__off { margin-top: 26px; }
+  }
+</style>
+{{ homeData.demo_runtime }}
+{%- endcapture -%}
+{%- render 'snippets/roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Footer",
+  "tag": "section",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Customer care menu", "default": "footer" }
+  ],
+  "presets": [{ "name": "Hearth Footer" }]
+}
+{% endschema %}

@@ -1,0 +1,14 @@
+{%- comment -%} Lustre four-column product row with a centered heading (Trending, Featured). {%- endcomment -%}
+<section class="lx-section">
+  <div class="lx-wrap">
+    <div class="lx-head">
+      <h2 class="lx-head__title">{{ heading }}</h2>
+      {%- if text != blank -%}<p class="lx-head__text">{{ text }}</p>{%- endif -%}
+    </div>
+    <div class="lx-grid">
+      {%- for product in products limit: 4, offset: offset -%}
+        {%- render 'snippets/roarr-lustre-card', product: product, options_label: options_label -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>

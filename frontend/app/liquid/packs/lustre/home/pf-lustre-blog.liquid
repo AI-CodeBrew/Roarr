@@ -1,0 +1,57 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign blog_handle = section.settings.blog | default: 'news' -%}
+{%- assign articles = homeData.demo_articles | default: blogs[blog_handle].articles -%}
+{%- capture lx_html -%}
+{%- if articles != blank and articles.size > 0 -%}
+<section class="lx-section lx-bl">
+  <div class="lx-wrap">
+    <div class="lx-head">
+      <h2 class="lx-head__title">{{ ht.blog_heading }}</h2>
+      {%- if ht.blog_text != blank -%}<p class="lx-head__text">{{ ht.blog_text }}</p>{%- endif -%}
+    </div>
+    <div class="lx-bl__grid">
+      {%- for article in articles limit: 3 -%}
+        <article class="lx-bl__post">
+          <a class="lx-bl__media" href="{{ article.url }}" tabindex="-1" aria-hidden="true">{%- render 'snippets/roarr-lustre-img', src: article.image, alt: article.title, width: 800, lazy: true -%}</a>
+          <p class="lx-bl__date">{{ article.published_at | date: '%B %d, %Y' }}</p>
+          <h3 class="lx-bl__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+          <p class="lx-bl__text">{{ article.excerpt_or_content | strip_html | truncatewords: 26 }}</p>
+          <a class="lx-link" href="{{ article.url }}">{{ ht.label_read_more | default: 'Read more' }}</a>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .lx .lx-section.lx-bl { padding-block: 80px 40px; }
+  .lx .lx-bl__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
+  .lx .lx-bl__post { min-width: 0; }
+  .lx .lx-bl__media { display: block; aspect-ratio: 413 / 285; overflow: hidden; background: var(--lx-soft); }
+  .lx .lx-bl__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .lx .lx-bl__post:hover .lx-bl__media img { transform: scale(1.04); }
+  .lx .lx-bl__date { margin-top: 16px; font-size: 14px; font-weight: 500; text-transform: uppercase; color: var(--lx-accent); }
+  .lx .lx-bl__title { margin-top: 10px; font-size: 19px; line-height: 1.4; color: var(--lx-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lx .lx-bl__text { margin-top: 12px; font-size: 14.5px; line-height: 23px; color: var(--lx-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .lx .lx-bl__post .lx-link { margin-top: 12px; }
+  @media (max-width: 989px) {
+    .lx .lx-bl__grid { grid-template-columns: 1fr; gap: 28px; }
+    .lx .lx-section.lx-bl { padding-block: 44px 28px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Blog",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" }
+  ],
+  "presets": [{ "name": "Lustre Blog" }]
+}
+{% endschema %}

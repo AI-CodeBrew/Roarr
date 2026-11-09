@@ -1,0 +1,47 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture hh_html -%}
+<section class="hh-st">
+  <div class="hh-st__in" data-hh-reveal>
+    {%- render 'roarr-hearth-img', src: hi.statement_image, alt: ht.statement_heading, width: 2000, lazy: true -%}
+    <div class="hh-st__copy">
+      {%- if ht.statement_kicker != blank -%}<p class="hh-st__kick">{{ ht.statement_kicker }}</p>{%- endif -%}
+      <h2 class="hh-st__title">{{ ht.statement_heading }}</h2>
+      {%- if ht.statement_text != blank -%}<p class="hh-st__text">{{ ht.statement_text }}</p>{%- endif -%}
+      <a class="hh-btn hh-btn--light" href="{{ routes.all_products_collection_url | default: '/collections/all' }}">{% render 'roarr-ui-string', key: 'shop_now' %}<span class="hh-tilt">{%- render 'roarr-hearth-icon', name: 'arrow', size: 14 -%}</span></a>
+    </div>
+  </div>
+</section>
+<style>
+  .hh .hh-st { background: #fff; }
+  .hh .hh-st__in { position: relative; min-height: 458px; overflow: hidden; background: #1a1612; color: #fff; }
+  .hh .hh-st__in > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-st__in::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(12 9 7 / .32), rgb(12 9 7 / 0) 50%); }
+  .hh[dir="rtl"] .hh-st__in::after { transform: scaleX(-1); }
+  .hh .hh-st__copy { position: relative; z-index: 1; width: min(100%, 634px); padding: 55px 58px; }
+  .hh .hh-st__kick { font-size: 12px; line-height: 18px; font-weight: 500; text-transform: uppercase; color: #fff; }
+  .hh .hh-st__title { max-width: 500px; margin-top: 15px; font-size: 30px; line-height: 45px; font-weight: 500 !important; color: #fff; }
+  .hh .hh-st__text { max-width: 500px; margin-top: 15px; font-size: 13px; line-height: 19.5px; color: #fff; }
+  .hh .hh-st .hh-btn { margin-top: 30px; }
+  @media (max-width: 749px) {
+    .hh .hh-st__in { min-height: 340px; }
+    .hh .hh-st__in::after { background: linear-gradient(90deg, rgb(12 9 7 / .68), rgb(12 9 7 / .2)); }
+    .hh .hh-st__copy { padding: 30px 15px; }
+    .hh .hh-st__title { font-size: 22px; line-height: 33px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Statement",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Hearth Statement" }]
+}
+{% endschema %}

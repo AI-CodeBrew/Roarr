@@ -1,20 +1,22 @@
-"""Store template pack helpers (classic, cinematic, amour, maison, lumenook)."""
+"""Store template pack helpers (classic, cinematic, amour, maison, tempo, lumenook, lustre, velour, hearth, simmer)."""
 
 from __future__ import annotations
 
 import os
 from typing import Optional
 
-VALID_STORE_TEMPLATE_PACKS = frozenset({"classic", "cinematic", "amour", "maison", "lumenook"})
+VALID_STORE_TEMPLATE_PACKS = frozenset(
+    {"classic", "cinematic", "amour", "maison", "tempo", "lumenook", "lustre", "velour", "hearth", "simmer"}
+)
 
 # Homepage-only packs: never generate or bind a premium Sleek/Vibe PDP.
-HOME_ONLY_STORE_TEMPLATE_PACKS = frozenset({"amour", "maison"})
+HOME_ONLY_STORE_TEMPLATE_PACKS = frozenset({"amour", "maison", "tempo"})
 
 # Packs that exist for single-product stores only.
-SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS = frozenset({"cinematic", "amour", "maison"})
+SINGLE_PRODUCT_ONLY_STORE_TEMPLATE_PACKS = frozenset({"cinematic", "amour", "maison", "tempo"})
 
 # Packs that exist for multi-product stores only.
-MULTI_PRODUCT_ONLY_STORE_TEMPLATE_PACKS = frozenset({"lumenook"})
+MULTI_PRODUCT_ONLY_STORE_TEMPLATE_PACKS = frozenset({"lumenook", "lustre", "velour", "hearth", "simmer"})
 
 
 def normalize_store_template_pack(raw) -> str:
@@ -53,8 +55,8 @@ def resolve_store_templates_dir(
     Return Path to the JSON templates folder for this mode + pack.
 
     classic → store_templates/single_product|multi_product
-    cinematic / amour / maison (single only) → store_templates/packs/<pack>/single_product
-    lumenook (multi only) → store_templates/packs/lumenook/multi_product
+    cinematic / amour / maison / tempo (single only) → store_templates/packs/<pack>/single_product
+    lumenook / lustre / velour / hearth / simmer (multi only) → store_templates/packs/<pack>/multi_product
     """
     from pathlib import Path
 
@@ -92,12 +94,22 @@ def store_theme_name(
         vibe = False
 
     if mode in ("multi", "multi_product"):
+        if pack == "lustre":
+            return "Lustre"
+        if pack == "velour":
+            return "Velour"
+        if pack == "hearth":
+            return "Hearth"
+        if pack == "simmer":
+            return "Simmer"
         return "Lumenook" if pack == "lumenook" else "Swift"
 
     if pack == "amour":
         return "Amour"
     if pack == "maison":
         return "Maison"
+    if pack == "tempo":
+        return "Tempo"
     if not include_premium:
         return "Swift"
     if pack == "cinematic":

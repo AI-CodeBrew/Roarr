@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "simmer-header": {
+      "type": "roarr-simmer-header",
+      "settings": {}
+    },
+    "simmer-list-collections": {
+      "type": "roarr-simmer-list-collections",
+      "settings": {
+        "per_page": 36
+      }
+    },
+    "simmer-footer": {
+      "type": "roarr-simmer-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "simmer-header",
+    "simmer-list-collections",
+    "simmer-footer"
+  ]
+}

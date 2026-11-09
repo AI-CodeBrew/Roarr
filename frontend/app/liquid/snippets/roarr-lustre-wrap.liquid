@@ -1,0 +1,2 @@
+{%- comment -%} Lustre section root: scopes the shared CSS and flips to right-to-left when the output holds Arabic-script letters. {%- endcomment -%}
+<div class="lx"{% if html contains 'ا' or html contains 'ل' or html contains 'ي' or html contains 'ة' %} dir="rtl"{% endif %}>{{ html }}</div>

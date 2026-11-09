@@ -1,0 +1,644 @@
+{%- comment -%}
+  Velour shared CSS and behaviour: fonts, tokens, buttons, scroll reveals, rails, the product card,
+  dialogs, cart, wishlist and quick view. Rendered once, by the header section, which every Velour
+  template starts with. Also hides the theme's own header and footer on those templates.
+{%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300..800&family=Bodoni+Moda:opsz,wght@6..96,400..500&display=swap">
+<style>
+  .shopify-section-group-header-group, .shopify-section-group-footer-group,
+  #shopify-section-header, #shopify-section-footer, #shopify-section-announcement-bar { display: none !important; }
+
+  :root { --vr-accent: {{ accent | default: '#df9a7c' }}; --vr-ink: #1c1c1c; --vr-text: #666666; --vr-muted: #b5b5b5; --vr-line: #e4e4e4; --vr-tile: #f2f2f9; --vr-panel: #f8f8f8; --vr-foot: #f5f6fb; --vr-review: #f4f5fa; }
+
+  :where(.vr) *, :where(.vr) *::before, :where(.vr) *::after { box-sizing: border-box; }
+  .vr, .vr :is(p, li, a, span, button, input, select, textarea, label, div, summary, small, strong, s, h1, h2, h3, h4, h5, i) { font-family: "Jost", sans-serif !important; letter-spacing: normal; }
+  .vr .vr-logo, .vr .vr-logo * { font-family: "Bodoni Moda", Georgia, serif !important; }
+  :where(.vr) :is(p, h1, h2, h3, h4, h5, ul, ol, figure, blockquote) { margin: 0; padding: 0; }
+  .vr :where(p, li, a, span, small, strong, s, button, label, input, select) { font-size: inherit; line-height: inherit; }
+  .vr :where(h1, h2, h3, h4, h5) { font-weight: 500; color: var(--vr-ink); }
+  :where(.vr) ul { list-style: none; }
+  :where(.vr) a { color: inherit; text-decoration: none; transition: color .2s ease; }
+  :where(.vr) img { display: block; max-width: 100%; height: auto; }
+  :where(.vr) button { font-family: inherit; color: inherit; }
+  .vr [hidden] { display: none !important; }
+  .vr { font-size: 13.44px; line-height: 1.5; color: var(--vr-text); overflow-x: clip; }
+
+  .vr .vr-wrap { width: min(100%, 1500px); margin-inline: auto; padding-inline: 15px; }
+  .vr .vr-kick { display: block; font-size: 12px; line-height: 18px; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-title { margin-top: 12px; font-size: 40px; line-height: 60px; font-weight: 500 !important; color: var(--vr-ink); }
+  .vr .vr-head { margin-bottom: 50px; }
+  .vr .vr-rule { display: block; height: 1px; border: 0; margin: 0; background: var(--vr-line); }
+
+  .vr .vr-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 175px; height: 60px; padding-inline: 20px; border: 1px solid transparent; border-radius: 50px; font-size: 13.44px; font-weight: 500; text-transform: capitalize; cursor: pointer; transition: background-color .3s ease, color .3s ease, border-color .3s ease; }
+  .vr .vr-btn--light { background: #fff; color: var(--vr-ink); }
+  .vr .vr-btn--dark { background: var(--vr-ink); color: #fff; }
+  .vr .vr-btn--line { background: #fff; color: var(--vr-ink); border-color: var(--vr-line); }
+  .vr .vr-btn:hover { background: var(--vr-accent); border-color: var(--vr-accent); color: #fff; }
+  .vr .vr-btn[disabled] { opacity: .55; cursor: not-allowed; }
+  .vr .vr-go { display: inline-flex; align-items: center; gap: 8px; font-size: 13.44px; font-weight: 500; text-transform: capitalize; color: var(--vr-ink); }
+  .vr .vr-go:hover { color: var(--vr-accent); }
+  .vr .vr-btn .vr-tilt { display: inline-grid; }
+  .vr .vr-go svg, .vr .vr-btn .vr-tilt { transform: rotate(-45deg); transition: transform .17s linear; }
+  .vr .vr-go:hover svg, .vr .vr-btn:hover .vr-tilt { transform: none; }
+
+  /* Scroll reveals */
+  @keyframes vr-up { from { opacity: 0; transform: translate3d(0, 100px, 0); } to { opacity: 1; transform: none; } }
+  @keyframes vr-down { from { opacity: 0; transform: translate3d(0, -100px, 0); } to { opacity: 1; transform: none; } }
+  @keyframes vr-left { from { opacity: 0; transform: translate3d(-200px, 0, 0); } to { opacity: 1; transform: none; } }
+  @keyframes vr-right { from { opacity: 0; transform: translate3d(200px, 0, 0); } to { opacity: 1; transform: none; } }
+  @keyframes vr-nudge { 16.65% { transform: translateX(7px); } 33.33% { transform: translateX(-5px); } 49.95% { transform: translateX(3px); } 66.6% { transform: translateX(-2px); } 83.25% { transform: translateX(1px); } 100% { transform: none; } }
+  .vr-js .vr [data-vr-reveal]:not(.is-in) { opacity: 0; }
+  .vr [data-vr-reveal].is-in { animation: vr-up 1s linear both; animation-delay: var(--vr-delay, 0s); }
+  .vr [data-vr-reveal="right"].is-in { animation-name: vr-right; }
+  .vr [data-vr-reveal="left"].is-in { animation-name: vr-left; }
+
+  /* Rails */
+  .vr .vr-rail__track { display: grid; grid-auto-flow: column; grid-auto-columns: var(--vr-col, calc((100% - 30px) / 4)); column-gap: var(--vr-gap, 10px); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .vr .vr-rail__track::-webkit-scrollbar { display: none; }
+  .vr .vr-rail__track > * { min-width: 0; scroll-snap-align: start; }
+  .vr .vr-arrows { display: flex; align-items: center; gap: 10px; }
+  .vr .vr-arrows button, .vr .vr-arrows a { display: grid; place-items: center; width: 27px; height: 32px; padding: 0; border: 0; background: none; color: var(--vr-ink); cursor: pointer; transition: color .2s ease; }
+  .vr .vr-arrows :is(button, a):hover { color: var(--vr-accent); }
+  .vr .vr-round { position: absolute; top: 50%; z-index: 3; width: 50px; height: 50px; display: grid; place-items: center; padding: 0; margin-top: -25px; border: 0; border-radius: 50%; background: #fff; color: var(--vr-ink); box-shadow: 0 4px 16px rgb(0 0 0 / .08); cursor: pointer; transition: background-color .25s ease, color .25s ease; }
+  .vr .vr-round:hover { background: var(--vr-accent); color: #fff; }
+  .vr[dir="rtl"] :is(.vr-arrows, .vr-round) svg { transform: scaleX(-1); }
+  .vr .vr-dots { display: flex; align-items: center; gap: 15px; }
+  .vr .vr-dots button { width: 8px; height: 8px; padding: 0; border: 1px solid currentColor; border-radius: 50px; background: none; color: inherit; font-size: 0; cursor: pointer; transition: width .3s ease; }
+  .vr .vr-dots button.is-on { width: 30px; }
+
+  /* Product card */
+  .vr .vr-card { min-width: 0; color: var(--vr-ink); }
+  .vr .vr-card__media { position: relative; aspect-ratio: 345 / 444; overflow: hidden; border-radius: 5px; background: var(--vr-tile); }
+  .vr .vr-card__pics { position: absolute; inset: 0; display: block; }
+  .vr .vr-card__pics img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .75s linear; }
+  .vr .vr-card__two { opacity: 0; }
+  .vr .vr-card__side { position: absolute; top: 20px; inset-inline-end: 20px; z-index: 2; display: grid; gap: 5px; }
+  .vr .vr-card__icon { width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 3px; background: #fff; color: var(--vr-ink); cursor: pointer; opacity: 0; transform: translateY(-25px); transition: opacity .3s ease, transform .3s ease, background-color .25s ease, color .25s ease; }
+  .vr .vr-card__icon--quick { transition-duration: .45s, .45s, .25s, .25s; }
+  .vr .vr-card__icon:hover { background: var(--vr-accent); color: #fff; }
+  .vr .vr-card__icon[aria-pressed="true"] svg { fill: currentColor; }
+  .vr .vr-card__buy { position: absolute; inset-inline: 10px; bottom: 10px; z-index: 2; opacity: 0; transform: translateY(-20px); transition: opacity .35s ease, transform .35s ease; }
+  .vr .vr-card__buy form { margin: 0; }
+  .vr .vr-card__btn { width: 100%; height: 50px; display: flex; align-items: center; justify-content: center; padding: 0 8px; border: 0; border-radius: 3px; background: #fff; color: var(--vr-ink); font-size: 12px; font-weight: 400; text-transform: uppercase; cursor: pointer; transition: background-color .25s ease, color .25s ease; }
+  .vr .vr-card__btn:hover { background: var(--vr-accent); color: #fff; }
+  .vr .vr-card__btn[disabled] { color: var(--vr-muted); cursor: not-allowed; background: #fff; }
+  @media (hover: hover) {
+    .vr .vr-card:hover .vr-card__one:has(+ .vr-card__two) { opacity: 0; }
+    .vr .vr-card:hover .vr-card__two { opacity: 1; }
+    .vr .vr-card:hover .vr-card__icon, .vr .vr-card__icon:focus-visible, .vr .vr-card__icon[aria-pressed="true"], .vr .vr-card:hover .vr-card__buy, .vr .vr-card__buy:focus-within { opacity: 1; transform: none; }
+  }
+  .vr .vr-card__type { margin-top: 15px; font-size: 10.56px; line-height: 16px; text-transform: uppercase; color: var(--vr-muted); }
+  .vr .vr-card__title { margin-top: 14px; font-size: 13.44px; line-height: 20px; font-weight: 500 !important; color: var(--vr-ink); }
+  .vr .vr-card__title a:hover { color: var(--vr-accent); }
+  .vr .vr-stars { position: relative; display: inline-block; margin-top: 12px; color: #c4c4c4; font-size: 15px; line-height: 1; letter-spacing: 4px; white-space: nowrap; }
+  .vr .vr-stars i { position: absolute; inset-block: 0; inset-inline-start: 0; overflow: hidden; color: #ffb800; font-style: normal; letter-spacing: 4px; }
+  .vr .vr-card__price { display: flex; align-items: baseline; gap: 14px; margin-top: 12px; font-size: 13.44px; line-height: 20px; color: var(--vr-ink); }
+  .vr .vr-card__price s { color: var(--vr-muted); font-size: 12.5px; text-decoration-color: #db0000; }
+
+  /* Dialogs */
+  .vr dialog { border: 0; padding: 0; color: var(--vr-ink); background: #fff; max-width: none; max-height: none; outline: none; }
+  .vr dialog::backdrop { background: rgb(28 28 28 / .45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  @keyframes vr-from-end { from { transform: translateX(100%); } to { transform: none; } }
+  @keyframes vr-from-start { from { transform: translateX(-100%); } to { transform: none; } }
+  @keyframes vr-from-top { from { transform: translateY(-100%); } to { transform: none; } }
+  @keyframes vr-pop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+  .vr .vr-canvas { position: fixed; inset-block: 0; inset-inline: auto 0; width: min(440px, 100%); height: auto; margin: 0; }
+  .vr .vr-canvas[open] { display: flex; flex-direction: column; animation: vr-from-end .35s ease both; }
+  .vr[dir="rtl"] .vr-canvas[open] { animation-name: vr-from-start; }
+  .vr .vr-canvas--start { inset-inline: 0 auto; }
+  .vr .vr-canvas--start[open] { animation-name: vr-from-start; }
+  .vr .vr-modal { margin: auto; width: min(884px, calc(100% - 32px)); max-height: calc(100% - 32px); overflow: auto; border-radius: 20px; }
+  .vr .vr-modal[open] { animation: vr-pop .3s ease both; }
+  .vr dialog.is-closing { animation-direction: reverse !important; animation-duration: .22s !important; }
+  .vr .vr-x { width: 48px; height: 48px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #fff; color: var(--vr-ink); box-shadow: 0 2px 12px rgb(0 0 0 / .1); cursor: pointer; transition: background-color .25s ease, color .25s ease; }
+  .vr .vr-x:hover { background: var(--vr-accent); color: #fff; }
+  .vr .vr-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; border-bottom: 1px solid var(--vr-line); }
+  .vr .vr-panel-head h2 { font-size: 15.36px; font-weight: 800 !important; text-transform: uppercase; }
+  .vr .vr-panel-head .vr-x { width: 36px; height: 36px; box-shadow: none; background: var(--vr-panel); }
+  .vr .vr-field { width: 100%; height: 50px; padding-inline: 20px; border: 1px solid var(--vr-line); border-radius: 50px; background: #fff; color: var(--vr-ink); font-size: 14px; outline: none; }
+  .vr .vr-field:focus { border-color: var(--vr-ink); }
+  .vr .vr-toast { position: fixed; inset-inline-start: 50%; bottom: 84px; z-index: 2147483000; max-width: calc(100% - 32px); padding: 12px 22px; border-radius: 50px; background: var(--vr-ink); color: #fff; font-size: 14px; line-height: 1.4; transform: translateX(-50%); box-shadow: 0 8px 24px rgb(0 0 0 / .25); }
+
+  /* Cart, wishlist and quick view contents */
+  .vr .vr-list { flex: 1; min-height: 0; overflow: auto; padding: 8px 24px; }
+  .vr .vr-line { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding-block: 16px; border-bottom: 1px solid var(--vr-line); }
+  .vr .vr-line img { width: 76px; height: 98px; object-fit: cover; border-radius: 3px; background: var(--vr-tile); }
+  .vr .vr-line__title { display: block; font-size: 14px; font-weight: 500; line-height: 20px; color: var(--vr-ink); }
+  .vr .vr-line__title:hover { color: var(--vr-accent); }
+  .vr .vr-line__meta { display: block; margin-top: 3px; font-size: 12.5px; color: var(--vr-text); }
+  .vr .vr-qty { display: inline-flex; align-items: center; margin-top: 10px; border: 1px solid var(--vr-line); border-radius: 50px; }
+  .vr .vr-qty button { width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 0; background: none; cursor: pointer; color: var(--vr-ink); }
+  .vr .vr-qty span, .vr .vr-qty input { width: 28px; text-align: center; font-size: 13px; color: var(--vr-ink); }
+  .vr .vr-line__end { display: grid; justify-items: end; gap: 10px; font-size: 14px; color: var(--vr-ink); }
+  .vr .vr-line__end button { padding: 0; border: 0; background: none; color: var(--vr-text); cursor: pointer; }
+  .vr .vr-line__end button:hover { color: var(--vr-accent); }
+  .vr .vr-none { padding: 40px 24px; text-align: center; font-size: 14px; color: var(--vr-text); }
+  .vr .vr-panel-foot { display: grid; gap: 10px; padding: 18px 24px 24px; border-top: 1px solid var(--vr-line); }
+  .vr .vr-panel-foot .vr-btn { width: 100%; height: 50px; }
+  .vr .vr-sub { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 15.36px; font-weight: 500; color: var(--vr-ink); }
+  .vr .vr-qv { display: grid; grid-template-columns: 46% minmax(0, 1fr); }
+  .vr .vr-qv__media { background: var(--vr-tile); min-height: 420px; }
+  .vr .vr-qv__media img { width: 100%; height: 100%; object-fit: cover; }
+  .vr .vr-qv__info { display: flex; flex-direction: column; gap: 14px; padding: 44px 36px 36px; }
+  .vr .vr-qv__title { font-size: 22px; line-height: 30px; font-weight: 500; color: var(--vr-ink); }
+  .vr .vr-qv__price { font-size: 18px; font-weight: 700; color: var(--vr-ink); }
+  .vr .vr-qv__text { font-size: 13.44px; line-height: 20px; color: var(--vr-text); }
+  .vr .vr-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .vr .vr-pill { min-width: 54px; height: 38px; padding-inline: 14px; border: 1px solid var(--vr-line); border-radius: 3px; background: #fff; color: var(--vr-ink); font-size: 11.5px; font-weight: 500; text-transform: uppercase; cursor: pointer; transition: background-color .2s ease, color .2s ease, border-color .2s ease; }
+  .vr .vr-pill:hover { border-color: var(--vr-ink); }
+  .vr .vr-pill.is-on, .vr .vr-pill[aria-pressed="true"] { background: #000; border-color: #000; color: #fff; }
+  .vr .vr-pill[disabled] { opacity: .4; text-decoration: line-through; cursor: not-allowed; }
+  .vr .vr-qv__info .vr-btn { width: 100%; height: 50px; }
+  .vr .vr-qv__info .vr-go { align-self: flex-start; }
+  .vr .vr-modal .vr-corner { position: absolute; top: 12px; inset-inline-end: 12px; z-index: 2; }
+
+  /* Banner shared by the collection pages */
+  .vr .vr-banner { position: relative; display: grid; place-items: center; min-height: 386px; padding: 40px 15px; overflow: hidden; background: #ececec; text-align: center; color: var(--vr-ink); }
+  .vr .vr-banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .vr .vr-banner > div { position: relative; }
+  .vr .vr-banner h1 { font-size: 28.8px; line-height: 40px; font-weight: 800 !important; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-crumbs { display: flex; justify-content: center; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 8px; font-size: 13.44px; color: var(--vr-ink); }
+  .vr .vr-crumbs a:hover { color: var(--vr-accent); }
+  .vr .vr-crumbs i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
+
+  @media (max-width: 1024px) {
+    .vr .vr-title { font-size: 30px; line-height: 44px; }
+    .vr .vr-head { margin-bottom: 30px; }
+    .vr .vr-rail__track { --vr-col: calc((100% - 10px) / 2); }
+  }
+  @media (max-width: 749px) {
+    .vr .vr-title { font-size: 26px; line-height: 38px; margin-top: 8px; }
+    .vr .vr-btn { min-width: 122px; height: 44px; padding-inline: 18px; }
+    .vr .vr-qv { grid-template-columns: 1fr; }
+    .vr .vr-qv__media { min-height: 0; aspect-ratio: 4 / 3; }
+    .vr .vr-qv__info { padding: 24px 20px; }
+    .vr .vr-banner { min-height: 150px; padding: 24px 15px; }
+    .vr .vr-banner h1 { font-size: 22px; line-height: 30px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vr *, .vr *::before, .vr *::after { animation: none !important; transition: none !important; }
+    .vr-js .vr [data-vr-reveal] { opacity: 1 !important; }
+  }
+</style>
+<script>
+  (function () {
+    document.documentElement.classList.add("vr-js");
+    if (window.__vr) return;
+
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function $(selector, root) { return (root || document).querySelector(selector); }
+    function $$(selector, root) { return Array.prototype.slice.call((root || document).querySelectorAll(selector)); }
+    function first(el, key) { if (el.dataset[key]) return false; el.dataset[key] = "1"; return true; }
+    function make(tag, className, text) { var el = document.createElement(tag); if (className) el.className = className; if (text != null) el.textContent = text; return el; }
+    function store(kind) { try { return window[kind]; } catch (e) { return null; } }
+    function read(kind, key) { var s = store(kind); try { return s ? s.getItem(key) : null; } catch (e) { return null; } }
+    function write(kind, key, value) { var s = store(kind); try { if (s) s.setItem(key, value); } catch (e) {} }
+    function root() { return (window.Shopify && Shopify.routes && Shopify.routes.root) || "/"; }
+    function money(cents, currency) {
+      var code = currency || (window.Shopify && Shopify.currency && Shopify.currency.active) || "USD";
+      try { return new Intl.NumberFormat(document.documentElement.lang || undefined, { style: "currency", currency: code, currencyDisplay: "narrowSymbol" }).format(cents / 100); }
+      catch (e) { return (cents / 100).toFixed(2); }
+    }
+    function toast(message) {
+      var host = $(".vr") || document.body, el = $("[data-vr-toast]");
+      if (!el) { el = make("div", "vr-toast"); el.setAttribute("data-vr-toast", ""); el.setAttribute("role", "status"); host.appendChild(el); }
+      el.textContent = message;
+      el.hidden = false;
+      clearTimeout(toast.timer);
+      toast.timer = setTimeout(function () { el.hidden = true; }, 2600);
+    }
+    function json(res) { return res.json().then(function (body) { if (!res.ok) throw new Error(body.description || body.message || "Request failed"); return body; }); }
+    function post(path, body) { return fetch(root() + path, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) }).then(json); }
+
+    var api = {
+      cart: function () { return fetch(root() + "cart.js", { headers: { Accept: "application/json" } }).then(json); },
+      add: function (id, quantity) { return post("cart/add.js", { id: id, quantity: quantity || 1 }); },
+      change: function (line, quantity) { return post("cart/change.js", { line: line, quantity: quantity }); },
+      product: function (url) { return fetch(url + ".js", { headers: { Accept: "application/json" } }).then(json); },
+    };
+
+    /* Dialogs */
+    function dialog(name) { return $('[data-vr-dialog="' + name + '"]'); }
+    function open(d) {
+      if (!d || d.open || !d.showModal) return;
+      d.classList.remove("is-closing");
+      d.showModal();
+      // Start on the dialog itself, so the first control is not shown as focused; Tab still reaches it next.
+      d.setAttribute("tabindex", "-1");
+      d.focus();
+    }
+    function close(d) {
+      if (!d || !d.open) return;
+      if (reduced) { d.close(); return; }
+      d.classList.add("is-closing");
+      setTimeout(function () { d.classList.remove("is-closing"); d.close(); }, 200);
+    }
+
+    /* Scroll reveals */
+    var watcher = "IntersectionObserver" in window && !reduced ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add("is-in"); watcher.unobserve(entry.target); }
+      });
+    }, { rootMargin: "0px 0px -6% 0px" }) : null;
+    function initReveals() {
+      $$("[data-vr-reveal]:not(.is-in)").forEach(function (el) {
+        if (!first(el, "vrWatched")) return;
+        if (watcher) watcher.observe(el); else el.classList.add("is-in");
+      });
+    }
+
+    /* Fading slides with dots (hero and story) */
+    function initSlides(el) {
+      var slides = $$("[data-vr-slide]", el), dots = $$("[data-vr-dot]", el), at = -1, timer = null;
+      function show(n) {
+        n = (n + slides.length) % slides.length;
+        if (n === at) return;
+        if (at > -1) slides.forEach(function (s) { s.classList.remove("is-first"); });
+        at = n;
+        slides.forEach(function (s, i) { var on = i === at; s.classList.toggle("is-on", on); s.setAttribute("aria-hidden", on ? "false" : "true"); });
+        dots.forEach(function (d, i) { var on = i === at; d.classList.toggle("is-on", on); d.setAttribute("aria-current", on ? "true" : "false"); });
+      }
+      function stop() { clearInterval(timer); timer = null; }
+      function start() { if (slides.length > 1 && !timer && !reduced) timer = setInterval(function () { show(at + 1); }, 6000); }
+      show(0);
+      dots.forEach(function (d, i) { d.addEventListener("click", function () { stop(); show(i); start(); }); });
+      el.addEventListener("focusin", stop);
+      el.addEventListener("focusout", start);
+      start();
+    }
+
+    /* Rails: native horizontal scrolling, moved by arrows, dots or a timer */
+    function glide(track, left) {
+      if (reduced) { track.scrollLeft = left; return; }
+      var from = track.scrollLeft, began = null, length = 500;
+      track.style.scrollSnapType = "none";
+      cancelAnimationFrame(track.vrFrame);
+      function tick(now) {
+        if (began === null) began = now;
+        var p = Math.min((now - began) / length, 1);
+        var eased = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        track.scrollLeft = from + (left - from) * eased;
+        if (p < 1) track.vrFrame = requestAnimationFrame(tick); else track.style.scrollSnapType = "";
+      }
+      track.vrFrame = requestAnimationFrame(tick);
+    }
+    function initRail(el) {
+      var track = $("[data-vr-track]", el);
+      if (!track) return;
+      var sign = getComputedStyle(track).direction === "rtl" ? -1 : 1;
+      var dots = $("[data-vr-rail-dots]", el), timer = null;
+      function stepSize() {
+        var item = track.children[0];
+        if (!item) return 0;
+        return item.getBoundingClientRect().width + (parseFloat(getComputedStyle(track).columnGap) || 0);
+      }
+      function room() { return Math.max(track.scrollWidth - track.clientWidth, 0); }
+      function move(by) {
+        var step = stepSize(), now = Math.abs(track.scrollLeft), end = room();
+        var to = now + by * step;
+        if (by > 0 && now >= end - 2) to = 0;
+        else if (by < 0 && now <= 2) to = end;
+        glide(track, sign * Math.min(Math.max(to, 0), end));
+      }
+      $$("[data-vr-prev]", el).forEach(function (b) { b.addEventListener("click", function () { move(-1); }); });
+      $$("[data-vr-next]", el).forEach(function (b) { b.addEventListener("click", function () { move(1); }); });
+      function layout() {
+        var scrolls = room() > 2;
+        $$("[data-vr-prev], [data-vr-next]", el).forEach(function (b) { b.hidden = !scrolls; });
+        if (!dots) return;
+        var perView = Math.max(Math.round(track.clientWidth / (stepSize() || 1)), 1);
+        var pages = scrolls ? Math.ceil(track.children.length / perView) : 0;
+        if (dots.children.length !== pages) {
+          dots.textContent = "";
+          for (var i = 0; i < pages; i++) {
+            (function (page) {
+              var b = make("button", "", String(page + 1));
+              b.type = "button";
+              b.setAttribute("aria-label", "Go to page " + (page + 1));
+              b.addEventListener("click", function () { glide(track, sign * Math.min(page * perView * stepSize(), room())); });
+              dots.appendChild(b);
+            })(i);
+          }
+        }
+        var current = Math.round(Math.abs(track.scrollLeft) / ((stepSize() || 1) * perView));
+        if (Math.abs(track.scrollLeft) >= room() - 2) current = pages - 1;
+        $$("button", dots).forEach(function (b, i) { b.classList.toggle("is-on", i === current); });
+      }
+      track.addEventListener("scroll", layout, { passive: true });
+      window.addEventListener("resize", layout);
+      layout();
+      if (el.hasAttribute("data-vr-auto") && !reduced) {
+        var stop = function () { clearInterval(timer); timer = null; };
+        var start = function () { if (!timer) timer = setInterval(function () { if (room() > 2) move(1); }, 2500); };
+        el.addEventListener("mouseenter", stop);
+        el.addEventListener("mouseleave", start);
+        el.addEventListener("focusin", stop);
+        el.addEventListener("focusout", start);
+        start();
+      }
+    }
+
+    /* Accordion that swaps a picture */
+    function initShowcase(el) {
+      var items = $$("[data-vr-sc-item]", el), pics = $$("[data-vr-sc-pic]", el);
+      function show(n) {
+        items.forEach(function (item, i) { var on = i === n; item.classList.toggle("is-on", on); $("button", item).setAttribute("aria-expanded", on ? "true" : "false"); });
+        pics.forEach(function (pic, i) { pic.classList.toggle("is-on", i === n); });
+      }
+      items.forEach(function (item, i) { $("button", item).addEventListener("click", function () { show(i); }); });
+      show(0);
+    }
+
+    /* FAQ and mobile footer columns: open one at a time */
+    function initFold(el) {
+      var items = $$("[data-vr-fold-item]", el);
+      items.forEach(function (item) {
+        var button = $("button", item);
+        button.addEventListener("click", function () {
+          var willOpen = !item.classList.contains("is-open");
+          items.forEach(function (other) { other.classList.remove("is-open"); $("button", other).setAttribute("aria-expanded", "false"); });
+          if (willOpen) { item.classList.add("is-open"); button.setAttribute("aria-expanded", "true"); }
+        });
+      });
+    }
+
+    /* Deal countdown: shows only for a real end date that has not passed */
+    function initClock(el) {
+      var end = Date.parse(String(el.dataset.vrClock || "").replace(" ", "T")), timer;
+      function pad(n) { return (n < 10 ? "0" : "") + n; }
+      function tick() {
+        var left = end - Date.now();
+        if (!(left > 0)) { el.hidden = true; clearInterval(timer); return; }
+        el.hidden = false;
+        var s = Math.floor(left / 1000);
+        $("[data-d]", el).textContent = pad(Math.floor(s / 86400));
+        $("[data-h]", el).textContent = pad(Math.floor(s / 3600) % 24);
+        $("[data-m]", el).textContent = pad(Math.floor(s / 60) % 60);
+        $("[data-s]", el).textContent = pad(s % 60);
+      }
+      tick();
+      timer = setInterval(tick, 1000);
+    }
+
+    /* Header: returns as a slim bar when scrolling back up */
+    function initHeader(el) {
+      var last = window.scrollY, waiting = false;
+      function update() {
+        waiting = false;
+        var y = window.scrollY;
+        if (y < el.offsetHeight + 300) el.classList.remove("is-stuck");
+        else if (y < last - 2) el.classList.add("is-stuck");
+        else if (y > last + 2) el.classList.remove("is-stuck");
+        last = y;
+      }
+      window.addEventListener("scroll", function () { if (!waiting) { waiting = true; requestAnimationFrame(update); } }, { passive: true });
+    }
+
+    /* Back to top with a progress ring */
+    function initTop(el) {
+      var ring = $("[data-vr-ring]", el), length = 2 * Math.PI * 21;
+      if (ring) ring.style.strokeDasharray = String(length);
+      function update() {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        el.classList.toggle("is-on", window.scrollY > 300);
+        if (ring) ring.style.strokeDashoffset = String(length * (1 - (max > 0 ? Math.min(window.scrollY / max, 1) : 0)));
+      }
+      el.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" }); });
+      window.addEventListener("scroll", update, { passive: true });
+      update();
+    }
+
+    /* Newsletter popup: once a visit, unless the shopper asked not to see it again */
+    function initPopup(el) {
+      if (window.Shopify && Shopify.designMode) return;
+      if (read("localStorage", "vr-popup-off") || read("sessionStorage", "vr-popup-seen")) return;
+      var off = $("[data-vr-popup-off]", el);
+      if (off) off.addEventListener("change", function () { write("localStorage", "vr-popup-off", off.checked ? "1" : ""); });
+      el.addEventListener("close", function () { write("sessionStorage", "vr-popup-seen", "1"); });
+      setTimeout(function () { if (!$("dialog[open]")) open(el); }, 3000);
+    }
+
+    /* Wishlist */
+    var WISH = "vr-wishlist";
+    function wishes() { try { return JSON.parse(read("localStorage", WISH)) || []; } catch (e) { return []; } }
+    function paintWishes() {
+      var items = wishes();
+      $$("[data-vr-wish-count]").forEach(function (el) { el.textContent = items.length; });
+      $$("[data-vr-wish]").forEach(function (btn) { btn.setAttribute("aria-pressed", items.some(function (i) { return i.url === btn.dataset.vrWish; }) ? "true" : "false"); });
+      var list = $("[data-vr-wish-list]"), empty = $("[data-vr-wish-empty]");
+      if (!list) return;
+      list.textContent = "";
+      items.forEach(function (item) {
+        var row = make("div", "vr-line");
+        var pic = make("img"); pic.src = item.image || ""; pic.alt = ""; row.appendChild(pic);
+        var mid = make("div"); var a = make("a", "vr-line__title", item.title); a.href = item.url; mid.appendChild(a); row.appendChild(mid);
+        var end = make("div", "vr-line__end"); var x = make("button", "", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove " + item.title);
+        x.addEventListener("click", function () { write("localStorage", WISH, JSON.stringify(wishes().filter(function (i) { return i.url !== item.url; }))); paintWishes(); });
+        end.appendChild(x); row.appendChild(end);
+        list.appendChild(row);
+      });
+      if (empty) empty.hidden = items.length > 0;
+    }
+
+    /* Cart drawer */
+    function paintCart(cart) {
+      $$("[data-vr-cart-count]").forEach(function (el) { el.textContent = cart.item_count; });
+      var d = dialog("cart");
+      if (!d) return cart;
+      var list = $("[data-vr-cart-list]", d), empty = $("[data-vr-cart-empty]", d), foot = $("[data-vr-cart-foot]", d);
+      list.textContent = "";
+      cart.items.forEach(function (item, index) {
+        var row = make("div", "vr-line");
+        var pic = make("img"); pic.src = item.image || ""; pic.alt = ""; row.appendChild(pic);
+        var mid = make("div");
+        var a = make("a", "vr-line__title", item.product_title); a.href = item.url; mid.appendChild(a);
+        if (item.variant_title) mid.appendChild(make("span", "vr-line__meta", item.variant_title));
+        var qty = make("div", "vr-qty");
+        [[-1, "−", "Decrease quantity"], [0, item.quantity], [1, "+", "Increase quantity"]].forEach(function (part) {
+          if (part[0] === 0) { qty.appendChild(make("span", "", part[1])); return; }
+          var b = make("button", "", part[1]); b.type = "button"; b.setAttribute("aria-label", part[2]);
+          b.setAttribute("data-vr-line", index + 1); b.setAttribute("data-vr-qty", item.quantity + part[0]);
+          qty.appendChild(b);
+        });
+        mid.appendChild(qty);
+        row.appendChild(mid);
+        var end = make("div", "vr-line__end");
+        end.appendChild(make("span", "", money(item.final_line_price, cart.currency)));
+        var x = make("button", "", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove " + item.product_title);
+        x.setAttribute("data-vr-line", index + 1); x.setAttribute("data-vr-qty", 0);
+        end.appendChild(x);
+        row.appendChild(end);
+        list.appendChild(row);
+      });
+      empty.hidden = cart.items.length > 0;
+      foot.hidden = cart.items.length === 0;
+      $("[data-vr-cart-total]", d).textContent = money(cart.total_price, cart.currency);
+      return cart;
+    }
+    function openCart() {
+      return vr.api.cart().then(paintCart).then(function () {
+        var quick = dialog("quick");
+        if (quick && quick.open) quick.close();
+        open(dialog("cart"));
+      });
+    }
+    function addToCart(id, quantity, button) {
+      if (button) button.disabled = true;
+      return vr.api.add(id, quantity).then(openCart).catch(function (err) { toast(err.message || "Could not add this item."); }).then(function () { if (button) button.disabled = false; });
+    }
+
+    /* Quick view */
+    function strip(html) { var el = make("div"); el.innerHTML = html || ""; return (el.textContent || "").replace(/\s+/g, " ").trim(); }
+    function openQuick(url) {
+      var d = dialog("quick");
+      if (!d) { window.location.href = url; return; }
+      var body = $("[data-vr-quick-body]", d);
+      vr.api.product(url).then(function (product) {
+        body.textContent = "";
+        var media = make("div", "vr-qv__media");
+        var pic = make("img"); pic.src = product.featured_image || ""; pic.alt = product.title; media.appendChild(pic);
+        var info = make("div", "vr-qv__info");
+        if (product.type) { var type = make("p", "vr-card__type", product.type); type.style.marginTop = "0"; info.appendChild(type); }
+        info.appendChild(make("h2", "vr-qv__title", product.title));
+        var price = make("p", "vr-qv__price", money(product.price));
+        info.appendChild(price);
+        var text = strip(product.description);
+        if (text) info.appendChild(make("p", "vr-qv__text", text.length > 170 ? text.slice(0, 170) + "…" : text));
+        var variants = product.variants || [];
+        var chosen = variants.filter(function (v) { return v.available; })[0] || variants[0];
+        var buy = make("button", "vr-btn vr-btn--dark");
+        buy.type = "button";
+        function paintBuy() {
+          var labels = d.dataset;
+          buy.disabled = !chosen || !chosen.available;
+          buy.textContent = buy.disabled ? labels.vrLabelSoldOut : labels.vrLabelAdd;
+          if (chosen) price.textContent = money(chosen.price);
+        }
+        if (variants.length > 1) {
+          var pills = make("div", "vr-pills");
+          variants.forEach(function (variant) {
+            var pill = make("button", "vr-pill", variant.title);
+            pill.type = "button";
+            pill.disabled = !variant.available;
+            pill.setAttribute("aria-pressed", variant === chosen ? "true" : "false");
+            pill.addEventListener("click", function () {
+              chosen = variant;
+              $$("button", pills).forEach(function (b) { b.setAttribute("aria-pressed", b === pill ? "true" : "false"); });
+              paintBuy();
+            });
+            pills.appendChild(pill);
+          });
+          info.appendChild(pills);
+        }
+        buy.addEventListener("click", function () { if (chosen) addToCart(chosen.id, 1, buy); });
+        paintBuy();
+        info.appendChild(buy);
+        var more = make("a", "vr-go", d.dataset.vrLabelDetails); more.href = url; info.appendChild(more);
+        var box = make("div", "vr-qv"); box.appendChild(media); box.appendChild(info);
+        body.appendChild(box);
+        open(d);
+      }).catch(function () { window.location.href = url; });
+    }
+
+    /* Story video */
+    function embedUrl(url) {
+      var yt = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/.exec(url);
+      if (yt) return "https://www.youtube-nocookie.com/embed/" + yt[1] + "?autoplay=1";
+      var vimeo = /vimeo\.com\/(?:video\/)?(\d+)/.exec(url);
+      if (vimeo) return "https://player.vimeo.com/video/" + vimeo[1] + "?autoplay=1";
+      return null;
+    }
+    function openVideo(url) {
+      var d = dialog("video");
+      if (!d) return;
+      var box = $("[data-vr-video-box]", d), embed = embedUrl(url), media;
+      box.textContent = "";
+      if (embed) { media = make("iframe"); media.src = embed; media.title = "Video"; media.allow = "autoplay; fullscreen; picture-in-picture"; }
+      else { media = make("video"); media.src = url; media.controls = true; media.autoplay = true; }
+      box.appendChild(media);
+      if (!d.dataset.vrWired) { d.dataset.vrWired = "1"; d.addEventListener("close", function () { box.textContent = ""; }); }
+      open(d);
+    }
+
+    /* Shared clicks */
+    document.addEventListener("click", function (event) {
+      var t = event.target;
+      if (!t.closest) return;
+
+      if (t.tagName === "DIALOG" && t.open) { close(t); return; }
+
+      var closer = t.closest("[data-vr-close]");
+      if (closer) { close(closer.closest("dialog")); return; }
+
+      var opener = t.closest("[data-vr-open]");
+      if (opener) {
+        event.preventDefault();
+        var name = opener.getAttribute("data-vr-open");
+        if (name === "cart") openCart().catch(function () { window.location.href = opener.getAttribute("href") || root() + "cart"; });
+        else { if (name === "wishlist") paintWishes(); open(dialog(name)); }
+        return;
+      }
+
+      var heart = t.closest("[data-vr-wish]");
+      if (heart) {
+        var url = heart.dataset.vrWish, list = wishes();
+        if (list.some(function (i) { return i.url === url; })) list = list.filter(function (i) { return i.url !== url; });
+        else list.push({ url: url, title: heart.dataset.title, image: heart.dataset.image });
+        write("localStorage", WISH, JSON.stringify(list));
+        paintWishes();
+        return;
+      }
+
+      var quick = t.closest("[data-vr-quick]");
+      if (quick) { event.preventDefault(); openQuick(quick.getAttribute("data-vr-quick")); return; }
+
+      var adder = t.closest("[data-vr-add]");
+      if (adder && adder.form) {
+        event.preventDefault();
+        var id = adder.form.querySelector('[name="id"]');
+        var qty = adder.form.querySelector('[name="quantity"]');
+        if (id) addToCart(id.value, qty ? Number(qty.value) || 1 : 1, adder);
+        return;
+      }
+
+      var line = t.closest("[data-vr-line]");
+      if (line) {
+        vr.api.change(Number(line.getAttribute("data-vr-line")), Number(line.getAttribute("data-vr-qty"))).then(paintCart).catch(function (err) { toast(err.message); });
+        return;
+      }
+
+      var video = t.closest("[data-vr-video]");
+      if (video) { event.preventDefault(); openVideo(video.getAttribute("data-vr-video")); return; }
+
+      var pin = t.closest("[data-vr-pin]");
+      var openPins = $$(".vr-pin.is-open");
+      if (pin) {
+        var spot = pin.closest(".vr-pin"), was = spot.classList.contains("is-open");
+        openPins.forEach(function (p) { p.classList.remove("is-open"); });
+        spot.classList.toggle("is-open", !was);
+        pin.setAttribute("aria-expanded", was ? "false" : "true");
+      } else if (!t.closest(".vr-pin__card")) {
+        openPins.forEach(function (p) { p.classList.remove("is-open"); });
+      }
+    });
+
+    function init() {
+      initReveals();
+      $$("[data-vr-slides]").forEach(function (el) { if (first(el, "vrReady")) initSlides(el); });
+      $$("[data-vr-rail]").forEach(function (el) { if (first(el, "vrReady")) initRail(el); });
+      $$("[data-vr-showcase]").forEach(function (el) { if (first(el, "vrReady")) initShowcase(el); });
+      $$("[data-vr-fold]").forEach(function (el) { if (first(el, "vrReady")) initFold(el); });
+      $$("[data-vr-clock]").forEach(function (el) { if (first(el, "vrReady")) initClock(el); });
+      $$("[data-vr-header]").forEach(function (el) { if (first(el, "vrReady")) initHeader(el); });
+      $$("[data-vr-top]").forEach(function (el) { if (first(el, "vrReady")) initTop(el); });
+      $$('[data-vr-dialog="popup"]').forEach(function (el) { if (first(el, "vrReady")) initPopup(el); });
+      paintWishes();
+    }
+
+    var vr = window.__vr = { init: init, api: api, money: money, toast: toast, open: open, close: close, dialog: dialog, initRail: initRail };
+    window.addEventListener("storage", paintWishes);
+    document.addEventListener("shopify:section:load", init);
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
+  })();
+</script>

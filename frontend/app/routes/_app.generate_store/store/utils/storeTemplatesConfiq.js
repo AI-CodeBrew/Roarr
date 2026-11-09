@@ -12,8 +12,26 @@ import { AMOUR_SINGLE_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/pac
 import { withAmourCategoryColors } from "./liquid-schema-settings/packs/amour/categoryTheme.js";
 import { MAISON_SINGLE_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/maison/single-product.js";
 import { MAISON_SINGLE_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/maison/single-product-sections.js";
+import { TEMPO_SINGLE_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/tempo/single-product.js";
+import { TEMPO_SINGLE_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/tempo/single-product-sections.js";
 import { LUMENOOK_MULTI_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/lumenook/multi-product.js";
 import { LUMENOOK_MULTI_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/lumenook/multi-product-sections.js";
+import { LUSTRE_MULTI_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/lustre/multi-product.js";
+import { LUSTRE_MULTI_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/lustre/multi-product-sections.js";
+import { buildLustrePageRows, wrapWithLustreChrome } from "./liquid-schema-settings/packs/lustre/pages.js";
+import { LUSTRE_PREVIEW_CHROME } from "./buildLustreDemo.js";
+import { VELOUR_MULTI_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/velour/multi-product.js";
+import { VELOUR_MULTI_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/velour/multi-product-sections.js";
+import { buildVelourPageRows, buildVelourProductRows, wrapWithVelourChrome } from "./liquid-schema-settings/packs/velour/pages.js";
+import { VELOUR_PREVIEW_CHROME, buildVelourDemoProduct, buildVelourDemoProductExtras } from "./buildVelourDemo.js";
+import { HEARTH_MULTI_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/hearth/multi-product.js";
+import { HEARTH_MULTI_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/hearth/multi-product-sections.js";
+import { buildHearthPageRows, buildHearthProductRows, wrapWithHearthChrome } from "./liquid-schema-settings/packs/hearth/pages.js";
+import { HEARTH_PREVIEW_CHROME, buildHearthDemoProduct, buildHearthDemoProductExtras } from "./buildHearthDemo.js";
+import { SIMMER_MULTI_PRODUCT_HOME_SETTINGS } from "./liquid-schema-settings/packs/simmer/multi-product.js";
+import { SIMMER_MULTI_PRODUCT_HOME_SECTIONS } from "./liquid-schema-settings/packs/simmer/multi-product-sections.js";
+import { buildSimmerPageRows, buildSimmerProductRows, wrapWithSimmerChrome } from "./liquid-schema-settings/packs/simmer/pages.js";
+import { SIMMER_PREVIEW_CHROME, buildSimmerDemoProduct, buildSimmerDemoProductExtras } from "./buildSimmerDemo.js";
 import { applySectionColorSchemesToSettings } from "./sectionColorUtils.js";
 import { DEFAULT_PRODUCT_PAGE_SETTINGS } from "./liquid-schema-settings/default-product/product.js";
 import { COLLECTION_1_PREVIEW_CONTEXT } from "./liquid-schema-settings/collection/collection-1.js";
@@ -778,9 +796,19 @@ function buildHomeTemplateConfigFromSections(
                         ? `packs/amour/home/${sectionKey}`
                         : sectionKey.startsWith("pf-maison-")
                           ? `packs/maison/home/${sectionKey}`
+                        : sectionKey.startsWith("pf-tempo-")
+                          ? `packs/tempo/home/${sectionKey}`
                         : sectionKey.startsWith("pf-lumen-")
                             ? `packs/lumenook/home/${sectionKey}`
-                            : `home/${sectionKey}`;
+                            : sectionKey.startsWith("pf-lustre-")
+                              ? `packs/lustre/home/${sectionKey}`
+                              : sectionKey.startsWith("pf-velour-")
+                                ? `packs/velour/home/${sectionKey}`
+                                : sectionKey.startsWith("pf-hearth-")
+                                  ? `packs/hearth/home/${sectionKey}`
+                                : sectionKey.startsWith("pf-simmer-")
+                                  ? `packs/simmer/home/${sectionKey}`
+                                : `home/${sectionKey}`;
 
         const baseSettings = themeSettings?.current ?? {};
         const settings = { ...baseSettings };
@@ -841,6 +869,223 @@ export function buildLiquidPageTemplatesConfig({
     /** When true, strip product-hero checkout blocks from single home (premium PDP themes). */
     omitCheckoutBlocks = null,
 }) {
+    // Lustre publishes the shared pages between its own header and footer.
+    if (
+        String(storeTemplatePack || "").toLowerCase() === "lustre" &&
+        ["product-page", "contact-page", "faq-page", "about-page", "not-found-page"].includes(pageType)
+    ) {
+        return wrapWithLustreChrome(
+            buildLiquidPageTemplatesConfig({
+                productType,
+                pageType,
+                productData,
+                collectionProducts,
+                detectedCategory,
+                selectedTemplate,
+                form,
+                stylePreferences,
+                categoryDefaults,
+                homeData,
+                marketType,
+                storeTemplatePack: "classic",
+                omitCheckoutBlocks,
+            }),
+            { homeData: { ...LUSTRE_PREVIEW_CHROME, ...homeData }, shop: DEFAULT_SHOP },
+        );
+    }
+
+    if (String(storeTemplatePack || "").toLowerCase() === "hearth") {
+        const hearthHome = { ...HEARTH_PREVIEW_CHROME, ...homeData };
+        // Hearth has its own product page; the sample store's products also carry sizes and stock.
+        if (pageType === "product-page") {
+            const source = productData || buildHearthDemoProduct();
+            const isSample = String(source?.id || "").startsWith("hearth-");
+            const base = toLiquidProduct(source);
+            // The shared mapper invents a compare-at price; this page only shows a real one.
+            const variant = { ...base.selected_or_first_available_variant, compare_at_price: compareAtPriceToCents(source) };
+            return buildHearthProductRows({
+                product: {
+                    ...base,
+                    variants: [variant],
+                    selected_or_first_available_variant: variant,
+                    ...(isSample ? buildHearthDemoProductExtras(source.handle) : {}),
+                },
+                homeData: hearthHome,
+                shop: DEFAULT_SHOP,
+            });
+        }
+        // Hearth publishes the other shared pages between its own header and footer.
+        if (["contact-page", "faq-page", "about-page", "not-found-page"].includes(pageType)) {
+            return wrapWithHearthChrome(
+                buildLiquidPageTemplatesConfig({
+                    productType,
+                    pageType,
+                    productData,
+                    collectionProducts,
+                    detectedCategory,
+                    selectedTemplate,
+                    form,
+                    stylePreferences,
+                    categoryDefaults,
+                    homeData,
+                    marketType,
+                    storeTemplatePack: "classic",
+                    omitCheckoutBlocks,
+                }),
+                { homeData: hearthHome, shop: DEFAULT_SHOP },
+            );
+        }
+        if (pageType === "collection") {
+            const merchantProducts = dashboardProductsToCollectionProducts(collectionProducts);
+            return buildHearthPageRows({
+                sectionKey: "pf-hearth-collection",
+                homeData: hearthHome,
+                collection: {
+                    ...COLLECTION_1_PREVIEW_CONTEXT.collection,
+                    ...(merchantProducts ? { products: merchantProducts, products_count: merchantProducts.length } : {}),
+                    ...(homeData?.demo_collection || {}),
+                },
+                shop: DEFAULT_SHOP,
+            });
+        }
+        if (pageType === "list-collections") {
+            return buildHearthPageRows({
+                sectionKey: "pf-hearth-list-collections",
+                homeData: hearthHome,
+                collections: homeData?.demo_collection_list || [],
+                shop: DEFAULT_SHOP,
+            });
+        }
+    }
+
+    if (String(storeTemplatePack || "").toLowerCase() === "simmer") {
+        const simmerHome = { ...SIMMER_PREVIEW_CHROME, ...homeData };
+        // Simmer has its own product page; the sample store's products also carry sizes and stock.
+        if (pageType === "product-page") {
+            const source = productData || buildSimmerDemoProduct();
+            const isSample = String(source?.id || "").startsWith("simmer-");
+            const base = toLiquidProduct(source);
+            // The shared mapper invents a compare-at price; this page only shows a real one.
+            const variant = { ...base.selected_or_first_available_variant, compare_at_price: compareAtPriceToCents(source) };
+            return buildSimmerProductRows({
+                product: {
+                    ...base,
+                    variants: [variant],
+                    selected_or_first_available_variant: variant,
+                    ...(isSample ? buildSimmerDemoProductExtras(source.handle) : {}),
+                },
+                homeData: simmerHome,
+                shop: DEFAULT_SHOP,
+            });
+        }
+        // Simmer publishes the other shared pages between its own header and footer.
+        if (["contact-page", "faq-page", "about-page", "not-found-page"].includes(pageType)) {
+            return wrapWithSimmerChrome(
+                buildLiquidPageTemplatesConfig({
+                    productType,
+                    pageType,
+                    productData,
+                    collectionProducts,
+                    detectedCategory,
+                    selectedTemplate,
+                    form,
+                    stylePreferences,
+                    categoryDefaults,
+                    homeData,
+                    marketType,
+                    storeTemplatePack: "classic",
+                    omitCheckoutBlocks,
+                }),
+                { homeData: simmerHome, shop: DEFAULT_SHOP },
+            );
+        }
+        if (pageType === "collection") {
+            const merchantProducts = dashboardProductsToCollectionProducts(collectionProducts);
+            return buildSimmerPageRows({
+                sectionKey: "pf-simmer-collection",
+                homeData: simmerHome,
+                collection: {
+                    ...COLLECTION_1_PREVIEW_CONTEXT.collection,
+                    ...(merchantProducts ? { products: merchantProducts, products_count: merchantProducts.length } : {}),
+                    ...(homeData?.demo_collection || {}),
+                },
+                shop: DEFAULT_SHOP,
+            });
+        }
+        if (pageType === "list-collections") {
+            return buildSimmerPageRows({
+                sectionKey: "pf-simmer-list-collections",
+                homeData: simmerHome,
+                collections: homeData?.demo_collection_list || [],
+                shop: DEFAULT_SHOP,
+            });
+        }
+    }
+
+    if (String(storeTemplatePack || "").toLowerCase() === "velour") {
+        const velourHome = { ...VELOUR_PREVIEW_CHROME, ...homeData };
+        // Velour has its own product page; the sample store's products also carry sizes and stock.
+        if (pageType === "product-page") {
+            const source = productData || buildVelourDemoProduct();
+            const isSample = String(source?.id || "").startsWith("velour-");
+            const base = toLiquidProduct(source);
+            // The shared mapper invents a compare-at price; this page only shows a real one.
+            const variant = { ...base.selected_or_first_available_variant, compare_at_price: compareAtPriceToCents(source) };
+            return buildVelourProductRows({
+                product: {
+                    ...base,
+                    variants: [variant],
+                    selected_or_first_available_variant: variant,
+                    ...(isSample ? buildVelourDemoProductExtras(source.handle) : {}),
+                },
+                homeData: velourHome,
+                shop: DEFAULT_SHOP,
+            });
+        }
+        // Velour publishes the other shared pages between its own header and footer.
+        if (["contact-page", "faq-page", "about-page", "not-found-page"].includes(pageType)) {
+            return wrapWithVelourChrome(
+                buildLiquidPageTemplatesConfig({
+                    productType,
+                    pageType,
+                    productData,
+                    collectionProducts,
+                    detectedCategory,
+                    selectedTemplate,
+                    form,
+                    stylePreferences,
+                    categoryDefaults,
+                    homeData,
+                    marketType,
+                    storeTemplatePack: "classic",
+                    omitCheckoutBlocks,
+                }),
+                { homeData: velourHome, shop: DEFAULT_SHOP },
+            );
+        }
+        if (pageType === "collection") {
+            const merchantProducts = dashboardProductsToCollectionProducts(collectionProducts);
+            return buildVelourPageRows({
+                sectionKey: "pf-velour-collection",
+                homeData: velourHome,
+                collection: {
+                    ...COLLECTION_1_PREVIEW_CONTEXT.collection,
+                    ...(merchantProducts ? { products: merchantProducts, products_count: merchantProducts.length } : {}),
+                    ...(homeData?.demo_collection || {}),
+                },
+                shop: DEFAULT_SHOP,
+            });
+        }
+        if (pageType === "list-collections") {
+            return buildVelourPageRows({
+                sectionKey: "pf-velour-list-collections",
+                homeData: velourHome,
+                collections: homeData?.demo_collection_list || [],
+                shop: DEFAULT_SHOP,
+            });
+        }
+    }
+
     // Product page: must take precedence when Product tab is selected.
     // Do not use roarr-fashion-1/2 JSON here — those stacks overlap in the iframe
     // and steal homepage copy. Premium PDPs use generateTemplateConfig instead.
@@ -932,6 +1177,30 @@ export function buildLiquidPageTemplatesConfig({
     }
 
     // Collection page — collection/collection-2 (collection grid blocks) + collection context for compatibility
+    if (String(storeTemplatePack || "").toLowerCase() === "lustre") {
+        if (pageType === "collection") {
+            const merchantProducts = dashboardProductsToCollectionProducts(collectionProducts);
+            return buildLustrePageRows({
+                sectionKey: "pf-lustre-collection",
+                homeData: { ...LUSTRE_PREVIEW_CHROME, ...homeData },
+                collection: {
+                    ...COLLECTION_1_PREVIEW_CONTEXT.collection,
+                    ...(merchantProducts ? { products: merchantProducts, products_count: merchantProducts.length } : {}),
+                    ...(homeData?.demo_collection || {}),
+                },
+                shop: DEFAULT_SHOP,
+            });
+        }
+        if (pageType === "list-collections") {
+            return buildLustrePageRows({
+                sectionKey: "pf-lustre-list-collections",
+                homeData: { ...LUSTRE_PREVIEW_CHROME, ...homeData },
+                collections: homeData?.demo_collection_list || [],
+                shop: DEFAULT_SHOP,
+            });
+        }
+    }
+
     if (pageType === "collection") {
         const sectionKey = "collection-2";
         const sectionSettings = COLLECTION_2_SETTINGS[sectionKey];
@@ -1146,11 +1415,44 @@ export function buildLiquidPageTemplatesConfig({
     }
 
     if (productType === "multi-product" && pageType === "home-page") {
-        const isLumenook = String(storeTemplatePack || "").toLowerCase() === "lumenook";
+        const multiPack = String(storeTemplatePack || "").toLowerCase();
+        const isLumenook = multiPack === "lumenook";
+        const isLustre = multiPack === "lustre";
+        const isVelour = multiPack === "velour";
+        const isHearth = multiPack === "hearth";
+        const isSimmer = multiPack === "simmer";
         return buildHomeTemplateConfigFromSections(
-            isLumenook ? LUMENOOK_MULTI_PRODUCT_HOME_SETTINGS : MULTI_PRODUCT_HOME_SETTINGS,
-            isLumenook ? LUMENOOK_MULTI_PRODUCT_HOME_SECTIONS : MULTI_PRODUCT_HOME_SECTIONS,
-            homeData,
+            isSimmer
+                ? SIMMER_MULTI_PRODUCT_HOME_SETTINGS
+                : isHearth
+                ? HEARTH_MULTI_PRODUCT_HOME_SETTINGS
+                : isVelour
+                ? VELOUR_MULTI_PRODUCT_HOME_SETTINGS
+                : isLustre
+                  ? LUSTRE_MULTI_PRODUCT_HOME_SETTINGS
+                  : isLumenook
+                    ? LUMENOOK_MULTI_PRODUCT_HOME_SETTINGS
+                    : MULTI_PRODUCT_HOME_SETTINGS,
+            isSimmer
+                ? SIMMER_MULTI_PRODUCT_HOME_SECTIONS
+                : isHearth
+                ? HEARTH_MULTI_PRODUCT_HOME_SECTIONS
+                : isVelour
+                ? VELOUR_MULTI_PRODUCT_HOME_SECTIONS
+                : isLustre
+                  ? LUSTRE_MULTI_PRODUCT_HOME_SECTIONS
+                  : isLumenook
+                    ? LUMENOOK_MULTI_PRODUCT_HOME_SECTIONS
+                    : MULTI_PRODUCT_HOME_SECTIONS,
+            isSimmer
+                ? { ...SIMMER_PREVIEW_CHROME, ...homeData }
+                : isHearth
+                ? { ...HEARTH_PREVIEW_CHROME, ...homeData }
+                : isVelour
+                ? { ...VELOUR_PREVIEW_CHROME, ...homeData }
+                : isLustre
+                  ? { ...LUSTRE_PREVIEW_CHROME, ...homeData }
+                  : homeData,
             stylePreferences,
             categoryDefaults,
             collectionProducts,
@@ -1161,7 +1463,9 @@ export function buildLiquidPageTemplatesConfig({
     if (productType === "single-product" && pageType === "home-page") {
         const packRaw = String(storeTemplatePack || "").toLowerCase();
         const pack =
-            packRaw === "cinematic" || packRaw === "amour" || packRaw === "maison" ? packRaw : "classic";
+            packRaw === "cinematic" || packRaw === "amour" || packRaw === "maison" || packRaw === "tempo"
+                ? packRaw
+                : "classic";
         const homeSettings =
             pack === "cinematic"
                 ? CINEMATIC_SINGLE_PRODUCT_HOME_SETTINGS
@@ -1173,7 +1477,9 @@ export function buildLiquidPageTemplatesConfig({
                       )
                     : pack === "maison"
                       ? MAISON_SINGLE_PRODUCT_HOME_SETTINGS
-                      : SINGLE_PRODUCT_HOME_SETTINGS;
+                      : pack === "tempo"
+                        ? TEMPO_SINGLE_PRODUCT_HOME_SETTINGS
+                        : SINGLE_PRODUCT_HOME_SETTINGS;
         const homeSections =
             pack === "cinematic"
                 ? CINEMATIC_SINGLE_PRODUCT_HOME_SECTIONS
@@ -1181,7 +1487,9 @@ export function buildLiquidPageTemplatesConfig({
                     ? AMOUR_SINGLE_PRODUCT_HOME_SECTIONS
                     : pack === "maison"
                       ? MAISON_SINGLE_PRODUCT_HOME_SECTIONS
-                      : SINGLE_PRODUCT_HOME_SECTIONS;
+                      : pack === "tempo"
+                        ? TEMPO_SINGLE_PRODUCT_HOME_SECTIONS
+                        : SINGLE_PRODUCT_HOME_SECTIONS;
         return buildHomeTemplateConfigFromSections(
             homeSettings,
             homeSections,

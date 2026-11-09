@@ -9,12 +9,20 @@ from langchain_core.prompts import (
 from ...clients.langchain_client import llm_4_1_nano
 from ..database import document_store
 from .context_utils import build_product_context
-from .generate_images import generate_multi_product_store_images
+from .generate_images import (
+    generate_multi_product_store_images,
+    generate_slotted_pack_store_images,
+)
 from .store_prompts import STORE_SYSTEM_PROMPT_TEMPLATE, STORE_USER_PROMPT_TEMPLATE
 from .store.templates.multi_store.signature import (
     HomePageMultiStore,
     ProductPageMultiStore,
 )
+from .store.templates.packs.lustre.signature import HomePageLustreStore
+from .store.templates.packs.velour.signature import HomePageVelourStore
+from .store.templates.packs.hearth.signature import HomePageHearthStore
+from .store.templates.packs.simmer.signature import HomePageSimmerStore
+from .store.pack_utils import store_template_pack_for_mode
 from .generation_locale import apply_common_cta_defaults, apply_review_placeholders
 
 logger = logging.getLogger(__name__)
@@ -66,11 +74,18 @@ def generate_home_page_text(
     category: str,
     product_context_str: Optional[str] = None,
     language: Optional[str] = None,
+    store_template_pack: str = "classic",
 ) -> Dict[str, Any]:
     category_key = (category or "").strip().lower()
+    schema_cls = {
+        "lustre": HomePageLustreStore,
+        "velour": HomePageVelourStore,
+        "hearth": HomePageHearthStore,
+        "simmer": HomePageSimmerStore,
+    }.get(store_template_pack, HomePageMultiStore)
 
     llm = llm_4_1_nano
-    structured_llm = llm.with_structured_output(HomePageMultiStore)
+    structured_llm = llm.with_structured_output(schema_cls)
 
     system_prompt = SystemMessagePromptTemplate.from_template(
         STORE_SYSTEM_PROMPT_TEMPLATE
@@ -86,7 +101,7 @@ def generate_home_page_text(
         )
 
     messages = chat_prompt.format_messages(
-        schema_name=HomePageMultiStore.__name__,
+        schema_name=schema_cls.__name__,
         page_name="home page",
         category=category_key,
         product_context_str=product_context_str or "",
@@ -137,6 +152,7 @@ def generate_multi_product_store_text(
     category: str,
     language: Optional[str] = None,
     page_id: Optional[str] = None,
+    store_template_pack: str = "classic",
 ) -> Dict[str, Any]:
     combined_title = " / ".join(p["title"] for p in products)
     combined_description_lines = []
@@ -158,6 +174,7 @@ def generate_multi_product_store_text(
         category=category,
         product_context_str=product_context_str,
         language=language,
+        store_template_pack=store_template_pack,
     )
     if page_id:
         document_store.update_generation_percentage(page_id, 18)
@@ -324,11 +341,17 @@ def generate_for_multi_product_store(data, category_key, language, page_id=None)
     if page_id:
         document_store.update_generation_percentage(page_id, 10)
 
+    store_template_pack = store_template_pack_for_mode(
+        data.get("storeTemplatePack") or data.get("store_template_pack"),
+        "multi_product",
+    )
+
     pages = generate_multi_product_store_text(
         products=normalized_products,
         category=category_key,
         language=language,
         page_id=page_id,
+        store_template_pack=store_template_pack,
     )
 
     images_result: Dict[str, Any] = {"home_page": {}, "product_page": {}}
@@ -336,13 +359,22 @@ def generate_for_multi_product_store(data, category_key, language, page_id=None)
         if page_id:
             document_store.update_generation_percentage(page_id, 30)
         try:
-            images_result = generate_multi_product_store_images(
-                normalized_products,
-                category_key,
-                language=language,
-                page_id=page_id,
-                document_store=document_store,
-            )
+            if store_template_pack in ("lustre", "velour", "hearth", "simmer"):
+                images_result = generate_slotted_pack_store_images(
+                    store_template_pack,
+                    normalized_products,
+                    category_key,
+                    page_id=page_id,
+                    document_store=document_store,
+                )
+            else:
+                images_result = generate_multi_product_store_images(
+                    normalized_products,
+                    category_key,
+                    language=language,
+                    page_id=page_id,
+                    document_store=document_store,
+                )
         except Exception as image_error:
             logger.error(f"Error generating multi-product store images: {image_error}")
     elif page_id:

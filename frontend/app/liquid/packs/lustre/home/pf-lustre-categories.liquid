@@ -1,0 +1,90 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign items_label = ht.label_items | default: 'Items' -%}
+{%- assign shown = 0 -%}
+{%- assign used = ',' -%}
+{%- capture circles -%}
+  {%- comment -%} The generated collections first, then the store's other collections up to six. {%- endcomment -%}
+  {%- for i in (1..6) -%}
+    {%- assign title_key = 'top_product_punchline_' | append: i -%}
+    {%- assign handle_key = 'collection_' | append: i -%}
+    {%- assign image_key = 'product_impact_image_' | append: i -%}
+    {%- assign count_key = 'collection_count_' | append: i -%}
+    {%- assign handle = ht[handle_key] -%}
+    {%- assign title = ht[title_key] -%}
+    {%- if title != blank -%}
+      {%- assign image = hi[image_key] -%}
+      {%- assign count = ht[count_key] -%}
+      {%- assign url = routes.all_products_collection_url | default: '/collections/all' -%}
+      {%- if handle != blank -%}
+        {%- assign url = '/collections/' | append: handle -%}
+        {%- assign used = used | append: handle | append: ',' -%}
+        {%- if collections[handle] != blank -%}
+          {%- assign url = collections[handle].url -%}
+          {%- if image == blank -%}{%- assign image = collections[handle].featured_image -%}{%- endif -%}
+          {%- if count == blank -%}{%- assign count = collections[handle].products_count -%}{%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- assign shown = shown | plus: 1 -%}
+      <a class="lx-cat" href="{{ url }}">
+        <span class="lx-cat__pic">{%- render 'snippets/roarr-lustre-img', src: image, alt: title, width: 400, lazy: true -%}</span>
+        <span class="lx-cat__name lx-serif">{{ title }}</span>
+        {%- if count != blank -%}<span class="lx-cat__count">{{ count }} {{ items_label }}</span>{%- endif -%}
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- for c in collections -%}
+    {%- if shown < 6 and c.handle != blank and c.handle != 'all' and c.handle != 'frontpage' and c.products_count > 0 -%}
+      {%- assign needle = ',' | append: c.handle | append: ',' -%}
+      {%- unless used contains needle -%}
+        {%- assign shown = shown | plus: 1 -%}
+        <a class="lx-cat" href="{{ c.url }}">
+          <span class="lx-cat__pic">{%- render 'snippets/roarr-lustre-img', src: c.featured_image, alt: c.title, width: 400, lazy: true -%}</span>
+          <span class="lx-cat__name lx-serif">{{ c.title }}</span>
+          <span class="lx-cat__count">{{ c.products_count }} {{ items_label }}</span>
+        </a>
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture lx_html -%}
+{%- if shown > 0 -%}
+<section class="lx-section lx-cats">
+  <div class="lx-wrap">
+    <div class="lx-head">
+      <h2 class="lx-head__title">{{ ht.categories_heading }}</h2>
+      {%- if ht.categories_text != blank -%}<p class="lx-head__text">{{ ht.categories_text }}</p>{%- endif -%}
+    </div>
+    <div class="lx-cats__row">{{ circles }}</div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .lx .lx-cats__row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px 20px; }
+  .lx .lx-cat { flex: 0 1 182px; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--lx-ink); }
+  .lx .lx-cat__pic { display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--lx-soft); }
+  .lx .lx-cat__pic img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+  .lx .lx-cat:hover img { transform: scale(1.06); }
+  .lx .lx-cat__name { margin-top: 15px; font-size: 16.5px; line-height: 1.35; color: var(--lx-ink); }
+  .lx .lx-cat__count { margin-top: 5px; font-size: 13.5px; color: var(--lx-muted); }
+  @media (max-width: 749px) {
+    .lx .lx-cats__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 12px; }
+    .lx .lx-cat__name { font-size: 14px; margin-top: 10px; }
+    .lx .lx-cat__count { font-size: 12px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Categories",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Categories" }]
+}
+{% endschema %}

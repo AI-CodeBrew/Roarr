@@ -1,0 +1,50 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- capture ticker_items -%}
+  {%- for i in (1..3) -%}
+    {%- assign ticker_key = 'ticker_text_' | append: i -%}
+    {%- if ht[ticker_key] != blank -%}<li>{{ ht[ticker_key] }}</li>{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture hh_html -%}
+{%- if ticker_items != blank -%}
+<section class="hh-tk" aria-label="{{ ht.label_announcements | default: 'Announcements' | escape }}">
+  <div class="hh-tk__track">
+    <ul class="hh-tk__list">{{ ticker_items }}{{ ticker_items }}</ul>
+    <ul class="hh-tk__list" aria-hidden="true">{{ ticker_items }}{{ ticker_items }}</ul>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  /* Simple moving ticker: three short lines looping left, paused on hover. */
+  .hh .hh-tk { overflow: hidden; background: var(--hh-accent); color: #fff; }
+  .hh .hh-tk__track { display: flex; width: max-content; animation: hh-tk 36s linear infinite; }
+  .hh[dir="rtl"] .hh-tk__track { animation-name: hh-tk-rtl; }
+  .hh .hh-tk:hover .hh-tk__track { animation-play-state: paused; }
+  .hh .hh-tk__list { display: flex; flex: none; gap: 56px; margin: 0; padding: 18px 28px; list-style: none; }
+  .hh .hh-tk__list li { display: flex; align-items: center; gap: 56px; font-size: 13px; line-height: 1; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+  .hh .hh-tk__list li::after { content: ""; width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .6; }
+  @keyframes hh-tk { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes hh-tk-rtl { from { transform: translateX(0); } to { transform: translateX(50%); } }
+  @media (max-width: 749px) {
+    .hh .hh-tk__list { gap: 36px; padding: 14px 18px; }
+    .hh .hh-tk__list li { gap: 36px; font-size: 11.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hh .hh-tk__track { animation: none; width: auto; justify-content: center; }
+    .hh .hh-tk__list[aria-hidden="true"] { display: none; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Ticker",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Hearth Ticker" }]
+}
+{% endschema %}

@@ -1,0 +1,44 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture vr_html -%}
+<section class="vr-st">
+  {%- render 'snippets/roarr-velour-img', src: hi.statement_image, alt: ht.statement_heading, width: 2000, lazy: true -%}
+  <div class="vr-st__copy" data-vr-reveal>
+    {%- if ht.statement_kicker != blank -%}<p class="vr-st__kick">{{ ht.statement_kicker }}</p>{%- endif -%}
+    <h2 class="vr-st__title">{{ ht.statement_heading }}</h2>
+    {%- if ht.statement_text != blank -%}<p class="vr-st__text">{{ ht.statement_text }}</p>{%- endif -%}
+    <a class="vr-btn vr-btn--light" href="{{ routes.all_products_collection_url | default: '/collections/all' }}">{% render 'snippets/roarr-ui-string', key: 'shop_now' %}<span class="vr-tilt">{%- render 'snippets/roarr-velour-icon', name: 'arrow', size: 16 -%}</span></a>
+  </div>
+</section>
+<style>
+  .vr .vr-st { position: relative; display: flex; align-items: center; min-height: 458px; overflow: hidden; background: #1a1a22; color: #fff; }
+  .vr .vr-st > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .vr .vr-st::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(10 10 16 / .55), rgb(10 10 16 / 0) 60%); }
+  .vr[dir="rtl"] .vr-st::after { transform: scaleX(-1); }
+  .vr .vr-st__copy { position: relative; z-index: 1; width: min(100%, 634px); padding: 40px 58px; }
+  .vr .vr-st__kick { font-size: 12px; line-height: 18px; font-weight: 500; text-transform: uppercase; color: #fff; }
+  .vr .vr-st__title { margin-top: 14px; font-size: 28.8px; line-height: 46px; font-weight: 500 !important; color: #fff; }
+  .vr .vr-st__text { margin-top: 14px; max-width: 500px; font-size: 13.44px; line-height: 20px; color: #fff; }
+  .vr .vr-st .vr-btn { margin-top: 28px; }
+  @media (max-width: 749px) {
+    .vr .vr-st { min-height: 360px; }
+    .vr .vr-st::after { background: linear-gradient(90deg, rgb(10 10 16 / .68), rgb(10 10 16 / .2)); }
+    .vr .vr-st__copy { padding: 30px 15px; }
+    .vr .vr-st__title { font-size: 22px; line-height: 33px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Statement",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Velour Statement" }]
+}
+{% endschema %}

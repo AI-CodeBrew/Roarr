@@ -1,0 +1,68 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- capture track -%}
+  {%- for i in (1..4) -%}
+    {%- assign key = 'marquee_text_' | append: i -%}
+    {%- if ht[key] != blank -%}<span class="lx-cx__item lx-serif">{{ ht[key] }}</span><span class="lx-cx__mark" aria-hidden="true">&times;</span>{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture lx_html -%}
+{%- if track != blank -%}
+<section class="lx-cx" aria-label="{{ ht.label_announcements | default: 'Announcements' | escape }}">
+  <div class="lx-cx__band lx-cx__band--a">
+    <div class="lx-cx__rail">
+      <div class="lx-cx__track">{{ track }}</div>
+      <div class="lx-cx__track" aria-hidden="true">{{ track }}</div>
+      <div class="lx-cx__track" aria-hidden="true">{{ track }}</div>
+    </div>
+  </div>
+  <div class="lx-cx__band lx-cx__band--b" aria-hidden="true">
+    <div class="lx-cx__rail">
+      <div class="lx-cx__track">{{ track }}</div>
+      <div class="lx-cx__track">{{ track }}</div>
+      <div class="lx-cx__track">{{ track }}</div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  /* Two ticker bands crossing in an X, moving in opposite directions. Hover pauses both. */
+  .lx .lx-cx { position: relative; height: 230px; overflow: hidden; background: #fff; }
+  .lx .lx-cx__band { position: absolute; top: 50%; left: -10%; width: 120%; margin-top: -34px; overflow: hidden; color: #fff; }
+  .lx .lx-cx__band--a { background: var(--lx-accent); transform: rotate(-3.5deg); z-index: 1; }
+  .lx .lx-cx__band--b { background: var(--lx-ink); transform: rotate(3.5deg); z-index: 2; }
+  .lx .lx-cx__rail { display: flex; width: max-content; }
+  .lx .lx-cx__band--a .lx-cx__rail { animation: lx-cx-left 40s linear infinite; }
+  .lx .lx-cx__band--b .lx-cx__rail { animation: lx-cx-right 40s linear infinite; }
+  .lx .lx-cx:hover .lx-cx__rail { animation-play-state: paused; }
+  .lx .lx-cx__track { display: flex; align-items: center; flex: none; min-height: 68px; }
+  .lx .lx-cx__item { font-size: 15.5px; font-weight: 500 !important; text-transform: uppercase; white-space: nowrap; color: #fff; }
+  .lx .lx-cx__mark { padding-inline: 40px; font-size: 20px; line-height: 1; color: #fff; opacity: .7; }
+  @keyframes lx-cx-left { to { transform: translateX(-33.3333%); } }
+  @keyframes lx-cx-right { from { transform: translateX(-33.3333%); } to { transform: translateX(0); } }
+  .lx[dir="rtl"] .lx-cx__band--a .lx-cx__rail { animation-name: lx-cx-right; }
+  .lx[dir="rtl"] .lx-cx__band--b .lx-cx__rail { animation-name: lx-cx-left; }
+  @media (max-width: 749px) {
+    .lx .lx-cx { height: 170px; }
+    .lx .lx-cx__band { margin-top: -25px; }
+    .lx .lx-cx__band--a { transform: rotate(-4deg); }
+    .lx .lx-cx__band--b { transform: rotate(4deg); }
+    .lx .lx-cx__track { min-height: 50px; }
+    .lx .lx-cx__item { font-size: 13px; }
+    .lx .lx-cx__mark { padding-inline: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .lx .lx-cx__rail { animation: none !important; } }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Cross Ticker",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Cross Ticker" }]
+}
+{% endschema %}

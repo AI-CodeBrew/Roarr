@@ -1,0 +1,58 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture logos -%}
+  {%- for block in section.blocks -%}
+    {%- if block.settings.logo != blank -%}
+      <div class="hh-br__item" {{ block.shopify_attributes }}>{%- render 'snippets/roarr-hearth-img', src: block.settings.logo, alt: block.settings.name, width: 400, lazy: true -%}</div>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- for i in (1..8) -%}
+    {%- assign logo_key = 'brand_logo_' | append: i -%}
+    {%- if hi[logo_key] != blank -%}
+      <div class="hh-br__item">{%- render 'snippets/roarr-hearth-img', src: hi[logo_key], alt: '', width: 400, lazy: true -%}</div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture hh_html -%}
+{%- if logos != blank -%}
+<section class="hh-br" data-hh-rail data-hh-auto="5000">
+  <div class="hh-wrap" data-hh-reveal>
+    <div class="hh-rail__track" data-hh-track data-hh-speed="500">{{ logos }}</div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .hh .hh-br { padding-block: 120px; background: #fff; }
+  .hh .hh-br .hh-rail__track { --hh-gap: 30px; --hh-col: calc((100% - 120px) / 5); align-items: center; }
+  .hh .hh-br__item { display: grid; place-items: center; }
+  .hh .hh-br__item img { max-height: 42px; width: auto; max-width: 100%; object-fit: contain; }
+  .hh .hh-br__item:hover img { animation: hh-nudge 1.2s linear; }
+  @media (max-width: 989px) { .hh .hh-br .hh-rail__track { --hh-col: calc((100% - 60px) / 3); } }
+  @media (max-width: 749px) {
+    .hh .hh-br { padding-block: 44px; }
+    .hh .hh-br .hh-rail__track { --hh-col: calc((100% - 30px) / 2); }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Brands",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo" },
+        { "type": "text", "id": "name", "label": "Brand name" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Hearth Brands" }]
+}
+{% endschema %}

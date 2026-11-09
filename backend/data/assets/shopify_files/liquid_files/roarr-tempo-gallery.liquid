@@ -1,0 +1,234 @@
+{%- capture tp_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign gallery_label = section.settings.gallery_label | default: 'Awesome product' -%}
+{%- if use_mf and ht.gallery_label != blank -%}{%- assign gallery_label = ht.gallery_label -%}{%- endif -%}
+{%- assign gallery_heading = section.settings.gallery_heading | default: 'Take A Closer Look' -%}
+{%- if use_mf and ht.gallery_heading != blank -%}{%- assign gallery_heading = ht.gallery_heading -%}{%- endif -%}
+{%- assign gallery_1_title = section.settings.gallery_1_title | default: 'Front view' -%}
+{%- if use_mf and ht.gallery_1_title != blank -%}{%- assign gallery_1_title = ht.gallery_1_title -%}{%- endif -%}
+{%- assign gallery_1_text = section.settings.gallery_1_text | default: 'See it up close' -%}
+{%- if use_mf and ht.gallery_1_text != blank -%}{%- assign gallery_1_text = ht.gallery_1_text -%}{%- endif -%}
+{%- assign gallery_2_title = section.settings.gallery_2_title | default: 'Side view' -%}
+{%- if use_mf and ht.gallery_2_title != blank -%}{%- assign gallery_2_title = ht.gallery_2_title -%}{%- endif -%}
+{%- assign gallery_2_text = section.settings.gallery_2_text | default: 'Every angle covered' -%}
+{%- if use_mf and ht.gallery_2_text != blank -%}{%- assign gallery_2_text = ht.gallery_2_text -%}{%- endif -%}
+{%- assign gallery_3_title = section.settings.gallery_3_title | default: 'Detail view' -%}
+{%- if use_mf and ht.gallery_3_title != blank -%}{%- assign gallery_3_title = ht.gallery_3_title -%}{%- endif -%}
+{%- assign gallery_3_text = section.settings.gallery_3_text | default: 'Finish you can feel' -%}
+{%- if use_mf and ht.gallery_3_text != blank -%}{%- assign gallery_3_text = ht.gallery_3_text -%}{%- endif -%}
+{%- assign gallery_4_title = section.settings.gallery_4_title | default: 'Studio view' -%}
+{%- if use_mf and ht.gallery_4_title != blank -%}{%- assign gallery_4_title = ht.gallery_4_title -%}{%- endif -%}
+{%- assign gallery_4_text = section.settings.gallery_4_text | default: 'Just as pictured' -%}
+{%- if use_mf and ht.gallery_4_text != blank -%}{%- assign gallery_4_text = ht.gallery_4_text -%}{%- endif -%}
+{%- assign tempo_hero_1 = section.settings.tempo_hero_1 -%}
+{%- if use_mf and hi.tempo_hero_1 != blank -%}{%- assign tempo_hero_1 = hi.tempo_hero_1 -%}{%- endif -%}
+{%- assign tempo_hero_2 = section.settings.tempo_hero_2 -%}
+{%- if use_mf and hi.tempo_hero_2 != blank -%}{%- assign tempo_hero_2 = hi.tempo_hero_2 -%}{%- endif -%}
+{%- assign tempo_hero_3 = section.settings.tempo_hero_3 -%}
+{%- if use_mf and hi.tempo_hero_3 != blank -%}{%- assign tempo_hero_3 = hi.tempo_hero_3 -%}{%- endif -%}
+{%- assign tempo_product_image = section.settings.tempo_product_image -%}
+{%- if use_mf and hi.tempo_product_image != blank -%}{%- assign tempo_product_image = hi.tempo_product_image -%}{%- endif -%}
+{%- assign tp_product = blank -%}
+{%- if ht.selected_product != blank -%}{%- assign tp_product = all_products[ht.selected_product] -%}{%- endif -%}
+{%- if tp_product == blank and collections.all.products.first != blank -%}{%- assign tp_product = collections.all.products.first -%}{%- endif -%}
+{%- assign tp_url = routes.all_products_collection_url | default: '/collections/all' -%}
+{%- assign tp_title = section.settings.fallback_title -%}
+{%- assign tp_price = section.settings.fallback_price -%}
+{%- assign tp_compare = section.settings.fallback_compare -%}
+{%- if tp_product != blank and tp_product.title != blank -%}
+  {%- assign tp_url = tp_product.url -%}
+  {%- assign tp_title = tp_product.title -%}
+  {%- assign tp_price = tp_product.price | money -%}
+  {%- assign tp_compare = blank -%}
+  {%- if tp_product.compare_at_price > tp_product.price -%}{%- assign tp_compare = tp_product.compare_at_price | money -%}{%- endif -%}
+{%- endif -%}
+<section class="tp tp-gallery">
+  <div class="tp-wrap">
+    <header class="tp-sechead tp-reveal">
+      {%- if gallery_label != blank -%}<p class="tp-label">{{ gallery_label | escape }}</p>{%- endif -%}
+      <h2 class="tp-h2">{{ gallery_heading | escape }}</h2>
+    </header>
+    <ul class="tp-gallery__grid tp-reveal" role="list">
+      {%- if gallery_1_title != blank -%}<li><a class="tp-card" href="{{ tp_url }}"><span class="tp-card__img">{%- if tempo_hero_1 != blank -%}{%- if tempo_hero_1 contains 'http' or tempo_hero_1 contains '//' -%}<img class="tp-cut" src="{{ tempo_hero_1 }}" alt="{{ gallery_1_title | escape }}" loading="lazy" width="700" height="700" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_hero_1 | image_url: width: 700 }}" alt="{{ gallery_1_title | escape }}" loading="lazy" width="700" height="700" decoding="async">{%- endif -%}{%- endif -%}</span><span class="tp-card__body"><span class="tp-card__title">{{ gallery_1_title | escape }}</span><strong class="tp-card__sub">{{ gallery_1_text | escape }}</strong></span></a></li>{%- endif -%}
+      {%- if gallery_2_title != blank -%}<li><a class="tp-card" href="{{ tp_url }}"><span class="tp-card__img">{%- if tempo_hero_2 != blank -%}{%- if tempo_hero_2 contains 'http' or tempo_hero_2 contains '//' -%}<img class="tp-cut" src="{{ tempo_hero_2 }}" alt="{{ gallery_2_title | escape }}" loading="lazy" width="700" height="700" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_hero_2 | image_url: width: 700 }}" alt="{{ gallery_2_title | escape }}" loading="lazy" width="700" height="700" decoding="async">{%- endif -%}{%- endif -%}</span><span class="tp-card__body"><span class="tp-card__title">{{ gallery_2_title | escape }}</span><strong class="tp-card__sub">{{ gallery_2_text | escape }}</strong></span></a></li>{%- endif -%}
+      {%- if gallery_3_title != blank -%}<li><a class="tp-card" href="{{ tp_url }}"><span class="tp-card__img">{%- if tempo_hero_3 != blank -%}{%- if tempo_hero_3 contains 'http' or tempo_hero_3 contains '//' -%}<img class="tp-cut" src="{{ tempo_hero_3 }}" alt="{{ gallery_3_title | escape }}" loading="lazy" width="700" height="700" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_hero_3 | image_url: width: 700 }}" alt="{{ gallery_3_title | escape }}" loading="lazy" width="700" height="700" decoding="async">{%- endif -%}{%- endif -%}</span><span class="tp-card__body"><span class="tp-card__title">{{ gallery_3_title | escape }}</span><strong class="tp-card__sub">{{ gallery_3_text | escape }}</strong></span></a></li>{%- endif -%}
+      {%- if gallery_4_title != blank -%}<li><a class="tp-card" href="{{ tp_url }}"><span class="tp-card__img">{%- if tempo_product_image != blank -%}{%- if tempo_product_image contains 'http' or tempo_product_image contains '//' -%}<img class="tp-cut" src="{{ tempo_product_image }}" alt="{{ gallery_4_title | escape }}" loading="lazy" width="700" height="700" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_product_image | image_url: width: 700 }}" alt="{{ gallery_4_title | escape }}" loading="lazy" width="700" height="700" decoding="async">{%- endif -%}{%- endif -%}</span><span class="tp-card__body"><span class="tp-card__title">{{ gallery_4_title | escape }}</span><strong class="tp-card__sub">{{ gallery_4_text | escape }}</strong></span></a></li>{%- endif -%}
+    </ul>
+  </div>
+</section>
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.tp) { --tp-peach: #FAF1ED; --tp-navy: #06264B; --tp-navy-deep: #05264D; --tp-orange: #FC6539; --tp-orange-text: #CF4318; --tp-ink: #222222; --tp-grey: #F1F1F1; --tp-grey-2: #EEEEEE; --tp-line: #EAEAEA; --tp-blob: #FBC3B3; --tp-serif: "Playfair Display", Georgia, "Times New Roman", serif; --tp-sans: "Poppins", "Helvetica Neue", Arial, sans-serif; --tp-pad: clamp(20px, 7.32vw, 100px); font-family: var(--tp-sans); font-size: 16px; line-height: 1.7; color: var(--tp-navy); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .tp *, .tp *::before, .tp *::after { box-sizing: border-box; }
+  :where(.tp) :where(h1, h2, h3, p, ul, ol, dl, dd, figure) { margin: 0; padding: 0; }
+  :where(.tp) :where(ul, ol) { list-style: none; }
+  :where(.tp) img { display: block; max-width: 100%; }
+  .tp-wrap { width: 100%; max-width: 1366px; margin-inline: auto; padding-inline: var(--tp-pad); }
+  .tp-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tp-label { font: 400 18px/1.4 var(--tp-sans); text-transform: uppercase; color: var(--tp-orange-text); }
+  .tp-h2 { font: 700 clamp(32px, 3.7vw, 50px)/1.2 var(--tp-serif); color: var(--tp-navy); text-wrap: balance; }
+  .tp-sechead { display: grid; justify-items: center; gap: 12px; margin-bottom: clamp(36px, 5vw, 64px); text-align: center; }
+  .tp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 62px; padding: 0 40px; border: 0; border-radius: 999px; background: var(--tp-navy); color: var(--tp-orange); font: 500 18px/1 var(--tp-sans); text-decoration: none; cursor: pointer; transition: background .3s ease, color .3s ease, transform .3s ease, box-shadow .3s ease; }
+  .tp-btn:hover { background: var(--tp-orange); color: var(--tp-navy); transform: translateY(-2px); box-shadow: 0 12px 26px rgb(252 101 57 / .32); }
+  .tp-btn:focus-visible, .tp a:focus-visible, .tp button:focus-visible, .tp input:focus-visible { outline: 3px solid var(--tp-orange); outline-offset: 3px; }
+  .tp-ico { flex: none; }
+  .tp-cut { mix-blend-mode: multiply; }
+  .tp-rule { display: block; width: 70px; height: 4px; background: var(--tp-orange); }
+  @keyframes tp-reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tp-reveal { animation: tp-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) { .tp *, .tp *::before, .tp *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  .tp-gallery { padding-block: clamp(40px, 5vw, 70px) clamp(40px, 5vw, 70px); background: #fff; }
+  .tp-gallery__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px; align-items: start; }
+  .tp-card { display: block; border: 1px solid var(--tp-line); background: #fff; color: var(--tp-ink); text-decoration: none; transition: box-shadow .35s ease, transform .35s ease; }
+  .tp-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgb(6 38 75 / .12); }
+  .tp-card__img { position: relative; display: block; aspect-ratio: 9 / 10; background: var(--tp-grey-2); }
+  .tp-card__img img { position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px); object-fit: contain; }
+  .tp-card__body { display: grid; gap: 4px; padding: 20px 20px 22px; }
+  .tp-card__title { font-size: 18px; line-height: 1.4; color: #333; }
+  .tp-card__sub { font: 600 20px/1.3 var(--tp-sans); color: var(--tp-orange-text); }
+  @media (max-width: 1023px) { .tp-gallery__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 479px) { .tp-gallery__grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if tp_html contains 'ا' or tp_html contains 'ل' or tp_html contains 'ي' or tp_html contains 'ة' -%}
+<div class="tp-rtl" dir="rtl" style="display: contents">{{ tp_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .tp-rtl:is(#tp-rtl, *), .tp-rtl:is(#tp-rtl, *) * { letter-spacing: 0 !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3, p, li, span, a, button, strong, label, input, div) { font-family: "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3) { line-height: 1.35 !important; }
+  .tp-rtl:is(#tp-rtl, *) .tp-btn svg { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ tp_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Tempo Gallery",
+  "tag": "section",
+  "class": "roarr-tempo-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr generated content",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "gallery_label",
+      "label": "Label",
+      "default": "Awesome product"
+    },
+    {
+      "type": "text",
+      "id": "gallery_heading",
+      "label": "Heading",
+      "default": "Take A Closer Look"
+    },
+    {
+      "type": "text",
+      "id": "gallery_1_title",
+      "label": "Card 1 title",
+      "default": "Front view"
+    },
+    {
+      "type": "text",
+      "id": "gallery_1_text",
+      "label": "Card 1 text",
+      "default": "See it up close"
+    },
+    {
+      "type": "text",
+      "id": "gallery_2_title",
+      "label": "Card 2 title",
+      "default": "Side view"
+    },
+    {
+      "type": "text",
+      "id": "gallery_2_text",
+      "label": "Card 2 text",
+      "default": "Every angle covered"
+    },
+    {
+      "type": "text",
+      "id": "gallery_3_title",
+      "label": "Card 3 title",
+      "default": "Detail view"
+    },
+    {
+      "type": "text",
+      "id": "gallery_3_text",
+      "label": "Card 3 text",
+      "default": "Finish you can feel"
+    },
+    {
+      "type": "text",
+      "id": "gallery_4_title",
+      "label": "Card 4 title",
+      "default": "Studio view"
+    },
+    {
+      "type": "text",
+      "id": "gallery_4_text",
+      "label": "Card 4 text",
+      "default": "Just as pictured"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_hero_1",
+      "label": "Card 1 image"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_hero_2",
+      "label": "Card 2 image"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_hero_3",
+      "label": "Card 3 image"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_product_image",
+      "label": "Card 4 image"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Product name when no product is found",
+      "default": "Your product"
+    },
+    {
+      "type": "text",
+      "id": "fallback_price",
+      "label": "Price when no product is found",
+      "default": "$49.00"
+    },
+    {
+      "type": "text",
+      "id": "fallback_compare",
+      "label": "Compare-at price when no product is found"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tempo Gallery"
+    }
+  ]
+}
+{% endschema %}

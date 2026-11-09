@@ -1,0 +1,45 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- capture track -%}
+  {%- for i in (1..4) -%}
+    {%- assign key = 'marquee_text_' | append: i -%}
+    {%- if ht[key] != blank -%}<span class="lx-mq__dash" aria-hidden="true">&ndash;</span><span class="lx-mq__item lx-serif">{{ ht[key] }}</span>{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture lx_html -%}
+<section class="lx-mq">
+  <div class="lx-mq__rail">
+    <div class="lx-mq__track">{{ track }}</div>
+    <div class="lx-mq__track" aria-hidden="true">{{ track }}</div>
+    <div class="lx-mq__track" aria-hidden="true">{{ track }}</div>
+  </div>
+</section>
+<style>
+  .lx .lx-mq { overflow: hidden; background: var(--lx-accent); color: #fff; }
+  .lx .lx-mq__rail { display: flex; width: max-content; animation: lx-mq 42s linear infinite; }
+  .lx .lx-mq:hover .lx-mq__rail { animation-play-state: paused; }
+  .lx .lx-mq__track { display: flex; align-items: center; flex: none; min-height: 68px; }
+  .lx .lx-mq__dash { padding-inline: 44px; color: #fff; }
+  .lx .lx-mq__item { font-size: 15.5px; font-weight: 500 !important; text-transform: uppercase; white-space: nowrap; color: #fff; }
+  @keyframes lx-mq { to { transform: translateX(-33.3333%); } }
+  .lx[dir="rtl"] .lx-mq__rail { animation-name: lx-mq-rtl; }
+  @keyframes lx-mq-rtl { to { transform: translateX(33.3333%); } }
+  @media (max-width: 749px) {
+    .lx .lx-mq__track { min-height: 50px; }
+    .lx .lx-mq__dash { padding-inline: 20px; }
+    .lx .lx-mq__item { font-size: 13px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Marquee",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Marquee" }]
+}
+{% endschema %}

@@ -46,6 +46,21 @@ export function liquidPreviewSectionIdToTemplatePath(sectionId) {
         if (slug.startsWith("pf-maison-")) {
             return `packs/maison/home/${slug}`;
         }
+        if (slug.startsWith("pf-tempo-")) {
+            return `packs/tempo/home/${slug}`;
+        }
+        if (slug.startsWith("pf-lustre-")) {
+            return `packs/lustre/home/${slug}`;
+        }
+        if (slug.startsWith("pf-velour-")) {
+            return `packs/velour/home/${slug}`;
+        }
+        if (slug.startsWith("pf-hearth-")) {
+            return `packs/hearth/home/${slug}`;
+        }
+        if (slug.startsWith("pf-simmer-")) {
+            return `packs/simmer/home/${slug}`;
+        }
         if (slug.includes("/")) {
             return slug;
         }
@@ -117,6 +132,14 @@ const LIQUID_TEMPLATE_DISPLAY_NAMES = {
     "packs/maison/home/pf-maison-promise": "Roarr - Maison Promises",
     "packs/maison/home/pf-maison-faq": "Roarr - Maison FAQ",
     "packs/maison/home/pf-maison-closing": "Roarr - Maison Closing",
+    "packs/tempo/home/pf-tempo-hero": "Roarr - Tempo Hero",
+    "packs/tempo/home/pf-tempo-arrivals": "Roarr - Tempo New Arrivals",
+    "packs/tempo/home/pf-tempo-features": "Roarr - Tempo Features",
+    "packs/tempo/home/pf-tempo-split": "Roarr - Tempo Split",
+    "packs/tempo/home/pf-tempo-showcase": "Roarr - Tempo Showcase",
+    "packs/tempo/home/pf-tempo-gallery": "Roarr - Tempo Gallery",
+    "packs/tempo/home/pf-tempo-stories": "Roarr - Tempo Stories",
+    "packs/tempo/home/pf-tempo-subscribe": "Roarr - Tempo Subscribe",
 
     "collection/pf-prem-collections": "Collections",
     "collection/collection-2": "Collection grid",

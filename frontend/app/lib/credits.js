@@ -48,6 +48,9 @@ export const AMOUR_SINGLE_STORE_CREDITS = 300;
 /** Maison (quiet-luxury homepage + simple product page) on single prepaid and COD. Mirrors backend MAISON_SINGLE_STORE_CREDITS. */
 export const MAISON_SINGLE_STORE_CREDITS = 300;
 
+/** Tempo (dark gadget homepage + simple product page) on single prepaid and COD. Mirrors backend TEMPO_SINGLE_STORE_CREDITS. */
+export const TEMPO_SINGLE_STORE_CREDITS = 300;
+
 export const CREDIT_PACKS_DEFAULT = Object.freeze({
   starter: {
     name: "Starter",
@@ -143,6 +146,10 @@ export function getStoreCreationCost(
   // Maison: homepage-only single store. Same 300 credits on prepaid and COD.
   if (mode === "single_product" && pack === "maison") {
     return MAISON_SINGLE_STORE_CREDITS;
+  }
+  // Tempo: homepage-only single store. Same 300 credits on prepaid and COD.
+  if (mode === "single_product" && pack === "tempo") {
+    return TEMPO_SINGLE_STORE_CREDITS;
   }
   // Linen is classic + Sleek. Same 300 credits on prepaid and COD.
   if (

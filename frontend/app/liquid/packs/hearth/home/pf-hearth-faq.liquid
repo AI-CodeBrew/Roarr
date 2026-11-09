@@ -1,0 +1,58 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- capture hh_html -%}
+{%- if ht.faq_q_1 != blank -%}
+<section class="hh-fq">
+  <div class="hh-wrap">
+    <h2 class="hh-title hh-fq__title">{{ ht.faq_heading }}</h2>
+    <div class="hh-fq__list" data-hh-fold>
+      {%- for i in (1..4) -%}
+        {%- assign q_key = 'faq_q_' | append: i -%}
+        {%- assign a_key = 'faq_a_' | append: i -%}
+        {%- if ht[q_key] != blank -%}
+          <div class="hh-fq__item{% if i == 1 %} is-open{% endif %}" data-hh-fold-item>
+            <h3 class="hh-fq__h"><button class="hh-fq__q" type="button" aria-expanded="{% if i == 1 %}true{% else %}false{% endif %}"><span>{{ ht[q_key] }}</span><i aria-hidden="true"></i></button></h3>
+            <div class="hh-fq__fold"><div><p class="hh-fq__a">{{ ht[a_key] }}</p></div></div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .hh .hh-fq { padding-block: 120px 92px; background: var(--hh-panel); }
+  .hh .hh-fq__title { margin-top: 0; text-align: center; }
+  .hh .hh-fq__list { width: min(100%, 970px); margin: 20px auto 0; }
+  .hh .hh-fq__item { border-bottom: 1px solid var(--hh-line); }
+  .hh .hh-fq__item:last-child { border-bottom: 0; }
+  .hh .hh-fq__h { font-size: inherit; }
+  .hh .hh-fq__q { display: flex; align-items: center; justify-content: space-between; gap: 25px; width: 100%; padding: 29px 0; border: 0; background: none; font-size: 15.36px; line-height: 23px; font-weight: 500; text-align: start; color: var(--hh-ink); cursor: pointer; transition: color .2s ease; }
+  .hh .hh-fq__q:hover { color: var(--hh-accent); }
+  .hh .hh-fq__q i { position: relative; flex: none; width: 13px; height: 13px; }
+  .hh .hh-fq__q i::before, .hh .hh-fq__q i::after { content: ""; position: absolute; inset-inline-start: 0; top: 6px; width: 13px; height: 1.5px; background: currentColor; transition: transform .3s ease; }
+  .hh .hh-fq__q i::after { transform: rotate(90deg); }
+  .hh .hh-fq__item.is-open .hh-fq__q i::after { transform: none; }
+  .hh .hh-fq__fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease, margin-top .3s ease; }
+  .hh .hh-fq__item.is-open .hh-fq__fold { grid-template-rows: 1fr; margin-top: -9px; }
+  .hh .hh-fq__fold > div { min-height: 0; overflow: hidden; }
+  .hh .hh-fq__a { padding-block-end: 30px; font-size: 13.44px; line-height: 20px; color: var(--hh-text); }
+  @media (max-width: 749px) {
+    .hh .hh-fq { padding-block: 60px; }
+    .hh .hh-fq__list { margin-top: 26px; }
+    .hh .hh-fq__q { padding: 20px 0; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth FAQ",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Hearth FAQ" }]
+}
+{% endschema %}

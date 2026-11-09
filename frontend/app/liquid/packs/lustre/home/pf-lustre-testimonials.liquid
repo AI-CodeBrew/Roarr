@@ -1,0 +1,73 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture lx_html -%}
+<section class="lx-section lx-ts">
+  <div class="lx-wrap">
+    <div class="lx-head">
+      <h2 class="lx-head__title">{{ ht.testimonials_heading }}</h2>
+      {%- if ht.testimonials_text != blank -%}<p class="lx-head__text">{{ ht.testimonials_text }}</p>{%- endif -%}
+    </div>
+    <div class="lx-ts__grid">
+      {%- for i in (1..2) -%}
+        {%- assign name_key = 'customer_name_' | append: i -%}
+        {%- assign review_key = 'customer_review_' | append: i -%}
+        {%- assign role_key = 'customer_role_' | append: i -%}
+        {%- assign avatar_key = 'customer_avatar_' | append: i -%}
+        {%- if ht[review_key] != blank -%}
+          <figure class="lx-ts__card">
+            <span class="lx-ts__pic">
+              {%- if hi[avatar_key] != blank -%}
+                {%- render 'snippets/roarr-lustre-img', src: hi[avatar_key], alt: ht[name_key], width: 320, lazy: true -%}
+              {%- else -%}
+                <span class="lx-ts__initial lx-serif" aria-hidden="true">{{ ht[name_key] | slice: 0 }}</span>
+              {%- endif -%}
+            </span>
+            <div>
+              <span class="lx-ts__stars" role="img" aria-label="5 / 5">★★★★★</span>
+              <blockquote class="lx-ts__quote">{{ ht[review_key] }}</blockquote>
+              <figcaption>
+                <span class="lx-ts__name lx-serif">{{ ht[name_key] }}</span>
+                {%- if ht[role_key] != blank -%}<span class="lx-ts__role">{{ ht[role_key] }}</span>{%- endif -%}
+              </figcaption>
+            </div>
+          </figure>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<style>
+  .lx .lx-section.lx-ts { margin-top: 40px; padding-block: 80px; background: var(--lx-tint); }
+  .lx .lx-ts__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; }
+  .lx .lx-ts__card { display: grid; grid-template-columns: 160px minmax(0, 1fr); align-items: center; gap: 40px; margin: 0; padding: 38px 40px; background: #fff; }
+  .lx .lx-ts__pic { display: grid; place-items: center; width: 160px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--lx-tint); }
+  .lx .lx-ts__pic img { width: 100%; height: 100%; object-fit: cover; }
+  .lx .lx-ts__initial { font-size: 48px; color: var(--lx-accent); }
+  .lx .lx-ts__stars { display: block; color: #ffb800; font-size: 16px; letter-spacing: 3px; line-height: 1; }
+  .lx .lx-ts__quote { margin: 14px 0 0; font-size: 15px; line-height: 25px; color: var(--lx-muted); }
+  .lx .lx-ts__name { display: block; margin-top: 14px; font-size: 18.5px; line-height: 1.35; color: var(--lx-ink); }
+  .lx .lx-ts__role { display: block; margin-top: 3px; font-size: 14px; color: var(--lx-muted); }
+  @media (max-width: 1100px) { .lx .lx-ts__grid { grid-template-columns: 1fr; } }
+  @media (max-width: 749px) {
+    .lx .lx-section.lx-ts { margin-top: 28px; padding-block: 44px; }
+    .lx .lx-ts__card { grid-template-columns: 76px minmax(0, 1fr); gap: 16px; padding: 20px 16px; align-items: start; }
+    .lx .lx-ts__pic { width: 76px; }
+    .lx .lx-ts__initial { font-size: 26px; }
+    .lx .lx-ts__quote { font-size: 14px; line-height: 22px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Testimonials",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Testimonials" }]
+}
+{% endschema %}

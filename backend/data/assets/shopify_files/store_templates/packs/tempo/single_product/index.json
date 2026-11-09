@@ -1,0 +1,62 @@
+{
+  "sections": {
+    "roarr-tempo-hero": {
+      "type": "roarr-tempo-hero",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-tempo-arrivals": {
+      "type": "roarr-tempo-arrivals",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-tempo-features": {
+      "type": "roarr-tempo-features",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-tempo-split": {
+      "type": "roarr-tempo-split",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-tempo-showcase": {
+      "type": "roarr-tempo-showcase",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-tempo-gallery": {
+      "type": "roarr-tempo-gallery",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-tempo-stories": {
+      "type": "roarr-tempo-stories",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    },
+    "roarr-tempo-subscribe": {
+      "type": "roarr-tempo-subscribe",
+      "settings": {
+        "use_roarr_metafields": true
+      }
+    }
+  },
+  "order": [
+    "roarr-tempo-hero",
+    "roarr-tempo-arrivals",
+    "roarr-tempo-features",
+    "roarr-tempo-split",
+    "roarr-tempo-showcase",
+    "roarr-tempo-gallery",
+    "roarr-tempo-stories",
+    "roarr-tempo-subscribe"
+  ]
+}

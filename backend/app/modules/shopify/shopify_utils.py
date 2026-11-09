@@ -110,10 +110,12 @@ def _detect_image_extension_from_url(image_url: str, timeout: int = 20) -> Optio
 class ShopifyUtils:
     def __init__(self):
         # Remove hardcoded credentials - will use user-specific credentials
-        self.api_version = "2025-10"
+        self.api_version = "2026-01"
         self._theme_cli_failed_until: Dict[str, float] = {}
         # user_id -> time until which theme writes are known to be refused by Shopify.
         self._theme_write_blocked_until: Dict[str, float] = {}
+        # user_id -> shop GID (gid://shopify/Shop/...), for metafieldsSet owner ids.
+        self._shop_gid_cache: Dict[str, str] = {}
 
     def _to_gid(self, resource: str, resource_id: str) -> str:
         if not resource_id:
@@ -715,53 +717,126 @@ class ShopifyUtils:
             logger.error(f"Error getting products for user {user_id}: {e}")
             return []
 
+    def _collection_products_graphql(
+        self, collection_gid: str, limit: int, user_id: str
+    ) -> List[Dict[str, Any]]:
+        """Products of one collection via GraphQL, shaped like the old REST product dicts."""
+        query = """
+        query CollectionProducts($id: ID!, $first: Int!, $after: String) {
+          collection(id: $id) {
+            products(first: $first, after: $after) {
+              pageInfo { hasNextPage endCursor }
+              nodes {
+                id
+                title
+                descriptionHtml
+                vendor
+                productType
+                tags
+                status
+                createdAt
+                updatedAt
+                media(first: 3) {
+                  nodes { ... on MediaImage { image { url } } }
+                }
+              }
+            }
+          }
+        }
+        """
+        out: List[Dict[str, Any]] = []
+        cursor: Optional[str] = None
+        remaining = max(int(limit), 0)
+        while remaining > 0:
+            variables: Dict[str, Any] = {"id": collection_gid, "first": min(50, remaining)}
+            if cursor:
+                variables["after"] = cursor
+            result = self._make_graphql_request(query, variables, user_id)
+            conn = ((((result or {}).get("data") or {}).get("collection")) or {}).get("products") or {}
+            for node in conn.get("nodes") or []:
+                urls = [
+                    ((m or {}).get("image") or {}).get("url")
+                    for m in ((node.get("media") or {}).get("nodes") or [])
+                ]
+                urls = [u for u in urls if u]
+                out.append(
+                    {
+                        "id": self._from_gid(node.get("id")),
+                        "title": node.get("title") or "",
+                        "body_html": node.get("descriptionHtml") or "",
+                        "vendor": node.get("vendor") or "",
+                        "product_type": node.get("productType") or "",
+                        "tags": node.get("tags") or [],
+                        "image": urls[0] if urls else None,
+                        "images": [{"src": u} for u in urls],
+                        "status": (node.get("status") or "").lower() or "active",
+                        "created_at": node.get("createdAt"),
+                        "updated_at": node.get("updatedAt"),
+                    }
+                )
+            remaining -= min(50, remaining)
+            page = conn.get("pageInfo") or {}
+            if not page.get("hasNextPage"):
+                break
+            cursor = page.get("endCursor")
+        return out
+
     def get_collections_with_products(
         self,
         user_id: str,
         per_collection_product_limit: int = 250,
     ) -> List[Dict[str, Any]]:
         """
-        Fetch both custom and smart collections and attach collection products.
+        Fetch the shop's collections (manual and smart) and attach each collection's products.
+        Uses the GraphQL Admin API; the result keeps the shape the collections agent expects.
         """
         try:
-            custom_resp = self._make_request(
-                "custom_collections.json?limit=250&fields=id,title,body_html,handle,image,updated_at,published_at",
-                "GET",
-                user_id=user_id,
-            )
-            smart_resp = self._make_request(
-                "smart_collections.json?limit=250&fields=id,title,body_html,handle,image,updated_at,published_at",
-                "GET",
-                user_id=user_id,
-            )
-            custom_collections = custom_resp.get("custom_collections", []) or []
-            smart_collections = smart_resp.get("smart_collections", []) or []
-            all_collections = custom_collections + smart_collections
-            results: List[Dict[str, Any]] = []
+            query = """
+            query Collections($first: Int!, $after: String) {
+              collections(first: $first, after: $after) {
+                pageInfo { hasNextPage endCursor }
+                nodes {
+                  id
+                  title
+                  descriptionHtml
+                  handle
+                  updatedAt
+                  image { url }
+                }
+              }
+            }
+            """
+            nodes: List[Dict[str, Any]] = []
+            cursor: Optional[str] = None
+            while len(nodes) < 250:
+                variables: Dict[str, Any] = {"first": 50}
+                if cursor:
+                    variables["after"] = cursor
+                result = self._make_graphql_request(query, variables, user_id)
+                conn = ((result or {}).get("data") or {}).get("collections") or {}
+                nodes.extend(conn.get("nodes") or [])
+                page = conn.get("pageInfo") or {}
+                if not page.get("hasNextPage"):
+                    break
+                cursor = page.get("endCursor")
 
-            for col in all_collections:
-                cid = col.get("id")
-                if not cid:
+            results: List[Dict[str, Any]] = []
+            for col in nodes[:250]:
+                gid = col.get("id")
+                if not gid:
                     continue
-                image_obj = col.get("image") or {}
-                image_src = image_obj.get("src") if isinstance(image_obj, dict) else None
-                products = self._fetch_all_paginated(
-                    endpoint=(
-                        f"collections/{cid}/products.json?limit={int(per_collection_product_limit)}"
-                        "&fields=id,title,body_html,vendor,product_type,tags,image,images,updated_at,created_at,status"
-                    ),
-                    user_id=user_id,
-                    resource_key="products",
+                products = self._collection_products_graphql(
+                    gid, int(per_collection_product_limit), user_id
                 )
                 results.append(
                     {
-                        "id": str(cid),
+                        "id": str(self._from_gid(gid)),
                         "title": col.get("title") or "",
-                        "description": col.get("body_html") or "",
+                        "description": col.get("descriptionHtml") or "",
                         "handle": col.get("handle"),
-                        "image": image_src,
-                        "updated_at": col.get("updated_at"),
-                        "published_at": col.get("published_at"),
+                        "image": ((col.get("image") or {}).get("url")),
+                        "updated_at": col.get("updatedAt"),
+                        "published_at": None,
                         "products": products,
                     }
                 )
@@ -774,6 +849,87 @@ class ShopifyUtils:
             logger.error(f"Error fetching collections for user {user_id}: {e}")
             return []
 
+    def publish_collection_to_online_store(
+        self, collection_id: str, user_id: str
+    ) -> Dict[str, Any]:
+        """
+        Publish a collection to the Online Store (GraphQL publishablePublish).
+
+        Collections created through the GraphQL Admin API are unpublished by default, whereas the
+        old REST create published them, so new collections are published explicitly.
+        """
+        try:
+            result = self._make_graphql_request(
+                "query { publications(first: 20) { nodes { id name } } }", None, user_id
+            )
+            nodes = (((result or {}).get("data") or {}).get("publications") or {}).get("nodes") or []
+            publication_gid = next(
+                (n.get("id") for n in nodes if (n or {}).get("name") == "Online Store"), None
+            )
+            if not publication_gid:
+                return {"success": False, "error": "Online Store publication not found"}
+
+            mutation = """
+            mutation PublishCollection($id: ID!, $pub: ID!) {
+              publishablePublish(id: $id, input: { publicationId: $pub }) {
+                publishable { ... on Collection { id } }
+                userErrors { field message }
+              }
+            }
+            """
+            gid = self._to_gid("Collection", str(collection_id).strip())
+            res = self._make_graphql_request(
+                mutation, {"id": gid, "pub": publication_gid}, user_id
+            )
+            payload = ((res or {}).get("data") or {}).get("publishablePublish") or {}
+            errors = payload.get("userErrors") or []
+            if errors:
+                return {
+                    "success": False,
+                    "error": "; ".join(str((e or {}).get("message")) for e in errors),
+                }
+            return {"success": True}
+        except Exception as e:
+            logger.warning(f"Could not publish collection {collection_id} to Online Store: {e}")
+            return {"success": False, "error": str(e)}
+
+    def _collection_update(
+        self, collection_id: str, fields: Dict[str, Any], user_id: str
+    ) -> Dict[str, Any]:
+        """collectionUpdate for manual or smart collections (one mutation for both types)."""
+        mutation = """
+        mutation CollectionUpdate($input: CollectionInput!) {
+          collectionUpdate(input: $input) {
+            collection {
+              id
+              image { url }
+              ruleSet { appliedDisjunctively }
+            }
+            userErrors { field message }
+          }
+        }
+        """
+        gid = self._to_gid("Collection", str(collection_id).strip())
+        result = self._make_graphql_request(
+            mutation, {"input": {"id": gid, **fields}}, user_id
+        )
+        payload = ((result or {}).get("data") or {}).get("collectionUpdate") or {}
+        errors = payload.get("userErrors") or []
+        if errors:
+            return {
+                "success": False,
+                "error": "; ".join(str(e.get("message")) for e in errors if e) or "collectionUpdate failed",
+            }
+        col = payload.get("collection") or {}
+        if not col.get("id"):
+            return {"success": False, "error": f"Unexpected response: {result}"}
+        return {
+            "success": True,
+            "collection_type": "smart" if col.get("ruleSet") else "custom",
+            "collection_id": str(self._from_gid(col.get("id")) or collection_id),
+            "image_url": (col.get("image") or {}).get("url"),
+        }
+
     def update_collection_image(
         self,
         *,
@@ -781,15 +937,7 @@ class ShopifyUtils:
         image_src: str,
         user_id: str,
     ) -> Dict[str, Any]:
-        """
-        Set/replace the image for a collection in Shopify.
-
-        Shopify has two collection types with different REST endpoints:
-        - custom collections: PUT custom_collections/{id}.json
-        - smart collections:  PUT smart_collections/{id}.json
-
-        We don't always know the type, so we try custom first, then smart.
-        """
+        """Set/replace the image for a collection (manual or smart) via collectionUpdate."""
         try:
             cid = str(collection_id).strip()
             src = str(image_src).strip()
@@ -797,49 +945,14 @@ class ShopifyUtils:
                 return {"success": False, "error": "collection_id is required"}
             if not src:
                 return {"success": False, "error": "image_src is required"}
-
-            payload_custom = {
-                "custom_collection": {"id": int(cid), "image": {"src": src}}
-            }
-            resp = self._make_request(
-                f"custom_collections/{cid}.json",
-                method="PUT",
-                data=payload_custom,
-                user_id=user_id,
-            )
-            if isinstance(resp, dict) and resp.get("custom_collection"):
-                cc = resp.get("custom_collection") or {}
-                image_obj = cc.get("image") or {}
-                image_url = image_obj.get("src") if isinstance(image_obj, dict) else None
-                return {
-                    "success": True,
-                    "collection_type": "custom",
-                    "collection_id": str(cc.get("id") or cid),
-                    "image_src": image_url or src,
-                }
-
-            # Fall back to smart collection update (best effort)
-            payload_smart = {"smart_collection": {"id": int(cid), "image": {"src": src}}}
-            resp2 = self._make_request(
-                f"smart_collections/{cid}.json",
-                method="PUT",
-                data=payload_smart,
-                user_id=user_id,
-            )
-            if isinstance(resp2, dict) and resp2.get("smart_collection"):
-                sc = resp2.get("smart_collection") or {}
-                image_obj = sc.get("image") or {}
-                image_url = image_obj.get("src") if isinstance(image_obj, dict) else None
-                return {
-                    "success": True,
-                    "collection_type": "smart",
-                    "collection_id": str(sc.get("id") or cid),
-                    "image_src": image_url or src,
-                }
-
+            res = self._collection_update(cid, {"image": {"src": src}}, user_id)
+            if not res.get("success"):
+                return res
             return {
-                "success": False,
-                "error": f"Unexpected response updating collection image: {resp or resp2}",
+                "success": True,
+                "collection_type": res["collection_type"],
+                "collection_id": res["collection_id"],
+                "image_src": res.get("image_url") or src,
             }
         except Exception as e:
             logger.error(f"Error updating collection image: {e}")
@@ -854,7 +967,7 @@ class ShopifyUtils:
     ) -> Dict[str, Any]:
         """
         Set collection description from plain text. Stored as minimal HTML in Shopify
-        (single <p>), since body_html expects HTML.
+        (single <p>), since descriptionHtml expects HTML.
         """
         try:
             cid = str(collection_id).strip()
@@ -863,43 +976,15 @@ class ShopifyUtils:
                 return {"success": False, "error": "collection_id is required"}
             if not raw:
                 return {"success": False, "error": "plain_text is required"}
-
-            body_html = f"<p>{html.escape(raw)}</p>"
-            payload_custom = {
-                "custom_collection": {"id": int(cid), "body_html": body_html}
-            }
-            resp = self._make_request(
-                f"custom_collections/{cid}.json",
-                method="PUT",
-                data=payload_custom,
-                user_id=user_id,
+            res = self._collection_update(
+                cid, {"descriptionHtml": f"<p>{html.escape(raw)}</p>"}, user_id
             )
-            if isinstance(resp, dict) and resp.get("custom_collection"):
-                return {
-                    "success": True,
-                    "collection_type": "custom",
-                    "collection_id": str((resp.get("custom_collection") or {}).get("id") or cid),
-                }
-
-            payload_smart = {
-                "smart_collection": {"id": int(cid), "body_html": body_html}
-            }
-            resp2 = self._make_request(
-                f"smart_collections/{cid}.json",
-                method="PUT",
-                data=payload_smart,
-                user_id=user_id,
-            )
-            if isinstance(resp2, dict) and resp2.get("smart_collection"):
-                return {
-                    "success": True,
-                    "collection_type": "smart",
-                    "collection_id": str((resp2.get("smart_collection") or {}).get("id") or cid),
-                }
-
+            if not res.get("success"):
+                return res
             return {
-                "success": False,
-                "error": f"Unexpected response updating collection description: {resp or resp2}",
+                "success": True,
+                "collection_type": res["collection_type"],
+                "collection_id": res["collection_id"],
             }
         except Exception as e:
             logger.error(f"Error updating collection description: {e}")
@@ -1171,7 +1256,7 @@ class ShopifyUtils:
             raise Exception(f"Failed to get product details: {str(e)}")
 
     def validate_shopify_connection(
-        self, shop_url, access_token, api_version="2025-10"
+        self, shop_url, access_token, api_version="2026-01"
     ):
         try:
             # Normalize shop domain
@@ -1499,28 +1584,57 @@ class ShopifyUtils:
             logger.error(f"Error publishing theme live: {e}")
             return {"success": False, "error": str(e)}
 
+    def _get_shop_gid(self, user_id: str) -> Optional[str]:
+        cached = self._shop_gid_cache.get(user_id)
+        if cached:
+            return cached
+        result = self._make_graphql_request("query ShopId { shop { id } }", None, user_id)
+        gid = (((result or {}).get("data") or {}).get("shop") or {}).get("id")
+        if gid:
+            self._shop_gid_cache[user_id] = gid
+        return gid
+
     def set_shop_metafield(
         self, namespace: str, key: str, mtype: str, value: str, user_id: str
     ) -> Dict:
         """
-        Create or update a shop-level metafield.
+        Create or update a shop-level metafield (GraphQL metafieldsSet).
         """
         try:
-            data = {
-                "metafield": {
-                    "namespace": namespace,
-                    "key": key,
-                    "type": mtype,
-                    "value": value,
-                    "owner_resource": "shop",
-                }
+            owner_id = self._get_shop_gid(user_id)
+            if not owner_id:
+                return {"success": False, "error": "Could not resolve the shop id"}
+            mutation = """
+            mutation SetShopMetafield($metafields: [MetafieldsSetInput!]!) {
+              metafieldsSet(metafields: $metafields) {
+                metafields { id namespace key type value }
+                userErrors { field message code }
+              }
             }
-            resp = self._make_request(
-                "metafields.json", method="POST", data=data, user_id=user_id
-            )
-            if "metafield" in resp:
-                return {"success": True, "metafield": resp["metafield"]}
-            return {"success": False, "error": f"Unexpected response: {resp}"}
+            """
+            variables = {
+                "metafields": [
+                    {
+                        "ownerId": owner_id,
+                        "namespace": namespace,
+                        "key": key,
+                        "type": mtype,
+                        "value": value if isinstance(value, str) else json.dumps(value),
+                    }
+                ]
+            }
+            result = self._make_graphql_request(mutation, variables, user_id)
+            payload = ((result or {}).get("data") or {}).get("metafieldsSet") or {}
+            errors = payload.get("userErrors") or []
+            if errors:
+                return {
+                    "success": False,
+                    "error": "; ".join(str(e.get("message")) for e in errors if e) or "metafieldsSet failed",
+                }
+            saved = (payload.get("metafields") or [None])[0]
+            if saved:
+                return {"success": True, "metafield": saved}
+            return {"success": False, "error": f"Unexpected response: {result}"}
         except Exception as e:
             return {"success": False, "error": str(e)}
 
@@ -3109,22 +3223,11 @@ class ShopifyUtils:
             return {"success": False, "error": str(e)}
 
     def list_product_image_ids(self, product_id: str, user_id: str) -> List[str]:
-        """
-        List REST ProductImage IDs for a product.
-        This is used as a reliable fallback for "replace images".
-        """
+        """MediaImage ids for a product (GraphQL)."""
         try:
             if not product_id:
                 return []
-            pid = self._from_gid(str(product_id))
-            endpoint = f"products/{pid}/images.json?limit=250"
-            images = self._fetch_all_paginated(endpoint, user_id, "images") or []
-            ids: List[str] = []
-            for img in images:
-                img_id = (img or {}).get("id")
-                if img_id is not None:
-                    ids.append(str(img_id))
-            return ids
+            return self.get_product_media_image_ids(str(product_id), user_id, first=250)
         except Exception as e:
             logger.error(f"Error listing product images for product {product_id}: {e}")
             return []
@@ -3132,17 +3235,12 @@ class ShopifyUtils:
     def delete_product_image(
         self, product_id: str, image_id: str, user_id: str
     ) -> bool:
-        """
-        Delete a single REST ProductImage from a product.
-        """
+        """Delete a single product image (MediaImage) via productDeleteMedia."""
         try:
             if not product_id or not image_id:
                 return False
-            pid = self._from_gid(str(product_id))
-            iid = self._from_gid(str(image_id))
-            endpoint = f"products/{pid}/images/{iid}.json"
-            self._make_request(endpoint, method="DELETE", data=None, user_id=user_id)
-            return True
+            res = self.delete_product_media(str(product_id), [str(image_id)], user_id)
+            return bool(res.get("success")) and int(res.get("deleted_count") or 0) > 0
         except Exception as e:
             logger.warning(
                 f"Failed deleting product image {image_id} for product {product_id}: {e}"
@@ -3153,22 +3251,21 @@ class ShopifyUtils:
         self, product_id: str, user_id: str
     ) -> Dict[str, Any]:
         """
-        Delete all REST ProductImage images from a product.
+        Delete all images from a product (GraphQL productDeleteMedia).
         Returns counts and any failures.
         """
         image_ids = self.list_product_image_ids(product_id, user_id)
         if not image_ids:
             return {"success": True, "deleted_count": 0, "failed": []}
 
-        failed: List[str] = []
-        deleted = 0
-        for iid in image_ids:
-            ok = self.delete_product_image(product_id, iid, user_id)
-            if ok:
-                deleted += 1
-            else:
-                failed.append(str(iid))
-        return {"success": len(failed) == 0, "deleted_count": deleted, "failed": failed}
+        res = self.delete_product_media(str(product_id), image_ids, user_id)
+        deleted_ids = set(res.get("deleted_media_ids") or [])
+        failed = [str(i) for i in image_ids if i not in deleted_ids]
+        return {
+            "success": len(failed) == 0,
+            "deleted_count": len(deleted_ids),
+            "failed": failed,
+        }
 
     def _parse_next_link(self, link_header: str) -> str:
         """Parse Link header to get next page URL"""
@@ -3233,7 +3330,7 @@ class ShopifyUtils:
                 credentials = self._get_user_credentials(user_id)
                 shop_url = credentials["shop_url"]
                 access_token = credentials["access_token"]
-                api_version = credentials.get("api_version", "2025-10")
+                api_version = credentials.get("api_version", "2026-01")
 
                 # Ensure shop_url has https:// prefix
                 if not shop_url.startswith("http"):
@@ -4012,7 +4109,7 @@ class ShopifyUtils:
             """
             variables = {"id": product_gid}
 
-            graphql_url = f"https://{shop_domain}/admin/api/2025-10/graphql.json"
+            graphql_url = f"https://{shop_domain}/admin/api/2026-01/graphql.json"
             graphql_headers = {
                 "X-Shopify-Access-Token": access_token,
                 "Content-Type": "application/json",

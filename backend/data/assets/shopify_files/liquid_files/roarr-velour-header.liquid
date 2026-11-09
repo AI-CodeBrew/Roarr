@@ -1,0 +1,254 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign store_name = ht.store_name | default: shop.name -%}
+{%- assign menu_handle = section.settings.menu | default: 'main-menu' -%}
+{%- assign nav = linklists[menu_handle].links -%}
+{%- if nav == blank -%}{%- assign nav = homeData.demo_nav -%}{%- endif -%}
+{%- assign label_search = ht.label_search | default: 'Search' -%}
+{%- assign label_account = ht.label_account | default: 'Account' -%}
+{%- assign label_wishlist = ht.label_wishlist | default: 'Wishlist' -%}
+{%- assign label_cart = ht.label_cart | default: 'Cart' -%}
+{%- capture vr_html -%}
+{%- if section.settings.show_ticker != false and ht.ticker_text_1 != blank -%}
+  {%- capture ticker_items -%}{%- for i in (1..3) -%}{%- assign ticker_key = 'ticker_text_' | append: i -%}{%- if ht[ticker_key] != blank -%}<li>{{ ht[ticker_key] }}</li>{%- endif -%}{%- endfor -%}{%- endcapture -%}
+  <div class="vr-tk" role="region" aria-label="{{ ht.label_announcements | default: 'Announcements' | escape }}">
+    <div class="vr-tk__track">
+      <ul class="vr-tk__list">{{ ticker_items }}{{ ticker_items }}</ul>
+      <ul class="vr-tk__list" aria-hidden="true">{{ ticker_items }}{{ ticker_items }}</ul>
+    </div>
+  </div>
+{%- endif -%}
+<div class="vr-hd-slot{% if section.settings.overlay %} vr-hd-slot--over{% endif %}">
+  <header class="vr-hd{% if section.settings.overlay %} vr-hd--over{% endif %}" data-vr-header>
+    <div class="vr-hd__bar">
+      <div class="vr-hd__start">
+        <button class="vr-hd__tool vr-hd__burger" type="button" aria-label="Menu" data-vr-open="menu">{%- render 'roarr-velour-icon', name: 'menu', size: 26 -%}</button>
+        <button class="vr-hd__tool vr-hd__find" type="button" aria-label="{{ label_search | escape }}" data-vr-open="search">{%- render 'roarr-velour-icon', name: 'search', size: 22 -%}</button>
+        <nav class="vr-hd__nav" aria-label="Main">
+          <ul>
+            {%- for link in nav -%}
+              {%- assign has_cols = false -%}
+              {%- for child in link.links -%}{%- if child.links != blank -%}{%- assign has_cols = true -%}{%- endif -%}{%- endfor -%}
+              <li class="vr-hd__item{% if link.links != blank and has_cols == false %} vr-hd__item--drop{% endif %}">
+                <a class="vr-hd__link{% if link.active or link.current %} is-on{% endif %}" href="{{ link.url }}"><span>{{ link.title }}</span>{%- if link.links != blank -%}{%- render 'roarr-velour-icon', name: 'chevron', size: 12, stroke: 2 -%}{%- endif -%}</a>
+                {%- if link.links != blank -%}
+                  {%- if has_cols -%}
+                    <div class="vr-hd__mega">
+                      {%- capture lead -%}{%- for child in link.links -%}{%- if child.links == blank -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endif -%}{%- endfor -%}{%- endcapture -%}
+                      {%- if lead != blank -%}<ul class="vr-hd__lead">{{ lead }}</ul>{%- endif -%}
+                      {%- for child in link.links -%}
+                        {%- if child.links != blank -%}
+                          <div class="vr-hd__col">
+                            <a class="vr-hd__colhead" href="{{ child.url }}">{{ child.title }}</a>
+                            <ul>{%- for grand in child.links -%}<li><a href="{{ grand.url }}">{{ grand.title }}</a></li>{%- endfor -%}</ul>
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  {%- else -%}
+                    <ul class="vr-hd__drop">{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}</ul>
+                  {%- endif -%}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+      <a class="vr-hd__brand vr-logo" href="{{ routes.root_url | default: '/' }}">
+        {%- if shop.brand.logo != blank -%}
+          <img src="{{ shop.brand.logo | image_url: width: 320 }}" alt="{{ store_name | escape }}" width="{{ shop.brand.logo.width }}" height="{{ shop.brand.logo.height }}">
+        {%- else -%}
+          {{ store_name }}
+        {%- endif -%}
+      </a>
+      <div class="vr-hd__end">
+        <button class="vr-hd__tool vr-hd__tool--search" type="button" data-vr-open="search">{%- render 'roarr-velour-icon', name: 'search', size: 22 -%}<span>{{ label_search }}</span></button>
+        <a class="vr-hd__tool vr-hd__tool--account" href="{{ routes.account_url | default: '/account' }}">{%- render 'roarr-velour-icon', name: 'user', size: 22 -%}<span>{{ label_account }}</span></a>
+        <button class="vr-hd__tool vr-hd__tool--wish" type="button" data-vr-open="wishlist"><i class="vr-hd__ico">{%- render 'roarr-velour-icon', name: 'star', size: 22 -%}<b data-vr-wish-count>0</b></i><span>{{ label_wishlist }}</span></button>
+        <a class="vr-hd__tool" href="{{ routes.cart_url | default: '/cart' }}" data-vr-open="cart"><i class="vr-hd__ico">{%- render 'roarr-velour-icon', name: 'bag', size: 22 -%}<b data-vr-cart-count>{{ cart.item_count | default: 0 }}</b></i><span>{{ label_cart }}</span></a>
+      </div>
+    </div>
+  </header>
+</div>
+
+<nav class="vr-dock" aria-label="Shortcuts">
+  <a href="{{ routes.root_url | default: '/' }}">{%- render 'roarr-velour-icon', name: 'home', size: 24 -%}<span>{{ ht.label_home | default: 'Home' }}</span></a>
+  <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}">{%- render 'roarr-velour-icon', name: 'grid', size: 24 -%}<span>{{ ht.label_shopping | default: 'Shopping' }}</span></a>
+  <button type="button" data-vr-open="wishlist"><i class="vr-hd__ico">{%- render 'roarr-velour-icon', name: 'heart', size: 24 -%}<b data-vr-wish-count>0</b></i><span>{{ label_wishlist }}</span></button>
+  <a href="{{ routes.account_url | default: '/account' }}">{%- render 'roarr-velour-icon', name: 'user', size: 24 -%}<span>{{ label_account }}</span></a>
+</nav>
+
+<dialog class="vr-canvas vr-canvas--start" data-vr-dialog="menu" aria-label="Menu">
+  <div class="vr-panel-head"><h2>{{ ht.label_menu | default: 'Menu' }}</h2><button class="vr-x" type="button" aria-label="Close" data-vr-close>{%- render 'roarr-velour-icon', name: 'close', size: 18 -%}</button></div>
+  <ul class="vr-mnav">
+    {%- for link in nav -%}
+      <li>
+        {%- if link.links != blank -%}
+          <details>
+            <summary>{{ link.title }}{%- render 'roarr-velour-icon', name: 'plus', size: 16 -%}</summary>
+            <ul>
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- for child in link.links -%}
+                <li><a href="{{ child.url }}">{{ child.title }}</a>
+                  {%- if child.links != blank -%}<ul>{%- for grand in child.links -%}<li><a href="{{ grand.url }}">{{ grand.title }}</a></li>{%- endfor -%}</ul>{%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </details>
+        {%- else -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</dialog>
+
+<dialog class="vr-search" data-vr-dialog="search" aria-label="{{ label_search | escape }}">
+  <div class="vr-wrap vr-search__in">
+    <form action="{{ routes.search_url | default: '/search' }}" method="get" role="search">
+      <input class="vr-search__field" type="search" name="q" placeholder="{{ ht.label_search_placeholder | default: 'Search our store' | escape }}" aria-label="{{ label_search | escape }}" autocomplete="off">
+      <input type="hidden" name="type" value="product">
+      <button class="vr-search__go" type="submit" aria-label="{{ label_search | escape }}">{%- render 'roarr-velour-icon', name: 'search', size: 24 -%}</button>
+    </form>
+    <button class="vr-x" type="button" aria-label="Close" data-vr-close>{%- render 'roarr-velour-icon', name: 'close', size: 18 -%}</button>
+  </div>
+</dialog>
+
+<dialog class="vr-canvas" data-vr-dialog="cart" aria-label="{{ label_cart | escape }}">
+  <div class="vr-panel-head"><h2>{{ ht.label_cart_title | default: 'Shopping Cart' }}</h2><button class="vr-x" type="button" aria-label="Close" data-vr-close>{%- render 'roarr-velour-icon', name: 'close', size: 18 -%}</button></div>
+  <div class="vr-list" data-vr-cart-list></div>
+  <p class="vr-none" data-vr-cart-empty hidden>{{ ht.label_cart_empty | default: 'Your cart is empty.' }}</p>
+  <div class="vr-panel-foot" data-vr-cart-foot hidden>
+    <p class="vr-sub"><span>{{ ht.label_subtotal | default: 'Subtotal' }}</span><span data-vr-cart-total></span></p>
+    <a class="vr-btn vr-btn--dark" href="{{ routes.root_url | default: '/' }}checkout">{{ ht.label_checkout | default: 'Checkout' }}</a>
+    <a class="vr-btn vr-btn--line" href="{{ routes.cart_url | default: '/cart' }}">{{ ht.label_view_cart | default: 'View Cart' }}</a>
+  </div>
+</dialog>
+
+<dialog class="vr-canvas" data-vr-dialog="wishlist" aria-label="{{ label_wishlist | escape }}">
+  <div class="vr-panel-head"><h2>{{ label_wishlist }}</h2><button class="vr-x" type="button" aria-label="Close" data-vr-close>{%- render 'roarr-velour-icon', name: 'close', size: 18 -%}</button></div>
+  <div class="vr-list" data-vr-wish-list></div>
+  <p class="vr-none" data-vr-wish-empty>{{ ht.label_wishlist_empty | default: 'No saved styles yet.' }}</p>
+</dialog>
+
+<dialog class="vr-modal" data-vr-dialog="quick" aria-label="{{ ht.label_quick_view | default: 'Quick view' | escape }}" data-vr-label-add="{% render 'roarr-ui-string', key: 'add_to_cart' %}" data-vr-label-sold-out="{% render 'roarr-ui-string', key: 'sold_out' %}" data-vr-label-details="{{ ht.label_view_details | default: 'View full details' | escape }}">
+  <button class="vr-x vr-corner" type="button" aria-label="Close" data-vr-close>{%- render 'roarr-velour-icon', name: 'close', size: 18 -%}</button>
+  <div data-vr-quick-body></div>
+</dialog>
+
+<style>
+  /* Moving ticker above the header: three short lines, looping left, paused on hover. */
+  .vr .vr-tk { position: relative; z-index: 61; overflow: hidden; background: var(--vr-accent); color: var(--vr-ink); }
+  .vr .vr-tk__track { display: flex; width: max-content; animation: vr-tk 36s linear infinite; }
+  .vr[dir="rtl"] .vr-tk__track { animation-name: vr-tk-rtl; }
+  .vr .vr-tk:hover .vr-tk__track { animation-play-state: paused; }
+  .vr .vr-tk__list { display: flex; flex: none; gap: 64px; margin: 0; padding: 12px 32px; list-style: none; }
+  .vr .vr-tk__list li { display: flex; align-items: center; gap: 64px; font-size: 12px; line-height: 1; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+  .vr .vr-tk__list li::after { content: ""; width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .5; }
+  @keyframes vr-tk { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes vr-tk-rtl { from { transform: translateX(0); } to { transform: translateX(50%); } }
+  @media (prefers-reduced-motion: reduce) { .vr .vr-tk__track { animation: none; width: auto; justify-content: center; } .vr .vr-tk__list[aria-hidden="true"] { display: none; } }
+  .vr .vr-hd-slot { position: relative; height: 83px; }
+  .vr .vr-hd-slot--over { height: 0; }
+  .vr .vr-hd { position: relative; z-index: 60; color: var(--vr-ink); }
+  .vr .vr-hd--over { position: absolute; top: 20px; inset-inline: 75px; }
+  .vr .vr-hd__bar { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px; height: 83px; padding-inline: 15px; background: #fff; border-bottom: 1px solid #efefef; }
+  .vr .vr-hd--over .vr-hd__bar { padding-inline: 30px; border: 0; border-radius: 5px; box-shadow: 8px 10px 20px rgb(0 0 0 / .06); }
+  .vr .vr-hd__start { display: flex; align-items: center; gap: 14px; min-width: 0; }
+  .vr .vr-hd__end { display: flex; align-items: center; justify-content: flex-end; gap: 20px; min-width: 0; }
+  .vr .vr-hd__brand { font-size: 38px; line-height: 1; font-weight: 400; color: var(--vr-ink); white-space: nowrap; }
+  .vr .vr-hd__brand img { max-height: 46px; width: auto; }
+  .vr .vr-hd__nav > ul { display: flex; flex-wrap: nowrap; gap: 36px; }
+  .vr .vr-hd__item { position: static; }
+  .vr .vr-hd__item--drop { position: relative; }
+  .vr .vr-hd__link { position: relative; display: inline-flex; align-items: center; height: 83px; font-size: 15.36px; line-height: 23px; color: var(--vr-ink); }
+  .vr .vr-hd__link > span { position: relative; padding-block: 2px; }
+  .vr .vr-hd__link > span::after { content: ""; position: absolute; inset-inline-start: 0; bottom: 0; width: 0; height: 1px; background: currentColor; transition: width .3s ease; }
+  .vr .vr-hd__link.is-on > span::after, .vr .vr-hd__item:hover .vr-hd__link > span::after { width: 100%; }
+  .vr .vr-hd__link svg { position: absolute; top: calc(50% - 6px); inset-inline-start: calc(100% + 8px); transition: transform .3s ease; }
+  .vr .vr-hd__item:hover .vr-hd__link svg, .vr .vr-hd__item:focus-within .vr-hd__link svg { transform: rotate(180deg); }
+  .vr .vr-hd__mega, .vr .vr-hd__drop { position: absolute; top: 100%; z-index: 5; background: #fff; opacity: 0; visibility: hidden; transform: translateY(20px); transition: opacity .3s ease-in-out, transform .3s ease-in-out, visibility .3s ease-in-out; }
+  .vr .vr-hd__mega { inset-inline: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px; padding: 40px 55px; border-top: 1px solid #efefef; border-radius: 0 0 5px 5px; box-shadow: 8px 14px 24px rgb(0 0 0 / .08); }
+  .vr .vr-hd__drop { inset-inline-start: -20px; min-width: 230px; padding: 18px 0; border-radius: 0 0 5px 5px; box-shadow: 8px 14px 24px rgb(0 0 0 / .08); }
+  .vr .vr-hd__item:hover :is(.vr-hd__mega, .vr-hd__drop), .vr .vr-hd__item:focus-within :is(.vr-hd__mega, .vr-hd__drop) { opacity: 1; visibility: visible; transform: none; }
+  .vr .vr-hd__drop a { display: block; padding: 7px 20px; font-size: 13.44px; color: var(--vr-text); }
+  .vr .vr-hd__drop a:hover, .vr .vr-hd__mega a:hover { color: var(--vr-accent); }
+  .vr .vr-hd__lead li { margin-bottom: 24px; }
+  .vr .vr-hd__lead a, .vr .vr-hd__colhead { font-size: 15.36px; font-weight: 500; line-height: 24px; color: var(--vr-ink); }
+  .vr .vr-hd__colhead { display: block; margin-bottom: 22px; }
+  .vr .vr-hd__col li { margin-bottom: 14px; font-size: 13.44px; line-height: 20px; color: var(--vr-text); }
+  .vr .vr-hd__tool { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; color: var(--vr-ink); font-size: 12px; line-height: 1; cursor: pointer; white-space: nowrap; transition: color .2s ease; }
+  .vr .vr-hd__tool:hover { color: var(--vr-accent); }
+  .vr .vr-hd__ico { position: relative; display: inline-grid; font-style: normal; }
+  .vr .vr-hd__ico b { position: absolute; top: -9px; inset-inline-end: -8px; min-width: 16px; height: 16px; display: grid; place-items: center; padding-inline: 3px; border-radius: 999px; background: var(--vr-ink); color: #fff; font-size: 10px; font-weight: 600; line-height: 1; }
+  .vr .vr-hd__burger, .vr .vr-hd__find { display: none; }
+
+  @keyframes vr-hd-in { from { transform: translateY(-100%); } to { transform: none; } }
+  .vr .vr-hd.is-stuck { position: fixed; top: 0; inset-inline: 0; animation: vr-hd-in .35s ease both; }
+  .vr .vr-hd.is-stuck .vr-hd__bar { grid-template-columns: auto minmax(0, 1fr) auto; height: 60px; padding-inline: 15px; border: 0; border-radius: 0; box-shadow: 8px 10px 20px rgb(0 0 0 / .06); }
+  .vr .vr-hd.is-stuck .vr-hd__brand { order: -1; font-size: 32px; }
+  .vr .vr-hd.is-stuck .vr-hd__start { justify-content: center; }
+  .vr .vr-hd.is-stuck .vr-hd__link { height: 60px; }
+  .vr .vr-hd.is-stuck :is(.vr-hd__tool--search, .vr-hd__tool--account) { display: none; }
+
+  .vr .vr-dock { display: none; }
+  .vr .vr-mnav { flex: 1; overflow: auto; padding: 8px 24px 24px; }
+  .vr .vr-mnav > li { border-bottom: 1px solid var(--vr-line); }
+  .vr .vr-mnav > li > a, .vr .vr-mnav summary { display: flex; align-items: center; justify-content: space-between; padding-block: 15px; font-size: 15.36px; font-weight: 500; color: var(--vr-ink); list-style: none; cursor: pointer; }
+  .vr .vr-mnav summary::-webkit-details-marker { display: none; }
+  .vr .vr-mnav details[open] summary svg { transform: rotate(45deg); }
+  .vr .vr-mnav summary svg { transition: transform .25s ease; }
+  .vr .vr-mnav details ul { padding: 0 0 14px 14px; }
+  .vr .vr-mnav details a { display: block; padding-block: 7px; font-size: 14px; color: var(--vr-text); }
+  .vr .vr-mnav details ul ul { padding-bottom: 4px; }
+
+  .vr .vr-search { position: fixed; inset: 0 0 auto 0; width: 100%; margin: 0; padding-block: 34px; }
+  .vr .vr-search[open] { animation: vr-from-top .35s ease both; }
+  .vr .vr-search__in { display: flex; align-items: center; gap: 20px; }
+  .vr .vr-search form { position: relative; flex: 1; margin: 0; }
+  .vr .vr-search__field { width: 100%; height: 60px; padding-inline: 26px 60px; border: 1px solid var(--vr-line); border-radius: 50px; background: #fff; color: var(--vr-ink); font-size: 16px; outline: none; }
+  .vr .vr-search__field:focus { border-color: var(--vr-ink); }
+  .vr .vr-search__go { position: absolute; inset-inline-end: 18px; top: 18px; padding: 0; border: 0; background: none; color: var(--vr-ink); cursor: pointer; }
+
+  @media (max-width: 1240px) {
+    .vr .vr-hd--over { inset-inline: 20px; }
+    .vr .vr-hd__nav > ul { gap: 20px; }
+    .vr .vr-hd__tool > span { display: none; }
+  }
+  @media (max-width: 1024px) {
+    .vr .vr-hd-slot, .vr .vr-hd-slot--over { height: 60px; }
+    .vr .vr-hd--over { position: relative; top: auto; inset-inline: auto; }
+    .vr .vr-hd__bar, .vr .vr-hd--over .vr-hd__bar, .vr .vr-hd.is-stuck .vr-hd__bar { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); height: 60px; padding-inline: 15px; border: 0; border-radius: 0; box-shadow: none; }
+    .vr .vr-hd.is-stuck .vr-hd__brand { order: 0; }
+    .vr .vr-hd.is-stuck .vr-hd__start { justify-content: flex-start; }
+    .vr .vr-hd__nav, .vr .vr-hd__tool--search, .vr .vr-hd__tool--account, .vr .vr-hd__tool--wish { display: none; }
+    .vr .vr-hd__burger, .vr .vr-hd__find { display: inline-flex; }
+    .vr .vr-hd__brand, .vr .vr-hd.is-stuck .vr-hd__brand { font-size: 30px; }
+    .vr .vr-hd__brand img { max-height: 36px; }
+    .vr .vr-dock { position: fixed; inset-inline: 0; bottom: 0; z-index: 55; display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-top: 1px solid var(--vr-line); }
+    .vr .vr-dock > * { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 56px; padding: 0; border: 0; border-inline-start: 1px solid var(--vr-line); background: none; color: var(--vr-ink); font-size: 11px; line-height: 1; cursor: pointer; }
+    .vr .vr-dock > *:first-child { border-inline-start: 0; }
+    .vr .vr-dock span { font-size: 11px; color: var(--vr-text); }
+  }
+  @media (max-width: 749px) {
+    .vr .vr-search__field { height: 50px; font-size: 16px; }
+    .vr .vr-search__go { top: 13px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-velour-base', accent: ht.accent_color -%}
+{%- render 'roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "overlay", "label": "Float over the next section", "default": false },
+    { "type": "checkbox", "id": "show_ticker", "label": "Show the moving ticker", "info": "Shows the three ticker lines from your store text above the header.", "default": true }
+  ],
+  "presets": [{ "name": "Velour Header" }]
+}
+{% endschema %}

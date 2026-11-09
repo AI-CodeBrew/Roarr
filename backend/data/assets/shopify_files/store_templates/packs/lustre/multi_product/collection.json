@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "lustre-header": {
+      "type": "roarr-lustre-header",
+      "settings": {
+        "overlay": false
+      }
+    },
+    "lustre-collection": {
+      "type": "roarr-lustre-collection",
+      "settings": {
+        "per_page": 12
+      }
+    },
+    "lustre-footer": {
+      "type": "roarr-lustre-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "lustre-header",
+    "lustre-collection",
+    "lustre-footer"
+  ]
+}

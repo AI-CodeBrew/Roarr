@@ -1,0 +1,171 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign store_name = ht.store_name | default: shop.name -%}
+{%- assign menu_handle = section.settings.menu | default: 'main-menu' -%}
+{%- assign nav = linklists[menu_handle].links -%}
+{%- if nav == blank -%}{%- assign nav = homeData.demo_nav -%}{%- endif -%}
+{%- capture lx_html -%}
+<header class="lx-hd{% if section.settings.overlay %} lx-hd--overlay{% endif %}">
+  <div class="lx-wrap lx-hd__bar">
+    <details class="lx-hd__burger">
+      <summary aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </summary>
+      <nav class="lx-hd__drawer" aria-label="Menu">
+        <ul>
+          {%- for link in nav -%}
+            <li>
+              <a href="{{ link.url }}">{{ link.title }}</a>
+              {%- if link.links != blank -%}
+                <ul>{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}</ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </details>
+    <a class="lx-hd__logo lx-serif" href="{{ routes.root_url | default: '/' }}">
+      {%- if shop.brand.logo != blank -%}
+        <img src="{{ shop.brand.logo | image_url: width: 320 }}" alt="{{ store_name | escape }}" width="{{ shop.brand.logo.width }}" height="{{ shop.brand.logo.height }}">
+      {%- else -%}
+        {{ store_name }}
+      {%- endif -%}
+    </a>
+    <nav class="lx-hd__nav" aria-label="Main">
+      <ul>
+        {%- for link in nav -%}
+          <li class="lx-hd__item">
+            <a class="lx-serif" href="{{ link.url }}">{{ link.title }}{%- if link.links != blank -%}<svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 4.5 6 8.5l4-4"/></svg>{%- endif -%}</a>
+            {%- if link.links != blank -%}
+              <ul class="lx-hd__sub">{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}</ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+    <div class="lx-hd__icons">
+      <a href="{{ routes.search_url | default: '/search' }}" aria-label="Search">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.2-4.2"/></svg>
+      </a>
+      <a class="lx-hd__account" href="{{ routes.account_url | default: '/account' }}" aria-label="Account">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21v-1.5A5.5 5.5 0 0 1 10 14h4a5.5 5.5 0 0 1 5.5 5.5V21"/></svg>
+      </a>
+      <a href="{{ routes.cart_url | default: '/cart' }}" aria-label="Cart">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 8h14l1 13H4L5 8z"/><path d="M9 11V6a3 3 0 0 1 6 0v5"/></svg>
+        <span class="lx-hd__count" data-lx-cart-count>{{ cart.item_count | default: 0 }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+<dialog class="lx-wl" data-lx-wish-panel aria-label="Wishlist">
+  <div class="lx-wl__head">
+    <h2 class="lx-serif">{{ ht.label_wishlist | default: 'Wishlist' }}</h2>
+    <button type="button" data-lx-wish-close aria-label="Close">&times;</button>
+  </div>
+  <ul class="lx-wl__list" data-lx-wish-list></ul>
+  <p class="lx-wl__empty" data-lx-wish-empty>{{ ht.label_wishlist_empty | default: 'No saved pieces yet.' }}</p>
+</dialog>
+<style>
+  .lx .lx-hd { position: relative; z-index: 50; background: var(--lx-accent); color: #fff; }
+  .lx .lx-hd--overlay { position: absolute; inset-inline: 0; top: 0; background: transparent; }
+  .lx .lx-hd__bar { display: flex; align-items: center; gap: 44px; min-height: 90px; }
+  .lx .lx-hd__logo { font-size: 31px; line-height: 1; color: #fff; white-space: nowrap; }
+  .lx .lx-hd__logo img { max-height: 44px; width: auto; }
+  .lx .lx-hd__nav { flex: 1; min-width: 0; }
+  .lx .lx-hd__nav > ul { display: flex; flex-wrap: wrap; gap: 6px 50px; }
+  .lx .lx-hd__item { position: relative; }
+  .lx .lx-hd__item > a { display: inline-flex; align-items: center; gap: 5px; padding-block: 8px; font-size: 15px; font-weight: 500 !important; color: #fff; }
+  .lx .lx-hd__sub { position: absolute; top: 100%; inset-inline-start: -18px; z-index: 5; min-width: 210px; padding: 10px 0; background: #fff; color: var(--lx-ink); box-shadow: 0 10px 30px rgb(0 0 0 / .12); opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .18s ease, transform .18s ease; }
+  .lx .lx-hd__sub a { display: block; padding: 7px 18px; font-size: 14px; color: var(--lx-ink); }
+  .lx .lx-hd__sub a:hover { color: var(--lx-accent); }
+  .lx .lx-hd__item:hover .lx-hd__sub, .lx .lx-hd__item:focus-within .lx-hd__sub { opacity: 1; visibility: visible; transform: none; }
+  .lx .lx-hd__icons { display: flex; align-items: center; gap: 28px; margin-inline-start: auto; }
+  .lx .lx-hd__icons a, .lx .lx-hd__wish { position: relative; display: grid; place-items: center; padding: 0; border: 0; background: none; color: #fff; cursor: pointer; }
+  .lx .lx-hd__count { position: absolute; top: -9px; inset-inline-end: -8px; min-width: 16px; height: 16px; display: grid; place-items: center; padding-inline: 3px; border-radius: 999px; background: #fff; color: var(--lx-ink); font-size: 10px; font-weight: 600; line-height: 1; }
+  .lx .lx-hd__burger { display: none; }
+  .lx .lx-hd__burger summary { display: grid; place-items: center; list-style: none; cursor: pointer; }
+  .lx .lx-hd__burger summary::-webkit-details-marker { display: none; }
+  .lx .lx-hd__drawer { position: absolute; top: 100%; inset-inline: 0; z-index: 60; max-height: 75vh; overflow: auto; padding: 14px 16px 20px; background: #fff; color: var(--lx-ink); box-shadow: 0 12px 24px rgb(0 0 0 / .12); }
+  .lx .lx-hd__drawer a { display: block; padding: 10px 0; font-size: 15px; color: var(--lx-ink); }
+  .lx .lx-hd__drawer ul ul { padding-inline-start: 14px; }
+  .lx .lx-wl { width: min(420px, calc(100% - 32px)); max-height: 80vh; padding: 22px; border: 0; color: var(--lx-ink); }
+  .lx .lx-wl::backdrop { background: rgb(0 0 0 / .45); }
+  .lx .lx-wl__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .lx .lx-wl__head h2 { font-size: 22px; }
+  .lx .lx-wl__head button { border: 0; background: none; font-size: 26px; line-height: 1; cursor: pointer; }
+  .lx .lx-wl__list li { display: flex; align-items: center; gap: 12px; padding-block: 10px; border-top: 1px solid var(--lx-line); }
+  .lx .lx-wl__list img { width: 56px; height: 56px; object-fit: contain; }
+  .lx .lx-wl__list a { flex: 1; font-size: 14px; }
+  .lx .lx-wl__list button { border: 0; background: none; color: var(--lx-muted); font-size: 18px; cursor: pointer; }
+  .lx .lx-wl__empty { font-size: 14px; color: var(--lx-muted); }
+  @media (max-width: 1100px) {
+    .lx .lx-hd__nav { display: none; }
+    .lx .lx-hd__burger { display: block; }
+    .lx .lx-hd__bar { gap: 14px; min-height: 68px; }
+    .lx .lx-hd__icons { gap: 18px; }
+    .lx .lx-hd__logo { font-size: 24px; }
+  }
+  @media (max-width: 480px) { .lx .lx-hd__account { display: none !important; } }
+</style>
+<script>
+  (function () {
+    if (window.__lxWish) { window.__lxWish(); return; }
+    var KEY = "lx-wishlist";
+    function read() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
+    function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} }
+    function paint() {
+      var items = read();
+      document.querySelectorAll("[data-lx-wish-count]").forEach(function (el) { el.textContent = items.length; });
+      document.querySelectorAll("[data-lx-wish]").forEach(function (btn) {
+        var on = items.some(function (i) { return i.url === btn.dataset.lxWish; });
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      var list = document.querySelector("[data-lx-wish-list]");
+      var empty = document.querySelector("[data-lx-wish-empty]");
+      if (!list) return;
+      list.textContent = "";
+      items.forEach(function (item) {
+        var li = document.createElement("li");
+        if (item.image) { var img = document.createElement("img"); img.src = item.image; img.alt = ""; li.appendChild(img); }
+        var a = document.createElement("a"); a.href = item.url; a.textContent = item.title; li.appendChild(a);
+        var x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "Remove " + item.title);
+        x.addEventListener("click", function () { write(read().filter(function (i) { return i.url !== item.url; })); paint(); });
+        li.appendChild(x);
+        list.appendChild(li);
+      });
+      if (empty) empty.hidden = items.length > 0;
+    }
+    document.addEventListener("click", function (e) {
+      var heart = e.target.closest && e.target.closest("[data-lx-wish]");
+      if (heart) {
+        var url = heart.dataset.lxWish, items = read();
+        if (items.some(function (i) { return i.url === url; })) items = items.filter(function (i) { return i.url !== url; });
+        else items.push({ url: url, title: heart.dataset.title, image: heart.dataset.image });
+        write(items); paint(); return;
+      }
+      var panel = document.querySelector("[data-lx-wish-panel]");
+      if (!panel) return;
+      if (e.target.closest && e.target.closest("[data-lx-wish-open]")) { paint(); panel.showModal(); }
+      else if (e.target.closest && e.target.closest("[data-lx-wish-close]")) panel.close();
+    });
+    window.__lxWish = paint;
+    window.addEventListener("storage", paint);
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", paint); else paint();
+  })();
+</script>
+{%- endcapture -%}
+{%- render 'snippets/roarr-lustre-base', accent: ht.accent_color -%}
+{%- render 'snippets/roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "overlay", "label": "Overlay the next section", "default": false }
+  ],
+  "presets": [{ "name": "Lustre Header" }]
+}
+{% endschema %}

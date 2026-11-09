@@ -75,6 +75,51 @@ engine.registerTag("schema", {
     },
 });
 
+// form - Shopify's {% form %}: a plain form in the preview that never leaves the page.
+engine.registerTag("form", {
+    parse(tagToken, remainTokens) {
+        const cls = /class:\s*'([^']+)'/.exec(tagToken.args);
+        this.className = cls ? cls[1] : "";
+        this.tpls = [];
+        let closed = false;
+        while (remainTokens.length) {
+            const token = remainTokens.shift();
+            if (token.name === "endform") {
+                closed = true;
+                break;
+            }
+            this.tpls.push(engine.parser.parseToken(token, remainTokens));
+        }
+        if (!closed) throw new Error(`tag ${tagToken.getText()} not closed`);
+    },
+    *render(context, emitter) {
+        const cls = this.className ? ` class="${this.className}"` : "";
+        emitter.write(`<form${cls} onsubmit="return false">`);
+        yield engine.renderer.renderTemplates(this.tpls, context, emitter);
+        emitter.write("</form>");
+    },
+});
+
+// paginate - Shopify's {% paginate %}: the preview context already holds one page and `paginate`.
+engine.registerTag("paginate", {
+    parse(tagToken, remainTokens) {
+        this.tpls = [];
+        let closed = false;
+        while (remainTokens.length) {
+            const token = remainTokens.shift();
+            if (token.name === "endpaginate") {
+                closed = true;
+                break;
+            }
+            this.tpls.push(engine.parser.parseToken(token, remainTokens));
+        }
+        if (!closed) throw new Error(`tag ${tagToken.getText()} not closed`);
+    },
+    *render(context, emitter) {
+        yield engine.renderer.renderTemplates(this.tpls, context, emitter);
+    },
+});
+
 /* -------------------------
    Custom Shopify-like Filters
 --------------------------*/

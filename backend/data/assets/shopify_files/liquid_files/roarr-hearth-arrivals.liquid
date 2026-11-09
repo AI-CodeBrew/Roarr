@@ -1,0 +1,61 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign source = section.settings.collection | default: collections.all -%}
+{%- assign products = homeData.demo_products | default: source.products -%}
+{%- capture hh_html -%}
+{%- if products != blank -%}
+<section class="hh-new" data-hh-rail>
+  <div class="hh-wrap" data-hh-reveal>
+    <div class="hh-new__head">
+      <div>
+        {%- if ht.arrivals_kicker != blank -%}<p class="hh-kick">{{ ht.arrivals_kicker }}</p>{%- endif -%}
+        <h2 class="hh-title">{{ ht.arrivals_heading }}</h2>
+      </div>
+      <div class="hh-arrows">
+        <button type="button" aria-label="Previous products" data-hh-prev>{%- render 'roarr-hearth-icon', name: 'prev', size: 18, stroke: 1.8 -%}</button>
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" aria-label="{{ ht.label_view_all | default: 'View all' | escape }}">{%- render 'roarr-hearth-icon', name: 'grid', size: 16, stroke: 1.4 -%}</a>
+        <button type="button" aria-label="Next products" data-hh-next>{%- render 'roarr-hearth-icon', name: 'next', size: 18, stroke: 1.8 -%}</button>
+      </div>
+    </div>
+    <div class="hh-rail__track" data-hh-track>
+      {%- for product in products limit: 3 -%}
+        {%- render 'roarr-hearth-card', product: product, quick_add_label: ht.label_quick_add -%}
+      {%- endfor -%}
+    </div>
+    <div class="hh-dots hh-new__dots" data-hh-rail-dots></div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .hh .hh-new { padding-block-end: 120px; background: #fff; }
+  .hh .hh-new__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 55px; }
+  .hh .hh-new .hh-arrows { margin-bottom: 10px; }
+  .hh .hh-new .hh-rail__track { --hh-col: calc((100% - 20px) / 3); }
+  .hh .hh-new .hh-card__media { aspect-ratio: 463 / 445; }
+  .hh .hh-new__dots { display: none; color: var(--hh-ink); }
+  @media (max-width: 1024px) {
+    .hh .hh-new { padding-block-end: 70px; }
+    .hh .hh-new__head { margin-bottom: 30px; }
+    .hh .hh-new .hh-rail__track { --hh-col: calc((100% - 10px) / 2); }
+    .hh .hh-new .hh-card__media { aspect-ratio: 345 / 445; }
+    .hh .hh-new__dots { display: flex; margin-top: 22px; }
+  }
+  @media (max-width: 749px) {
+    .hh .hh-new .hh-arrows { display: none; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth New Arrivals",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection (defaults to all products)" }
+  ],
+  "presets": [{ "name": "Hearth New Arrivals" }]
+}
+{% endschema %}

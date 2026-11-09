@@ -1,0 +1,56 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture lx_html -%}
+<section class="lx-section lx-pr">
+  <div class="lx-wrap lx-pr__grid">
+    {%- for i in (1..2) -%}
+      {%- assign kicker_key = 'promo_kicker_' | append: i -%}
+      {%- assign heading_key = 'promo_heading_' | append: i -%}
+      {%- assign image_key = 'promo_image_' | append: i -%}
+      {%- if ht[heading_key] != blank -%}
+        <a class="lx-pr__card" href="{{ routes.all_products_collection_url | default: '/collections/all' }}">
+          {%- render 'roarr-lustre-img', src: hi[image_key], alt: ht[heading_key], width: 1300, lazy: true -%}
+          <span class="lx-pr__copy">
+            {%- if ht[kicker_key] != blank -%}<span class="lx-pr__kicker">{{ ht[kicker_key] }}</span>{%- endif -%}
+            <span class="lx-pr__title lx-serif">{{ ht[heading_key] }}</span>
+            <span class="lx-link">{% render 'roarr-ui-string', key: 'shop_now' %}</span>
+          </span>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+  .lx .lx-pr__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; }
+  .lx .lx-pr__card { position: relative; display: flex; align-items: center; justify-content: flex-end; aspect-ratio: 635 / 300; overflow: hidden; background: #f5f5f5; }
+  .lx .lx-pr__card img { position: absolute; top: 0; inset-inline-start: 0; width: 58%; height: 100%; object-fit: cover; -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent); mask-image: linear-gradient(90deg, #000 78%, transparent); }
+  .lx[dir="rtl"] .lx-pr__card img { -webkit-mask-image: linear-gradient(270deg, #000 78%, transparent); mask-image: linear-gradient(270deg, #000 78%, transparent); }
+  .lx .lx-pr__copy { position: relative; display: flex; flex-direction: column; align-items: flex-start; width: 37%; margin-inline-end: 4%; }
+  .lx .lx-pr__kicker { font-size: 15px; text-transform: uppercase; color: var(--lx-ink); }
+  .lx .lx-pr__title { margin-top: 16px; font-size: 29px; line-height: 38px; color: var(--lx-ink); }
+  .lx .lx-pr__copy .lx-link { margin-top: 24px; }
+  @media (max-width: 989px) {
+    .lx .lx-pr__grid { grid-template-columns: 1fr; gap: 16px; }
+  }
+  @media (max-width: 749px) {
+    .lx .lx-pr__copy { width: 46%; margin-inline-end: 3%; }
+    .lx .lx-pr__kicker { font-size: 12px; }
+    .lx .lx-pr__title { margin-top: 6px; font-size: 18px; line-height: 24px; }
+    .lx .lx-pr__copy .lx-link { margin-top: 10px; font-size: 12px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Promos",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Promos" }]
+}
+{% endschema %}

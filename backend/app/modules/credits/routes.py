@@ -35,6 +35,7 @@ from ..shopify.graphql_client import (
     shopify_graphql,
     to_gid,
 )
+from ..shopify.token_client import resolve_access_token
 from .service import wallet_service
 
 load_dotenv()
@@ -114,7 +115,7 @@ def _fetch_charge_from_shopify(shop_user_id: str, charge_id: str):
             400,
         )
 
-    access_token = shop.get("access_token")
+    access_token = resolve_access_token(shop_user_id, shop.get("access_token"))
     if not access_token:
         return None, (
             jsonify({"success": False, "error": "Missing Shopify access token"}),
@@ -310,7 +311,7 @@ def purchase_pack():
                 400,
             )
 
-        access_token = shop.get("access_token")
+        access_token = resolve_access_token(user_id, shop.get("access_token"))
         if not access_token:
             return jsonify({"success": False, "error": "Missing Shopify access token"}), 400
 

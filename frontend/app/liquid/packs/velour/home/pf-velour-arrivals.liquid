@@ -1,0 +1,53 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign source = section.settings.collection | default: collections.all -%}
+{%- assign products = homeData.demo_products | default: source.products -%}
+{%- capture vr_html -%}
+{%- if products != blank -%}
+<section class="vr-new" data-vr-rail>
+  <div class="vr-wrap" data-vr-reveal>
+    <div class="vr-new__head">
+      <div>
+        {%- if ht.arrivals_kicker != blank -%}<p class="vr-kick">{{ ht.arrivals_kicker }}</p>{%- endif -%}
+        <h2 class="vr-title">{{ ht.arrivals_heading }}</h2>
+      </div>
+      <div class="vr-arrows">
+        <button type="button" aria-label="Previous products" data-vr-prev>{%- render 'snippets/roarr-velour-icon', name: 'prev', size: 20 -%}</button>
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" aria-label="{{ ht.label_view_all | default: 'View all' | escape }}">{%- render 'snippets/roarr-velour-icon', name: 'grid', size: 18 -%}</a>
+        <button type="button" aria-label="Next products" data-vr-next>{%- render 'snippets/roarr-velour-icon', name: 'next', size: 20 -%}</button>
+      </div>
+    </div>
+    <div class="vr-rail__track" data-vr-track>
+      {%- for product in products limit: 8 -%}
+        {%- render 'snippets/roarr-velour-card', product: product, quick_add_label: ht.label_quick_add -%}
+      {%- endfor -%}
+    </div>
+    <div class="vr-dots vr-new__dots" data-vr-rail-dots></div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .vr .vr-new { padding-block-end: 120px; background: #fff; }
+  .vr .vr-new__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 59px; }
+  .vr .vr-new__dots { display: none; color: var(--vr-ink); }
+  @media (max-width: 1024px) {
+    .vr .vr-new { padding-block-end: 70px; }
+    .vr .vr-new__head { margin-bottom: 30px; }
+    .vr .vr-new__dots { display: flex; margin-top: 22px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour New Arrivals",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection (defaults to all products)" }
+  ],
+  "presets": [{ "name": "Velour New Arrivals" }]
+}
+{% endschema %}

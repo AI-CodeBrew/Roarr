@@ -1,0 +1,48 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture logos -%}
+  {%- for i in (1..5) -%}
+    {%- assign key = 'brand_logo_' | append: i -%}
+    {%- assign setting_key = 'logo_' | append: i -%}
+    {%- assign logo = hi[key] | default: section.settings[setting_key] -%}
+    {%- if logo != blank -%}<div class="lx-br__logo">{%- render 'roarr-lustre-img', src: logo, alt: '', width: 400, lazy: true -%}</div>{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign has_logos = logos | strip -%}
+{%- capture lx_html -%}
+{%- if has_logos != blank -%}
+<section class="lx-section lx-br">
+  <div class="lx-wrap">
+    <div class="lx-br__row">{{ logos }}</div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .lx .lx-section.lx-br { padding-block: 40px 0; }
+  .lx .lx-br__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; padding-block: 76px; border-top: 1px solid var(--lx-line); }
+  .lx .lx-br__logo { flex: 0 1 222px; min-width: 110px; }
+  .lx .lx-br__logo img { width: 100%; max-height: 70px; object-fit: contain; }
+  @media (max-width: 749px) {
+    .lx .lx-br__row { justify-content: center; padding-block: 36px; }
+    .lx .lx-br__logo { flex-basis: 40%; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Brands",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "logo_1", "label": "Logo 1" },
+    { "type": "image_picker", "id": "logo_2", "label": "Logo 2" },
+    { "type": "image_picker", "id": "logo_3", "label": "Logo 3" },
+    { "type": "image_picker", "id": "logo_4", "label": "Logo 4" },
+    { "type": "image_picker", "id": "logo_5", "label": "Logo 5" }
+  ],
+  "presets": [{ "name": "Lustre Brands" }]
+}
+{% endschema %}

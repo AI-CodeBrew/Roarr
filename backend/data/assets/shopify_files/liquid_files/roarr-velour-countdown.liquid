@@ -1,0 +1,70 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign deal_end = section.settings.end_date | default: homeData.demo_deal_end -%}
+{%- assign url = section.settings.link | default: routes.all_products_collection_url | default: '/collections/all' -%}
+{%- capture vr_html -%}
+<section class="vr-deal">
+  <div class="vr-wrap">
+    <div class="vr-deal__row">
+      <div class="vr-deal__copy">
+        {%- if ht.deal_kicker != blank -%}<p class="vr-kick">{{ ht.deal_kicker }}</p>{%- endif -%}
+        <h2 class="vr-deal__title">{{ ht.deal_heading }}</h2>
+        {%- if ht.deal_text != blank -%}<p class="vr-deal__text">{{ ht.deal_text }}</p>{%- endif -%}
+      </div>
+      <div class="vr-deal__side" data-vr-reveal="right">
+        {%- if deal_end != blank -%}
+          <div class="vr-clock" data-vr-clock="{{ deal_end }}" role="timer" hidden>
+            <span class="vr-clock__part"><b data-d>00</b><small>{{ ht.label_days | default: 'Days' }}</small></span>
+            <i aria-hidden="true">:</i>
+            <span class="vr-clock__part"><b data-h>00</b><small>{{ ht.label_hours | default: 'Hours' }}</small></span>
+            <i aria-hidden="true">:</i>
+            <span class="vr-clock__part"><b data-m>00</b><small>{{ ht.label_mins | default: 'Mins' }}</small></span>
+            <i aria-hidden="true">:</i>
+            <span class="vr-clock__part"><b data-s>00</b><small>{{ ht.label_secs | default: 'Secs' }}</small></span>
+          </div>
+        {%- endif -%}
+        <a class="vr-go" href="{{ url }}">{% render 'roarr-ui-string', key: 'shop_now' %}{%- render 'roarr-velour-icon', name: 'arrow', size: 16 -%}</a>
+      </div>
+    </div>
+    <hr class="vr-rule vr-deal__rule" data-vr-reveal>
+  </div>
+</section>
+<style>
+  .vr .vr-deal { padding-block-end: 120px; background: #fff; }
+  .vr .vr-deal__row { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 30px; }
+  .vr .vr-deal__copy { flex: 1 1 480px; min-width: 0; }
+  .vr .vr-deal__title { margin-top: 12px; font-size: 28.8px; line-height: 43.2px; font-weight: 500 !important; color: var(--vr-ink); }
+  .vr .vr-deal__text { margin-top: 10px; font-size: 14px; line-height: 21px; color: var(--vr-text); }
+  .vr .vr-deal__side { display: flex; align-items: center; flex-wrap: wrap; gap: 30px; }
+  .vr .vr-clock { display: flex; align-items: flex-start; gap: 20px; }
+  .vr .vr-clock > i { width: 5px; margin-top: 18px; font-size: 28.8px; line-height: 40px; font-style: normal; font-weight: 600; color: var(--vr-ink); text-align: center; }
+  .vr .vr-clock__part { display: grid; justify-items: center; gap: 12px; }
+  .vr .vr-clock__part b { width: 80px; height: 80px; display: grid; place-items: center; border: 1px solid var(--vr-ink); border-radius: 5px; background: #fff; font-size: 28.8px; line-height: 43.2px; font-weight: 400; color: var(--vr-ink); font-variant-numeric: tabular-nums; }
+  .vr .vr-clock__part small { font-size: 12px; line-height: 18px; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-deal__rule { margin-top: 120px; }
+  @media (max-width: 1100px) { .vr .vr-deal__copy { flex-basis: 100%; } }
+  @media (max-width: 749px) {
+    .vr .vr-deal { padding-block-end: 60px; }
+    .vr .vr-deal__title { font-size: 22px; line-height: 33px; }
+    .vr .vr-clock { gap: 8px; }
+    .vr .vr-clock > i { width: 4px; margin-top: 12px; font-size: 20px; }
+    .vr .vr-clock__part b { width: 62px; height: 62px; font-size: 22px; }
+    .vr .vr-deal__rule { margin-top: 60px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Countdown",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "end_date", "label": "Deal end date", "info": "For example 2026-12-31 23:59. The timer only shows for a real date that has not passed, so shoppers never see a fake deadline." },
+    { "type": "url", "id": "link", "label": "Link" }
+  ],
+  "presets": [{ "name": "Velour Countdown" }]
+}
+{% endschema %}

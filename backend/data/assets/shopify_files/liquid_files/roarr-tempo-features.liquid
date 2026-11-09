@@ -1,0 +1,294 @@
+{%- capture tp_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign features_label = section.settings.features_label | default: 'Explore the awesome' -%}
+{%- if use_mf and ht.features_label != blank -%}{%- assign features_label = ht.features_label -%}{%- endif -%}
+{%- assign features_heading = section.settings.features_heading | default: 'Product Feature' -%}
+{%- if use_mf and ht.features_heading != blank -%}{%- assign features_heading = ht.features_heading -%}{%- endif -%}
+{%- assign feature_1_title = section.settings.feature_1_title | default: 'Easy Start' -%}
+{%- if use_mf and ht.feature_1_title != blank -%}{%- assign feature_1_title = ht.feature_1_title -%}{%- endif -%}
+{%- assign feature_1_text = section.settings.feature_1_text | default: 'Ready to use straight out of the box, with nothing to figure out.' -%}
+{%- if use_mf and ht.feature_1_text != blank -%}{%- assign feature_1_text = ht.feature_1_text -%}{%- endif -%}
+{%- assign feature_2_title = section.settings.feature_2_title | default: 'Built To Last' -%}
+{%- if use_mf and ht.feature_2_title != blank -%}{%- assign feature_2_title = ht.feature_2_title -%}{%- endif -%}
+{%- assign feature_2_text = section.settings.feature_2_text | default: 'Solid materials and careful finishing for everyday use.' -%}
+{%- if use_mf and ht.feature_2_text != blank -%}{%- assign feature_2_text = ht.feature_2_text -%}{%- endif -%}
+{%- assign feature_3_title = section.settings.feature_3_title | default: 'Comfortable' -%}
+{%- if use_mf and ht.feature_3_title != blank -%}{%- assign feature_3_title = ht.feature_3_title -%}{%- endif -%}
+{%- assign feature_3_text = section.settings.feature_3_text | default: 'Designed to feel good from the first minute to the last.' -%}
+{%- if use_mf and ht.feature_3_text != blank -%}{%- assign feature_3_text = ht.feature_3_text -%}{%- endif -%}
+{%- assign feature_4_title = section.settings.feature_4_title | default: 'Always Ready' -%}
+{%- if use_mf and ht.feature_4_title != blank -%}{%- assign feature_4_title = ht.feature_4_title -%}{%- endif -%}
+{%- assign feature_4_text = section.settings.feature_4_text | default: 'Keeps up with your day without asking for attention.' -%}
+{%- if use_mf and ht.feature_4_text != blank -%}{%- assign feature_4_text = ht.feature_4_text -%}{%- endif -%}
+{%- assign feature_5_title = section.settings.feature_5_title | default: 'Smart Design' -%}
+{%- if use_mf and ht.feature_5_title != blank -%}{%- assign feature_5_title = ht.feature_5_title -%}{%- endif -%}
+{%- assign feature_5_text = section.settings.feature_5_text | default: 'Every detail has a purpose, and nothing gets in the way.' -%}
+{%- if use_mf and ht.feature_5_text != blank -%}{%- assign feature_5_text = ht.feature_5_text -%}{%- endif -%}
+{%- assign feature_6_title = section.settings.feature_6_title | default: 'Made With Care' -%}
+{%- if use_mf and ht.feature_6_title != blank -%}{%- assign feature_6_title = ht.feature_6_title -%}{%- endif -%}
+{%- assign feature_6_text = section.settings.feature_6_text | default: 'Checked by hand before it ever leaves us.' -%}
+{%- if use_mf and ht.feature_6_text != blank -%}{%- assign feature_6_text = ht.feature_6_text -%}{%- endif -%}
+{%- assign feature_7_title = section.settings.feature_7_title | default: 'Easy To Carry' -%}
+{%- if use_mf and ht.feature_7_title != blank -%}{%- assign feature_7_title = ht.feature_7_title -%}{%- endif -%}
+{%- assign feature_7_text = section.settings.feature_7_text | default: 'Light enough to take wherever the day goes.' -%}
+{%- if use_mf and ht.feature_7_text != blank -%}{%- assign feature_7_text = ht.feature_7_text -%}{%- endif -%}
+{%- assign feature_8_title = section.settings.feature_8_title | default: 'Simple Controls' -%}
+{%- if use_mf and ht.feature_8_title != blank -%}{%- assign feature_8_title = ht.feature_8_title -%}{%- endif -%}
+{%- assign feature_8_text = section.settings.feature_8_text | default: 'Clear, familiar and easy to use without a manual.' -%}
+{%- if use_mf and ht.feature_8_text != blank -%}{%- assign feature_8_text = ht.feature_8_text -%}{%- endif -%}
+{%- assign tempo_product_image = section.settings.tempo_product_image -%}
+{%- if use_mf and hi.tempo_product_image != blank -%}{%- assign tempo_product_image = hi.tempo_product_image -%}{%- endif -%}
+{%- assign tp_product = blank -%}
+{%- if ht.selected_product != blank -%}{%- assign tp_product = all_products[ht.selected_product] -%}{%- endif -%}
+{%- if tp_product == blank and collections.all.products.first != blank -%}{%- assign tp_product = collections.all.products.first -%}{%- endif -%}
+{%- assign tp_url = routes.all_products_collection_url | default: '/collections/all' -%}
+{%- assign tp_title = section.settings.fallback_title -%}
+{%- assign tp_price = section.settings.fallback_price -%}
+{%- assign tp_compare = section.settings.fallback_compare -%}
+{%- if tp_product != blank and tp_product.title != blank -%}
+  {%- assign tp_url = tp_product.url -%}
+  {%- assign tp_title = tp_product.title -%}
+  {%- assign tp_price = tp_product.price | money -%}
+  {%- assign tp_compare = blank -%}
+  {%- if tp_product.compare_at_price > tp_product.price -%}{%- assign tp_compare = tp_product.compare_at_price | money -%}{%- endif -%}
+{%- endif -%}
+<section class="tp tp-features">
+  <div class="tp-wrap">
+    <header class="tp-sechead tp-reveal">
+      {%- if features_label != blank -%}<p class="tp-label">{{ features_label | escape }}</p>{%- endif -%}
+      <h2 class="tp-h2">{{ features_heading | escape }}</h2>
+    </header>
+    <div class="tp-features__grid tp-reveal">
+      <ul class="tp-features__col" role="list">
+        {%- if feature_1_title != blank -%}<li class="tp-feat tp-feat--l"><div class="tp-feat__text"><h3>{{ feature_1_title | escape }}</h3><p>{{ feature_1_text | escape }}</p></div><span class="tp-feat__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span></li>{%- endif -%}
+        {%- if feature_2_title != blank -%}<li class="tp-feat tp-feat--l"><div class="tp-feat__text"><h3>{{ feature_2_title | escape }}</h3><p>{{ feature_2_text | escape }}</p></div><span class="tp-feat__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg></span></li>{%- endif -%}
+        {%- if feature_3_title != blank -%}<li class="tp-feat tp-feat--l"><div class="tp-feat__text"><h3>{{ feature_3_title | escape }}</h3><p>{{ feature_3_text | escape }}</p></div><span class="tp-feat__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></span></li>{%- endif -%}
+        {%- if feature_4_title != blank -%}<li class="tp-feat tp-feat--l"><div class="tp-feat__text"><h3>{{ feature_4_title | escape }}</h3><p>{{ feature_4_text | escape }}</p></div><span class="tp-feat__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></li>{%- endif -%}
+      </ul>
+      <div class="tp-features__mid"><span class="tp-features__disc" aria-hidden="true"></span>{%- if tempo_product_image != blank -%}{%- if tempo_product_image contains 'http' or tempo_product_image contains '//' -%}<img class="tp-cut" src="{{ tempo_product_image }}" alt="{{ tp_title | escape }}" loading="lazy" width="800" height="800" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_product_image | image_url: width: 800 }}" alt="{{ tp_title | escape }}" loading="lazy" width="800" height="800" decoding="async">{%- endif -%}{%- endif -%}</div>
+      <ul class="tp-features__col" role="list">
+        {%- if feature_5_title != blank -%}<li class="tp-feat tp-feat--r"><span class="tp-feat__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5zM3 7.5 12 12m0 0 9-4.5M12 12v9"/></svg></span><div class="tp-feat__text"><h3>{{ feature_5_title | escape }}</h3><p>{{ feature_5_text | escape }}</p></div></li>{%- endif -%}
+        {%- if feature_6_title != blank -%}<li class="tp-feat tp-feat--r"><span class="tp-feat__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span><div class="tp-feat__text"><h3>{{ feature_6_title | escape }}</h3><p>{{ feature_6_text | escape }}</p></div></li>{%- endif -%}
+        {%- if feature_7_title != blank -%}<li class="tp-feat tp-feat--r"><span class="tp-feat__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18 16l.8 2.2L21 19l-2.2.8L18 22l-.8-2.2L15 19l2.2-.8z"/></svg></span><div class="tp-feat__text"><h3>{{ feature_7_title | escape }}</h3><p>{{ feature_7_text | escape }}</p></div></li>{%- endif -%}
+        {%- if feature_8_title != blank -%}<li class="tp-feat tp-feat--r"><span class="tp-feat__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zm-4-9 3 3 5-6"/></svg></span><div class="tp-feat__text"><h3>{{ feature_8_title | escape }}</h3><p>{{ feature_8_text | escape }}</p></div></li>{%- endif -%}
+      </ul>
+    </div>
+  </div>
+</section>
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.tp) { --tp-peach: #FAF1ED; --tp-navy: #06264B; --tp-navy-deep: #05264D; --tp-orange: #FC6539; --tp-orange-text: #CF4318; --tp-ink: #222222; --tp-grey: #F1F1F1; --tp-grey-2: #EEEEEE; --tp-line: #EAEAEA; --tp-blob: #FBC3B3; --tp-serif: "Playfair Display", Georgia, "Times New Roman", serif; --tp-sans: "Poppins", "Helvetica Neue", Arial, sans-serif; --tp-pad: clamp(20px, 7.32vw, 100px); font-family: var(--tp-sans); font-size: 16px; line-height: 1.7; color: var(--tp-navy); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .tp *, .tp *::before, .tp *::after { box-sizing: border-box; }
+  :where(.tp) :where(h1, h2, h3, p, ul, ol, dl, dd, figure) { margin: 0; padding: 0; }
+  :where(.tp) :where(ul, ol) { list-style: none; }
+  :where(.tp) img { display: block; max-width: 100%; }
+  .tp-wrap { width: 100%; max-width: 1366px; margin-inline: auto; padding-inline: var(--tp-pad); }
+  .tp-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tp-label { font: 400 18px/1.4 var(--tp-sans); text-transform: uppercase; color: var(--tp-orange-text); }
+  .tp-h2 { font: 700 clamp(32px, 3.7vw, 50px)/1.2 var(--tp-serif); color: var(--tp-navy); text-wrap: balance; }
+  .tp-sechead { display: grid; justify-items: center; gap: 12px; margin-bottom: clamp(36px, 5vw, 64px); text-align: center; }
+  .tp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 62px; padding: 0 40px; border: 0; border-radius: 999px; background: var(--tp-navy); color: var(--tp-orange); font: 500 18px/1 var(--tp-sans); text-decoration: none; cursor: pointer; transition: background .3s ease, color .3s ease, transform .3s ease, box-shadow .3s ease; }
+  .tp-btn:hover { background: var(--tp-orange); color: var(--tp-navy); transform: translateY(-2px); box-shadow: 0 12px 26px rgb(252 101 57 / .32); }
+  .tp-btn:focus-visible, .tp a:focus-visible, .tp button:focus-visible, .tp input:focus-visible { outline: 3px solid var(--tp-orange); outline-offset: 3px; }
+  .tp-ico { flex: none; }
+  .tp-cut { mix-blend-mode: multiply; }
+  .tp-rule { display: block; width: 70px; height: 4px; background: var(--tp-orange); }
+  @keyframes tp-reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tp-reveal { animation: tp-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) { .tp *, .tp *::before, .tp *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  .tp-features { padding-block: clamp(56px, 7.3vw, 100px); background: #FBFBFB; }
+  .tp-features__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 340px) minmax(0, 1fr); align-items: center; gap: 40px; }
+  .tp-features__col { display: grid; gap: 48px; }
+  .tp-feat { display: flex; align-items: flex-start; gap: 22px; }
+  .tp-feat--l { justify-content: flex-end; text-align: end; }
+  .tp-feat__ico { display: grid; place-items: center; width: 40px; height: 40px; margin-top: 4px; color: var(--tp-navy); }
+  .tp-feat__text { max-width: 20em; }
+  .tp-feat h3 { font: 500 24px/1.3 var(--tp-sans); color: var(--tp-navy); }
+  .tp-feat p { margin-top: 6px; font-size: 16px; line-height: 1.75; color: var(--tp-navy); }
+  .tp-features__mid { position: relative; display: grid; place-items: center; aspect-ratio: 1 / 1; }
+  .tp-features__disc { position: absolute; inset: 4% 3% 4% 0; border-radius: 50%; background: var(--tp-blob); }
+  .tp-features__mid img { position: relative; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: contain; }
+  @media (max-width: 1023px) {
+    .tp-features__grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+    .tp-features__mid { order: -1; width: min(100%, 340px); margin-inline: auto; }
+    .tp-features__col { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 28px; }
+    .tp-feat--l { justify-content: flex-start; text-align: start; flex-direction: row-reverse; }
+  }
+  @media (max-width: 599px) { .tp-features__col { grid-template-columns: minmax(0, 1fr); } .tp-feat h3 { font-size: 21px; } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if tp_html contains 'ا' or tp_html contains 'ل' or tp_html contains 'ي' or tp_html contains 'ة' -%}
+<div class="tp-rtl" dir="rtl" style="display: contents">{{ tp_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .tp-rtl:is(#tp-rtl, *), .tp-rtl:is(#tp-rtl, *) * { letter-spacing: 0 !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3, p, li, span, a, button, strong, label, input, div) { font-family: "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3) { line-height: 1.35 !important; }
+  .tp-rtl:is(#tp-rtl, *) .tp-btn svg { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ tp_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Tempo Features",
+  "tag": "section",
+  "class": "roarr-tempo-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr generated content",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "features_label",
+      "label": "Label",
+      "default": "Explore the awesome"
+    },
+    {
+      "type": "text",
+      "id": "features_heading",
+      "label": "Heading",
+      "default": "Product Feature"
+    },
+    {
+      "type": "text",
+      "id": "feature_1_title",
+      "label": "Feature 1 title",
+      "default": "Easy Start"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_1_text",
+      "label": "Feature 1 text",
+      "default": "Ready to use straight out of the box, with nothing to figure out."
+    },
+    {
+      "type": "text",
+      "id": "feature_2_title",
+      "label": "Feature 2 title",
+      "default": "Built To Last"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_2_text",
+      "label": "Feature 2 text",
+      "default": "Solid materials and careful finishing for everyday use."
+    },
+    {
+      "type": "text",
+      "id": "feature_3_title",
+      "label": "Feature 3 title",
+      "default": "Comfortable"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_3_text",
+      "label": "Feature 3 text",
+      "default": "Designed to feel good from the first minute to the last."
+    },
+    {
+      "type": "text",
+      "id": "feature_4_title",
+      "label": "Feature 4 title",
+      "default": "Always Ready"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_4_text",
+      "label": "Feature 4 text",
+      "default": "Keeps up with your day without asking for attention."
+    },
+    {
+      "type": "text",
+      "id": "feature_5_title",
+      "label": "Feature 5 title",
+      "default": "Smart Design"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_5_text",
+      "label": "Feature 5 text",
+      "default": "Every detail has a purpose, and nothing gets in the way."
+    },
+    {
+      "type": "text",
+      "id": "feature_6_title",
+      "label": "Feature 6 title",
+      "default": "Made With Care"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_6_text",
+      "label": "Feature 6 text",
+      "default": "Checked by hand before it ever leaves us."
+    },
+    {
+      "type": "text",
+      "id": "feature_7_title",
+      "label": "Feature 7 title",
+      "default": "Easy To Carry"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_7_text",
+      "label": "Feature 7 text",
+      "default": "Light enough to take wherever the day goes."
+    },
+    {
+      "type": "text",
+      "id": "feature_8_title",
+      "label": "Feature 8 title",
+      "default": "Simple Controls"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_8_text",
+      "label": "Feature 8 text",
+      "default": "Clear, familiar and easy to use without a manual."
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_product_image",
+      "label": "Centre image (1:1, white background)"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Product name when no product is found",
+      "default": "Your product"
+    },
+    {
+      "type": "text",
+      "id": "fallback_price",
+      "label": "Price when no product is found",
+      "default": "$49.00"
+    },
+    {
+      "type": "text",
+      "id": "fallback_compare",
+      "label": "Compare-at price when no product is found"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tempo Features"
+    }
+  ]
+}
+{% endschema %}

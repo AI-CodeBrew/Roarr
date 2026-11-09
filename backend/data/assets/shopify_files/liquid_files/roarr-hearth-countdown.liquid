@@ -1,0 +1,71 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign deal_end = section.settings.end_date | default: homeData.demo_deal_end -%}
+{%- assign url = section.settings.link | default: routes.all_products_collection_url | default: '/collections/all' -%}
+{%- capture hh_html -%}
+<section class="hh-deal">
+  <div class="hh-wrap">
+    <div class="hh-deal__row">
+      <div class="hh-deal__copy">
+        {%- if ht.deal_kicker != blank -%}<p class="hh-kick">{{ ht.deal_kicker }}</p>{%- endif -%}
+        <h2 class="hh-deal__title">{{ ht.deal_heading }}</h2>
+        {%- if ht.deal_text != blank -%}<p class="hh-deal__text">{{ ht.deal_text }}</p>{%- endif -%}
+      </div>
+      <div class="hh-deal__side" data-hh-reveal="right">
+        {%- if deal_end != blank -%}
+          <div class="hh-clock" data-hh-clock="{{ deal_end }}" role="timer" hidden>
+            <span class="hh-clock__part"><b data-d>00</b><small>{{ ht.label_days | default: 'Days' }}</small></span>
+            <i aria-hidden="true">:</i>
+            <span class="hh-clock__part"><b data-h>00</b><small>{{ ht.label_hours | default: 'Hours' }}</small></span>
+            <i aria-hidden="true">:</i>
+            <span class="hh-clock__part"><b data-m>00</b><small>{{ ht.label_mins | default: 'Mins' }}</small></span>
+            <i aria-hidden="true">:</i>
+            <span class="hh-clock__part"><b data-s>00</b><small>{{ ht.label_secs | default: 'Secs' }}</small></span>
+          </div>
+        {%- endif -%}
+        <a class="hh-go" href="{{ url }}">{% render 'roarr-ui-string', key: 'shop_now' %}{%- render 'roarr-hearth-icon', name: 'arrow', size: 16 -%}</a>
+      </div>
+    </div>
+    <hr class="hh-rule hh-deal__rule" data-hh-reveal>
+  </div>
+</section>
+<style>
+  .hh .hh-deal { padding-block-end: 120px; background: #fff; }
+  .hh .hh-deal__row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 30px; }
+  .hh .hh-deal__copy { flex: 1 1 480px; min-width: 0; }
+  .hh .hh-deal__title { margin-top: 15px; font-size: 28.8px; line-height: 43.2px; font-weight: 500 !important; color: var(--hh-ink); }
+  .hh .hh-deal__text { margin-top: 10px; font-size: 14px; line-height: 21px; color: var(--hh-text); }
+  .hh .hh-deal__side { display: flex; align-items: center; flex-wrap: wrap; gap: 30px; }
+  .hh .hh-clock { display: flex; align-items: flex-start; gap: 20px; }
+  .hh .hh-clock > i { width: 5px; margin-top: 18px; font-size: 28.8px; line-height: 40px; font-style: normal; font-weight: 600; color: var(--hh-ink); text-align: center; }
+  .hh .hh-clock__part { display: grid; justify-items: center; gap: 12px; }
+  .hh .hh-clock__part b { width: 80px; height: 80px; display: grid; place-items: center; border: 1px solid var(--hh-ink); border-radius: 5px; background: #fff; font-size: 28.8px; line-height: 43.2px; font-weight: 400; color: var(--hh-ink); font-variant-numeric: tabular-nums; }
+  .hh .hh-clock__part small { font-size: 12px; line-height: 18px; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-deal__rule { margin-top: 120px; }
+  @media (max-width: 1100px) { .hh .hh-deal__copy { flex-basis: 100%; } }
+  @media (max-width: 749px) {
+    .hh .hh-deal { padding-block-end: 60px; }
+    .hh .hh-deal__title { font-size: 26.4px; line-height: 39.6px; }
+    .hh .hh-clock { gap: 12px; }
+    .hh .hh-clock > i { width: 6px; margin-top: 12px; font-size: 18px; line-height: 26px; }
+    .hh .hh-clock__part b { width: 50px; height: 50px; font-size: 17.6px; line-height: 26.4px; }
+    .hh .hh-clock__part small { font-size: 11px; line-height: 16.5px; }
+    .hh .hh-deal__rule { margin-top: 60px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Countdown",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "end_date", "label": "Deal end date", "info": "For example 2026-12-31 23:59. The timer only shows for a real date that has not passed, so shoppers never see a fake deadline." },
+    { "type": "url", "id": "link", "label": "Link" }
+  ],
+  "presets": [{ "name": "Hearth Countdown" }]
+}
+{% endschema %}

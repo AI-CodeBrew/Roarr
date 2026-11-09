@@ -1,0 +1,103 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign source = section.settings.collection | default: collections.all -%}
+{%- assign products = homeData.demo_products | default: source.products -%}
+{%- assign pin_x = '23,63' | split: ',' -%}
+{%- assign pin_y = '33,59' | split: ',' -%}
+{%- capture hh_html -%}
+<section class="hh-lb">
+  <div class="hh-wrap hh-lb__grid">
+    <div class="hh-lb__stage">
+      {%- render 'roarr-hearth-img', src: hi.lookbook_image, alt: ht.lookbook_heading, width: 1400, lazy: true -%}
+      {%- for product in products limit: 2 -%}
+        {%- assign at = forloop.index0 -%}
+        <div class="hh-pin hh-pin--{{ forloop.index }}" style="inset-inline-start: {{ pin_x[at] }}%; top: {{ pin_y[at] }}%">
+          <button class="hh-pin__dot" type="button" aria-expanded="false" aria-label="{{ product.title | escape }}" data-hh-pin></button>
+          <div class="hh-pin__card">
+            <div>
+              <a class="hh-pin__title" href="{{ product.url }}">{{ product.title }}</a>
+              <p class="hh-pin__price">{{ product.price | money }}</p>
+            </div>
+            <a class="hh-pin__pic" href="{{ product.url }}" tabindex="-1" aria-hidden="true">{%- render 'roarr-hearth-img', src: product.featured_image, alt: product.title, width: 200, lazy: true -%}</a>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="hh-lb__side" data-hh-rail>
+      <div class="hh-lb__head">
+        {%- if ht.lookbook_kicker != blank -%}<p class="hh-kick">{{ ht.lookbook_kicker }}</p>{%- endif -%}
+        <h2 class="hh-title">{{ ht.lookbook_heading }}</h2>
+      </div>
+      <div class="hh-lb__rail">
+        <button class="hh-round hh-lb__prev" type="button" aria-label="Previous products" data-hh-prev>{%- render 'roarr-hearth-icon', name: 'prev', size: 18, stroke: 1.8 -%}</button>
+        <div class="hh-rail__track" data-hh-track>
+          {%- for product in products limit: 3 -%}
+            {%- render 'roarr-hearth-card', product: product, quick_add_label: ht.label_quick_add -%}
+          {%- endfor -%}
+        </div>
+        <button class="hh-round hh-lb__next" type="button" aria-label="Next products" data-hh-next>{%- render 'roarr-hearth-icon', name: 'next', size: 18, stroke: 1.8 -%}</button>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .hh .hh-lb { padding-block: 93px; background: var(--hh-panel); }
+  .hh .hh-lb__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; }
+  .hh .hh-lb__stage { position: relative; aspect-ratio: 690 / 626; border-radius: 5px; background: var(--hh-tile); }
+  .hh .hh-lb__stage > img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
+  .hh .hh-pin { position: absolute; z-index: 2; width: 40px; height: 40px; margin: -20px 0 0 -20px; }
+  .hh .hh-pin:hover, .hh .hh-pin.is-open, .hh .hh-pin:focus-within { z-index: 4; }
+  .hh .hh-pin::after { content: ""; position: absolute; inset-block: 0; inset-inline: -14px; z-index: -1; }
+  .hh .hh-pin__dot { position: relative; display: block; width: 40px; height: 40px; padding: 0; border: 2px solid #fff; border-radius: 50%; background: none; cursor: pointer; transition: all .4s ease; }
+  .hh .hh-pin__dot::before { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: #fff; }
+  .hh .hh-pin__card { position: absolute; top: 50%; inset-inline-start: calc(100% + 12px); z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) 100px; gap: 14px; align-items: center; width: 300px; min-height: 120px; padding: 10px 10px 10px 20px; background: #fff; opacity: 0; visibility: hidden; transform: translateY(-50%); transition: all .3s linear; }
+  .hh .hh-pin__card::before { content: ""; position: absolute; top: 50%; inset-inline-start: -7px; width: 14px; height: 14px; background: #fff; transform: translateY(-50%) rotate(45deg); }
+  .hh .hh-pin:hover .hh-pin__card, .hh .hh-pin.is-open .hh-pin__card, .hh .hh-pin:focus-within .hh-pin__card { opacity: 1; visibility: visible; }
+  .hh .hh-pin--2 .hh-pin__card { inset-inline: auto calc(100% + 12px); }
+  .hh .hh-pin--2 .hh-pin__card::before { inset-inline: auto -7px; }
+  .hh .hh-pin__pic { display: block; width: 100px; height: 100px; overflow: hidden; border-radius: 5px; background: var(--hh-tile); }
+  .hh .hh-pin__pic img { width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-pin__title { display: block; font-size: 15.36px; line-height: 23px; font-weight: 400; color: var(--hh-ink); }
+  .hh .hh-pin__title:hover { color: var(--hh-accent); }
+  .hh .hh-pin__price { margin-top: 10px; font-size: 15.36px; line-height: 23px; font-weight: 500; color: var(--hh-ink); }
+  .hh .hh-lb__side { margin-top: -18px; }
+  .hh .hh-lb__head { text-align: center; margin-bottom: 50px; }
+  .hh .hh-lb__rail { position: relative; padding-inline: 59px; }
+  .hh .hh-lb__rail .hh-rail__track { --hh-gap: 30px; --hh-col: calc((100% - 30px) / 2); }
+  .hh .hh-lb__prev { inset-inline-start: 34px; margin-top: -90px; }
+  .hh .hh-lb__next { inset-inline-end: 34px; margin-top: -90px; }
+  @media (max-width: 1024px) {
+    .hh .hh-lb { padding-block: 60px; }
+    .hh .hh-lb__grid { grid-template-columns: 1fr; }
+    .hh .hh-lb__side { margin-top: 0; }
+    .hh .hh-lb__head { margin-bottom: 30px; }
+  }
+  @media (max-width: 749px) {
+    .hh .hh-lb__rail { padding-inline: 44px; }
+    .hh .hh-lb__rail .hh-rail__track { --hh-col: 100%; --hh-gap: 10px; }
+    .hh .hh-lb__prev { inset-inline-start: 0; }
+    .hh .hh-lb__next { inset-inline-end: 0; }
+    .hh .hh-lb__rail .hh-round { width: 40px; height: 40px; }
+    .hh .hh-pin__card { width: 210px; grid-template-columns: minmax(0, 1fr) 64px; gap: 8px; min-height: 84px; padding: 10px; }
+    .hh .hh-pin__pic { width: 64px; height: 64px; }
+    .hh .hh-pin__title, .hh .hh-pin__price { font-size: 13px; line-height: 19px; }
+    .hh .hh-pin__price { margin-top: 4px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Lookbook",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection (defaults to all products)" }
+  ],
+  "presets": [{ "name": "Hearth Lookbook" }]
+}
+{% endschema %}

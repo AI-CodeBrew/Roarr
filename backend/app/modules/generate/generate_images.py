@@ -389,7 +389,7 @@ def load_store_image_keys(
         if mode == "single_product":
             folder = (
                 os.path.join("packs", pack)
-                if pack in ("cinematic", "amour", "maison")
+                if pack in ("cinematic", "amour", "maison", "tempo")
                 else "single_store"
             )
         else:
@@ -470,8 +470,8 @@ def generate_single_product_store_images(
 
     pack = normalize_store_template_pack(store_template_pack)
 
-    # Amour / Maison: templated prompts (fixed keys/ratios), category-agnostic variables.
-    if pack in ("amour", "maison"):
+    # Amour / Maison / Tempo: templated prompts (fixed keys/ratios), category-agnostic variables.
+    if pack in ("amour", "maison", "tempo"):
         return generate_templated_pack_store_images(
             pack=pack,
             product_title=product_title,
@@ -739,9 +739,11 @@ def generate_templated_pack_store_images(
     brand_colors: Optional[list] = None,
     page_id: Optional[str] = None,
     document_store=None,
+    slots: Optional[List[int]] = None,
 ) -> Dict[str, Any]:
-    """Templated-pack homepage images (Amour, Maison): base product shot, then one
-    templated prompt per slot in the pack's `image_prompts` module, at each slot's ratio."""
+    """Templated-pack homepage images (Amour, Maison, Tempo, Lustre, Velour, Hearth, Simmer): base product shot, then one
+    templated prompt per slot in the pack's `image_prompts` module, at each slot's ratio.
+    `slots` limits a multi-product pack to the image slots of this product."""
     import importlib
 
     prompts_module = importlib.import_module(
@@ -777,7 +779,11 @@ def generate_templated_pack_store_images(
             category=category,
             brand_colors=brand_colors,
         )
-        slot_specs = build_all_prompts(variables)
+        slot_specs = (
+            build_all_prompts(variables, slots=slots)
+            if slots is not None
+            else build_all_prompts(variables)
+        )
         # Reference product identity once; templates already carry scene + STYLE.
         product_context = (
             f"Reference product: {product_title}\n"
@@ -808,6 +814,45 @@ def generate_templated_pack_store_images(
             cleanup_temp_directory(temp_dir)
         except Exception as e:
             print(f"Error cleaning up temp directory {temp_dir}: {e}")
+
+
+def generate_slotted_pack_store_images(
+    pack: str,
+    products: List[Dict[str, Any]],
+    category: Optional[str] = None,
+    page_id: Optional[str] = None,
+    document_store=None,
+) -> Dict[str, Any]:
+    """Lustre / Velour / Hearth / Simmer homepage images: each selected product fills its own templated image slots."""
+    import importlib
+
+    slots_for_product = importlib.import_module(
+        f".store.templates.packs.{pack}.image_prompts", package=__package__
+    ).slots_for_product
+
+    result: Dict[str, Any] = {"home_page": {}, "product_page": {}}
+    total = len(products)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(total, 1)) as pool:
+        futures = [
+            pool.submit(
+                generate_templated_pack_store_images,
+                pack=pack,
+                product_title=product["title"],
+                product_description=product["description"],
+                product_images=product["productImages"],
+                category=category,
+                slots=slots_for_product(index, total),
+            )
+            for index, product in enumerate(products, start=1)
+        ]
+        for future in futures:
+            try:
+                result["home_page"].update((future.result() or {}).get("home_page") or {})
+            except Exception as e:
+                print(f"{pack} image generation failed for one product: {e}")
+    if page_id and document_store:
+        document_store.update_generation_percentage(page_id, 58)
+    return result
 
 
 def _pick_first_body_string(body_prompts: Dict[str, Any], *keys: str) -> str:

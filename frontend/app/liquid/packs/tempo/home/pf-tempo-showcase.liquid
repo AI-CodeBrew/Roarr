@@ -1,0 +1,205 @@
+{%- capture tp_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign showcase_1_label = section.settings.showcase_1_label | default: 'Power' -%}
+{%- if use_mf and ht.showcase_1_label != blank -%}{%- assign showcase_1_label = ht.showcase_1_label -%}{%- endif -%}
+{%- assign showcase_2_label = section.settings.showcase_2_label | default: 'Quality' -%}
+{%- if use_mf and ht.showcase_2_label != blank -%}{%- assign showcase_2_label = ht.showcase_2_label -%}{%- endif -%}
+{%- assign showcase_3_label = section.settings.showcase_3_label | default: 'Value' -%}
+{%- if use_mf and ht.showcase_3_label != blank -%}{%- assign showcase_3_label = ht.showcase_3_label -%}{%- endif -%}
+{%- assign showcase_4_label = section.settings.showcase_4_label | default: 'Location' -%}
+{%- if use_mf and ht.showcase_4_label != blank -%}{%- assign showcase_4_label = ht.showcase_4_label -%}{%- endif -%}
+{%- assign showcase_5_label = section.settings.showcase_5_label | default: 'Timing' -%}
+{%- if use_mf and ht.showcase_5_label != blank -%}{%- assign showcase_5_label = ht.showcase_5_label -%}{%- endif -%}
+{%- assign showcase_6_label = section.settings.showcase_6_label | default: 'Care' -%}
+{%- if use_mf and ht.showcase_6_label != blank -%}{%- assign showcase_6_label = ht.showcase_6_label -%}{%- endif -%}
+{%- assign showcase_heading = section.settings.showcase_heading | default: 'What You Get' -%}
+{%- if use_mf and ht.showcase_heading != blank -%}{%- assign showcase_heading = ht.showcase_heading -%}{%- endif -%}
+{%- assign tempo_showcase_image = section.settings.tempo_showcase_image -%}
+{%- if use_mf and hi.tempo_showcase_image != blank -%}{%- assign tempo_showcase_image = hi.tempo_showcase_image -%}{%- endif -%}
+{%- assign tp_product = blank -%}
+{%- if ht.selected_product != blank -%}{%- assign tp_product = all_products[ht.selected_product] -%}{%- endif -%}
+{%- if tp_product == blank and collections.all.products.first != blank -%}{%- assign tp_product = collections.all.products.first -%}{%- endif -%}
+{%- assign tp_url = routes.all_products_collection_url | default: '/collections/all' -%}
+{%- assign tp_title = section.settings.fallback_title -%}
+{%- assign tp_price = section.settings.fallback_price -%}
+{%- assign tp_compare = section.settings.fallback_compare -%}
+{%- if tp_product != blank and tp_product.title != blank -%}
+  {%- assign tp_url = tp_product.url -%}
+  {%- assign tp_title = tp_product.title -%}
+  {%- assign tp_price = tp_product.price | money -%}
+  {%- assign tp_compare = blank -%}
+  {%- if tp_product.compare_at_price > tp_product.price -%}{%- assign tp_compare = tp_product.compare_at_price | money -%}{%- endif -%}
+{%- endif -%}
+<section class="tp tp-showcase" aria-labelledby="tp-sc-{{ section.id }}">
+  <h2 class="tp-sr" id="tp-sc-{{ section.id }}">{{ showcase_heading | escape }}</h2>
+  <div class="tp-wrap">
+    <div class="tp-showcase__stage tp-reveal">
+      <svg class="tp-showcase__lines" viewBox="0 0 700 400" preserveAspectRatio="none" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="2.5" aria-hidden="true">
+        <path d="M86 42H132L214 72M86 200H132L214 200M86 358H132L214 330"/>
+        <path d="M614 42H568L486 72M614 200H568L486 200M614 358H568L486 330"/>
+      </svg>
+      <ul class="tp-showcase__side tp-showcase__side--l" role="list">
+        {%- if showcase_1_label != blank -%}<li class="tp-bub tp-bub--1"><span class="tp-bub__ring"><span class="tp-bub__dot" style="background: #2FB7B0"><svg class="tp-ico" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span></span><span class="tp-bub__label">{{ showcase_1_label | escape }}</span></li>{%- endif -%}
+        {%- if showcase_2_label != blank -%}<li class="tp-bub tp-bub--2"><span class="tp-bub__ring"><span class="tp-bub__dot" style="background: #F2E100"><svg class="tp-ico" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></span></span><span class="tp-bub__label">{{ showcase_2_label | escape }}</span></li>{%- endif -%}
+        {%- if showcase_3_label != blank -%}<li class="tp-bub tp-bub--3"><span class="tp-bub__ring"><span class="tp-bub__dot" style="background: #E3404F"><svg class="tp-ico" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 19V5M4 19h16M8 15l3-4 3 3 5-6"/></svg></span></span><span class="tp-bub__label">{{ showcase_3_label | escape }}</span></li>{%- endif -%}
+      </ul>
+      <div class="tp-showcase__disc">{%- if tempo_showcase_image != blank -%}{%- if tempo_showcase_image contains 'http' or tempo_showcase_image contains '//' -%}<img src="{{ tempo_showcase_image }}" alt="{{ tp_title | escape }}" loading="lazy" width="900" height="900" decoding="async">{%- else -%}<img src="{{ tempo_showcase_image | image_url: width: 900 }}" alt="{{ tp_title | escape }}" loading="lazy" width="900" height="900" decoding="async">{%- endif -%}{%- endif -%}</div>
+      <ul class="tp-showcase__side tp-showcase__side--r" role="list">
+        {%- if showcase_4_label != blank -%}<li class="tp-bub tp-bub--4"><span class="tp-bub__ring"><span class="tp-bub__dot" style="background: #F0A030"><svg class="tp-ico" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21s-6-5.5-6-10a6 6 0 1 1 12 0c0 4.5-6 10-6 10z"/><circle cx="12" cy="11" r="2.4"/></svg></span></span><span class="tp-bub__label">{{ showcase_4_label | escape }}</span></li>{%- endif -%}
+        {%- if showcase_5_label != blank -%}<li class="tp-bub tp-bub--5"><span class="tp-bub__ring"><span class="tp-bub__dot" style="background: #3BB0E0"><svg class="tp-ico" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4.2l2.5 1.5M9.5 2.8h5"/></svg></span></span><span class="tp-bub__label">{{ showcase_5_label | escape }}</span></li>{%- endif -%}
+        {%- if showcase_6_label != blank -%}<li class="tp-bub tp-bub--6"><span class="tp-bub__ring"><span class="tp-bub__dot" style="background: #E5489B"><svg class="tp-ico" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span></span><span class="tp-bub__label">{{ showcase_6_label | escape }}</span></li>{%- endif -%}
+      </ul>
+    </div>
+  </div>
+</section>
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.tp) { --tp-peach: #FAF1ED; --tp-navy: #06264B; --tp-navy-deep: #05264D; --tp-orange: #FC6539; --tp-orange-text: #CF4318; --tp-ink: #222222; --tp-grey: #F1F1F1; --tp-grey-2: #EEEEEE; --tp-line: #EAEAEA; --tp-blob: #FBC3B3; --tp-serif: "Playfair Display", Georgia, "Times New Roman", serif; --tp-sans: "Poppins", "Helvetica Neue", Arial, sans-serif; --tp-pad: clamp(20px, 7.32vw, 100px); font-family: var(--tp-sans); font-size: 16px; line-height: 1.7; color: var(--tp-navy); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .tp *, .tp *::before, .tp *::after { box-sizing: border-box; }
+  :where(.tp) :where(h1, h2, h3, p, ul, ol, dl, dd, figure) { margin: 0; padding: 0; }
+  :where(.tp) :where(ul, ol) { list-style: none; }
+  :where(.tp) img { display: block; max-width: 100%; }
+  .tp-wrap { width: 100%; max-width: 1366px; margin-inline: auto; padding-inline: var(--tp-pad); }
+  .tp-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tp-label { font: 400 18px/1.4 var(--tp-sans); text-transform: uppercase; color: var(--tp-orange-text); }
+  .tp-h2 { font: 700 clamp(32px, 3.7vw, 50px)/1.2 var(--tp-serif); color: var(--tp-navy); text-wrap: balance; }
+  .tp-sechead { display: grid; justify-items: center; gap: 12px; margin-bottom: clamp(36px, 5vw, 64px); text-align: center; }
+  .tp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 62px; padding: 0 40px; border: 0; border-radius: 999px; background: var(--tp-navy); color: var(--tp-orange); font: 500 18px/1 var(--tp-sans); text-decoration: none; cursor: pointer; transition: background .3s ease, color .3s ease, transform .3s ease, box-shadow .3s ease; }
+  .tp-btn:hover { background: var(--tp-orange); color: var(--tp-navy); transform: translateY(-2px); box-shadow: 0 12px 26px rgb(252 101 57 / .32); }
+  .tp-btn:focus-visible, .tp a:focus-visible, .tp button:focus-visible, .tp input:focus-visible { outline: 3px solid var(--tp-orange); outline-offset: 3px; }
+  .tp-ico { flex: none; }
+  .tp-cut { mix-blend-mode: multiply; }
+  .tp-rule { display: block; width: 70px; height: 4px; background: var(--tp-orange); }
+  @keyframes tp-reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tp-reveal { animation: tp-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) { .tp *, .tp *::before, .tp *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  .tp-showcase { padding-block: clamp(56px, 7vw, 96px); background: var(--tp-navy-deep); color: #fff; }
+  .tp-showcase__stage { position: relative; display: grid; grid-template-columns: 90px minmax(0, 1fr) 90px; align-items: center; width: min(100%, 700px); min-height: 400px; margin-inline: auto; }
+  .tp-showcase__lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .tp-showcase__side { position: relative; z-index: 1; display: grid; align-content: space-between; height: 400px; }
+  .tp-bub { display: grid; justify-items: center; gap: 4px; }
+  .tp-bub__ring { display: grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #D8DDE3); box-shadow: 0 6px 16px rgb(0 0 0 / .3); }
+  .tp-bub__dot { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; color: #3a3a3a; box-shadow: inset 0 -4px 8px rgb(0 0 0 / .18); }
+  .tp-bub__label { font: 500 13px/1.3 var(--tp-sans); letter-spacing: .02em; color: #fff; text-align: center; }
+  .tp-showcase__disc { position: relative; z-index: 1; display: grid; place-items: center; width: min(100%, 300px); aspect-ratio: 1 / 1; margin-inline: auto; overflow: hidden; border-radius: 50%; background: #fff; box-shadow: 0 18px 50px rgb(0 0 0 / .35); }
+  .tp-showcase__disc img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 679px) {
+    .tp-showcase__stage { grid-template-columns: minmax(0, 1fr); gap: 28px; min-height: 0; }
+    .tp-showcase__lines { display: none; }
+    .tp-showcase__side { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); height: auto; gap: 16px; align-content: start; }
+    .tp-showcase__disc { order: -1; width: min(100%, 260px); }
+    .tp-bub__ring { width: 68px; height: 68px; }
+    .tp-bub__dot { width: 48px; height: 48px; }
+    .tp-bub__dot svg { width: 24px; height: 24px; }
+  }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if tp_html contains 'ا' or tp_html contains 'ل' or tp_html contains 'ي' or tp_html contains 'ة' -%}
+<div class="tp-rtl" dir="rtl" style="display: contents">{{ tp_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .tp-rtl:is(#tp-rtl, *), .tp-rtl:is(#tp-rtl, *) * { letter-spacing: 0 !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3, p, li, span, a, button, strong, label, input, div) { font-family: "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3) { line-height: 1.35 !important; }
+  .tp-rtl:is(#tp-rtl, *) .tp-btn svg { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ tp_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Tempo Showcase",
+  "tag": "section",
+  "class": "roarr-tempo-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr generated content",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "showcase_1_label",
+      "label": "Bubble 1 label",
+      "default": "Power"
+    },
+    {
+      "type": "text",
+      "id": "showcase_2_label",
+      "label": "Bubble 2 label",
+      "default": "Quality"
+    },
+    {
+      "type": "text",
+      "id": "showcase_3_label",
+      "label": "Bubble 3 label",
+      "default": "Value"
+    },
+    {
+      "type": "text",
+      "id": "showcase_4_label",
+      "label": "Bubble 4 label",
+      "default": "Location"
+    },
+    {
+      "type": "text",
+      "id": "showcase_5_label",
+      "label": "Bubble 5 label",
+      "default": "Timing"
+    },
+    {
+      "type": "text",
+      "id": "showcase_6_label",
+      "label": "Bubble 6 label",
+      "default": "Care"
+    },
+    {
+      "type": "text",
+      "id": "showcase_heading",
+      "label": "Hidden heading (read by screen readers)",
+      "default": "What You Get"
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_showcase_image",
+      "label": "Centre image (1:1, white background)"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Product name when no product is found",
+      "default": "Your product"
+    },
+    {
+      "type": "text",
+      "id": "fallback_price",
+      "label": "Price when no product is found",
+      "default": "$49.00"
+    },
+    {
+      "type": "text",
+      "id": "fallback_compare",
+      "label": "Compare-at price when no product is found"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tempo Showcase"
+    }
+  ]
+}
+{% endschema %}

@@ -3,6 +3,7 @@ from calendar import monthrange
 import os
 import json
 from app.modules.database.conditions import Attr, Key
+from app.modules.shopify.token_client import resolve_access_token
 import logging
 import uuid
 from datetime import datetime, timezone, timedelta
@@ -380,7 +381,9 @@ class DocumentStore:
                 # This ensures consistent behavior when user has multiple stores
                 return {
                     "shop_url": store.get("store_url"),
-                    "access_token": store.get("access_token"),
+                    "access_token": resolve_access_token(
+                        store.get("store_url"), store.get("access_token")
+                    ),
                     "store_id": store.get("PK"),
                 }
             return None

@@ -1,0 +1,200 @@
+{%- capture tp_html -%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap">
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign use_mf = section.settings.use_roarr_metafields -%}
+{%- assign split_heading = section.settings.split_heading | default: 'Designed Around The Way You Live' -%}
+{%- if use_mf and ht.split_heading != blank -%}{%- assign split_heading = ht.split_heading -%}{%- endif -%}
+{%- assign split_text = section.settings.split_text | default: 'Every choice, from the materials to the shape, comes back to making daily life a little easier.' -%}
+{%- if use_mf and ht.split_text != blank -%}{%- assign split_text = ht.split_text -%}{%- endif -%}
+{%- assign split_1_title = section.settings.split_1_title | default: 'Everyday Use' -%}
+{%- if use_mf and ht.split_1_title != blank -%}{%- assign split_1_title = ht.split_1_title -%}{%- endif -%}
+{%- assign split_1_text = section.settings.split_1_text | default: 'Made to slot into your routine so you can simply pick it up and go.' -%}
+{%- if use_mf and ht.split_1_text != blank -%}{%- assign split_1_text = ht.split_1_text -%}{%- endif -%}
+{%- assign split_2_title = section.settings.split_2_title | default: 'Quality Finish' -%}
+{%- if use_mf and ht.split_2_title != blank -%}{%- assign split_2_title = ht.split_2_title -%}{%- endif -%}
+{%- assign split_2_text = section.settings.split_2_text | default: 'Looks and feels as good in the hand as it does on the page.' -%}
+{%- if use_mf and ht.split_2_text != blank -%}{%- assign split_2_text = ht.split_2_text -%}{%- endif -%}
+{%- assign split_3_title = section.settings.split_3_title | default: 'Thoughtful Extras' -%}
+{%- if use_mf and ht.split_3_title != blank -%}{%- assign split_3_title = ht.split_3_title -%}{%- endif -%}
+{%- assign split_3_text = section.settings.split_3_text | default: 'Small touches that make daily use that bit more enjoyable.' -%}
+{%- if use_mf and ht.split_3_text != blank -%}{%- assign split_3_text = ht.split_3_text -%}{%- endif -%}
+{%- assign tempo_detail_image = section.settings.tempo_detail_image -%}
+{%- if use_mf and hi.tempo_detail_image != blank -%}{%- assign tempo_detail_image = hi.tempo_detail_image -%}{%- endif -%}
+{%- assign tp_product = blank -%}
+{%- if ht.selected_product != blank -%}{%- assign tp_product = all_products[ht.selected_product] -%}{%- endif -%}
+{%- if tp_product == blank and collections.all.products.first != blank -%}{%- assign tp_product = collections.all.products.first -%}{%- endif -%}
+{%- assign tp_url = routes.all_products_collection_url | default: '/collections/all' -%}
+{%- assign tp_title = section.settings.fallback_title -%}
+{%- assign tp_price = section.settings.fallback_price -%}
+{%- assign tp_compare = section.settings.fallback_compare -%}
+{%- if tp_product != blank and tp_product.title != blank -%}
+  {%- assign tp_url = tp_product.url -%}
+  {%- assign tp_title = tp_product.title -%}
+  {%- assign tp_price = tp_product.price | money -%}
+  {%- assign tp_compare = blank -%}
+  {%- if tp_product.compare_at_price > tp_product.price -%}{%- assign tp_compare = tp_product.compare_at_price | money -%}{%- endif -%}
+{%- endif -%}
+<section class="tp tp-split">
+  <div class="tp-wrap tp-split__grid">
+    <div class="tp-split__copy tp-reveal">
+      <h2 class="tp-h2">{{ split_heading | escape }}</h2>
+      {%- if split_text != blank -%}<p class="tp-split__lead">{{ split_text | escape }}</p>{%- endif -%}
+      <ul class="tp-split__list" role="list">
+        {%- if split_1_title != blank -%}<li class="tp-split__item"><span class="tp-split__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="70" height="70" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 17a8.5 8.5 0 1 1 17 0M12 17l4.2-5.2M6.5 17H7M17 17h.5M12 8.2V9M7.2 11l.6.5M16.8 11l-.6.5"/><circle cx="12" cy="17" r="1.2"/></svg></span><div><h3>{{ split_1_title | escape }}</h3><p>{{ split_1_text | escape }}</p></div></li>{%- endif -%}
+        {%- if split_2_title != blank -%}<li class="tp-split__item"><span class="tp-split__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="70" height="70" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg></span><div><h3>{{ split_2_title | escape }}</h3><p>{{ split_2_text | escape }}</p></div></li>{%- endif -%}
+        {%- if split_3_title != blank -%}<li class="tp-split__item"><span class="tp-split__ico"><svg class="tp-ico" viewBox="0 0 24 24" width="70" height="70" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 3 8l9 5 9-5zM3 12l9 5 9-5M3 16l9 5 9-5"/></svg></span><div><h3>{{ split_3_title | escape }}</h3><p>{{ split_3_text | escape }}</p></div></li>{%- endif -%}
+      </ul>
+    </div>
+    <div class="tp-split__media tp-reveal"><span class="tp-split__blob" aria-hidden="true"></span>{%- if tempo_detail_image != blank -%}{%- if tempo_detail_image contains 'http' or tempo_detail_image contains '//' -%}<img class="tp-cut" src="{{ tempo_detail_image }}" alt="{{ tp_title | escape }}" loading="lazy" width="1000" height="1000" decoding="async">{%- else -%}<img class="tp-cut" src="{{ tempo_detail_image | image_url: width: 1000 }}" alt="{{ tp_title | escape }}" loading="lazy" width="1000" height="1000" decoding="async">{%- endif -%}{%- endif -%}</div>
+  </div>
+</section>
+<style>
+  #shopify-section-{{ section.id }} { width: 100%; max-width: none; }
+  :where(.tp) { --tp-peach: #FAF1ED; --tp-navy: #06264B; --tp-navy-deep: #05264D; --tp-orange: #FC6539; --tp-orange-text: #CF4318; --tp-ink: #222222; --tp-grey: #F1F1F1; --tp-grey-2: #EEEEEE; --tp-line: #EAEAEA; --tp-blob: #FBC3B3; --tp-serif: "Playfair Display", Georgia, "Times New Roman", serif; --tp-sans: "Poppins", "Helvetica Neue", Arial, sans-serif; --tp-pad: clamp(20px, 7.32vw, 100px); font-family: var(--tp-sans); font-size: 16px; line-height: 1.7; color: var(--tp-navy); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .tp *, .tp *::before, .tp *::after { box-sizing: border-box; }
+  :where(.tp) :where(h1, h2, h3, p, ul, ol, dl, dd, figure) { margin: 0; padding: 0; }
+  :where(.tp) :where(ul, ol) { list-style: none; }
+  :where(.tp) img { display: block; max-width: 100%; }
+  .tp-wrap { width: 100%; max-width: 1366px; margin-inline: auto; padding-inline: var(--tp-pad); }
+  .tp-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tp-label { font: 400 18px/1.4 var(--tp-sans); text-transform: uppercase; color: var(--tp-orange-text); }
+  .tp-h2 { font: 700 clamp(32px, 3.7vw, 50px)/1.2 var(--tp-serif); color: var(--tp-navy); text-wrap: balance; }
+  .tp-sechead { display: grid; justify-items: center; gap: 12px; margin-bottom: clamp(36px, 5vw, 64px); text-align: center; }
+  .tp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 62px; padding: 0 40px; border: 0; border-radius: 999px; background: var(--tp-navy); color: var(--tp-orange); font: 500 18px/1 var(--tp-sans); text-decoration: none; cursor: pointer; transition: background .3s ease, color .3s ease, transform .3s ease, box-shadow .3s ease; }
+  .tp-btn:hover { background: var(--tp-orange); color: var(--tp-navy); transform: translateY(-2px); box-shadow: 0 12px 26px rgb(252 101 57 / .32); }
+  .tp-btn:focus-visible, .tp a:focus-visible, .tp button:focus-visible, .tp input:focus-visible { outline: 3px solid var(--tp-orange); outline-offset: 3px; }
+  .tp-ico { flex: none; }
+  .tp-cut { mix-blend-mode: multiply; }
+  .tp-rule { display: block; width: 70px; height: 4px; background: var(--tp-orange); }
+  @keyframes tp-reveal { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .tp-reveal { animation: tp-reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 60%; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) { .tp *, .tp *::before, .tp *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  .tp-split { padding-block: clamp(56px, 6.6vw, 90px); background: var(--tp-grey); }
+  .tp-split__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(32px, 5vw, 80px); }
+  .tp-split__copy { display: grid; gap: 18px; justify-items: start; }
+  .tp-split__copy .tp-h2 { font-size: clamp(30px, 3.2vw, 44px); line-height: 1.18; max-width: 12em; }
+  .tp-split__lead { max-width: 33em; font-size: 16px; line-height: 1.75; color: var(--tp-navy); }
+  .tp-split__list { display: grid; gap: 34px; margin-top: 18px; }
+  .tp-split__item { display: flex; align-items: flex-start; gap: 20px; }
+  .tp-split__ico { display: grid; place-items: center; width: 70px; height: 70px; color: #FF7F61; }
+  .tp-split__item h3 { font: 500 24px/1.3 var(--tp-sans); color: var(--tp-navy); }
+  .tp-split__item p { max-width: 24em; margin-top: 4px; font-size: 16px; line-height: 1.75; color: #222; }
+  .tp-split__media { position: relative; display: grid; place-items: center; }
+  .tp-split__blob { position: absolute; right: 2%; bottom: 8%; width: 64%; height: 62%; border-radius: 58% 42% 55% 45% / 50% 58% 42% 50%; background: #F8C5B6; opacity: .85; }
+  .tp-split__media img { position: relative; width: min(100%, 560px); height: auto; aspect-ratio: 1 / 1; object-fit: contain; }
+  @media (max-width: 899px) { .tp-split__grid { grid-template-columns: minmax(0, 1fr); } .tp-split__media img { width: min(100%, 420px); } }
+</style>
+{%- endcapture -%}
+{%- comment -%} Auto RTL: any Arabic-script letter in the output flips this section to right-to-left. {%- endcomment -%}
+{%- if tp_html contains 'ا' or tp_html contains 'ل' or tp_html contains 'ي' or tp_html contains 'ة' -%}
+<div class="tp-rtl" dir="rtl" style="display: contents">{{ tp_html }}</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+<style>
+  .tp-rtl:is(#tp-rtl, *), .tp-rtl:is(#tp-rtl, *) * { letter-spacing: 0 !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3, p, li, span, a, button, strong, label, input, div) { font-family: "Tajawal", "Noto Sans Arabic", sans-serif !important; }
+  .tp-rtl:is(#tp-rtl, *) :is(h1, h2, h3) { line-height: 1.35 !important; }
+  .tp-rtl:is(#tp-rtl, *) .tp-btn svg { transform: scaleX(-1); }
+</style>
+{%- else -%}
+{{ tp_html }}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Tempo Split",
+  "tag": "section",
+  "class": "roarr-tempo-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_roarr_metafields",
+      "label": "Use Roarr generated content",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "split_heading",
+      "label": "Heading",
+      "default": "Designed Around The Way You Live"
+    },
+    {
+      "type": "textarea",
+      "id": "split_text",
+      "label": "Text",
+      "default": "Every choice, from the materials to the shape, comes back to making daily life a little easier."
+    },
+    {
+      "type": "text",
+      "id": "split_1_title",
+      "label": "Point 1 title",
+      "default": "Everyday Use"
+    },
+    {
+      "type": "textarea",
+      "id": "split_1_text",
+      "label": "Point 1 text",
+      "default": "Made to slot into your routine so you can simply pick it up and go."
+    },
+    {
+      "type": "text",
+      "id": "split_2_title",
+      "label": "Point 2 title",
+      "default": "Quality Finish"
+    },
+    {
+      "type": "textarea",
+      "id": "split_2_text",
+      "label": "Point 2 text",
+      "default": "Looks and feels as good in the hand as it does on the page."
+    },
+    {
+      "type": "text",
+      "id": "split_3_title",
+      "label": "Point 3 title",
+      "default": "Thoughtful Extras"
+    },
+    {
+      "type": "textarea",
+      "id": "split_3_text",
+      "label": "Point 3 text",
+      "default": "Small touches that make daily use that bit more enjoyable."
+    },
+    {
+      "type": "image_picker",
+      "id": "tempo_detail_image",
+      "label": "Detail image (1:1, white background)"
+    },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Product name when no product is found",
+      "default": "Your product"
+    },
+    {
+      "type": "text",
+      "id": "fallback_price",
+      "label": "Price when no product is found",
+      "default": "$49.00"
+    },
+    {
+      "type": "text",
+      "id": "fallback_compare",
+      "label": "Compare-at price when no product is found"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tempo Split"
+    }
+  ]
+}
+{% endschema %}

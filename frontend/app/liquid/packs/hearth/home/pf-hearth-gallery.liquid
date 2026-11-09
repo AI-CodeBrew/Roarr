@@ -1,0 +1,65 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture hh_html -%}
+<section class="hh-gal">
+  <div class="hh-gal__grid" data-hh-reveal>
+    {%- for i in (1..4) -%}
+      {%- assign title_key = 'gallery_title_' | append: i -%}
+      {%- assign image_key = 'gallery_image_' | append: i -%}
+      {%- assign handle_key = 'collection_' | append: i -%}
+      {%- assign handle = ht[handle_key] -%}
+      {%- assign image = hi[image_key] -%}
+      {%- assign tile_url = routes.all_products_collection_url | default: '/collections/all' -%}
+      {%- if handle != blank -%}
+        {%- assign tile_url = '/collections/' | append: handle -%}
+        {%- if collections[handle] != blank -%}
+          {%- assign tile_url = collections[handle].url -%}
+          {%- if image == blank -%}{%- assign image = collections[handle].featured_image -%}{%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- if ht[title_key] != blank -%}
+        <a class="hh-gal__tile" href="{{ tile_url }}">
+          {%- render 'snippets/roarr-hearth-img', src: image, alt: ht[title_key], width: 800, lazy: true -%}
+          <span class="hh-gal__copy">
+            <span class="hh-gal__name">{{ ht[title_key] }}</span>
+            <span class="hh-gal__go hh-line-link">{% render 'snippets/roarr-ui-string', key: 'shop_now' %}</span>
+          </span>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+  .hh .hh-gal { padding-block-end: 120px; background: #fff; }
+  .hh .hh-gal__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .hh .hh-gal__tile { position: relative; display: block; aspect-ratio: 353 / 485; overflow: hidden; background: var(--hh-tile); color: #fff; }
+  .hh .hh-gal__tile img { width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-gal__tile::before { content: ""; position: absolute; inset: 0; z-index: 1; background: rgb(255 255 255 / .01); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all .3s ease; }
+  .hh .hh-gal__tile:hover::before, .hh .hh-gal__tile:focus-visible::before { opacity: 1; visibility: visible; }
+  .hh .hh-gal__copy { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px; text-align: center; }
+  .hh .hh-gal__name { font-size: 26px; line-height: 39px; font-weight: 500; text-transform: uppercase; color: #fff; text-shadow: 0 1px 14px rgb(0 0 0 / .45); }
+  .hh .hh-gal__go { font-size: 13.44px; line-height: 20px; font-weight: 500; text-transform: uppercase; color: #fff; opacity: 0; transition: opacity .2s ease; }
+  .hh .hh-gal__tile:hover .hh-gal__go, .hh .hh-gal__tile:focus-visible .hh-gal__go { opacity: 1; }
+  @media (max-width: 989px) { .hh .hh-gal__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hh .hh-gal { padding-block-end: 80px; } }
+  @media (max-width: 749px) {
+    .hh .hh-gal__grid { grid-template-columns: 1fr; }
+    .hh .hh-gal { padding-block-end: 60px; }
+    .hh .hh-gal__name { font-size: 20px; line-height: 30px; }
+    .hh .hh-gal__go { font-size: 12.32px; line-height: 18.5px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Gallery",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Hearth Gallery" }]
+}
+{% endschema %}

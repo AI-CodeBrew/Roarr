@@ -32,25 +32,28 @@ import {
   ChevronDownIcon,
 } from "@shopify/polaris-icons";
 import {
-  Boxes,
   Check,
-  ChevronDown,
-  Globe,
-  LayoutTemplate,
-  Package,
   Palette,
+  Plus,
   Sparkles,
-  Store as StoreGlyph,
-  Type as TypeGlyph,
 } from "lucide-react";
 import {
-  ChoiceCard,
-  FlowPageHeader,
   Panel,
   SecondaryButton,
   StepHeading,
 } from "../../../components/RoarrUI.jsx";
 import CategoryDetectRow from "../../../components/CategoryDetectRow.jsx";
+import {
+  ConfigureHero,
+  ConfigureSection,
+  FieldLabel,
+  FontOptionList,
+  FontPickerButton,
+  PreferencesSummary,
+  ProductSlots,
+  StoreTypeOption,
+  StyleSummary,
+} from "./StoreConfigureUI.jsx";
 import { useDashboardLoaderData } from "../../../lib/DashboardDataContext";
 import { usePages } from "../../../lib/PagesContext.jsx";
 import GenerateContainer from "../../_app.generate_pdp/utils/GenerateContainer.jsx";
@@ -73,6 +76,30 @@ import { buildEclipseProductHomeData } from "./utils/buildEclipseProductHomeData
 import { buildVelvetHomeProductPageData } from "./utils/buildVelvetHomeProductPage.js";
 import { buildLuminousHomeData, buildLuminousDemoProduct, buildLuminousDemoGridProducts } from "./utils/buildLuminousDemo.js";
 import { buildLumenookHomeData, buildLumenookDemoGridProducts } from "./utils/buildLumenookDemo.js";
+import {
+  buildLustreDemoGridProducts,
+  buildLustreDemoProduct,
+  buildLustreHomeData,
+  resolveLustrePreviewLink,
+} from "./utils/buildLustreDemo.js";
+import {
+  buildVelourDemoGridProducts,
+  buildVelourDemoProduct,
+  buildVelourHomeData,
+  resolveVelourPreviewLink,
+} from "./utils/buildVelourDemo.js";
+import {
+  buildHearthDemoGridProducts,
+  buildHearthDemoProduct,
+  buildHearthHomeData,
+  resolveHearthPreviewLink,
+} from "./utils/buildHearthDemo.js";
+import {
+  buildSimmerDemoGridProducts,
+  buildSimmerDemoProduct,
+  buildSimmerHomeData,
+  resolveSimmerPreviewLink,
+} from "./utils/buildSimmerDemo.js";
 import { buildPremiumMultiHomeData, buildPremiumMultiGridProducts } from "./utils/buildPremiumMultiHome.js";
 import { resolveStoreProductPageData } from "./utils/buildStorePremiumPdpPreview.js";
 import { STORE_COUNTRY_OPTIONS } from "./utils/storeCountryOptions.js";
@@ -106,6 +133,38 @@ import {
 const StoreGenerationStep = lazy(() => import("./StoreGenerationStep.jsx"));
 const StorePublishStep = lazy(() => import("./StorePublishStep.jsx"));
 const StorePreviewEditor = lazy(() => import("./StorePreviewEditor.jsx"));
+
+/** Store templates whose sample preview browses between pages: its data and how links resolve. */
+const PAGED_PACK_DEMOS = {
+  lustre: {
+    message: "LUSTRE_PREVIEW_NAVIGATE",
+    resolve: resolveLustrePreviewLink,
+    home: buildLustreHomeData,
+    product: buildLustreDemoProduct,
+    grid: buildLustreDemoGridProducts,
+  },
+  velour: {
+    message: "VELOUR_PREVIEW_NAVIGATE",
+    resolve: resolveVelourPreviewLink,
+    home: buildVelourHomeData,
+    product: buildVelourDemoProduct,
+    grid: buildVelourDemoGridProducts,
+  },
+  hearth: {
+    message: "HEARTH_PREVIEW_NAVIGATE",
+    resolve: resolveHearthPreviewLink,
+    home: buildHearthHomeData,
+    product: buildHearthDemoProduct,
+    grid: buildHearthDemoGridProducts,
+  },
+  simmer: {
+    message: "SIMMER_PREVIEW_NAVIGATE",
+    resolve: resolveSimmerPreviewLink,
+    home: buildSimmerHomeData,
+    product: buildSimmerDemoProduct,
+    grid: buildSimmerDemoGridProducts,
+  },
+};
 
 const CATEGORY_OPTIONS = [
   { label: "Car Accessories", value: "car_accessories" },
@@ -404,14 +463,15 @@ const TYPOGRAPHY_STYLE_PRESETS = [
   },
 ];
 
-/** Brand-ads style configure shell. Sticky header keeps Begin Magic visible while scrolling. */
+/** Configure step shell: onboarding-style header (back + stepper, then title and preferences). */
 function StoreConfigureStepShell({
   embedded,
   backLabel,
   onBack,
-  primaryAction,
   title = "Configure entire store",
-  subtitle = "Step 1 of 3",
+  subtitle,
+  steps,
+  aside,
   children,
 }) {
   if (embedded) {
@@ -426,14 +486,15 @@ function StoreConfigureStepShell({
         boxSizing: "border-box",
       }}
     >
-      <FlowPageHeader
+      <ConfigureHero
         title={title}
         subtitle={subtitle}
         backLabel={backLabel || "Back"}
         onBack={onBack}
-        primaryAction={primaryAction}
+        steps={steps}
+        aside={aside}
       />
-        <BlockStack gap="400">{children}</BlockStack>
+      <BlockStack gap="400">{children}</BlockStack>
     </Box>
   );
 }
@@ -524,6 +585,9 @@ export default function StoreFlowStructure({
   const [modalPreviewMode, setModalPreviewMode] = useState("desktop");
   /** Home | Product inside the eye-modal (independent of page tab index). */
   const [modalPageView, setModalPageView] = useState("Home");
+  /** Lustre, Velour and Hearth sample previews: an inner page shown in place of Home ({ pageType, handle }), and the open product. */
+  const [packDemoPage, setPackDemoPage] = useState(null);
+  const [packDemoProductHandle, setPackDemoProductHandle] = useState(null);
   /**
    * Optional overrides while the eye-icon demo modal is open so a theme can be
    * previewed before / without changing the selected radio.
@@ -791,7 +855,7 @@ export default function StoreFlowStructure({
     }
   }, []);
 
-  /** One click sets a multi store template: Swift (classic) or Lumenook, store-only. */
+  /** One click sets a multi store template: Swift (classic), Lumenook, Lustre, Velour or Hearth, store-only. */
   const selectMultiThemeCombo = useCallback((combo) => {
     const includePremium = combo.includePremium === true;
     themeSelectionRef.current = {
@@ -816,7 +880,7 @@ export default function StoreFlowStructure({
   }, [selectedProductForPreview, multiProductsForStore]);
 
   // Auto-select once products are chosen: keep the picked template (single: Swift or
-  // Maison; multi: Swift or Lumenook), defaulting to Swift.
+  // Maison or Tempo; multi: Swift, Lumenook, Lustre, Velour or Hearth), defaulting to Swift.
   useEffect(() => {
     if (!hasStoreProductsSelected) return;
     if (storeType === "single") {
@@ -876,6 +940,8 @@ export default function StoreFlowStructure({
     setIsPreviewModalOpen(false);
     setModalPreviewMode("desktop");
     setModalPageView("Home");
+    setPackDemoPage(null);
+    setPackDemoProductHandle(null);
   }, []);
 
   // Every eye open: pin preview to the top (never land mid-page on checkout).
@@ -908,7 +974,7 @@ export default function StoreFlowStructure({
       clearTimeout(t1);
       clearTimeout(t2);
     };
-  }, [isPreviewModalOpen, modalPageView]);
+  }, [isPreviewModalOpen, modalPageView, packDemoPage, packDemoProductHandle]);
 
   const demoStoreTemplatePack =
     themeDemoOverride && "pack" in themeDemoOverride && themeDemoOverride.pack != null
@@ -925,6 +991,34 @@ export default function StoreFlowStructure({
       ? themeDemoOverride.includePremium
       : multiIncludePremiumPdps;
   const demoProductOnly = Boolean(themeDemoOverride?.productOnly);
+  const demoPackKey = String(demoStoreTemplatePack || "").toLowerCase();
+  const pagedPackDemo = PAGED_PACK_DEMOS[demoPackKey] || null;
+  const isPagedPackDemo = Boolean(pagedPackDemo);
+
+  // Lustre, Velour and Hearth sample previews: links inside the iframe open the matching preview page.
+  useEffect(() => {
+    if (!isPreviewModalOpen || !pagedPackDemo) return undefined;
+    const onMessage = (event) => {
+      if (event.data?.type !== pagedPackDemo.message) return;
+      const target = pagedPackDemo.resolve(event.data.href);
+      if (!target) return;
+      if (target.view === "Product") {
+        setPackDemoProductHandle(target.handle);
+        setPackDemoPage(null);
+        setModalPageView("Product");
+        return;
+      }
+      setPackDemoPage(target.pageType ? target : null);
+      setModalPageView("Home");
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [isPreviewModalOpen, pagedPackDemo]);
+
+  const packDemoPageHomeData = useMemo(
+    () => (packDemoPage && pagedPackDemo ? pagedPackDemo.home(packDemoPage.handle) : null),
+    [packDemoPage, pagedPackDemo],
+  );
   /** Classic prepaid single: homepage-only demo (no Product tab). */
   const singleIncludePremiumPdps =
     selectedProductTemplate === 1 || selectedProductTemplate === 2;
@@ -1083,10 +1177,13 @@ export default function StoreFlowStructure({
       storeType === "multi" &&
       demoMultiIncludePremiumPdps === false;
     if (isPrepaidLuminous) {
+      const demoPack = String(demoStoreTemplatePack || "").toLowerCase();
       const luminousHome =
-        String(demoStoreTemplatePack || "").toLowerCase() === "lumenook"
-          ? buildLumenookHomeData(cat)
-          : buildLuminousHomeData(cat);
+        PAGED_PACK_DEMOS[demoPack]
+          ? PAGED_PACK_DEMOS[demoPack].home()
+          : demoPack === "lumenook"
+            ? buildLumenookHomeData(cat)
+            : buildLuminousHomeData(cat);
       if (luminousHome) return luminousHome;
     }
     const isPremiumMulti =
@@ -1125,7 +1222,8 @@ export default function StoreFlowStructure({
     if (storeType === "single") {
       return demoStoreTemplatePack || "classic";
     }
-    return String(demoStoreTemplatePack || "").toLowerCase() === "lumenook" ? "lumenook" : "classic";
+    const demoPack = String(demoStoreTemplatePack || "").toLowerCase();
+    return demoPack === "lumenook" || PAGED_PACK_DEMOS[demoPack] ? demoPack : "classic";
   }, [storeType, demoStoreTemplatePack]);
 
   const linenHomeProductPageData = useMemo(() => {
@@ -1179,7 +1277,9 @@ export default function StoreFlowStructure({
       storeType === "multi" &&
       demoMultiIncludePremiumPdps === false;
     if (!isPrepaidLuminous) return null;
-    return String(demoStoreTemplatePack || "").toLowerCase() === "lumenook"
+    const demoPack = String(demoStoreTemplatePack || "").toLowerCase();
+    if (PAGED_PACK_DEMOS[demoPack]) return PAGED_PACK_DEMOS[demoPack].grid();
+    return demoPack === "lumenook"
       ? buildLumenookDemoGridProducts()
       : buildLuminousDemoGridProducts(configureDemoCategory);
   }, [
@@ -1404,9 +1504,11 @@ export default function StoreFlowStructure({
         collectionProducts:
           pageType === "home-page" && storeType === "multi"
             ? includePremium === false
-              ? String(pack).toLowerCase() === "lumenook"
-                ? buildLumenookDemoGridProducts()
-                : buildLuminousDemoGridProducts(previewCategory)
+              ? PAGED_PACK_DEMOS[String(pack).toLowerCase()]
+                ? PAGED_PACK_DEMOS[String(pack).toLowerCase()].grid()
+                : String(pack).toLowerCase() === "lumenook"
+                  ? buildLumenookDemoGridProducts()
+                  : buildLuminousDemoGridProducts(previewCategory)
               : buildPremiumMultiGridProducts(previewCategory, template) ||
                 (multiProductsForStore.length > 0
                   ? multiProductsForStore
@@ -1421,9 +1523,11 @@ export default function StoreFlowStructure({
         homeData: (() => {
           if (pageType === "home-page" && storeType === "multi" && includePremium === false) {
             const luminousHome =
-              String(pack).toLowerCase() === "lumenook"
-                ? buildLumenookHomeData(previewCategory)
-                : buildLuminousHomeData(previewCategory);
+              PAGED_PACK_DEMOS[String(pack).toLowerCase()]
+                ? PAGED_PACK_DEMOS[String(pack).toLowerCase()].home()
+                : String(pack).toLowerCase() === "lumenook"
+                  ? buildLumenookHomeData(previewCategory)
+                  : buildLuminousHomeData(previewCategory);
             if (luminousHome) return luminousHome;
           }
           if (pageType === "home-page" && storeType === "multi" && includePremium === true) {
@@ -1445,7 +1549,9 @@ export default function StoreFlowStructure({
             previewCategory,
             pageType === "home-page" && storeType === "single"
               ? includePremium === false
-                ? String(pack).toLowerCase() === "amour" || String(pack).toLowerCase() === "maison"
+                ? String(pack).toLowerCase() === "amour" ||
+                  String(pack).toLowerCase() === "maison" ||
+                  String(pack).toLowerCase() === "tempo"
                   ? String(pack).toLowerCase()
                   : "classic-prepaid"
                 : pack
@@ -1870,12 +1976,13 @@ export default function StoreFlowStructure({
       hydratedPack === "classic" ||
       hydratedPack === "cinematic" ||
       hydratedPack === "amour" ||
-      hydratedPack === "maison"
+      hydratedPack === "maison" ||
+      hydratedPack === "tempo"
     ) {
       setStoreTemplatePack(hydratedPack);
     }
-    // Amour and Maison are homepage-only: keep the card selected and premium PDP off on reload.
-    if (hydratedPack === "amour" || hydratedPack === "maison") {
+    // Amour, Maison and Tempo are homepage-only: keep the card selected and premium PDP off on reload.
+    if (hydratedPack === "amour" || hydratedPack === "maison" || hydratedPack === "tempo") {
       setSelectedProductTemplate(null);
       themeSelectionRef.current = { pack: hydratedPack, includePremium: false, template: null };
     }
@@ -2230,6 +2337,12 @@ export default function StoreFlowStructure({
         });
       });
   };
+
+  // Configure scrolls with the page (no inner scroller), so open every step at the top.
+  useEffect(() => {
+    if (embedded || typeof window === "undefined") return;
+    window.scrollTo(0, 0);
+  }, [step, embedded]);
 
   const goToStep = async (nextStep) => {
     const container =
@@ -2771,6 +2884,33 @@ export default function StoreFlowStructure({
   const prefsLanguage = getSupportedLanguage(effectiveLanguageValue);
   const prefsMarketLabel =
     marketType === "cod" ? "COD" : marketType === "prepaid" ? "Prepaid" : "—";
+  const configurePreferences = (
+    <PreferencesSummary
+      items={[
+        { label: "Payment", value: prefsMarketLabel },
+        { label: "Country", value: prefsCountryLabel },
+        { label: "Language", value: prefsLanguage?.name || effectiveLanguageLabel },
+      ]}
+      missing={!marketType || !countryCode}
+      editAction={
+        <Button variant="plain" url="/preferences">
+          Edit
+        </Button>
+      }
+    />
+  );
+  const storeProductsReady = hasStoreProductsSelected && !currentStoreValidationMessage;
+  /** Top stepper: this page covers store type → template; generate and publish follow. */
+  const configureProgressSteps = [
+    { label: "Store type", state: storeType ? "complete" : "active" },
+    {
+      label: storeType === "multi" ? "Products" : "Product",
+      state: !storeType ? "upcoming" : storeProductsReady ? "complete" : "active",
+    },
+    { label: "Template", state: storeProductsReady ? "active" : "upcoming" },
+    { label: "Generate", state: "upcoming" },
+    { label: "Publish", state: "upcoming" },
+  ];
 
   const purchaseRequiredOpen = purchaseRequiredSurface != null;
   const purchaseStorePurchaseRequiredModal = (
@@ -3177,8 +3317,14 @@ export default function StoreFlowStructure({
                   background: "#f1f2f3",
                 }}
               >
-                {["Home", "Product"].map((view) => {
-                  const isActive = modalPageView === view;
+                {(isPagedPackDemo ? ["Home", "Collections", "Product"] : ["Home", "Product"]).map((view) => {
+                  const onPackCollections =
+                    packDemoPage?.pageType === "collection" ||
+                    packDemoPage?.pageType === "list-collections";
+                  const isActive =
+                    view === "Collections"
+                      ? onPackCollections
+                      : modalPageView === view && (view !== "Home" || !packDemoPage);
                   return (
                     <button
                       key={view}
@@ -3188,6 +3334,12 @@ export default function StoreFlowStructure({
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
+                        if (view === "Collections") {
+                          setPackDemoPage({ pageType: "list-collections" });
+                          setModalPageView("Home");
+                          return;
+                        }
+                        setPackDemoPage(null);
                         setModalPageView(view);
                         setSelectedMoreView("");
                         const idx = (
@@ -3312,12 +3464,12 @@ export default function StoreFlowStructure({
                   <div
                     style={{
                       display:
-                        demoHomeOnly || modalPageView === "Home"
+                        (demoHomeOnly || modalPageView === "Home") && !packDemoPage
                           ? "block"
                           : "none",
                       height: "100%",
                     }}
-                    aria-hidden={!(demoHomeOnly || modalPageView === "Home")}
+                    aria-hidden={!(demoHomeOnly || modalPageView === "Home") || Boolean(packDemoPage)}
                   >
             <LiquidPagePreview
                       key={configureDemoPrebuiltHtmlUrlHome}
@@ -3358,6 +3510,30 @@ export default function StoreFlowStructure({
                     />
                   </div>
                   ) : null}
+                  {isPagedPackDemo && packDemoPage ? (
+                    <div style={{ height: "100%" }}>
+                      <LiquidPagePreview
+                        attachBelowChrome={modalPreviewMode === "desktop"}
+                        productType="multi-product"
+                        marketType={marketType || "prepaid"}
+                        selectedTemplate={1}
+                        usePremiumProductPage={false}
+                        productPageData={null}
+                        pageType={packDemoPage.pageType}
+                        productData={null}
+                        collectionProducts={null}
+                        detectedCategory={configureDemoCategory}
+                        previewMode={modalPreviewMode}
+                        selectorMode={false}
+                        stylePreferences={stylePreferences}
+                        liquidPreviewType="entire-store"
+                        storeTemplatePack={demoPackKey}
+                        minHeight="1200px"
+                        homeData={packDemoPageHomeData}
+                        prebuiltHtmlUrl={null}
+                      />
+                    </div>
+                  ) : null}
                   {!demoHomeOnly ? (
                   <div
                     style={{
@@ -3380,7 +3556,9 @@ export default function StoreFlowStructure({
                       usePremiumProductPage={configureDemoUsePremiumProductPage}
                       productPageData={linenHomeProductPageData || velvetHomeProductPageData}
                       pageType="product-page"
-                      productData={luminousDemoProduct}
+                      productData={
+                        isPagedPackDemo ? pagedPackDemo.product(packDemoProductHandle) : luminousDemoProduct
+                      }
                       collectionProducts={null}
                       detectedCategory={configureDemoCategory}
                       previewMode={modalPreviewMode}
@@ -3391,9 +3569,9 @@ export default function StoreFlowStructure({
                           ? "landing-page"
                           : "entire-store"
                       }
-                      storeTemplatePack="classic"
+                      storeTemplatePack={isPagedPackDemo ? demoPackKey : "classic"}
                       minHeight="1200px"
-                      homeData={null}
+                      homeData={isPagedPackDemo ? configureDemoHomeData : null}
                       prebuiltHtmlUrl={null}
                     />
                   </div>
@@ -3405,20 +3583,15 @@ export default function StoreFlowStructure({
         </div>
 
       </AppBridgeModal>
-      <Box
-        className={
-          embedded
-            ? "bg-[#f2f2f2] overflow-x-hidden"
-            : "bg-[#f2f2f2] overflow-y-auto overflow-x-hidden"
-        }
-      >
+      {/* The page itself scrolls; a 100vh inner scroller here gave the admin two scrollbars. */}
+      <Box className="bg-[#f2f2f2] overflow-x-hidden">
         <GenerateContainer
           style={{
             maxWidth: "1150px",
             paddingTop: 0,
-            ...(embedded
-              ? { height: "auto", minHeight: 0, overflowY: "visible" }
-              : {}),
+            height: "auto",
+            minHeight: 0,
+            overflowY: "visible",
           }}
         >
           <style>{`
@@ -3436,7 +3609,12 @@ export default function StoreFlowStructure({
             backLabel={configureBackLabel}
             onBack={handleConfigureBack}
             title={configureStepTitle}
-            subtitle={configureStepSubtitle}
+            subtitle={
+              isEditingExistingStore
+                ? configureStepSubtitle
+                : "Choose a store type, add your products, then pick a template."
+            }
+            steps={configureProgressSteps}
           >
           {embedded ? (
             !hideConfigurationHeading ? (
@@ -3458,149 +3636,102 @@ export default function StoreFlowStructure({
               </>
             ) : null
           ) : null}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "minmax(0, 1fr)",
-              gap: "24px",
-              alignItems: "start",
-              ...(isMobileLayout ? {} : { marginBlockStart: "12px" }),
-            }}
-          >
-            <div
-              className="min-w-0"
-              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-[minmax(0,1fr)_200px] items-stretch gap-3 sm:grid-cols-[minmax(0,1fr)_260px] sm:gap-4">
+            <ConfigureSection
+              marker={1}
+              done={Boolean(storeType)}
+              title="Select store type"
+              description="Includes Homepage, Collections, FAQs, Reviews and Product page."
             >
-              <BlockStack gap="300">
-                <section className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-slate-200/70">
-                  <div className="flex min-w-0 flex-wrap items-center gap-2">
-                    <span className="mr-1 inline-flex items-center gap-1.5 text-[13px] font-medium text-slate-500">
-                      <Globe size={15} className="text-[#1e40af]" aria-hidden />
-                      Your preferences
-                    </span>
-                    {[prefsMarketLabel, prefsCountryLabel, prefsLanguage?.name || effectiveLanguageLabel].map(
-                      (label, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-[#1e3a8a] ring-1 ring-inset ring-blue-100"
-                        >
-                          {label}
-                        </span>
-                      ),
-                    )}
-                    {!marketType || !countryCode ? (
-                      <p className="m-0 w-full text-[13px] text-red-700">
-                        Missing preferences — set them in Preferences to continue.
-                      </p>
-                    ) : null}
-                  </div>
-                  <Button
-                    variant="plain"
-                    url="/preferences"
-                  >
-                    Edit
-                  </Button>
-                </section>
-                <Panel
-                  icon={StoreGlyph}
-                  title="Select Store Type"
-                  description={
-                    <>
-                      What&apos;s included: 1 Entire Store{" "}
-                      <strong className="font-semibold text-slate-700">
-                        (Homepage, Collections, FAQs, Customer reviews section)
-                      </strong>
-                      . Each theme is one complete look, including the product page.
-                    </>
-                  }
-                >
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <ChoiceCard
-                      icon={Package}
-                      title="Create Single-Product Store"
-                      description="One hero product with on-page checkout."
-                      selected={storeType === "single"}
-                      onClick={() => {
-                        setStoreType("single");
-                        setSelectedMoreView("");
-                        setActivePreviewTabIndex(0);
-                        setCategoryMatchPercentage(null);
-                        setStoreTemplatePack("classic");
-                        setSelectedProductTemplate(null);
-                        setMultiIncludePremiumPdps(null);
-                      }}
-                    />
-                    <ChoiceCard
-                      icon={Boxes}
-                      title="Create Multi-Product Store"
-                      description="Homepage, collections and trust pages for your catalog."
-                      selected={storeType === "multi"}
-                      onClick={() => {
-                        setStoreType("multi");
-                        setSelectedMoreView("");
-                        setActivePreviewTabIndex(0);
-                        setCategoryMatchPercentage(null);
-                        setStoreTemplatePack("classic");
-                        setMultiIncludePremiumPdps(null);
-                        setSelectedProductTemplate(null);
-                      }}
-                    />
-                  </div>
-                </Panel>
+              <div className="flex flex-col gap-3">
+                <StoreTypeOption
+                  title="Create Single-Product Store"
+                  description="One hero product with on-page checkout."
+                  meta="Uses 1 product"
+                  selected={storeType === "single"}
+                  onSelect={() => {
+                    setStoreType("single");
+                    setSelectedMoreView("");
+                    setActivePreviewTabIndex(0);
+                    setCategoryMatchPercentage(null);
+                    setStoreTemplatePack("classic");
+                    setSelectedProductTemplate(null);
+                    setMultiIncludePremiumPdps(null);
+                    setIsSingleProductModalOpen(true);
+                  }}
+                />
+                <StoreTypeOption
+                  title="Create Multi-Product Store"
+                  description="Homepage, collections and trust pages for your catalog."
+                  meta="Uses 3 products"
+                  selected={storeType === "multi"}
+                  onSelect={() => {
+                    setStoreType("multi");
+                    setSelectedMoreView("");
+                    setActivePreviewTabIndex(0);
+                    setCategoryMatchPercentage(null);
+                    setStoreTemplatePack("classic");
+                    setMultiIncludePremiumPdps(null);
+                    setSelectedProductTemplate(null);
+                    setIsMultiProductModalOpen(true);
+                  }}
+                />
+              </div>
+            </ConfigureSection>
+            {configurePreferences}
+            </div>
 
+            {/* Products section appears once the picker (opened by the store type card) has a selection. */}
+            {(storeType === "single" ? Boolean(selectedSingleProduct) : multiProductsForStore.length > 0) ? (
+              <ConfigureSection
+                marker={2}
+                done={hasStoreProductsSelected && !currentStoreValidationMessage}
+                title={storeType === "multi" ? "Select your products" : "Select your product"}
+                description={
+                  storeType === "multi"
+                    ? "Pick 3 products from your Shopify store."
+                    : "Choose one product from your Shopify store for this single-product experience."
+                }
+                actions={
+                  storeType === "multi" ? (
+                    <>
+                      <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-[#1e3a8a] ring-1 ring-inset ring-blue-100">
+                        {multiProductsForStore.length}/3 selected
+                      </span>
+                      <SecondaryButton size="sm" onClick={() => setIsMultiProductModalOpen(true)}>
+                        {multiProductsForStore.length > 0 ? "Change products" : "Select products"}
+                      </SecondaryButton>
+                    </>
+                  ) : (
+                    <SecondaryButton size="sm" onClick={() => setIsSingleProductModalOpen(true)}>
+                      {selectedSingleProduct ? "Change product" : "Select product"}
+                    </SecondaryButton>
+                  )
+                }
+              >
                 {storeType === "multi" ? (
-                  <Panel icon={Boxes} title="Select your products">
-                    <BlockStack gap="300">
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        {multiProductsForStore.length > 0 ? (
-                          <div className="flex items-center gap-2">
-                            <div className="flex -space-x-2">
-                              {multiProductsForStore.map((product) => (
-                                <div
-                                  key={product.id}
-                                  className="h-11 w-11 overflow-hidden rounded-xl bg-slate-100 ring-2 ring-white"
-                                >
-                                  <img
-                                    src={
-                                      product?.featuredImage?.url ||
-                                      product?.images?.edges?.[0]?.node?.url ||
-                                      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%23f3f4f6'/%3E%3C/svg%3E"
-                                    }
-                                    alt={product?.title || "Selected product"}
-                                    width={44}
-                                    height={44}
-                                    className="h-full w-full object-cover"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                            <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-[#1e3a8a] ring-1 ring-inset ring-blue-100">
-                              {multiProductsForStore.length}/3 selected
-                            </span>
+                  <div className="flex flex-col gap-4">
+                    <ProductSlots
+                      slots={3}
+                      products={multiProductsForStore}
+                      onOpen={() => setIsMultiProductModalOpen(true)}
+                    />
+                    {hasMultiProductValidationErrors ? (
+                      <div className="flex flex-col gap-1.5">
+                        {invalidMultiProductDetails.map(({ product, message }) => (
+                          <div key={String(product?.id || message)}>
+                            {renderStoreProductValidationAlert(
+                              `${String(product?.title || "Selected Product").slice(0, 30)}... ${message?.replace("Selected product ", "").replace(/\.$/, "")}.`,
+                              product,
+                            )}
                           </div>
-                        ) : (
-                          <p className="m-0 text-[13px] text-slate-500">No products selected yet.</p>
-                        )}
-                        <SecondaryButton
-                          onClick={() => setIsMultiProductModalOpen(true)}
-                          className="w-full sm:w-auto"
-                        >
-                          {multiProductsForStore.length > 0 ? "Change products" : "Select products"}
-                        </SecondaryButton>
+                        ))}
                       </div>
-                      {storeType === "multi" && hasMultiProductValidationErrors ? (
-                        <BlockStack gap="150">
-                          {invalidMultiProductDetails.map(({ product, message }) => (
-                            <div key={String(product?.id || message)}>
-                              {renderStoreProductValidationAlert(
-                                `${String(product?.title || "Selected Product").slice(0, 30)}... ${message?.replace("Selected product ", "").replace(/\.$/, "")}.`,
-                                product,
-                              )}
-                            </div>
-                          ))}
-                        </BlockStack>
-                      ) : null}
-                      {multiProductsForStore.length > 0 ? (
+                    ) : null}
+                    {multiProductsForStore.length > 0 ? (
+                      <div className="flex flex-col gap-2">
+                        <FieldLabel title="Store category" />
                         <CategoryDetectRow
                           options={CATEGORY_OPTIONS}
                           value={storeCategory}
@@ -3613,52 +3744,20 @@ export default function StoreFlowStructure({
                           }
                           onDetect={handleAutoDetectStoreCategoryFromMulti}
                         />
-                      ) : null}
-                    </BlockStack>
-                  </Panel>
-                ) : null}
-
-                {storeType === "single" ? (
-                  <Panel
-                    icon={Package}
-                    title="Select your product"
-                    description="Choose one product from your Shopify store for this single-product experience."
-                  >
-                    <BlockStack gap="300">
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        {selectedSingleProduct ? (
-                          <div className="flex min-w-0 flex-1 items-center gap-3">
-                            <div className="h-11 w-11 flex-none overflow-hidden rounded-xl bg-slate-100 ring-1 ring-slate-200">
-                              <img
-                                src={
-                                  selectedSingleProduct?.featuredImage?.url ||
-                                  selectedSingleProduct?.images?.edges?.[0]?.node?.url ||
-                                  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%23f3f4f6'/%3E%3C/svg%3E"
-                                }
-                                alt={selectedSingleProduct?.title || "Selected product"}
-                                width={44}
-                                height={44}
-                                className="h-full w-full object-cover"
-                              />
-                            </div>
-                            <p className="m-0 min-w-0 max-w-[280px] truncate text-sm font-medium text-slate-800">
-                              {selectedSingleProduct?.title || "Product selected"}
-                            </p>
-                          </div>
-                        ) : (
-                          <p className="m-0 text-[13px] text-slate-500">No product selected yet.</p>
-                        )}
-                        <SecondaryButton
-                          onClick={() => setIsSingleProductModalOpen(true)}
-                          className="w-full sm:w-auto"
-                        >
-                          {selectedSingleProduct ? "Change product" : "Select product"}
-                        </SecondaryButton>
                       </div>
-                      {storeType === "single" && singleProductValidationMessage
-                        ? singleStoreProductValidationAlert
-                        : null}
-                      {selectedSingleProduct ? (
+                    ) : null}
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-4">
+                    <ProductSlots
+                      slots={1}
+                      products={selectedSingleProduct ? [selectedSingleProduct] : []}
+                      onOpen={() => setIsSingleProductModalOpen(true)}
+                    />
+                    {singleProductValidationMessage ? singleStoreProductValidationAlert : null}
+                    {selectedSingleProduct ? (
+                      <div className="flex flex-col gap-2">
+                        <FieldLabel title="Store category" />
                         <CategoryDetectRow
                           options={CATEGORY_OPTIONS}
                           value={storeCategory}
@@ -3671,14 +3770,16 @@ export default function StoreFlowStructure({
                           }
                           onDetect={handleAutoDetectStoreCategoryFromSingle}
                         />
-                      ) : null}
-                    </BlockStack>
-                  </Panel>
-                ) : null}
+                      </div>
+                    ) : null}
+                  </div>
+                )}
+              </ConfigureSection>
+            ) : null}
 
                 {hasStoreProductsSelected && storeType === "single" ? (
-                  <Panel
-                    icon={LayoutTemplate}
+                  <ConfigureSection
+                    marker={3}
                     title="Store template"
                     description="Pick a look for your single-product storefront. Preview it before you begin."
                   >
@@ -3687,7 +3788,7 @@ export default function StoreFlowStructure({
                             display: "grid",
                             gridTemplateColumns: isMobileLayout
                               ? "minmax(0, 1fr)"
-                              : `repeat(${SINGLE_THEME_COMBOS.length}, minmax(0, 360px))`,
+                              : `repeat(${Math.min(3, SINGLE_THEME_COMBOS.length)}, minmax(0, 360px))`,
                             gap: "12px",
                             alignItems: "stretch",
                           }}
@@ -3755,12 +3856,12 @@ export default function StoreFlowStructure({
                             );
                           })}
                         </div>
-                  </Panel>
+                  </ConfigureSection>
                 ) : null}
 
                 {hasStoreProductsSelected && storeType === "multi" ? (
-                  <Panel
-                    icon={LayoutTemplate}
+                  <ConfigureSection
+                    marker={3}
                     title="Store template"
                     description="Pick a look for your multi-product storefront. Preview it before you begin."
                   >
@@ -3769,7 +3870,7 @@ export default function StoreFlowStructure({
                                 display: "grid",
                                 gridTemplateColumns: isMobileLayout
                                   ? "minmax(0, 1fr)"
-                                  : `repeat(${MULTI_THEME_COMBOS.length}, minmax(0, 360px))`,
+                                  : `repeat(${Math.min(3, MULTI_THEME_COMBOS.length)}, minmax(0, 360px))`,
                                 gap: "12px",
                             alignItems: "stretch",
                           }}
@@ -3842,380 +3943,236 @@ export default function StoreFlowStructure({
                             );
                           })}
                                     </div>
-                  </Panel>
+                  </ConfigureSection>
                 ) : null}
 
-                {hasStoreProductsSelected ? (
-                  <section className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70 sm:p-5">
-                    <BlockStack gap="400">
-                      <button
-                        type="button"
-                        aria-expanded={isFineTuneOpen}
-                        onClick={() => setIsFineTuneOpen((prev) => {
-                          const next = !prev;
-                          if (next) selectEntireStoreDemoPreview();
-                          return next;
-                        })}
-                        className="flex w-full items-center justify-between gap-3 rounded-xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a]"
-                      >
-                        <span className="flex items-center gap-3">
-                          <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gradient-to-br from-blue-50 to-violet-50 text-[#4f46e5] ring-1 ring-inset ring-blue-100">
-                            <Palette size={18} aria-hidden />
-                          </span>
-                          <span>
-                            <span className="block text-[15px] font-semibold tracking-tight text-slate-900">
-                              Fine Tune your style
-                            </span>
-                            <span className="block text-[13px] text-slate-500">
-                              Accent color and typography for your storefront
-                            </span>
-                          </span>
-                        </span>
-                        <ChevronDown
-                          size={18}
-                          aria-hidden
-                          className={`flex-none text-slate-500 transition ${isFineTuneOpen ? "rotate-180" : ""}`}
-                        />
-                      </button>
-
-                      {isFineTuneOpen ? (
-                        <>
-                          {/* Accent color */}
-                          <BlockStack gap="200">
-                            <p className="m-0 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">
-                              Accent color (based on {selectedCategoryLabel})
-                            </p>
-                            <div
-                              style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: "10px",
-                                alignItems: "center",
-                              }}
-                            >
-                              {colorPalette.map((color) => (
-                                <button
-                                  key={color}
-                                  type="button"
-                                  onClick={() => {
-                                    selectEntireStoreDemoPreview();
-                                    setSelectedDynamicColor(color);
-                                  }}
-                                  className={`h-9 w-9 cursor-pointer rounded-full p-0 transition hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4f46e5] focus-visible:ring-offset-2 ${
-                                    selectedDynamicColor === color
-                                      ? "ring-2 ring-[#1e3a8a] ring-offset-2"
-                                      : "ring-1 ring-black/10"
-                                  }`}
-                                  style={{ background: color, border: "none" }}
-                                  aria-label={`Select color ${color}`}
-                                  aria-pressed={selectedDynamicColor === color}
-                                />
-                              ))}
-                              <label
-                                style={{
-                                  display: "inline-flex",
-                                  alignItems: "center",
-                                  gap: "8px",
-                                  cursor: "pointer",
-                                }}
-                              >
-                                <span
-                                  className={
-                                    !colorPalette.includes(selectedDynamicColor)
-                                      ? "ring-2 ring-[#1e3a8a] ring-offset-2"
-                                      : "ring-1 ring-black/10"
-                                  }
-                                  style={{
-                                    width: "36px",
-                                    height: "36px",
-                                    borderRadius: "999px",
-                                    background: selectedDynamicColor,
-                                    position: "relative",
-                                    overflow: "hidden",
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                  }}
-                                >
-                                  <input
-                                    type="color"
-                                    value={selectedDynamicColor}
-                                    onChange={(e) => {
-                                      selectEntireStoreDemoPreview();
-                                      setSelectedDynamicColor(e.target.value);
-                                    }}
-                                    aria-label="Pick custom accent color"
-                                    style={{
-                                      position: "absolute",
-                                      inset: 0,
-                                      width: "100%",
-                                      height: "100%",
-                                      opacity: 0,
-                                      cursor: "pointer",
-                                      border: "none",
-                                      padding: 0,
-                                    }}
-                                  />
-                                  <span
-                                    style={{
-                                      color: "#111827",
-                                      fontSize: "16px",
-                                      lineHeight: 1,
-                                      pointerEvents: "none",
-                                    }}
-                                  >
-                                    +
-                                  </span>
-                                </span>
-                                <Text as="span" variant="bodySm" tone="subdued">
-                                  Custom
-                                </Text>
-                              </label>
-                            </div>
-                          </BlockStack>
-
-                          <BlockStack gap="200">
-                            <p className="m-0 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.06em] text-slate-500">
-                              <TypeGlyph size={13} aria-hidden />
-                              Typography style
-                            </p>
-                            <div
-                              style={{
-                                display: "grid",
-                                gridTemplateColumns: isMobileLayout
-                                  ? "minmax(0, 1fr)"
-                                  : "repeat(3, minmax(0, 1fr))",
-                                gap: "12px",
-                              }}
-                            >
-                              {TYPOGRAPHY_STYLE_PRESETS.map((preset) => {
-                                const isActive = selectedTypographyPresetId === preset.id;
-                                return (
-                                  <button
-                                    key={preset.id}
-                                    type="button"
-                                    disabled={isManualFontsEnabled}
-                                    onClick={() => {
-                                      selectEntireStoreDemoPreview();
-                                      setHeadingFont(preset.headingFont);
-                                      setBodyFont(preset.bodyFont);
-                                    }}
-                                    aria-pressed={isActive}
-                                    className={`transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a] ${
-                                      isActive
-                                        ? "bg-blue-50/70 ring-2 ring-[#1e40af]"
-                                        : "bg-white ring-1 ring-slate-200 hover:ring-blue-300"
-                                    }`}
-                                    style={{
-                                      textAlign: "left",
-                                      borderRadius: "12px",
-                                      border: "none",
-                                      padding: "8px 12px",
-                                      cursor: isManualFontsEnabled ? "not-allowed" : "pointer",
-                                      position: "relative",
-                                      opacity: isManualFontsEnabled ? 0.55 : 1,
-                                    }}
-                                  >
-                                    <span
-                                      aria-hidden
-                                      className={`absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full ${
-                                        isActive ? "bg-[#1e40af] text-white" : "bg-white ring-1 ring-inset ring-slate-300"
-                                      }`}
-                                    >
-                                      {isActive ? <Check size={12} strokeWidth={3} /> : null}
-                                    </span>
-                                    <div style={{ height: "100%", display: "flex", flexDirection: "column", gap: "3px" }}>
-                                      <div style={{ fontFamily: `"${preset.headingFont}", serif`, paddingTop: "6px" }}>
-                                        <Text
-                                          as="p"
-                                          variant="headingMd"
-                                          fontWeight="semibold"
-                                        >
-                                          {preset.title}
-                                        </Text>
-                                      </div>
-                                      <div style={{ fontFamily: `"${preset.bodyFont}", sans-serif` }}>
-                                        <Text as="p" variant="bodySm">
-                                          The quick brown fox jumps over the lazy dog.
-                                        </Text>
-                                      </div>
-                                      <div style={{ marginTop: "6px", display: "flex", justifyContent: "flex-start" }}>
-                                        <span
-                                          style={{
-                                            fontSize: "12px",
-                                            lineHeight: "18px",
-                                            padding: "2px 10px",
-                                            borderRadius: "999px",
-                                            color: isActive ? "#1e3a8a" : "#64748b",
-                                            background: isActive ? "#dbe5ff" : "#f1f5f9",
-                                          }}
-                                        >
-                                          {preset.badgeLabel}
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </BlockStack>
-
-                          <BlockStack gap="200">
+            {hasStoreProductsSelected ? (
+              <ConfigureSection
+                marker={<Palette size={14} />}
+                title="Fine tune your style"
+                tag="Optional"
+                description="Accent color and typography for your storefront"
+                expanded={isFineTuneOpen}
+                onToggle={() => setIsFineTuneOpen((prev) => {
+                  const next = !prev;
+                  if (next) selectEntireStoreDemoPreview();
+                  return next;
+                })}
+                headerExtra={
+                  isFineTuneOpen ? null : (
+                    <StyleSummary color={selectedDynamicColor} headingFont={headingFont} />
+                  )
+                }
+              >
+                {isFineTuneOpen ? (
+                  <div className="flex flex-col gap-6">
+                    {/* Accent color */}
+                    <div className="flex flex-col gap-3">
+                      <FieldLabel title="Accent color" hint={`Based on ${selectedCategoryLabel}`} />
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        {colorPalette.map((color) => {
+                          const isActiveColor = selectedDynamicColor === color;
+                          return (
                             <button
+                              key={color}
                               type="button"
                               onClick={() => {
-                                const next = !isManualFontsEnabled;
-                                setIsManualFontsEnabled(next);
-                                if (!next) {
-                                  setHeadingFontPopoverOpen(false);
-                                  setBodyFontPopoverOpen(false);
-                                }
+                                selectEntireStoreDemoPreview();
+                                setSelectedDynamicColor(color);
                               }}
-                              style={{
-                                border: "none",
-                                background: "transparent",
-                                padding: 0,
-                                width: "fit-content",
-                                cursor: "pointer",
-                              }}
-                              aria-pressed={isManualFontsEnabled}
+                              className={`flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border-0 p-0 transition hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4f46e5] focus-visible:ring-offset-2 ${
+                                isActiveColor
+                                  ? "ring-2 ring-[#1e3a8a] ring-offset-2"
+                                  : "ring-1 ring-black/10"
+                              }`}
+                              style={{ background: color }}
+                              aria-label={`Select color ${color}`}
+                              aria-pressed={isActiveColor}
                             >
-                              <InlineStack gap="200" blockAlign="center">
-                                <div
-                                  style={{
-                                    width: 42,
-                                    height: 24,
-                                    borderRadius: 999,
-                                    background: isManualFontsEnabled ? "#1e3a8a" : "#cbd5e1",
-                                    position: "relative",
-                                    transition: "background 140ms ease",
-                                  }}
-                                >
-                                  <span
-                                    style={{
-                                      position: "absolute",
-                                      top: 2,
-                                      left: isManualFontsEnabled ? 20 : 2,
-                                      width: 20,
-                                      height: 20,
-                                      borderRadius: "50%",
-                                      background: "#ffffff",
-                                      transition: "left 140ms ease",
-                                      boxShadow: "0 1px 2px rgba(0,0,0,0.18)",
-                                    }}
-                                  />
-                                </div>
-                                <Text as="span" variant="bodySm" tone="subdued">
-                                  I want to try Custom fonts - let me pick manually
-                                </Text>
-                              </InlineStack>
+                              {isActiveColor ? (
+                                <Check size={15} strokeWidth={3} aria-hidden className="text-white" />
+                              ) : null}
                             </button>
-                            {isManualFontsEnabled ? (
-                              <InlineStack gap="200" wrap>
-                                <div style={{ minWidth: 180, flex: 1 }}>
-                                  <Popover
-                                    active={headingFontPopoverOpen}
-                                    autofocusTarget="first-node"
-                                    onClose={() => setHeadingFontPopoverOpen(false)}
-                                    activator={
-                                      <Button
-                                        onClick={() => setHeadingFontPopoverOpen(true)}
-                                        disclosure="down"
-                                        fullWidth
-                                      >
-                                        <span style={{ fontFamily: `"${headingFont}", sans-serif` }}>
-                                          Heading: {headingFont}
-                                        </span>
-                                      </Button>
-                                    }
-                                  >
-                                    <div style={{ maxHeight: "280px", overflowY: "auto", padding: "8px", width: "220px" }}>
-                                      {FONT_OPTIONS.map((font) => (
-                                        <button
-                                          key={font}
-                                          type="button"
-                                          onClick={() => {
-                                            setHeadingFont(font);
-                                            setHeadingFontPopoverOpen(false);
-                                          }}
-                                          style={{
-                                            fontFamily: `"${font}", sans-serif`,
-                                            fontSize: "14px",
-                                            display: "block",
-                                            width: "100%",
-                                            padding: "10px 12px",
-                                            textAlign: "left",
-                                            border: "none",
-                                            borderRadius: "6px",
-                                            background: headingFont === font ? "#eff4ff" : "transparent",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          {font}
-                                        </button>
-                                      ))}
-                                    </div>
-                                  </Popover>
-                                </div>
+                          );
+                        })}
+                        <label className="inline-flex cursor-pointer items-center gap-2">
+                          <span
+                            className={`relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ${
+                              !colorPalette.includes(selectedDynamicColor)
+                                ? "ring-2 ring-[#1e3a8a] ring-offset-2"
+                                : "ring-1 ring-black/10"
+                            }`}
+                            style={{ background: selectedDynamicColor }}
+                          >
+                            <input
+                              type="color"
+                              value={selectedDynamicColor}
+                              onChange={(e) => {
+                                selectEntireStoreDemoPreview();
+                                setSelectedDynamicColor(e.target.value);
+                              }}
+                              aria-label="Pick custom accent color"
+                              style={{
+                                position: "absolute",
+                                inset: 0,
+                                width: "100%",
+                                height: "100%",
+                                opacity: 0,
+                                cursor: "pointer",
+                                border: "none",
+                                padding: 0,
+                              }}
+                            />
+                            <span className="pointer-events-none flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-slate-700">
+                              <Plus size={12} strokeWidth={3} aria-hidden />
+                            </span>
+                          </span>
+                          <span className="text-[13px] text-slate-600">Custom</span>
+                        </label>
+                      </div>
+                    </div>
 
-                                <div style={{ minWidth: 180, flex: 1 }}>
-                                  <Popover
-                                    active={bodyFontPopoverOpen}
-                                    autofocusTarget="first-node"
-                                    onClose={() => setBodyFontPopoverOpen(false)}
-                                    activator={
-                                      <Button
-                                        onClick={() => setBodyFontPopoverOpen(true)}
-                                        disclosure="down"
-                                        fullWidth
-                                      >
-                                        <span style={{ fontFamily: `"${bodyFont}", sans-serif` }}>
-                                          Body: {bodyFont}
-                                        </span>
-                                      </Button>
-                                    }
-                                  >
-                                    <div style={{ maxHeight: "280px", overflowY: "auto", padding: "8px", width: "220px" }}>
-                                      {FONT_OPTIONS.map((font) => (
-                                        <button
-                                          key={font}
-                                          type="button"
-                                          onClick={() => {
-                                            setBodyFont(font);
-                                            setBodyFontPopoverOpen(false);
-                                          }}
-                                          style={{
-                                            fontFamily: `"${font}", sans-serif`,
-                                            fontSize: "14px",
-                                            display: "block",
-                                            width: "100%",
-                                            padding: "10px 12px",
-                                            textAlign: "left",
-                                            border: "none",
-                                            borderRadius: "6px",
-                                            background: bodyFont === font ? "#eff4ff" : "transparent",
-                                            cursor: "pointer",
-                                          }}
-                                        >
-                                          {font}
-                                        </button>
-                                      ))}
-                                    </div>
-                                  </Popover>
-                                </div>
-                              </InlineStack>
-                            ) : null}
-                          </BlockStack>
+                    {/* Typography */}
+                    <div className="flex flex-col gap-3">
+                      <FieldLabel title="Typography style" />
+                      <div className="grid gap-3 md:grid-cols-3">
+                        {TYPOGRAPHY_STYLE_PRESETS.map((preset) => {
+                          const isActive = selectedTypographyPresetId === preset.id;
+                          return (
+                            <button
+                              key={preset.id}
+                              type="button"
+                              disabled={isManualFontsEnabled}
+                              onClick={() => {
+                                selectEntireStoreDemoPreview();
+                                setHeadingFont(preset.headingFont);
+                                setBodyFont(preset.bodyFont);
+                              }}
+                              aria-pressed={isActive}
+                              className={`relative flex min-w-0 flex-col items-start gap-1 rounded-xl border-0 p-4 pr-10 text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a] disabled:cursor-not-allowed disabled:opacity-55 ${
+                                isActive
+                                  ? "bg-blue-50/60 ring-2 ring-[#1e40af]"
+                                  : "bg-white ring-1 ring-slate-200 hover:ring-blue-300"
+                              }`}
+                            >
+                              <span
+                                aria-hidden
+                                className={`absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full ${
+                                  isActive
+                                    ? "bg-[#1e40af] text-white"
+                                    : "bg-white ring-1 ring-inset ring-slate-300"
+                                }`}
+                              >
+                                {isActive ? <Check size={12} strokeWidth={3} /> : null}
+                              </span>
+                              <span
+                                className="block text-base font-semibold text-slate-900"
+                                style={{ fontFamily: `"${preset.headingFont}", serif` }}
+                              >
+                                {preset.title}
+                              </span>
+                              <span
+                                className="block text-[13px] leading-snug text-slate-600"
+                                style={{ fontFamily: `"${preset.bodyFont}", sans-serif` }}
+                              >
+                                The quick brown fox jumps over the lazy dog.
+                              </span>
+                              <span
+                                className={`mt-2 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                                  isActive ? "bg-[#dbe5ff] text-[#1e3a8a]" : "bg-slate-100 text-slate-500"
+                                }`}
+                              >
+                                {preset.badgeLabel}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
 
-                        </>
+                    {/* Manual fonts */}
+                    <div className="flex flex-col gap-3">
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={isManualFontsEnabled}
+                        onClick={() => {
+                          const next = !isManualFontsEnabled;
+                          setIsManualFontsEnabled(next);
+                          if (!next) {
+                            setHeadingFontPopoverOpen(false);
+                            setBodyFontPopoverOpen(false);
+                          }
+                        }}
+                        className="inline-flex w-fit items-center gap-2.5 rounded-lg border-0 bg-transparent p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1e3a8a]"
+                      >
+                        <span
+                          aria-hidden
+                          className={`relative h-6 w-11 flex-none rounded-full transition ${
+                            isManualFontsEnabled ? "bg-[#1e3a8a]" : "bg-slate-300"
+                          }`}
+                        >
+                          <span
+                            className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${
+                              isManualFontsEnabled ? "left-[22px]" : "left-0.5"
+                            }`}
+                          />
+                        </span>
+                        <span className="text-[13px] text-slate-600">
+                          I want to try custom fonts - let me pick manually
+                        </span>
+                      </button>
+                      {isManualFontsEnabled ? (
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <Popover
+                            active={headingFontPopoverOpen}
+                            autofocusTarget="first-node"
+                            onClose={() => setHeadingFontPopoverOpen(false)}
+                            activator={
+                              <FontPickerButton
+                                label="Heading"
+                                font={headingFont}
+                                onClick={() => setHeadingFontPopoverOpen(true)}
+                              />
+                            }
+                          >
+                            <FontOptionList
+                              fonts={FONT_OPTIONS}
+                              value={headingFont}
+                              onSelect={(font) => {
+                                setHeadingFont(font);
+                                setHeadingFontPopoverOpen(false);
+                              }}
+                            />
+                          </Popover>
+                          <Popover
+                            active={bodyFontPopoverOpen}
+                            autofocusTarget="first-node"
+                            onClose={() => setBodyFontPopoverOpen(false)}
+                            activator={
+                              <FontPickerButton
+                                label="Body"
+                                font={bodyFont}
+                                onClick={() => setBodyFontPopoverOpen(true)}
+                              />
+                            }
+                          >
+                            <FontOptionList
+                              fonts={FONT_OPTIONS}
+                              value={bodyFont}
+                              onSelect={(font) => {
+                                setBodyFont(font);
+                                setBodyFontPopoverOpen(false);
+                              }}
+                            />
+                          </Popover>
+                        </div>
                       ) : null}
-                    </BlockStack>
-                  </section>
-              ) : null}
-
-              </BlockStack>
-            </div>
-
+                    </div>
+                  </div>
+                ) : null}
+              </ConfigureSection>
+            ) : null}
           </div>
           </StoreConfigureStepShell>
         </GenerateContainer>

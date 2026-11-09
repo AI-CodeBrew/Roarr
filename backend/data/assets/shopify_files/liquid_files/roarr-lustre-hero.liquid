@@ -1,0 +1,93 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign url = routes.all_products_collection_url | default: '/collections/all' -%}
+{%- capture lx_html -%}
+<section class="lx-hero" data-lx-slider aria-roledescription="carousel">
+  {%- for i in (1..3) -%}
+    {%- assign kicker_key = 'hero_kicker_' | append: i -%}
+    {%- assign heading_key = 'banner_heading_' | append: i -%}
+    {%- assign text_key = 'banner_text_' | append: i -%}
+    {%- assign image_key = 'banner_image_' | append: i -%}
+    {%- if ht[heading_key] != blank -%}
+      <div class="lx-hero__slide" data-lx-slide>
+        <div class="lx-hero__media">{%- render 'roarr-lustre-img', src: hi[image_key], alt: ht[heading_key], width: 2000 -%}</div>
+        <div class="lx-wrap lx-hero__content">
+          {%- if ht[kicker_key] != blank -%}<p class="lx-hero__kicker">{{ ht[kicker_key] }}</p>{%- endif -%}
+          <h2 class="lx-hero__title">{{ ht[heading_key] }}</h2>
+          {%- if ht[text_key] != blank -%}<p class="lx-hero__text">{{ ht[text_key] }}</p>{%- endif -%}
+          <a class="lx-btn" href="{{ url }}">{% render 'roarr-ui-string', key: 'shop_now' %}</a>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+  <button class="lx-hero__arrow lx-hero__arrow--prev" type="button" aria-label="Previous slide" data-lx-prev><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 12H4m6-6-6 6 6 6"/></svg></button>
+  <button class="lx-hero__arrow lx-hero__arrow--next" type="button" aria-label="Next slide" data-lx-next><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button>
+</section>
+<style>
+  .lx .lx-hero { position: relative; display: grid; min-height: clamp(460px, 50vw, 760px); overflow: hidden; background: #bd9c83; color: #fff; }
+  .lx .lx-hero__slide { grid-area: 1 / 1; display: flex; align-items: center; opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility .6s; }
+  .lx .lx-hero__slide.is-active { opacity: 1; visibility: visible; }
+  .lx .lx-hero__media { position: absolute; inset: 0; }
+  .lx .lx-hero__media img { width: 100%; height: 100%; object-fit: cover; }
+  .lx .lx-hero__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(95 66 46 / .3), rgb(95 66 46 / 0) 55%); }
+  .lx[dir="rtl"] .lx-hero__media::after { transform: scaleX(-1); }
+  .lx .lx-hero__content { position: relative; padding-block: 110px 40px; padding-inline-start: 96px; }
+  .lx .lx-hero__kicker { font-size: 16px; font-weight: 600; text-transform: uppercase; color: #fff; }
+  .lx .lx-hero__title { max-width: 560px; margin-top: 22px; font-size: 46px; line-height: 62px; color: #fff; }
+  .lx .lx-hero__text { margin-top: 24px; font-size: 16.5px; line-height: 1.5; color: #fff; }
+  .lx .lx-hero__content .lx-btn { margin-top: 30px; }
+  .lx .lx-hero__arrow { position: absolute; top: 50%; z-index: 3; width: 50px; height: 50px; display: grid; place-items: center; padding: 0; margin-top: -25px; border: 0; border-radius: 50%; background: #fff; color: var(--lx-ink); cursor: pointer; }
+  .lx .lx-hero__arrow--prev { inset-inline-start: 20px; }
+  .lx .lx-hero__arrow--next { inset-inline-end: 20px; }
+  .lx[dir="rtl"] .lx-hero__arrow svg { transform: scaleX(-1); }
+  @media (max-width: 989px) {
+    .lx .lx-hero__title { font-size: 34px; line-height: 46px; max-width: 420px; }
+  }
+  @media (max-width: 749px) {
+    .lx .lx-hero { min-height: 560px; }
+    .lx .lx-hero__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(70 48 34 / .62), rgb(70 48 34 / .12)); }
+    .lx .lx-hero__media img { object-position: 72% center; }
+    .lx .lx-hero__slide { align-items: flex-end; }
+    .lx .lx-hero__content { padding-block: 90px 76px; padding-inline-start: 16px; }
+    .lx .lx-hero__title { font-size: 28px; line-height: 38px; max-width: 300px; margin-top: 12px; }
+    .lx .lx-hero__text { margin-top: 12px; font-size: 15px; max-width: 280px; }
+    .lx .lx-hero__content .lx-btn { margin-top: 18px; }
+    .lx .lx-hero__arrow { top: auto; bottom: 16px; margin: 0; width: 42px; height: 42px; }
+    .lx .lx-hero__arrow--prev { inset-inline-start: auto; inset-inline-end: 66px; }
+    .lx .lx-hero__arrow--next { inset-inline-end: 16px; }
+  }
+</style>
+<script>
+  (function () {
+    document.querySelectorAll("[data-lx-slider]:not([data-ready])").forEach(function (root) {
+      root.dataset.ready = "1";
+      var slides = root.querySelectorAll("[data-lx-slide]"), at = 0, timer = null;
+      function show(n) { at = (n + slides.length) % slides.length; slides.forEach(function (s, i) { s.classList.toggle("is-active", i === at); s.setAttribute("aria-hidden", i === at ? "false" : "true"); }); }
+      function stop() { clearInterval(timer); timer = null; }
+      function start() { if (slides.length > 1 && !timer && !matchMedia("(prefers-reduced-motion: reduce)").matches) timer = setInterval(function () { show(at + 1); }, 6000); }
+      show(0);
+      var prev = root.querySelector("[data-lx-prev]"), next = root.querySelector("[data-lx-next]");
+      if (slides.length < 2) { prev.hidden = true; next.hidden = true; }
+      prev.addEventListener("click", function () { show(at - 1); });
+      next.addEventListener("click", function () { show(at + 1); });
+      root.addEventListener("mouseenter", stop); root.addEventListener("mouseleave", start);
+      root.addEventListener("focusin", stop); root.addEventListener("focusout", start);
+      start();
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Hero",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Hero" }]
+}
+{% endschema %}

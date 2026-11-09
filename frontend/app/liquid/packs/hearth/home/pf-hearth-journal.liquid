@@ -1,0 +1,60 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign blog_handle = section.settings.blog | default: 'news' -%}
+{%- assign articles = homeData.demo_articles | default: blogs[blog_handle].articles -%}
+{%- capture hh_html -%}
+{%- if articles != blank and articles.size > 0 -%}
+<section class="hh-jr" data-hh-rail>
+  <div class="hh-wrap">
+    <div class="hh-head">
+      {%- if ht.blog_kicker != blank -%}<p class="hh-kick">{{ ht.blog_kicker }}</p>{%- endif -%}
+      <h2 class="hh-title">{{ ht.blog_heading }}</h2>
+    </div>
+    <div class="hh-rail__track" data-hh-track>
+      {%- for article in articles limit: 6 -%}
+        <article class="hh-jr__post" data-hh-reveal style="--hh-delay: .{{ forloop.index }}s">
+          <a class="hh-jr__media" href="{{ article.url }}" tabindex="-1" aria-hidden="true">{%- render 'snippets/roarr-hearth-img', src: article.image, alt: article.title, width: 900, lazy: true -%}</a>
+          <p class="hh-jr__meta"><span>{{ article.published_at | date: '%b %d, %Y' }}</span>{%- if article.author != blank -%}<i aria-hidden="true"></i><span>{{ article.author }}</span>{%- endif -%}</p>
+          <h3 class="hh-jr__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+          <p class="hh-jr__text">{{ article.excerpt_or_content | strip_html | truncatewords: 34 }}</p>
+          <a class="hh-go hh-jr__more" href="{{ article.url }}">{{ ht.label_read_more | default: 'Read More' }}{%- render 'snippets/roarr-hearth-icon', name: 'arrow', size: 16 -%}</a>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .hh .hh-jr { padding-block-end: 120px; background: #fff; }
+  .hh .hh-jr .hh-head { margin-bottom: 50px; }
+  .hh .hh-jr .hh-rail__track { --hh-gap: 30px; --hh-col: calc((100% - 60px) / 3); }
+  .hh .hh-jr__media { display: block; aspect-ratio: 450 / 309; overflow: hidden; border-radius: 5px; background: var(--hh-tile); }
+  .hh .hh-jr__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s linear; }
+  .hh .hh-jr__post:hover .hh-jr__media img { transform: scale(1.05); }
+  .hh .hh-jr__meta { display: flex; align-items: center; gap: 9px; margin-top: 25px; font-size: 11.52px; line-height: 18px; color: var(--hh-text); }
+  .hh .hh-jr__meta i { width: 1px; height: 10px; background: currentColor; }
+  .hh .hh-jr__title { margin-top: 16px; font-size: 15.36px; line-height: 29px; font-weight: 500 !important; color: var(--hh-ink); }
+  .hh .hh-jr__title a:hover { color: var(--hh-accent); }
+  .hh .hh-jr__text { margin-top: 13px; font-size: 13.44px; line-height: 20px; color: var(--hh-text); }
+  .hh .hh-jr__more { margin-top: 15px; }
+  @media (max-width: 989px) { .hh .hh-jr .hh-rail__track { --hh-col: calc((100% - 30px) / 2); } }
+  @media (max-width: 749px) {
+    .hh .hh-jr { padding-block-end: 60px; }
+    .hh .hh-jr .hh-rail__track { --hh-col: 100%; --hh-gap: 10px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Journal",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" }
+  ],
+  "presets": [{ "name": "Hearth Journal" }]
+}
+{% endschema %}

@@ -1,0 +1,61 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign icons = 'truck,card,swap,shield' | split: ',' -%}
+{%- capture vr_html -%}
+<section class="vr-pol{% if section.settings.row %} vr-pol--row{% endif %}">
+  <div class="vr-wrap vr-pol__grid">
+    {%- for i in (1..4) -%}
+      {%- assign title_key = 'policy_' | append: i | append: '_title' -%}
+      {%- assign text_key = 'policy_' | append: i | append: '_text' -%}
+      {%- assign icon_at = i | minus: 1 -%}
+      {%- assign keep = true -%}
+      {%- if section.settings.row and i == 4 -%}{%- assign keep = false -%}{%- endif -%}
+      {%- if ht[title_key] != blank and keep -%}
+        <div class="vr-pol__item" data-vr-reveal style="--vr-delay: .{{ i }}s">
+          <span class="vr-pol__icon">{%- render 'snippets/roarr-velour-icon', name: icons[icon_at], size: 40, stroke: 1 -%}</span>
+          <div>
+            <h3 class="vr-pol__title">{{ ht[title_key] }}</h3>
+            {%- if ht[text_key] != blank -%}<p class="vr-pol__text">{{ ht[text_key] }}</p>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+<style>
+  .vr .vr-pol { padding-block: 125px 110px; background: #fff; }
+  .vr .vr-pol__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px; }
+  .vr .vr-pol__item { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .vr .vr-pol__icon { display: block; width: 40px; height: 40px; margin-bottom: 15px; color: var(--vr-ink); }
+  .vr .vr-pol__item:hover .vr-pol__icon { animation: vr-nudge 1.2s linear; }
+  .vr .vr-pol__title { font-size: 15.36px; line-height: 23px; font-weight: 500 !important; color: var(--vr-ink); }
+  .vr .vr-pol__text { max-width: 305px; margin-top: 10px; font-size: 13.44px; line-height: 20px; color: var(--vr-text); }
+  .vr .vr-pol--row { padding-block: 60px 80px; }
+  .vr .vr-pol--row .vr-pol__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .vr .vr-pol--row .vr-pol__item { flex-direction: row; align-items: flex-start; gap: 20px; text-align: start; }
+  .vr .vr-pol--row .vr-pol__icon { flex: none; margin: 0; }
+  .vr .vr-pol--row .vr-pol__text { margin-top: 4px; }
+  @media (max-width: 989px) { .vr .vr-pol__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px; } }
+  @media (max-width: 749px) {
+    .vr .vr-pol, .vr .vr-pol--row { padding-block: 50px 30px; }
+    .vr .vr-pol__grid, .vr .vr-pol--row .vr-pol__grid { grid-template-columns: 1fr; gap: 28px; }
+    .vr .vr-pol__item { flex-direction: row; align-items: flex-start; gap: 22px; text-align: start; }
+    .vr .vr-pol__icon { flex: none; margin: 0; }
+    .vr .vr-pol__text { margin-top: 8px; max-width: none; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'snippets/roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Policies",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "row", "label": "Show three in a row with the icon on the side", "default": false }
+  ],
+  "presets": [{ "name": "Velour Policies" }]
+}
+{% endschema %}

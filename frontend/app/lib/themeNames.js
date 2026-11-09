@@ -42,10 +42,15 @@ export function getStoreThemeName({
   const vibe = Number(template) === 2;
 
   if (storeType === "multi" || storeType === "multi_product") {
+    if (packKey === "lustre") return "Lustre";
+    if (packKey === "velour") return "Velour";
+    if (packKey === "hearth") return "Hearth";
+    if (packKey === "simmer") return "Simmer";
     return packKey === "lumenook" ? "Lumenook" : "Swift";
   }
 
   if (packKey === "maison") return "Maison";
+  if (packKey === "tempo") return "Tempo";
   if (!includePremium) return "Swift";
   if (packKey === "amour") return "Amour";
   if (packKey === "cinematic") return vibe ? "Velvet" : "Eclipse";

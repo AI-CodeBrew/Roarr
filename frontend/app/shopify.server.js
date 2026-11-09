@@ -117,7 +117,7 @@ export async function notifyInstallIfNeeded(admin, session) {
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
-  apiVersion: ApiVersion.October25,
+  apiVersion: ApiVersion.January26,
   scopes: process.env.SCOPES?.split(","),
   appUrl: process.env.SHOPIFY_APP_URL || "",
   sessionStorage: new PrismaSessionStorage(prisma),
@@ -146,7 +146,7 @@ const shopify = shopifyApp({
 });
 
 export default shopify;
-export const apiVersion = ApiVersion.October25;
+export const apiVersion = ApiVersion.January26;
 export const addDocumentResponseHeaders = shopify.addDocumentResponseHeaders;
 
 // Per-request memoization: React Router can run multiple loaders/actions for a single navigation.

@@ -94,6 +94,9 @@ AMOUR_SINGLE_STORE_CREDITS = 300
 # Maison: quiet-luxury homepage + simple product page. Same price on prepaid and COD.
 MAISON_SINGLE_STORE_CREDITS = 300
 
+# Tempo: dark gadget homepage + simple product page. Same price on prepaid and COD.
+TEMPO_SINGLE_STORE_CREDITS = 300
+
 LEDGER_TYPE_GRANT_SIGNUP = "grant_signup"
 LEDGER_TYPE_GRANT_PACK = "grant_pack"
 LEDGER_TYPE_GRANT_PROMO = "grant_promo"
@@ -226,6 +229,7 @@ def get_store_creation_cost(
     - Linen (classic + Sleek): 300 on prepaid and COD
     - Amour (homepage only): 300 on prepaid and COD
     - Maison (homepage only): 300 on prepaid and COD
+    - Tempo (homepage only): 300 on prepaid and COD
     - other premium PDPs: ``single_product`` tier (500)
     - Classic prepaid / no premium PDP: ``single_product_basic`` tier (300 prepaid)
 
@@ -241,6 +245,9 @@ def get_store_creation_cost(
     # Maison: homepage-only single store, same price on prepaid and COD.
     if mode_key == "single_product" and pack_key == "maison":
         return MAISON_SINGLE_STORE_CREDITS
+    # Tempo: homepage-only single store, same price on prepaid and COD.
+    if mode_key == "single_product" and pack_key == "tempo":
+        return TEMPO_SINGLE_STORE_CREDITS
     try:
         template_number = int(selected_template) if selected_template is not None else None
     except (TypeError, ValueError):

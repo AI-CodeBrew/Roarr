@@ -1,0 +1,41 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture lx_html -%}
+<section class="lx-sp">
+  <div class="lx-sp__media">{%- render 'roarr-lustre-img', src: hi.split_image, alt: ht.split_heading, width: 1400, lazy: true -%}</div>
+  <div class="lx-sp__copy">
+    <h2 class="lx-sp__title">{{ ht.split_heading }}</h2>
+    <p class="lx-sp__text">{{ ht.split_text }}</p>
+    <a class="lx-btn" href="{{ routes.all_products_collection_url | default: '/collections/all' }}">{{ ht.label_read_more | default: 'Read more' }}</a>
+  </div>
+</section>
+<style>
+  .lx .lx-sp { display: grid; grid-template-columns: 1fr 1fr; margin-top: 40px; background: var(--lx-tint); }
+  .lx .lx-sp__media { min-height: 511px; background: #bd9c83; }
+  .lx .lx-sp__media img { width: 100%; height: 100%; object-fit: cover; }
+  .lx .lx-sp__copy { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px clamp(24px, 7vw, 100px); text-align: center; }
+  .lx .lx-sp__title { font-size: 32px; line-height: 1.35; color: var(--lx-ink); }
+  .lx .lx-sp__text { margin-top: 18px; font-size: 14.5px; line-height: 24px; color: var(--lx-muted); }
+  .lx .lx-sp__copy .lx-btn { margin-top: 30px; }
+  @media (max-width: 749px) {
+    .lx .lx-sp { grid-template-columns: 1fr; margin-top: 28px; }
+    .lx .lx-sp__media { min-height: 0; aspect-ratio: 4 / 3; }
+    .lx .lx-sp__title { font-size: 25px; }
+    .lx .lx-sp__copy { padding: 36px 20px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Split",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Lustre Split" }]
+}
+{% endschema %}

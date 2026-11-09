@@ -1,0 +1,83 @@
+{
+  "sections": {
+    "hearth-header": {
+      "type": "roarr-hearth-header",
+      "settings": {
+        "overlay": true
+      }
+    },
+    "hearth-slideshow": {
+      "type": "roarr-hearth-slideshow",
+      "settings": {}
+    },
+    "hearth-policy": {
+      "type": "roarr-hearth-policy",
+      "settings": {}
+    },
+    "hearth-gallery": {
+      "type": "roarr-hearth-gallery",
+      "settings": {}
+    },
+    "hearth-countdown": {
+      "type": "roarr-hearth-countdown",
+      "settings": {}
+    },
+    "hearth-showcase": {
+      "type": "roarr-hearth-showcase",
+      "settings": {}
+    },
+    "hearth-arrivals": {
+      "type": "roarr-hearth-arrivals",
+      "settings": {}
+    },
+    "hearth-statement": {
+      "type": "roarr-hearth-statement",
+      "settings": {}
+    },
+    "hearth-lookbook": {
+      "type": "roarr-hearth-lookbook",
+      "settings": {}
+    },
+    "hearth-testimonials": {
+      "type": "roarr-hearth-testimonials",
+      "settings": {}
+    },
+    "hearth-story": {
+      "type": "roarr-hearth-story",
+      "settings": {}
+    },
+    "hearth-journal": {
+      "type": "roarr-hearth-journal",
+      "settings": {}
+    },
+    "hearth-faq": {
+      "type": "roarr-hearth-faq",
+      "settings": {}
+    },
+    "hearth-ticker": {
+      "type": "roarr-hearth-ticker",
+      "settings": {}
+    },
+    "hearth-footer": {
+      "type": "roarr-hearth-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hearth-header",
+    "hearth-slideshow",
+    "hearth-policy",
+    "hearth-gallery",
+    "hearth-countdown",
+    "hearth-showcase",
+    "hearth-arrivals",
+    "hearth-statement",
+    "hearth-lookbook",
+    "hearth-testimonials",
+    "hearth-story",
+    "hearth-journal",
+    "hearth-faq",
+    "hearth-ticker",
+    "hearth-footer"
+  ]
+}

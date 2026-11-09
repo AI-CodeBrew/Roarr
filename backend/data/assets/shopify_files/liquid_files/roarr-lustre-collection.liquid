@@ -1,0 +1,187 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign home_label = ht.label_home | default: 'Home' -%}
+{%- capture lx_html -%}
+{%- paginate collection.products by section.settings.per_page -%}
+<div class="lx-banner">
+  <div class="lx-wrap">
+    <h1 class="lx-banner__title">{{ collection.title }}</h1>
+    <p class="lx-banner__crumbs"><a href="{{ routes.root_url | default: '/' }}">{{ home_label }}</a><span aria-hidden="true">/</span><a href="{{ routes.collections_url | default: '/collections' }}">{{ ht.label_shop | default: 'Shop' }}</a><span aria-hidden="true">/</span><span>{{ collection.title }}</span></p>
+  </div>
+</div>
+<section class="lx-section lx-cl" data-lx-collection>
+  <div class="lx-wrap">
+      <div class="lx-cl__tools">
+        <details class="lx-cl__mobile-toggle"><summary class="lx-btn">{{ ht.label_filter | default: 'Filter' }}</summary></details>
+        <label class="lx-cl__sort"><span>{{ ht.label_sort | default: 'Sort by' }}:</span>
+          <select name="sort_by" form="lx-filter-{{ section.id }}" data-lx-autosubmit>
+            {%- for option in collection.sort_options -%}<option value="{{ option.value }}"{% if option.value == collection.sort_by %} selected{% endif %}>{{ option.name }}</option>{%- endfor -%}
+          </select>
+        </label>
+        <span class="lx-cl__count">{{ collection.products_count }} {{ ht.label_products | default: 'Products' }}</span>
+        <div class="lx-cl__views">
+          <button type="button" class="is-on" aria-label="Grid view" aria-pressed="true" data-lx-view="grid"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" aria-hidden="true"><rect x=".5" y=".5" width="7" height="7"/><rect x="10.500" y=".5" width="7" height="7"/><rect x=".5" y="10.500" width="7" height="7"/><rect x="10.500" y="10.500" width="7" height="7"/></svg></button>
+          <button type="button" aria-label="List view" aria-pressed="false" data-lx-view="list"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M5 2.500h13M5 9h13M5 15.500h13"/><circle cx="1.500" cy="2.500" r="1"/><circle cx="1.500" cy="9" r="1"/><circle cx="1.500" cy="15.500" r="1"/></svg></button>
+        </div>
+      </div>
+      <div class="lx-cl__layout">
+        <aside class="lx-cl__side" data-lx-side>
+          <form class="lx-cl__form" id="lx-filter-{{ section.id }}" method="get" action="{{ collection.url }}" data-lx-filter-form>
+          <h2 class="lx-cl__filter-title">{{ ht.label_filter | default: 'Filter' }}:</h2>
+          {%- for filter in collection.filters -%}
+            <details class="lx-cl__group" open>
+              <summary class="lx-serif">{{ filter.label }}<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 8l4-4 4 4"/></svg></summary>
+              {%- if filter.type == 'price_range' -%}
+                <p class="lx-cl__hint">{{ ht.label_highest_price | default: 'The highest price is' }} {{ filter.range_max | money }}</p>
+                <div class="lx-cl__prices">
+                  <span>{{ cart.currency.symbol | default: '$' }}</span>
+                  <input type="number" min="0" step="any" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | replace: ',', '' }}{% endif %}" placeholder="{{ ht.label_from | default: 'From' }}" aria-label="{{ ht.label_from | default: 'From' }}" data-lx-autosubmit>
+                  <input type="number" min="0" step="any" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | replace: ',', '' }}{% endif %}" placeholder="{{ ht.label_to | default: 'To' }}" aria-label="{{ ht.label_to | default: 'To' }}" data-lx-autosubmit>
+                </div>
+              {%- elsif filter.presentation == 'swatch' -%}
+                <ul class="lx-cl__swatches">
+                  {%- for value in filter.values -%}
+                    <li>
+                      <label class="lx-cl__swatch" title="{{ value.label | escape }}">
+                        <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %} data-lx-autosubmit aria-label="{{ value.label | escape }}">
+                        <span style="background: {{ value.swatch.color | default: '#cccccc' }}"></span>
+                      </label>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- else -%}
+                <ul class="lx-cl__checks">
+                  {%- for value in filter.values -%}
+                    <li>
+                      <label>
+                        <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %} data-lx-autosubmit>
+                        <span>{{ value.label }} ({{ value.count }})</span>
+                      </label>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </details>
+          {%- endfor -%}
+          </form>
+        </aside>
+        <div class="lx-cl__main">
+          {%- if collection.products.size > 0 -%}
+            <div class="lx-grid lx-cl__grid" data-lx-grid>
+              {%- for product in collection.products -%}
+                {%- render 'roarr-lustre-card', product: product, options_label: ht.label_options -%}
+              {%- endfor -%}
+            </div>
+            {%- if paginate.pages > 1 -%}
+              <nav class="lx-cl__pages" aria-label="Pagination">
+                {%- for part in paginate.parts -%}
+                  {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- else -%}<span{% if part.title == paginate.current_page %} class="is-on" aria-current="page"{% endif %}>{{ part.title }}</span>{%- endif -%}
+                {%- endfor -%}
+                {%- if paginate.next -%}<a href="{{ paginate.next.url }}" aria-label="Next page">&rarr;</a>{%- endif -%}
+              </nav>
+            {%- endif -%}
+          {%- else -%}
+            <p class="lx-cl__none">{{ ht.label_no_products | default: 'No products match these filters.' }} <a class="lx-link lx-link--accent" href="{{ collection.url }}">{{ ht.label_clear | default: 'Clear filters' }}</a></p>
+          {%- endif -%}
+        </div>
+      </div>
+  </div>
+</section>
+{%- endpaginate -%}
+<style>
+  .lx .lx-cl { padding-block: 40px 80px; }
+  .lx .lx-cl__form { margin: 0; }
+  .lx .lx-cl__tools { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 14px 28px; margin-bottom: 30px; font-size: 15px; color: var(--lx-ink); }
+  .lx .lx-cl__sort { display: inline-flex; align-items: center; gap: 28px; font-size: 15px; }
+  .lx .lx-cl__sort select { min-width: 150px; padding: 6px 4px; border: 0; background: transparent; color: var(--lx-ink); font-size: 15px; cursor: pointer; }
+  .lx .lx-cl__views { display: flex; gap: 12px; }
+  .lx .lx-cl__views button { display: grid; place-items: center; padding: 0; border: 0; background: none; color: #888; cursor: pointer; }
+  .lx .lx-cl__views button.is-on { color: var(--lx-accent); }
+  .lx .lx-cl__mobile-toggle { display: none; margin-inline-end: auto; }
+  .lx .lx-cl__mobile-toggle summary { list-style: none; min-height: 38px; padding: 6px 20px; }
+  .lx .lx-cl__layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: start; gap: 30px; }
+  .lx .lx-cl__side { padding: 22px; border: 1px solid var(--lx-line); background: #fff; }
+  .lx .lx-cl__filter-title { font-size: 19px; font-weight: 700 !important; color: var(--lx-ink); margin-bottom: 12px; }
+  .lx .lx-cl__group { padding-block: 12px; }
+  .lx .lx-cl__group summary { display: flex; align-items: center; justify-content: space-between; list-style: none; font-size: 17px; font-weight: 700 !important; color: var(--lx-ink); cursor: pointer; }
+  .lx .lx-cl__group summary::-webkit-details-marker { display: none; }
+  .lx .lx-cl__group:not([open]) summary svg { transform: rotate(180deg); }
+  .lx .lx-cl__checks { margin-top: 16px; }
+  .lx .lx-cl__checks li { margin-bottom: 14px; font-size: 15px; color: #444; }
+  .lx .lx-cl__checks label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .lx .lx-cl__checks input { width: 16px; height: 16px; margin: 0; accent-color: var(--lx-accent); }
+  .lx .lx-cl__hint { margin-top: 16px; font-size: 15px; color: #444; }
+  .lx .lx-cl__prices { display: grid; grid-template-columns: auto 1fr 1fr; align-items: center; gap: 10px; margin-top: 18px; font-size: 15px; }
+  .lx .lx-cl__prices input { width: 100%; height: 45px; min-width: 0; padding-inline: 12px; border: 1px solid var(--lx-line); border-radius: 0; background: #fff; font-size: 13px; color: var(--lx-ink); }
+  .lx .lx-cl__swatches { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 0 6px; }
+  .lx .lx-cl__swatch { position: relative; display: block; width: 28px; height: 28px; cursor: pointer; }
+  .lx .lx-cl__swatch input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+  .lx .lx-cl__swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--lx-line); }
+  .lx .lx-cl__swatch input:checked + span { box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--lx-accent); }
+  .lx .lx-cl__swatch input:focus-visible + span { outline: 2px solid var(--lx-accent); outline-offset: 3px; }
+  .lx .lx-cl__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
+  .lx .lx-cl__grid.is-list { grid-template-columns: 1fr; }
+  .lx .lx-cl__grid.is-list .lx-card { display: grid; grid-template-columns: 220px minmax(0, 1fr); column-gap: 24px; align-items: center; padding: 0 20px 0 0; text-align: start; }
+  .lx .lx-cl__grid.is-list .lx-card__media { grid-row: 1 / span 5; margin: 0; }
+  .lx .lx-cl__grid.is-list .lx-card__title { min-height: 0; }
+  .lx .lx-cl__grid.is-list .lx-card__stars { align-self: start; justify-self: start; }
+  .lx .lx-cl__grid.is-list .lx-card__buy { width: 220px; margin-bottom: 12px; }
+  .lx .lx-cl__pages { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 36px; font-size: 14px; }
+  .lx .lx-cl__pages :is(a, span) { min-width: 38px; height: 38px; display: grid; place-items: center; padding-inline: 8px; border: 1px solid var(--lx-line); color: var(--lx-ink); }
+  .lx .lx-cl__pages .is-on { background: var(--lx-accent); border-color: var(--lx-accent); color: #fff; }
+  .lx .lx-cl__none { padding: 40px 0; font-size: 15px; color: var(--lx-muted); }
+  @media (max-width: 989px) {
+    .lx .lx-cl__layout { grid-template-columns: 1fr; }
+    .lx .lx-cl__mobile-toggle { display: block; }
+    .lx .lx-cl__side:not(.is-open) { display: none; }
+    .lx .lx-cl__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  }
+  @media (max-width: 749px) {
+    .lx .lx-cl { padding-block: 24px 44px; }
+    .lx .lx-cl__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .lx .lx-cl__sort { gap: 8px; }
+    .lx .lx-cl__sort select { min-width: 0; max-width: 130px; }
+    .lx .lx-cl__grid.is-list .lx-card { grid-template-columns: 110px minmax(0, 1fr); column-gap: 12px; padding: 0 10px 0 0; }
+    .lx .lx-cl__grid.is-list .lx-card__buy { width: 100%; }
+  }
+</style>
+<script>
+  (function () {
+    document.querySelectorAll("[data-lx-collection]:not([data-ready])").forEach(function (root) {
+      root.dataset.ready = "1";
+      var form = root.querySelector("[data-lx-filter-form]"), grid = root.querySelector("[data-lx-grid]"), side = root.querySelector("[data-lx-side]");
+      root.querySelectorAll("[data-lx-autosubmit]").forEach(function (el) {
+        el.addEventListener("change", function () {
+          // Empty price boxes would add blank filters to the URL.
+          var prices = form.querySelectorAll('input[type="number"]');
+          prices.forEach(function (i) { i.disabled = !i.value; });
+          form.requestSubmit();
+          prices.forEach(function (i) { i.disabled = false; });
+        });
+      });
+      root.querySelectorAll("[data-lx-view]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          root.querySelectorAll("[data-lx-view]").forEach(function (b) { var on = b === btn; b.classList.toggle("is-on", on); b.setAttribute("aria-pressed", on ? "true" : "false"); });
+          if (grid) grid.classList.toggle("is-list", btn.dataset.lxView === "list");
+        });
+      });
+      var toggle = root.querySelector(".lx-cl__mobile-toggle");
+      if (toggle) toggle.addEventListener("toggle", function () { side.classList.toggle("is-open", toggle.open); });
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Collection",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 6, "max": 48, "step": 3, "default": 12 }
+  ],
+  "presets": [{ "name": "Lustre Collection" }]
+}
+{% endschema %}

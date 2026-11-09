@@ -1,0 +1,159 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign store_name = ht.store_name | default: shop.name -%}
+{%- assign menu_handle = section.settings.menu | default: 'footer' -%}
+{%- assign services = linklists[menu_handle].links -%}
+{%- if services == blank -%}{%- assign services = homeData.demo_footer_links -%}{%- endif -%}
+{%- assign policies = shop.policies -%}
+{%- if policies == blank or policies.size == 0 -%}{%- assign policies = homeData.demo_policies -%}{%- endif -%}
+{%- assign social = shop.brand.metafields.social_links -%}
+{%- assign s_facebook = ht.social_facebook | default: social.facebook.value -%}
+{%- assign s_instagram = ht.social_instagram | default: social.instagram.value -%}
+{%- assign s_youtube = ht.social_youtube | default: social.youtube.value -%}
+{%- assign s_x = ht.social_x | default: social.twitter.value -%}
+{%- assign s_pinterest = ht.social_pinterest | default: social.pinterest.value -%}
+{%- capture lx_html -%}
+<footer class="lx-ft" id="lx-footer">
+  <div class="lx-wrap lx-ft__cols">
+    <div>
+      <h2 class="lx-ft__h">{{ ht.footer_store_heading | default: 'Store Information' }}</h2>
+      <ul class="lx-ft__info">
+        <li>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 22s7-7.2 7-12.5A7 7 0 0 0 5 9.500C5 14.800 12 22 12 22z"/><circle cx="12" cy="9.500" r="2.500"/></svg>
+          <span>{{ store_name }}{%- if ht.store_address != blank -%}<br>{{ ht.store_address | newline_to_br }}{%- endif -%}</span>
+        </li>
+        {%- if ht.store_email != blank -%}
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1.500"/><path d="m3.500 7 8.500 6 8.500-6"/></svg>
+            <a href="mailto:{{ ht.store_email }}">{{ ht.store_email }}</a>
+          </li>
+        {%- endif -%}
+        {%- if ht.store_phone != blank -%}
+          <li>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 16.500v3a1.500 1.500 0 0 1-1.600 1.500A18 18 0 0 1 3 4.600 1.500 1.500 0 0 1 4.500 3h3a1 1 0 0 1 1 .800l.800 3.500a1 1 0 0 1-.300 1L7.300 9.900a14 14 0 0 0 6.800 6.800l1.600-1.700a1 1 0 0 1 1-.300l3.500.800a1 1 0 0 1 .800 1z"/></svg>
+            <a href="tel:{{ ht.store_phone | remove: ' ' }}">{{ ht.store_phone }}</a>
+          </li>
+        {%- endif -%}
+      </ul>
+      <ul class="lx-ft__social">
+        {%- if s_facebook != blank -%}<li><a href="{{ s_facebook }}" aria-label="Facebook" rel="noopener" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 3h18v18h-6.500v-6.800h2.400l.400-2.800h-2.800V9.700c0-.800.300-1.400 1.400-1.400h1.500V5.800a18 18 0 0 0-2.200-.100c-2.200 0-3.700 1.300-3.700 3.800v1.900H9v2.800h2.500V21H3z"/></svg></a></li>{%- endif -%}
+        {%- if s_instagram != blank -%}<li><a href="{{ s_instagram }}" aria-label="Instagram" rel="noopener" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.500" cy="6.500" r=".6"/></svg></a></li>{%- endif -%}
+        {%- if s_youtube != blank -%}<li><a href="{{ s_youtube }}" aria-label="YouTube" rel="noopener" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 8.500a4 4 0 0 0-3.500-3.800 62 62 0 0 0-13 0A4 4 0 0 0 2 8.500a33 33 0 0 0 0 7 4 4 0 0 0 3.500 3.800 62 62 0 0 0 13 0 4 4 0 0 0 3.500-3.800 33 33 0 0 0 0-7zM10 15.200V8.800l5.500 3.200z"/></svg></a></li>{%- endif -%}
+        {%- if s_x != blank -%}<li><a href="{{ s_x }}" aria-label="X" rel="noopener" target="_blank"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.800 2.500h3.300l-7.200 8.200L22.400 21.500h-6.600l-5.200-6.800-5.900 6.800H1.300l7.700-8.800L.9 2.500h6.800l4.700 6.200zm-1.200 17.100h1.800L6.600 4.300h-2z"/></svg></a></li>{%- endif -%}
+        {%- if s_pinterest != blank -%}<li><a href="{{ s_pinterest }}" aria-label="Pinterest" rel="noopener" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.600 19.300c-.100-.800-.200-2 0-2.900l1.200-5s-.300-.600-.300-1.500c0-1.400.800-2.400 1.800-2.400.900 0 1.300.600 1.300 1.400 0 .900-.500 2.100-.800 3.300-.200 1 .500 1.800 1.500 1.800 1.800 0 3.100-1.900 3.100-4.600 0-2.400-1.700-4.100-4.200-4.100a4.300 4.300 0 0 0-4.500 4.300c0 .900.300 1.800.800 2.300.1.100.1.200.1.300l-.300 1.200c0 .2-.2.200-.4.100-1.200-.600-2-2.400-2-3.800 0-3.100 2.300-6 6.500-6 3.400 0 6.100 2.400 6.100 5.700 0 3.400-2.100 6.100-5.100 6.100-1 0-1.900-.500-2.200-1.100l-.600 2.300c-.200.800-.800 1.900-1.200 2.500A10 10 0 1 0 12 2z"/></svg></a></li>{%- endif -%}
+      </ul>
+    </div>
+    {%- if services != blank -%}
+      <div>
+        <h2 class="lx-ft__h">{{ ht.footer_services_heading | default: 'Services' }}</h2>
+        <ul class="lx-ft__links">{%- for link in services -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul>
+      </div>
+    {%- endif -%}
+    {%- if policies != blank -%}
+      <div>
+        <h2 class="lx-ft__h">{{ ht.footer_links_heading | default: 'Quick Links' }}</h2>
+        <ul class="lx-ft__links">{%- for policy in policies -%}{%- unless policy.url contains 'refund' -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endunless -%}{%- endfor -%}</ul>
+      </div>
+    {%- endif -%}
+    <div>
+      <h2 class="lx-ft__h">{{ ht.footer_newsletter_heading | default: 'Our Newsletter' }}</h2>
+      {%- if ht.footer_newsletter_text != blank -%}<p class="lx-ft__news">{{ ht.footer_newsletter_text }}</p>{%- endif -%}
+      {%- form 'customer', id: 'lx-newsletter', class: 'lx-ft__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        {%- if form.posted_successfully? -%}
+          <p class="lx-ft__ok" role="status">{{ ht.label_subscribed | default: 'Thanks for subscribing.' }}</p>
+        {%- else -%}
+          <label class="lx-ft__sr" for="lx-news-email">Email</label>
+          <input class="lx-ft__input" id="lx-news-email" type="email" name="contact[email]" placeholder="Email" autocomplete="email" required>
+          <button class="lx-btn" type="submit">{{ ht.label_subscribe | default: 'Subscribe' }}</button>
+          {%- if form.errors -%}<p class="lx-ft__err" role="alert">{{ form.errors.translated_fields.email }} {{ form.errors.messages.email }}</p>{%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+  <a class="lx-ft__top" href="#" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20V4m-6 6 6-6 6 6"/></svg>
+  </a>
+  <div class="lx-ft__bar">
+    <div class="lx-wrap lx-ft__barin">
+      <div class="lx-ft__local">
+        {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+          {%- form 'localization', class: 'lx-ft__locform' -%}
+            {%- if localization.available_countries.size > 1 -%}
+              <select name="country_code" aria-label="Country" onchange="this.form.submit()">
+                {%- for country in localization.available_countries -%}<option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>{{ country.currency.iso_code }} {{ country.currency.symbol }} ({{ country.name }})</option>{%- endfor -%}
+              </select>
+            {%- endif -%}
+            {%- if localization.available_languages.size > 1 -%}
+              <select name="language_code" aria-label="Language" onchange="this.form.submit()">
+                {%- for language in localization.available_languages -%}<option value="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>{{ language.endonym_name }}</option>{%- endfor -%}
+              </select>
+            {%- endif -%}
+          {%- endform -%}
+        {%- elsif homeData.demo_locale != blank -%}
+          <span>{{ homeData.demo_locale }}</span>
+        {%- endif -%}
+      </div>
+      <p class="lx-ft__copy">&copy; {{ 'now' | date: '%Y' }}, {{ store_name }}{% if powered_by_link != blank %} {{ powered_by_link }}{% endif %}</p>
+      <div class="lx-ft__pay">
+        {%- if shop.enabled_payment_types != blank -%}
+          {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'lx-ft__payicon' }}{%- endfor -%}
+        {%- else -%}
+          {{ homeData.demo_payments }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</footer>
+<style>
+  .lx .lx-ft { position: relative; background: var(--lx-tint); color: var(--lx-muted); }
+  .lx .lx-ft__cols { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.14fr; gap: 28px; padding-block: 80px 80px; }
+  .lx .lx-ft__h { margin-bottom: 26px; font-size: 19.5px; line-height: 1.3; color: var(--lx-ink); }
+  .lx .lx-ft__info li { display: flex; gap: 15px; margin-bottom: 11px; font-size: 14.5px; line-height: 25px; color: var(--lx-muted); }
+  .lx .lx-ft__info svg { flex: none; margin-top: 3px; color: var(--lx-accent); }
+  .lx .lx-ft__social { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+  .lx .lx-ft__social a { width: 37px; height: 37px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--lx-line); background: #fff; color: var(--lx-ink); transition: background-color .2s ease, color .2s ease; }
+  .lx .lx-ft__social a:hover { background: var(--lx-accent); color: #fff; }
+  .lx .lx-ft__links li { margin-bottom: 14px; font-size: 14.5px; line-height: 21px; color: var(--lx-muted); }
+  .lx .lx-ft__links a:hover { color: var(--lx-accent); }
+  .lx .lx-ft__news { font-size: 14px; line-height: 24px; color: var(--lx-muted); }
+  .lx .lx-ft__form { margin-top: 20px; }
+  .lx .lx-ft__input { display: block; width: 100%; height: 45px; margin-bottom: 15px; padding-inline: 20px; border: 1px solid var(--lx-line); border-radius: 0; background: #fff; color: var(--lx-ink); font-size: 14.5px; }
+  .lx .lx-ft__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .lx .lx-ft__ok { font-size: 14.5px; color: var(--lx-accent); }
+  .lx .lx-ft__err { margin-top: 8px; font-size: 13.5px; color: #b42318; }
+  .lx .lx-ft__top { position: absolute; inset-inline-end: 62px; bottom: 92px; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: var(--lx-accent); color: #fff; }
+  .lx .lx-ft__bar { border-top: 1px solid var(--lx-line); }
+  .lx .lx-ft__barin { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; min-height: 66px; padding-block: 12px; font-size: 14.5px; color: var(--lx-muted); }
+  .lx .lx-ft__locform { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; }
+  .lx .lx-ft__locform select { max-width: 180px; border: 0; background: transparent; color: var(--lx-muted); font-size: 14.5px; cursor: pointer; }
+  .lx .lx-ft__copy { font-size: 14.5px; text-align: center; color: var(--lx-muted); }
+  .lx .lx-ft__pay { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
+  .lx .lx-ft__payicon, .lx .lx-ft__pay svg { width: 38px; height: 24px; }
+  @media (max-width: 989px) {
+    .lx .lx-ft__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-block: 48px; }
+    .lx .lx-ft__barin { grid-template-columns: 1fr; justify-items: center; }
+    .lx .lx-ft__pay { justify-content: center; }
+    .lx .lx-ft__top { inset-inline-end: 20px; bottom: 150px; }
+  }
+  @media (max-width: 749px) {
+    .lx .lx-ft__cols { grid-template-columns: 1fr; gap: 32px; padding-block: 40px 76px; }
+    .lx .lx-ft__h { margin-bottom: 16px; }
+  }
+</style>
+{{ homeData.demo_runtime }}
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Footer",
+  "tag": "section",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Services menu", "default": "footer" }
+  ],
+  "presets": [{ "name": "Lustre Footer" }]
+}
+{% endschema %}

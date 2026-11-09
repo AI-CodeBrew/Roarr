@@ -1,0 +1,79 @@
+{%- comment -%}
+  Lustre shared CSS: fonts, tokens, buttons, headings and the product card. Rendered once, by the
+  header section, which every Lustre template starts with. Also hides the theme's own header and
+  footer on those templates, since Lustre brings its own.
+{%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400..700&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+  .shopify-section-group-header-group, .shopify-section-group-footer-group,
+  #shopify-section-header, #shopify-section-footer, #shopify-section-announcement-bar { display: none !important; }
+
+  :root { --lx-accent: {{ accent | default: '#007c85' }}; --lx-tint: #f0f7f7; --lx-ink: #111111; --lx-muted: #666666; --lx-line: #e5e5e5; --lx-soft: #f0f0f0; }
+
+  :where(.lx) *, :where(.lx) *::before, :where(.lx) *::after { box-sizing: border-box; }
+  .lx, .lx :is(p, li, a, span, button, input, select, label, div, summary, small, strong, s) { font-family: "DM Sans", sans-serif !important; letter-spacing: normal; }
+  .lx :is(h1, h2, h3, h4, h5, .lx-serif, .lx-serif *, h1 *, h2 *, h3 *, h4 *, h5 *) { font-family: "Libre Baskerville", Georgia, serif !important; font-weight: 400 !important; }
+  :where(.lx) :is(p, h1, h2, h3, h4, h5, ul, ol) { margin: 0; padding: 0; }
+  :where(.lx) :is(span, a, li, small, strong, s) { font-size: inherit; }
+  :where(.lx) ul { list-style: none; }
+  :where(.lx) a { color: inherit; text-decoration: none; }
+  :where(.lx) img { display: block; max-width: 100%; height: auto; }
+  .lx [hidden] { display: none !important; }
+
+  .lx .lx-wrap { width: min(100%, 1366px); margin-inline: auto; padding-inline: 33px; }
+  .lx .lx-section { padding-block: 40px; background: #fff; color: var(--lx-ink); }
+  .lx .lx-head { text-align: center; margin-bottom: 38px; }
+  .lx .lx-head__title { font-size: 34px; line-height: 1.3; color: var(--lx-ink); }
+  .lx .lx-head__text { margin-top: 10px; font-size: 14.5px; line-height: 1.5; color: var(--lx-muted); }
+
+  .lx .lx-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 45px; padding: 10px 33px; border: 0; background: var(--lx-accent); color: #fff; font-size: 14px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: background-color .2s ease; }
+  .lx .lx-btn:hover { background: #005e65; }
+  .lx .lx-link { display: inline-block; font-size: 14px; font-weight: 500; text-transform: uppercase; color: var(--lx-ink); border-bottom: 1px solid currentColor; line-height: 1.25; }
+  .lx .lx-link--accent { color: var(--lx-accent); }
+
+  .lx .lx-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px; }
+  .lx .lx-card { position: relative; display: flex; flex-direction: column; padding: 0 20px 20px; border: 1px solid var(--lx-line); background: #fff; text-align: center; min-width: 0; }
+  .lx .lx-card__media { display: block; margin-inline: -20px; aspect-ratio: 1 / 1.12; padding: 11%; overflow: hidden; }
+  .lx .lx-card__media img { width: 100%; height: 100%; object-fit: contain; transition: transform .35s ease; }
+  .lx .lx-card:hover .lx-card__media img { transform: scale(1.04); }
+  .lx .lx-card__badge { position: absolute; top: 10px; inset-inline-start: 10px; z-index: 2; padding: 4px 9px; background: var(--lx-accent); color: #fff; font-size: 12px; font-weight: 600; line-height: 1.3; }
+  .lx .lx-card__wish { position: absolute; top: 10px; inset-inline-end: 10px; z-index: 2; width: 30px; height: 30px; display: grid; place-items: center; padding: 0; border: 1px solid var(--lx-line); border-radius: 50%; background: #fff; color: var(--lx-ink); cursor: pointer; opacity: 0; transition: opacity .2s ease; }
+  .lx .lx-card:hover .lx-card__wish, .lx .lx-card__wish:focus-visible, .lx .lx-card__wish[aria-pressed="true"] { opacity: 1; }
+  .lx .lx-card__wish[aria-pressed="true"] svg { fill: currentColor; }
+  .lx .lx-card__title { margin-top: 12px; font-size: 15.5px; line-height: 22px; min-height: 44px; color: var(--lx-ink); }
+  .lx .lx-card__stars { position: relative; display: inline-block; align-self: center; margin-top: 9px; color: #cfcfcf; font-size: 17px; line-height: 1; letter-spacing: 0; }
+  .lx .lx-card__stars i { position: absolute; inset-block: 0; inset-inline-start: 0; overflow: hidden; white-space: nowrap; color: #ffb800; font-style: normal; }
+  .lx .lx-card__price { margin-top: 10px; font-size: 17.5px; font-weight: 600; color: var(--lx-accent); }
+  .lx .lx-card__price s { margin-inline-end: 7px; font-weight: 400; color: #6d6d6d; }
+  .lx .lx-card__buy { margin-top: 16px; }
+  .lx .lx-card__buy form { margin: 0; }
+  .lx .lx-card__btn { width: 100%; min-height: 45px; display: flex; align-items: center; justify-content: center; padding: 8px; border: 0; background: var(--lx-soft); color: var(--lx-ink); font-size: 14px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: background-color .2s ease, color .2s ease; }
+  .lx .lx-card__btn:hover { background: var(--lx-accent); color: #fff; }
+  .lx .lx-card__btn[disabled] { opacity: .55; cursor: not-allowed; }
+
+  .lx .lx-banner { padding-block: 46px 52px; background: var(--lx-tint); text-align: center; color: var(--lx-ink); }
+  .lx .lx-banner__title { font-size: 30px; line-height: 1.3; }
+  .lx .lx-banner__crumbs { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 8px; font-size: 14px; }
+
+  @media (max-width: 989px) {
+    .lx .lx-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .lx .lx-head__title { font-size: 28px; }
+  }
+  @media (max-width: 749px) {
+    .lx .lx-wrap { padding-inline: 16px; }
+    .lx .lx-section { padding-block: 28px; }
+    .lx .lx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .lx .lx-card { padding: 0 10px 12px; }
+    .lx .lx-card__media { margin-inline: -10px; }
+    .lx .lx-card__title { font-size: 14px; line-height: 20px; }
+    .lx .lx-card__price { font-size: 15px; }
+    .lx .lx-card__btn { font-size: 12.5px; min-height: 40px; }
+    .lx .lx-head { margin-bottom: 24px; }
+    .lx .lx-head__title { font-size: 24px; }
+    .lx .lx-card__wish { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lx *, .lx *::before, .lx *::after { animation: none !important; transition: none !important; }
+  }
+</style>

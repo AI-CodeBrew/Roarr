@@ -1,0 +1,74 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture hh_html -%}
+<section class="hh-sc" data-hh-showcase>
+  <div class="hh-wrap hh-sc__grid">
+    <div class="hh-sc__pics">
+      <div class="hh-sc__track">
+        {%- for i in (1..4) -%}
+          {%- assign title_key = 'showcase_title_' | append: i -%}
+          {%- assign image_key = 'showcase_image_' | append: i -%}
+          {%- if ht[title_key] != blank -%}
+            <div class="hh-sc__pic">{%- render 'roarr-hearth-img', src: hi[image_key], alt: ht[title_key], width: 1400, lazy: true -%}</div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="hh-sc__side">
+      {%- if ht.showcase_kicker != blank -%}<p class="hh-kick">{{ ht.showcase_kicker }}</p>{%- endif -%}
+      <h2 class="hh-title">{{ ht.showcase_heading }}</h2>
+      <div class="hh-sc__items">
+        {%- for i in (1..4) -%}
+          {%- assign title_key = 'showcase_title_' | append: i -%}
+          {%- assign text_key = 'showcase_text_' | append: i -%}
+          {%- if ht[title_key] != blank -%}
+            <div class="hh-sc__item" data-hh-sc-item>
+              <button class="hh-sc__name" type="button" aria-expanded="false">{{ ht[title_key] }}</button>
+              <div class="hh-sc__fold"><div><p class="hh-sc__text">{{ ht[text_key] }}</p></div></div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .hh .hh-sc { padding-block-end: 120px; background: #fff; }
+  .hh .hh-sc__grid { display: grid; grid-template-columns: minmax(0, 930fr) minmax(0, 422fr); gap: 58px; align-items: center; }
+  .hh .hh-sc__pics { aspect-ratio: 930 / 500; overflow: hidden; border-radius: 5px; }
+  .hh .hh-sc__track { display: grid; grid-auto-rows: 100%; row-gap: 10px; height: 100%; transform: translateY(calc(var(--hh-at, 0) * (-100% - 10px))); transition: transform .5s ease; }
+  .hh .hh-sc__pic { min-height: 0; overflow: hidden; border-radius: 5px; background: var(--hh-tile); }
+  .hh .hh-sc__pic img { width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-sc__side { padding-inline-end: 28px; }
+  .hh .hh-sc__items { display: grid; row-gap: 24px; margin-top: 50px; padding-inline-start: 15px; border-inline-start: 1px solid #b9b9b9; }
+  .hh .hh-sc__item { position: relative; }
+  .hh .hh-sc__item::before { content: ""; position: absolute; inset-inline-start: -16px; top: 0; width: 1px; height: 0; background: var(--hh-ink); transition: height .4s ease; }
+  .hh .hh-sc__item.is-on::before { height: 100%; }
+  .hh .hh-sc__name { display: block; width: 100%; padding: 0; border: 0; background: none; font-size: 19.2px; line-height: 28.8px; font-weight: 500; text-align: start; color: #a9a9a9; cursor: pointer; transition: color .3s ease; }
+  .hh .hh-sc__name:hover, .hh .hh-sc__item.is-on .hh-sc__name { color: #000; }
+  .hh .hh-sc__fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .hh .hh-sc__item.is-on .hh-sc__fold { grid-template-rows: 1fr; }
+  .hh .hh-sc__fold > div { min-height: 0; overflow: hidden; }
+  .hh .hh-sc__text { padding-top: 10px; font-size: 13.44px; line-height: 20px; color: var(--hh-text); }
+  @media (max-width: 1024px) {
+    .hh .hh-sc__grid { grid-template-columns: 1fr; gap: 30px; }
+    .hh .hh-sc__side { padding-inline-end: 0; }
+    .hh .hh-sc { padding-block-end: 70px; }
+  }
+  @media (max-width: 749px) { .hh .hh-sc__items { margin-top: 24px; } }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Showcase",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Hearth Showcase" }]
+}
+{% endschema %}

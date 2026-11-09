@@ -1,0 +1,72 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- capture vr_html -%}
+<section class="vr-sc" data-vr-showcase>
+  <div class="vr-wrap vr-sc__grid">
+    <div class="vr-sc__pics">
+      {%- for i in (1..4) -%}
+        {%- assign title_key = 'showcase_title_' | append: i -%}
+        {%- assign image_key = 'showcase_image_' | append: i -%}
+        {%- if ht[title_key] != blank -%}
+          <div class="vr-sc__pic" data-vr-sc-pic>{%- render 'roarr-velour-img', src: hi[image_key], alt: ht[title_key], width: 1400, lazy: true -%}</div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="vr-sc__side">
+      {%- if ht.showcase_kicker != blank -%}<p class="vr-kick">{{ ht.showcase_kicker }}</p>{%- endif -%}
+      <h2 class="vr-title">{{ ht.showcase_heading }}</h2>
+      <div class="vr-sc__items">
+        {%- for i in (1..4) -%}
+          {%- assign title_key = 'showcase_title_' | append: i -%}
+          {%- assign text_key = 'showcase_text_' | append: i -%}
+          {%- if ht[title_key] != blank -%}
+            <div class="vr-sc__item" data-vr-sc-item>
+              <button class="vr-sc__name" type="button" aria-expanded="false">{{ ht[title_key] }}</button>
+              <div class="vr-sc__fold"><div><p class="vr-sc__text">{{ ht[text_key] }}</p></div></div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .vr .vr-sc { padding-block-end: 120px; background: #fff; }
+  .vr .vr-sc__grid { display: grid; grid-template-columns: minmax(0, 930fr) minmax(0, 422fr); gap: 58px; align-items: center; }
+  .vr .vr-sc__pics { position: relative; aspect-ratio: 930 / 500; overflow: hidden; border-radius: 5px; background: var(--vr-tile); }
+  .vr .vr-sc__pic { position: absolute; inset: 0; opacity: 0; transform: scale(1.03); transition: opacity .3s ease .1s, transform .3s ease .1s; }
+  .vr .vr-sc__pic.is-on { opacity: 1; transform: none; }
+  .vr .vr-sc__pic img { width: 100%; height: 100%; object-fit: cover; }
+  .vr .vr-sc__side { padding-inline-end: 28px; }
+  .vr .vr-sc__items { margin-top: 44px; }
+  .vr .vr-sc__item { position: relative; padding-inline-start: 16px; padding-block: 12px; border-inline-start: 1px solid var(--vr-muted); }
+  .vr .vr-sc__item::before { content: ""; position: absolute; inset-inline-start: -1px; top: 0; bottom: 0; width: 1px; background: var(--vr-ink); transform: scaleY(0); transform-origin: top; transition: transform .3s ease; }
+  .vr .vr-sc__item.is-on::before { transform: none; }
+  .vr .vr-sc__name { display: block; width: 100%; padding: 0; border: 0; background: none; font-size: 19.2px; line-height: 28.8px; font-weight: 500; text-align: start; color: #a9a9a9; cursor: pointer; transition: color .25s ease; }
+  .vr .vr-sc__name:hover, .vr .vr-sc__item.is-on .vr-sc__name { color: #000; }
+  .vr .vr-sc__fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .vr .vr-sc__item.is-on .vr-sc__fold { grid-template-rows: 1fr; }
+  .vr .vr-sc__fold > div { min-height: 0; overflow: hidden; }
+  .vr .vr-sc__text { padding-top: 12px; font-size: 13.44px; line-height: 20px; color: var(--vr-text); }
+  @media (max-width: 1024px) {
+    .vr .vr-sc__grid { grid-template-columns: 1fr; gap: 30px; }
+    .vr .vr-sc__side { padding-inline-end: 0; }
+    .vr .vr-sc { padding-block-end: 70px; }
+  }
+  @media (max-width: 749px) { .vr .vr-sc__items { margin-top: 24px; } }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Showcase",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Velour Showcase" }]
+}
+{% endschema %}

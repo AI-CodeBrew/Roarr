@@ -1,0 +1,6 @@
+{%- comment -%} Image from a generated URL string or a Shopify image object. Every slot sizes the image in CSS; `width` is the size hint for a URL, whose real size is unknown. {%- endcomment -%}
+{%- if src != blank -%}
+  {%- assign is_url = false -%}
+  {%- if src contains 'http' or src contains '//' or src contains '/hearth-assets/' -%}{%- assign is_url = true -%}{%- endif -%}
+  {%- if is_url -%}<img{% if class %} class="{{ class }}"{% endif %} src="{{ src }}" alt="{{ alt | escape }}" width="{{ width }}" height="{{ width }}"{% if lazy %} loading="lazy"{% endif %}>{%- else -%}<img{% if class %} class="{{ class }}"{% endif %} src="{{ src | image_url: width: width }}" alt="{{ alt | escape }}" width="{{ src.width }}" height="{{ src.height }}"{% if lazy %} loading="lazy"{% endif %}>{%- endif -%}
+{%- endif -%}

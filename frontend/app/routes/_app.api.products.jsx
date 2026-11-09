@@ -133,6 +133,14 @@ export async function loader({ request }) {
       cursor: pageInfo.endCursor || null,
     });
   } catch (error) {
+    // Keep thrown responses intact: App Bridge needs them to re-authenticate, and
+    // the picker needs the status to tell a failure apart from an empty store.
+    if (error instanceof Response) {
+      if (error.status >= 400) {
+        console.error("Error fetching products:", error.status, await error.clone().text());
+      }
+      throw error;
+    }
     console.error("Error fetching products:", error);
     return Response.json({
       products: [],

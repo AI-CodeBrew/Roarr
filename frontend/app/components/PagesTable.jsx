@@ -211,7 +211,7 @@ export default function PagesTable({
       page?.store_template_pack ||
       "classic";
     const pack = String(raw || "classic").trim().toLowerCase();
-    return pack === "cinematic" || pack === "amour" || pack === "maison" || pack === "lumenook"
+    return pack === "cinematic" || pack === "amour" || pack === "maison" || pack === "tempo" || pack === "lumenook" || pack === "lustre" || pack === "velour" || pack === "hearth" || pack === "simmer"
       ? pack
       : "classic";
   };
@@ -282,8 +282,13 @@ export default function PagesTable({
     const market = getStoreMarketType(page);
 
     if (isMulti) {
+      if (pack === "lustre") return "Multi Product - Lustre";
+      if (pack === "velour") return "Multi Product - Velour";
+      if (pack === "hearth") return "Multi Product - Hearth";
+      if (pack === "simmer") return "Multi Product - Simmer";
       return pack === "lumenook" ? "Multi Product - Lumenook" : "Multi Product - Swift";
     }
+    if (pack === "tempo") return "Single Product - Tempo";
     return pack === "maison" ? "Single Product - Maison" : "Single Product - Swift";
   };
 

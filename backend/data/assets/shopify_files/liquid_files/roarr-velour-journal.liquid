@@ -1,0 +1,60 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign blog_handle = section.settings.blog | default: 'news' -%}
+{%- assign articles = homeData.demo_articles | default: blogs[blog_handle].articles -%}
+{%- capture vr_html -%}
+{%- if articles != blank and articles.size > 0 -%}
+<section class="vr-jr" data-vr-rail>
+  <div class="vr-wrap">
+    <div class="vr-head">
+      {%- if ht.blog_kicker != blank -%}<p class="vr-kick">{{ ht.blog_kicker }}</p>{%- endif -%}
+      <h2 class="vr-title">{{ ht.blog_heading }}</h2>
+    </div>
+    <div class="vr-rail__track" data-vr-track>
+      {%- for article in articles limit: 6 -%}
+        <article class="vr-jr__post" data-vr-reveal style="--vr-delay: .{{ forloop.index }}s">
+          <a class="vr-jr__media" href="{{ article.url }}" tabindex="-1" aria-hidden="true">{%- render 'roarr-velour-img', src: article.image, alt: article.title, width: 900, lazy: true -%}</a>
+          <p class="vr-jr__meta"><span>{{ article.published_at | date: '%b %d, %Y' }}</span>{%- if article.author != blank -%}<i aria-hidden="true"></i><span>{{ article.author }}</span>{%- endif -%}</p>
+          <h3 class="vr-jr__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+          <p class="vr-jr__text">{{ article.excerpt_or_content | strip_html | truncatewords: 26 }}</p>
+          <a class="vr-go vr-jr__more" href="{{ article.url }}">{{ ht.label_read_more | default: 'Read More' }}{%- render 'roarr-velour-icon', name: 'arrow', size: 16 -%}</a>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .vr .vr-jr { padding-block-end: 120px; background: #fff; }
+  .vr .vr-jr .vr-head { margin-bottom: 54px; }
+  .vr .vr-jr .vr-rail__track { --vr-gap: 30px; --vr-col: calc((100% - 60px) / 3); }
+  .vr .vr-jr__media { display: block; aspect-ratio: 450 / 309; overflow: hidden; border-radius: 5px; background: var(--vr-tile); }
+  .vr .vr-jr__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s linear; }
+  .vr .vr-jr__post:hover .vr-jr__media img { transform: scale(1.05); }
+  .vr .vr-jr__meta { display: flex; align-items: center; gap: 9px; margin-top: 24px; font-size: 11.52px; line-height: 18px; color: var(--vr-text); }
+  .vr .vr-jr__meta i { width: 1px; height: 10px; background: currentColor; }
+  .vr .vr-jr__title { margin-top: 16px; font-size: 15.36px; line-height: 29px; font-weight: 500 !important; color: var(--vr-ink); }
+  .vr .vr-jr__title a:hover { color: var(--vr-accent); }
+  .vr .vr-jr__text { margin-top: 10px; font-size: 13.44px; line-height: 20px; color: var(--vr-text); }
+  .vr .vr-jr__more { margin-top: 14px; }
+  @media (max-width: 989px) { .vr .vr-jr .vr-rail__track { --vr-col: calc((100% - 30px) / 2); } }
+  @media (max-width: 749px) {
+    .vr .vr-jr { padding-block-end: 60px; }
+    .vr .vr-jr .vr-rail__track { --vr-col: 100%; --vr-gap: 10px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Journal",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" }
+  ],
+  "presets": [{ "name": "Velour Journal" }]
+}
+{% endschema %}

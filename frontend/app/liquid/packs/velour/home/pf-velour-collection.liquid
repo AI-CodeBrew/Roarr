@@ -1,0 +1,240 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign banner = collection.image | default: hi.collection_banner -%}
+{%- assign has_active = false -%}
+{%- for filter in collection.filters -%}{%- if filter.active_values.size > 0 -%}{%- assign has_active = true -%}{%- endif -%}{%- endfor -%}
+{%- capture vr_html -%}
+{%- paginate collection.products by section.settings.per_page -%}
+<div class="vr-banner">
+  {%- render 'snippets/roarr-velour-img', src: banner, alt: '', width: 2000 -%}
+  <div>
+    <h1>{{ collection.title }}</h1>
+    <p class="vr-crumbs"><a href="{{ routes.root_url | default: '/' }}">{{ ht.label_home | default: 'Home' }}</a><i aria-hidden="true"></i><span>{{ collection.title }}</span></p>
+  </div>
+</div>
+<section class="vr-cl" data-vr-collection>
+  <div class="vr-wrap">
+    <div class="vr-cl__top">
+      <button class="vr-cl__filter" type="button" data-vr-open="filters">{%- render 'snippets/roarr-velour-icon', name: 'filter', size: 22 -%}{{ ht.label_filter | default: 'Filter' }}</button>
+      <span class="vr-cl__showing" data-vr-showing>{{ ht.label_showing | default: 'Showing' }} {{ collection.products.size }} {{ ht.label_of | default: 'of' }} {{ collection.products_count }} {{ ht.label_products | default: 'products' }}</span>
+    </div>
+    {%- if has_active or homeData.demo_collection != blank -%}<a class="vr-btn vr-btn--dark vr-cl__clear" href="{{ collection.url }}">{%- render 'snippets/roarr-velour-icon', name: 'trash', size: 16 -%}{{ ht.label_clear_all | default: 'Clear All' }}</a>{%- endif -%}
+    <hr class="vr-rule vr-cl__rule">
+    <div class="vr-cl__bar">
+      <label class="vr-cl__sort"><span>{{ ht.label_sort | default: 'Sort by' }}:</span>
+        <select name="sort_by" form="vr-filter-{{ section.id }}" data-vr-autosubmit>
+          {%- for option in collection.sort_options -%}<option value="{{ option.value }}"{% if option.value == collection.sort_by %} selected{% endif %}>{{ option.name }}</option>{%- endfor -%}
+        </select>
+      </label>
+      <div class="vr-cl__views">
+        <button type="button" class="is-on" aria-label="Three columns" aria-pressed="true" data-vr-view="three">{%- render 'snippets/roarr-velour-icon', name: 'grid', size: 18 -%}</button>
+        <button type="button" aria-label="Four columns" aria-pressed="false" data-vr-view="four">{%- render 'snippets/roarr-velour-icon', name: 'grid3', size: 18 -%}</button>
+        <button type="button" aria-label="List" aria-pressed="false" data-vr-view="list">{%- render 'snippets/roarr-velour-icon', name: 'list', size: 18 -%}</button>
+      </div>
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <div class="vr-cl__grid" data-vr-grid>
+        {%- for product in collection.products -%}
+          {%- render 'snippets/roarr-velour-card', product: product, quick_add_label: ht.label_quick_add -%}
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <div class="vr-cl__more" data-vr-more-box>
+          <p class="vr-cl__count">{{ ht.label_showing | default: 'Showing' }} <b data-vr-count>{{ collection.products.size }}</b> {{ ht.label_of | default: 'of' }} <b>{{ collection.products_count }}</b> {{ ht.label_products | default: 'products' }}</p>
+          <span class="vr-cl__meter"><i data-vr-meter data-total="{{ collection.products_count }}" style="width: {{ collection.products.size | times: 100 | divided_by: collection.products_count }}%"></i></span>
+          {%- if paginate.next -%}<a class="vr-btn vr-btn--dark" href="{{ paginate.next.url }}" data-vr-more>{{ ht.label_load_more | default: 'Load More Items' }}</a>{%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="vr-cl__none">{{ ht.label_no_products | default: 'No products match these filters.' }} <a class="vr-go" href="{{ collection.url }}">{{ ht.label_clear_all | default: 'Clear All' }}</a></p>
+    {%- endif -%}
+  </div>
+
+  {%- if collection.all_tags.size > 0 or collection.description != blank -%}
+    <div class="vr-cl__notes">
+      <div class="vr-wrap">
+        {%- if collection.all_tags.size > 0 -%}
+          <p class="vr-cl__tagshead">{%- render 'snippets/roarr-velour-icon', name: 'tag', size: 14 -%}{{ ht.label_tags | default: 'Tags' }}</p>
+          <ul class="vr-cl__tags">{%- for tag in collection.all_tags limit: 12 -%}<li><a href="{{ collection.url }}/{{ tag | handle }}">{{ tag }}</a></li>{%- endfor -%}</ul>
+        {%- endif -%}
+        {%- if collection.description != blank -%}
+          <h2 class="vr-cl__about">{{ collection.title }}</h2>
+          <div class="vr-cl__desc" data-vr-clamp>{{ collection.description }}</div>
+          <button class="vr-cl__see" type="button" data-vr-clamp-toggle>{{ ht.label_see_more | default: 'See More' }}</button>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <dialog class="vr-canvas vr-canvas--start vr-cl__panel" data-vr-dialog="filters" aria-label="{{ ht.label_filter | default: 'Filter' | escape }}">
+    <div class="vr-panel-head"><h2>{{ ht.label_filter | default: 'Filter' }}</h2><button class="vr-x" type="button" aria-label="Close" data-vr-close>{%- render 'snippets/roarr-velour-icon', name: 'close', size: 18 -%}</button></div>
+    <form class="vr-cl__form" id="vr-filter-{{ section.id }}" method="get" action="{{ collection.url }}" data-vr-filter-form>
+      {%- for filter in collection.filters -%}
+        <details class="vr-cl__group" open>
+          <summary>{{ filter.label }}{%- render 'snippets/roarr-velour-icon', name: 'chevron', size: 14 -%}</summary>
+          {%- if filter.type == 'price_range' -%}
+            <div class="vr-cl__prices">
+              <span>{{ cart.currency.symbol | default: '$' }}</span>
+              <input type="number" min="0" step="any" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | replace: ',', '' }}{% endif %}" placeholder="{{ ht.label_from | default: 'From' }}" aria-label="{{ ht.label_from | default: 'From' }}" data-vr-autosubmit>
+              <input type="number" min="0" step="any" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | replace: ',', '' }}{% endif %}" placeholder="{{ ht.label_to | default: 'To' }}" aria-label="{{ ht.label_to | default: 'To' }}" data-vr-autosubmit>
+            </div>
+          {%- elsif filter.presentation == 'swatch' -%}
+            <ul class="vr-cl__swatches">
+              {%- for value in filter.values -%}
+                <li><label class="vr-cl__swatch" title="{{ value.label | escape }}">
+                  <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %} data-vr-autosubmit aria-label="{{ value.label | escape }}">
+                  <span style="background: {{ value.swatch.color | default: '#cccccc' }}"></span>
+                </label></li>
+              {%- endfor -%}
+            </ul>
+          {%- else -%}
+            <ul class="vr-cl__checks">
+              {%- for value in filter.values -%}
+                <li><label>
+                  <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %} data-vr-autosubmit>
+                  <span>{{ value.label }} ({{ value.count }})</span>
+                </label></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </details>
+      {%- endfor -%}
+    </form>
+  </dialog>
+</section>
+{%- endpaginate -%}
+<style>
+  .vr .vr-cl { padding-block-start: 40px; background: #fff; }
+  .vr .vr-cl__top { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 36px; }
+  .vr .vr-cl__filter { display: inline-flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; font-size: 19.2px; line-height: 28px; font-weight: 800; text-transform: uppercase; color: var(--vr-ink); cursor: pointer; transition: color .2s ease; }
+  .vr .vr-cl__filter:hover { color: var(--vr-accent); }
+  .vr .vr-cl__showing { font-size: 13.44px; color: var(--vr-text); }
+  .vr .vr-cl__clear { min-width: 145px; height: 44px; margin-top: 20px; }
+  .vr .vr-cl__rule { margin-block: 30px 20px; }
+  .vr .vr-cl__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+  .vr .vr-cl__sort { display: inline-flex; align-items: center; gap: 10px; font-size: 13.44px; color: var(--vr-text); }
+  .vr .vr-cl__sort select { max-width: 190px; padding: 6px 2px; border: 0; background: transparent; color: var(--vr-ink); font-size: 13.44px; font-weight: 500; cursor: pointer; }
+  .vr .vr-cl__views { display: flex; gap: 8px; }
+  .vr .vr-cl__views button { width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 3px; background: #efefef; color: var(--vr-ink); cursor: pointer; transition: background-color .2s ease, color .2s ease; }
+  .vr .vr-cl__views button.is-on { background: #000; color: #fff; }
+  .vr .vr-cl__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
+  .vr .vr-cl__grid.is-four { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .vr .vr-cl__grid.is-list { grid-template-columns: 1fr; }
+  .vr .vr-cl__grid.is-list .vr-card { display: grid; grid-template-columns: 260px minmax(0, 1fr); column-gap: 30px; align-content: start; }
+  .vr .vr-cl__grid.is-list .vr-card__media { grid-row: 1 / span 5; }
+  .vr .vr-cl__grid.is-list .vr-card__type { margin-top: 0; }
+  .vr .vr-cl__grid.is-list .vr-card__title { font-size: 17px; line-height: 26px; }
+  .vr .vr-cl__more { display: grid; justify-items: center; gap: 12px; margin-top: 50px; }
+  .vr .vr-cl__count { font-size: 12.5px; color: var(--vr-text); }
+  .vr .vr-cl__count b { font-weight: 600; color: var(--vr-ink); }
+  .vr .vr-cl__meter { display: block; width: 250px; height: 4px; border-radius: 4px; background: #e8e8e8; overflow: hidden; }
+  .vr .vr-cl__meter i { display: block; height: 100%; background: var(--vr-accent); transition: width .4s ease; }
+  .vr .vr-cl__more .vr-btn { margin-top: 12px; }
+  .vr .vr-cl__none { padding: 50px 0; font-size: 14px; color: var(--vr-text); }
+  .vr .vr-cl__notes { margin-top: 90px; padding-block: 80px; background: #efefef; }
+  .vr .vr-cl__tagshead { display: flex; align-items: center; gap: 8px; font-size: 13.44px; font-weight: 700; text-transform: uppercase; color: var(--vr-ink); }
+  .vr .vr-cl__tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .vr .vr-cl__tags a { display: inline-grid; place-items: center; min-width: 78px; height: 38px; padding-inline: 16px; border-radius: 3px; background: #fff; font-size: 12px; color: var(--vr-ink); }
+  .vr .vr-cl__tags a:hover { background: var(--vr-accent); color: #fff; }
+  .vr .vr-cl__about { margin-top: 44px; font-size: 19.2px; line-height: 28px; font-weight: 800 !important; text-transform: uppercase; }
+  .vr .vr-cl__desc { position: relative; max-height: 92px; margin-top: 12px; overflow: hidden; font-size: 13.44px; line-height: 20px; color: var(--vr-text); }
+  .vr .vr-cl__desc::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 40px; background: linear-gradient(transparent, #efefef); }
+  .vr .vr-cl__desc.is-open { max-height: none; }
+  .vr .vr-cl__desc.is-open::after { display: none; }
+  .vr .vr-cl__see { display: block; margin: 16px auto 0; padding: 0; border: 0; background: none; font-size: 11.5px; font-weight: 500; text-transform: uppercase; color: var(--vr-ink); cursor: pointer; }
+  .vr .vr-cl__form { flex: 1; margin: 0; padding: 8px 24px 24px; overflow: auto; }
+  .vr .vr-cl__group { padding-block: 16px; border-bottom: 1px solid var(--vr-line); }
+  .vr .vr-cl__group summary { display: flex; align-items: center; justify-content: space-between; list-style: none; font-size: 15.36px; font-weight: 500; color: var(--vr-ink); cursor: pointer; }
+  .vr .vr-cl__group summary::-webkit-details-marker { display: none; }
+  .vr .vr-cl__group[open] summary svg { transform: rotate(180deg); }
+  .vr .vr-cl__checks { margin-top: 14px; }
+  .vr .vr-cl__checks li { margin-bottom: 11px; font-size: 13.44px; color: var(--vr-text); }
+  .vr .vr-cl__checks label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .vr .vr-cl__checks input { width: 16px; height: 16px; margin: 0; accent-color: var(--vr-ink); }
+  .vr .vr-cl__prices { display: grid; grid-template-columns: auto 1fr 1fr; align-items: center; gap: 10px; margin-top: 14px; font-size: 13.44px; }
+  .vr .vr-cl__prices input { width: 100%; height: 44px; min-width: 0; padding-inline: 12px; border: 1px solid var(--vr-line); border-radius: 3px; background: #fff; font-size: 13px; color: var(--vr-ink); }
+  .vr .vr-cl__swatches { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0 4px; }
+  .vr .vr-cl__swatch { position: relative; display: block; width: 26px; height: 26px; cursor: pointer; }
+  .vr .vr-cl__swatch input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+  .vr .vr-cl__swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--vr-line); }
+  .vr .vr-cl__swatch input:checked + span { box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--vr-ink); }
+  .vr .vr-cl__swatch input:focus-visible + span { outline: 2px solid var(--vr-ink); outline-offset: 3px; }
+  @media (max-width: 989px) {
+    .vr .vr-cl__grid, .vr .vr-cl__grid.is-four { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 10px; }
+    .vr .vr-cl__views button[data-vr-view="four"] { display: none; }
+    .vr .vr-cl__notes { margin-top: 60px; padding-block: 50px; }
+  }
+  @media (max-width: 749px) {
+    .vr .vr-cl { padding-block-start: 24px; }
+    .vr .vr-cl__grid.is-list .vr-card { grid-template-columns: 130px minmax(0, 1fr); column-gap: 14px; }
+    .vr .vr-cl__grid.is-list .vr-card__title { font-size: 14px; line-height: 20px; }
+  }
+</style>
+<script>
+  (function () {
+    document.querySelectorAll("[data-vr-collection]:not([data-ready])").forEach(function (root) {
+      root.dataset.ready = "1";
+      var form = root.querySelector("[data-vr-filter-form]"), grid = root.querySelector("[data-vr-grid]");
+      root.querySelectorAll("[data-vr-autosubmit]").forEach(function (el) {
+        el.addEventListener("change", function () {
+          // Empty price boxes would add blank filters to the URL.
+          var prices = form.querySelectorAll('input[type="number"]');
+          prices.forEach(function (i) { i.disabled = !i.value; });
+          form.requestSubmit();
+          prices.forEach(function (i) { i.disabled = false; });
+        });
+      });
+      root.querySelectorAll("[data-vr-view]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          root.querySelectorAll("[data-vr-view]").forEach(function (b) { var on = b === btn; b.classList.toggle("is-on", on); b.setAttribute("aria-pressed", on ? "true" : "false"); });
+          if (!grid) return;
+          grid.classList.toggle("is-four", btn.dataset.vrView === "four");
+          grid.classList.toggle("is-list", btn.dataset.vrView === "list");
+        });
+      });
+      var clamp = root.querySelector("[data-vr-clamp]"), toggle = root.querySelector("[data-vr-clamp-toggle]");
+      if (clamp && toggle) {
+        if (clamp.scrollHeight <= clamp.clientHeight + 2) { toggle.hidden = true; clamp.classList.add("is-open"); }
+        toggle.addEventListener("click", function () { toggle.hidden = true; clamp.classList.add("is-open"); });
+      }
+      var more = root.querySelector("[data-vr-more]");
+      if (more && grid) {
+        more.addEventListener("click", function (event) {
+          event.preventDefault();
+          // The sample preview has no second page to fetch.
+          if (more.getAttribute("href") === "#") { if (window.__vr) window.__vr.toast("More products load here on your live store."); return; }
+          more.setAttribute("aria-busy", "true");
+          fetch(more.href).then(function (res) { return res.text(); }).then(function (html) {
+            var page = new DOMParser().parseFromString(html, "text/html");
+            var incoming = page.querySelector("[data-vr-grid]");
+            if (incoming) Array.prototype.slice.call(incoming.children).forEach(function (card) { grid.appendChild(document.adoptNode(card)); });
+            var count = grid.children.length, meter = root.querySelector("[data-vr-meter]"), label = root.querySelector("[data-vr-count]");
+            if (label) label.textContent = count;
+            if (meter) meter.style.width = Math.min(count * 100 / Number(meter.dataset.total || count), 100) + "%";
+            var next = page.querySelector("[data-vr-more]");
+            if (next) { more.href = next.href; more.removeAttribute("aria-busy"); } else more.hidden = true;
+            if (window.__vr) window.__vr.init();
+          }).catch(function () { window.location.href = more.href; });
+        });
+      }
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- render 'snippets/roarr-velour-wrap', html: vr_html -%}
+
+{% schema %}
+{
+  "name": "Velour Collection",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 6, "max": 48, "step": 3, "default": 12 }
+  ],
+  "presets": [{ "name": "Velour Collection" }]
+}
+{% endschema %}

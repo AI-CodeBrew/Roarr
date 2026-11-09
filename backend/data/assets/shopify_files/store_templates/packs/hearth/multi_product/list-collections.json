@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "hearth-header": {
+      "type": "roarr-hearth-header",
+      "settings": {
+        "overlay": false
+      }
+    },
+    "hearth-list-collections": {
+      "type": "roarr-hearth-list-collections",
+      "settings": {
+        "per_page": 36
+      }
+    },
+    "hearth-footer": {
+      "type": "roarr-hearth-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hearth-header",
+    "hearth-list-collections",
+    "hearth-footer"
+  ]
+}

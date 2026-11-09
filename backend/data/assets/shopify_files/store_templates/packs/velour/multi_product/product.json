@@ -1,0 +1,30 @@
+{
+  "sections": {
+    "velour-header": {
+      "type": "roarr-velour-header",
+      "settings": {
+        "overlay": false
+      }
+    },
+    "velour-product": {
+      "type": "roarr-velour-product",
+      "settings": {}
+    },
+    "velour-policy": {
+      "type": "roarr-velour-policy",
+      "settings": {
+        "row": true
+      }
+    },
+    "velour-footer": {
+      "type": "roarr-velour-footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "velour-header",
+    "velour-product",
+    "velour-policy",
+    "velour-footer"
+  ]
+}

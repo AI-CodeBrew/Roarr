@@ -1,0 +1,14 @@
+{
+  "home_page": {
+    "tempo_hero_1": "4:5",
+    "tempo_hero_2": "4:5",
+    "tempo_hero_3": "4:5",
+    "tempo_product_image": "1:1",
+    "tempo_detail_image": "1:1",
+    "tempo_showcase_image": "1:1",
+    "tempo_story_1": "4:3",
+    "tempo_story_2": "4:3",
+    "tempo_story_3": "4:3"
+  },
+  "product_page": {}
+}

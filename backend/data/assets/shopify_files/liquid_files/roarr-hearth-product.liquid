@@ -1,0 +1,293 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign current = product.selected_or_first_available_variant | default: product.variants[0] -%}
+{%- assign rating = product.metafields.reviews.rating.value.rating | default: 0 -%}
+{%- assign rating_count = product.metafields.reviews.rating_count.value | default: 0 -%}
+{%- assign shipping_tab = shop.shipping_policy.body | default: homeData.demo_shipping_tab -%}
+{%- assign returns_tab = shop.refund_policy.body | default: homeData.demo_returns_tab -%}
+{%- assign benefit_icons = 'truck,card,cash,shield' | split: ',' -%}
+{%- capture hh_html -%}
+<section class="hh-pd" data-hh-product>
+  <div class="hh-wrap">
+    <p class="hh-crumbs hh-pd__crumbs"><a href="{{ routes.root_url | default: '/' }}">{{ ht.label_home | default: 'Home' }}</a><i aria-hidden="true"></i><span>{{ product.title }}</span></p>
+    <div class="hh-pd__main">
+      <div class="hh-pd__gallery">
+        <div class="hh-pd__stage">
+          {%- for media in product.media -%}
+            <div class="hh-pd__shot{% if forloop.first %} is-on{% endif %}" data-hh-shot data-media-id="{{ media.id }}">
+              {%- render 'roarr-hearth-img', src: media.preview_image, alt: product.title, width: 1400 -%}
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="hh-pd__thumbs">
+            {%- for media in product.media -%}
+              <button class="hh-pd__thumb{% if forloop.first %} is-on{% endif %}" type="button" aria-label="{{ ht.label_show_image | default: 'Show image' | escape }} {{ forloop.index }}" data-hh-thumb="{{ forloop.index0 }}">
+                {%- render 'roarr-hearth-img', src: media.preview_image, alt: '', width: 300, lazy: true -%}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="hh-pd__info">
+        <h1 class="hh-pd__title">{{ product.title }}</h1>
+        <p class="hh-pd__review">
+          <span class="hh-stars" style="--hh-rate: {{ rating | times: 20 }}%" role="img" aria-label="{{ rating }} / 5"></span>
+          <span>({{ rating_count }})</span>
+        </p>
+        <p class="hh-pd__price"><span data-hh-price>{{ current.price | default: product.price | money }}</span><s data-hh-compare{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{{ current.compare_at_price | money }}</s></p>
+        {%- assign summary = product.description | replace: '</', ' </' | strip_html | truncatewords: 42 -%}
+        {%- if summary != blank -%}<p class="hh-pd__summary">{{ summary }}</p>{%- endif -%}
+
+        <dl class="hh-pd__facts">
+          <div><dt>{{ ht.label_available | default: 'Available' }}:</dt><dd class="hh-pd__stock" data-hh-stock data-in="{{ ht.label_in_stock | default: 'In Stock' | escape }}" data-out="{{ ht.label_out_of_stock | default: 'Out of Stock' | escape }}"><span data-hh-stock-text>{%- if current.available -%}{{ ht.label_in_stock | default: 'In Stock' }}{%- else -%}{{ ht.label_out_of_stock | default: 'Out of Stock' }}{%- endif -%}</span>{%- render 'roarr-hearth-icon', name: 'checkbox', size: 16, stroke: 1.4 -%}</dd></div>
+          {%- if product.tags.size > 0 -%}<div><dt>{{ ht.label_tags | default: 'Tags' }}:</dt><dd>{{ product.tags | join: ', ' }}</dd></div>{%- endif -%}
+          <div data-hh-sku-row{% if current.sku == blank %} hidden{% endif %}><dt>SKU:</dt><dd data-hh-sku>{{ current.sku }}</dd></div>
+          {%- if product.type != blank -%}<div><dt>{{ ht.label_category | default: 'Category' }}:</dt><dd>{{ product.type }}</dd></div>{%- endif -%}
+        </dl>
+
+        {%- form 'product', product, class: 'hh-pd__form' -%}
+          <input type="hidden" name="id" value="{{ current.id }}" data-hh-variant-id>
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <fieldset class="hh-pd__option" data-hh-option="{{ forloop.index0 }}">
+                <legend>{{ option.name }}: <b data-hh-option-value>{{ option.selected_value }}</b></legend>
+                <div class="hh-pills">
+                  {%- for value in option.values -%}
+                    <label class="hh-pill hh-pd__pill{% if value == option.selected_value %} is-on{% endif %}">
+                      <input type="radio" name="hh-option-{{ section.id }}-{{ forloop.parentloop.index0 }}" value="{{ value | escape }}"{% if value == option.selected_value %} checked{% endif %}>
+                      <span>{{ value }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          <p class="hh-pd__label">{{ ht.label_quantity | default: 'Quantity' }}:</p>
+          <div class="hh-pd__buy">
+            <div class="hh-pd__qty">
+              <button type="button" aria-label="Decrease quantity" data-hh-step="-1">−</button>
+              <input type="number" name="quantity" value="1" min="1" aria-label="{{ ht.label_quantity | default: 'Quantity' | escape }}">
+              <button type="button" aria-label="Increase quantity" data-hh-step="1">+</button>
+            </div>
+            <button class="hh-btn hh-pd__add" type="submit" data-hh-add{% unless current.available %} disabled{% endunless %} data-label-add="{{ ht.label_add_to_bag | default: 'Add To Bag' | escape }}" data-label-out="{% render 'roarr-ui-string', key: 'sold_out' %}">{%- if current.available -%}{{ ht.label_add_to_bag | default: 'Add To Bag' }}{%- else -%}{% render 'roarr-ui-string', key: 'sold_out' %}{%- endif -%}</button>
+            <button class="hh-pd__heart" type="button" aria-pressed="false" aria-label="{{ ht.label_wishlist | default: 'Wishlist' | escape }}: {{ product.title | escape }}" data-hh-wish="{{ product.url }}" data-title="{{ product.title | escape }}" data-image="{% if product.featured_image contains '/' %}{{ product.featured_image }}{% else %}{{ product.featured_image | image_url: width: 200 }}{% endif %}">{%- render 'roarr-hearth-icon', name: 'heart', size: 18 -%}</button>
+          </div>
+          <div class="hh-pd__now">
+            {%- if homeData == blank -%}{{ form | payment_button }}{%- else -%}<button class="hh-btn hh-btn--line" type="button" data-hh-demo-buy>{{ ht.label_buy_now | default: 'Buy It Now' }}</button>{%- endif -%}
+          </div>
+        {%- endform -%}
+
+        <ul class="hh-pd__links">
+          <li><button type="button" data-hh-share>{%- render 'roarr-hearth-icon', name: 'share', size: 16 -%}{{ ht.label_share | default: 'Share' }}</button></li>
+          <li><a href="{{ ht.contact_url | default: '/pages/contact' }}">{%- render 'roarr-hearth-icon', name: 'help', size: 16 -%}{{ ht.label_ask | default: 'Ask A Question' }}</a></li>
+          <li><a href="{{ ht.faq_url | default: '/pages/faq' }}">{%- render 'roarr-hearth-icon', name: 'chat', size: 16 -%}{{ ht.label_faq | default: 'FAQ' }}</a></li>
+        </ul>
+
+        {%- if ht.policy_1_title != blank -%}
+          <div class="hh-pd__benefits">
+            <p class="hh-pd__benefits-head"><span>{{ ht.label_benefits | default: 'The Benefits Of Choosing Us' }}</span></p>
+            <ul>
+              {%- for i in (1..4) -%}
+                {%- assign title_key = 'policy_' | append: i | append: '_title' -%}
+                {%- assign icon_at = i | minus: 1 -%}
+                {%- if ht[title_key] != blank -%}<li>{%- render 'roarr-hearth-icon', name: benefit_icons[icon_at], size: 32, stroke: 1 -%}<span>{{ ht[title_key] }}</span></li>{%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.note_1 != blank or section.settings.note_2 != blank -%}
+          <ul class="hh-pd__notes">
+            {%- if section.settings.note_1 != blank -%}<li>{%- render 'roarr-hearth-icon', name: 'box', size: 30, stroke: 1 -%}{{ section.settings.note_1 }}</li>{%- endif -%}
+            {%- if section.settings.note_2 != blank -%}<li>{%- render 'roarr-hearth-icon', name: 'truck', size: 30, stroke: 1 -%}{{ section.settings.note_2 }}</li>{%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="hh-pd__tabs" data-hh-tabs>
+      <div class="hh-pd__tablist" role="tablist">
+        <button class="is-on" type="button" role="tab" aria-selected="true" data-hh-tab="0">{{ ht.label_description | default: 'Description' }}</button>
+        {%- if shipping_tab != blank -%}<button type="button" role="tab" aria-selected="false" data-hh-tab="1">{{ ht.label_shipping_tab | default: 'Shipping Policy' }}</button>{%- endif -%}
+        {%- if returns_tab != blank -%}<button type="button" role="tab" aria-selected="false" data-hh-tab="2">{{ ht.label_returns_tab | default: 'Returns' }}</button>{%- endif -%}
+      </div>
+      <div class="hh-pd__panel" role="tabpanel" data-hh-panel="0">{{ product.description }}</div>
+      {%- if shipping_tab != blank -%}<div class="hh-pd__panel" role="tabpanel" data-hh-panel="1" hidden>{{ shipping_tab }}</div>{%- endif -%}
+      {%- if returns_tab != blank -%}<div class="hh-pd__panel" role="tabpanel" data-hh-panel="2" hidden>{{ returns_tab }}</div>{%- endif -%}
+    </div>
+  </div>
+  <script type="application/json" data-hh-variants>{{ product.variants | json }}</script>
+</section>
+
+<style>
+  .hh .hh-pd { padding-block: 26px 0; background: #fff; color: var(--hh-text); }
+  .hh .hh-pd__crumbs { justify-content: flex-start; margin: 0 0 24px; }
+  .hh .hh-pd__main { display: grid; grid-template-columns: minmax(0, 690fr) minmax(0, 647fr); gap: 73px; align-items: start; }
+  .hh .hh-pd__stage { position: relative; aspect-ratio: 690 / 890; overflow: hidden; border-radius: 5px; background: var(--hh-tile); }
+  .hh .hh-pd__shot { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s; }
+  .hh .hh-pd__shot.is-on { opacity: 1; visibility: visible; }
+  .hh .hh-pd__shot img { width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-pd__thumbs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+  .hh .hh-pd__thumb { aspect-ratio: 107 / 138; padding: 0; overflow: hidden; border: 1px solid transparent; border-radius: 5px; background: var(--hh-tile); cursor: pointer; transition: border-color .2s ease; }
+  .hh .hh-pd__thumb.is-on, .hh .hh-pd__thumb:hover { border-color: var(--hh-accent); }
+  .hh .hh-pd__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .hh .hh-pd__info { position: sticky; top: 80px; min-width: 0; }
+  .hh .hh-pd__title { font-size: 22.08px; line-height: 33.12px; font-weight: 500 !important; color: var(--hh-ink); }
+  .hh .hh-pd__review { display: flex; align-items: center; margin-top: 15px; font-size: 13.44px; line-height: 20px; color: var(--hh-text); }
+  .hh .hh-pd__review .hh-stars { margin: 0; }
+  .hh .hh-pd__price { display: flex; align-items: baseline; gap: 12px; margin-top: 20px; font-size: 24px; line-height: 36px; font-weight: 800; color: var(--hh-ink); }
+  .hh .hh-pd__price s { font-size: 15px; font-weight: 400; color: var(--hh-muted); text-decoration-color: #db0000; }
+  .hh .hh-pd__summary { margin-top: 11px; font-size: 12.48px; line-height: 21.2px; }
+  .hh .hh-pd__facts { margin: 36px 0 0; font-size: 12px; line-height: 18px; }
+  .hh .hh-pd__facts > div { display: grid; grid-template-columns: 130px minmax(0, 1fr); margin-bottom: 9px; }
+  .hh .hh-pd__facts > div[hidden] { display: none; }
+  .hh .hh-pd__facts dt { font-weight: 700; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-pd__facts dd { margin: 0; color: var(--hh-text); }
+  .hh .hh-pd__stock { display: flex; align-items: center; gap: 7px; color: #6bb853 !important; font-weight: 500; text-transform: uppercase; font-size: 11px; line-height: 16.5px; }
+  .hh .hh-pd__stock.is-out { color: #db0000 !important; }
+  .hh .hh-pd__form { margin: 37px 0 0; }
+  .hh .hh-pd__option { margin: 0 0 26px; padding: 0; border: 0; }
+  .hh .hh-pd__option legend, .hh .hh-pd__label { padding: 0; margin-bottom: 15px; font-size: 12px; line-height: 18px; font-weight: 700; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-pd__option legend b { font-weight: 700; }
+  .hh .hh-pd__pill { display: inline-grid; place-items: center; }
+  .hh .hh-pd__pill input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .hh .hh-pd__pill:has(input:focus-visible) { outline: 2px solid var(--hh-ink); outline-offset: 2px; }
+  .hh .hh-pd__pill.is-out { opacity: .4; text-decoration: line-through; }
+  .hh .hh-pd__buy { display: grid; grid-template-columns: 110px minmax(0, 1fr) 50px; gap: 10px; align-items: center; }
+  .hh .hh-pd__qty { display: grid; grid-template-columns: 28px minmax(0, 1fr) 28px; align-items: center; height: 50px; border: 1px solid var(--hh-line); border-radius: 100px; }
+  .hh .hh-pd__qty button { height: 100%; padding: 0; border: 0; background: none; font-size: 18px; color: #b4b4b4; cursor: pointer; transition: color .2s ease; }
+  .hh .hh-pd__qty button:hover { color: var(--hh-ink); }
+  .hh .hh-pd__qty input { width: 100%; padding: 0; border: 0; background: none; text-align: center; font-size: 12px; font-weight: 700; color: #343434; appearance: textfield; -moz-appearance: textfield; }
+  .hh .hh-pd__qty input::-webkit-outer-spin-button, .hh .hh-pd__qty input::-webkit-inner-spin-button { appearance: none; margin: 0; }
+  .hh .hh-pd__add { width: 100%; min-width: 0; height: 50px; background: #ededed; color: #222; }
+  .hh .hh-pd__heart { width: 50px; height: 50px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: #ededed; color: var(--hh-ink); cursor: pointer; transition: background-color .25s ease, color .25s ease; }
+  .hh .hh-pd__heart:hover { background: var(--hh-accent); color: #fff; }
+  .hh .hh-pd__heart svg { fill: currentColor; }
+  .hh .hh-pd__now { margin-top: 11px; }
+  .hh .hh-pd__now .hh-btn { width: 100%; height: 50px; box-shadow: 0 2px 8px rgb(0 0 0 / .06); }
+  .hh .hh-pd__now :is(.shopify-payment-button__button) { min-height: 50px; border-radius: 50px; overflow: hidden; }
+  .hh .hh-pd__links { display: flex; flex-wrap: wrap; gap: 12px 30px; margin-top: 27px; font-size: 11.52px; line-height: 17px; font-weight: 700; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-pd__links :is(a, button) { display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; font-weight: 700; text-transform: uppercase; color: var(--hh-ink); cursor: pointer; transition: color .2s ease; }
+  .hh .hh-pd__links :is(a, button):hover { color: var(--hh-accent); }
+  .hh .hh-pd__benefits { position: relative; margin-top: 66px; padding: 30px 14px 22px; border: 1px solid var(--hh-line); border-radius: 5px; }
+  .hh .hh-pd__benefits-head { position: absolute; inset-inline: 0; top: -9px; text-align: center; }
+  .hh .hh-pd__benefits-head span { padding-inline: 12px; background: #fff; font-size: 12px; line-height: 18px; font-weight: 700; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-pd__benefits ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .hh .hh-pd__benefits li { display: grid; justify-items: center; gap: 14px; font-size: 10px; line-height: 16px; font-weight: 600; text-align: center; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-pd__notes { margin-top: 48px; font-size: 14px; line-height: 21px; color: #535353; }
+  .hh .hh-pd__notes li { display: flex; align-items: center; gap: 13px; margin-bottom: 25px; }
+  .hh .hh-pd__tablist { display: flex; flex-wrap: wrap; gap: 14px 68px; margin-top: 100px; }
+  .hh .hh-pd__tablist button { padding: 0; border: 0; background: none; font-size: 23.04px; line-height: 23.04px; font-weight: 600; color: var(--hh-ink); cursor: pointer; transition: color .2s ease; }
+  .hh .hh-pd__tablist button:hover, .hh .hh-pd__tablist button.is-on { color: var(--hh-accent); }
+  .hh .hh-pd__panel { margin-top: 52px; padding-block-end: 117px; font-size: 14px; line-height: 24.5px; color: var(--hh-text); }
+  .hh .hh-pd__panel :is(p, ul, ol) { margin-block-end: 12px; }
+  .hh .hh-pd__panel ul { padding-inline-start: 22px; list-style: disc; }
+  .hh .hh-pd__panel h3 { margin-block: 9px 5px; font-size: 17.28px; line-height: 25.92px; font-weight: 500; color: var(--hh-text); }
+  @media (max-width: 1024px) {
+    .hh .hh-pd__main { grid-template-columns: 1fr; gap: 30px; }
+    .hh .hh-pd__info { position: static; }
+    .hh .hh-pd__tablist { margin-top: 50px; gap: 12px 30px; }
+    .hh .hh-pd__tablist button { font-size: 18px; line-height: 26px; }
+  }
+  @media (max-width: 749px) {
+    .hh .hh-pd__buy { grid-template-columns: 104px minmax(0, 1fr) 44px; gap: 8px; }
+    .hh .hh-pd__heart { width: 44px; height: 44px; }
+    .hh .hh-pd__benefits ul { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 10px; }
+  }
+</style>
+<script>
+  (function () {
+    document.querySelectorAll("[data-hh-product]:not([data-ready])").forEach(function (root) {
+      root.dataset.ready = "1";
+      var shots = root.querySelectorAll("[data-hh-shot]"), thumbs = root.querySelectorAll("[data-hh-thumb]");
+      function showShot(n) {
+        shots.forEach(function (s, i) { s.classList.toggle("is-on", i === n); });
+        thumbs.forEach(function (t, i) { t.classList.toggle("is-on", i === n); });
+      }
+      thumbs.forEach(function (t, i) { t.addEventListener("click", function () { showShot(i); }); });
+
+      var qty = root.querySelector('[name="quantity"]');
+      root.querySelectorAll("[data-hh-step]").forEach(function (b) {
+        b.addEventListener("click", function () { qty.value = Math.max(1, (Number(qty.value) || 1) + Number(b.dataset.hhStep)); });
+      });
+
+      root.querySelectorAll("[data-hh-tab]").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          root.querySelectorAll("[data-hh-tab]").forEach(function (t) { var on = t === tab; t.classList.toggle("is-on", on); t.setAttribute("aria-selected", on ? "true" : "false"); });
+          root.querySelectorAll("[data-hh-panel]").forEach(function (p) { p.hidden = p.dataset.hhPanel !== tab.dataset.hhTab; });
+        });
+      });
+
+      var share = root.querySelector("[data-hh-share]");
+      if (share) share.addEventListener("click", function () {
+        var url = window.location.href;
+        if (navigator.share) { navigator.share({ url: url, title: document.title }).catch(function () {}); return; }
+        if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { if (window.__hh) window.__hh.toast("Link copied"); });
+      });
+
+      var data = root.querySelector("[data-hh-variants]"), variants = [];
+      try { variants = JSON.parse(data.textContent) || []; } catch (e) {}
+      var fields = root.querySelectorAll("[data-hh-option]");
+      if (!fields.length || !variants.length) return;
+      var idInput = root.querySelector("[data-hh-variant-id]"), add = root.querySelector(".hh-pd__add");
+      var price = root.querySelector("[data-hh-price]"), compare = root.querySelector("[data-hh-compare]");
+      var stock = root.querySelector("[data-hh-stock]"), sku = root.querySelector("[data-hh-sku]"), skuRow = root.querySelector("[data-hh-sku-row]");
+      function money(cents) { return window.__hh ? window.__hh.money(cents) : (cents / 100).toFixed(2); }
+      function chosen() { return Array.prototype.map.call(fields, function (f) { var c = f.querySelector("input:checked"); return c ? c.value : null; }); }
+      function paint() {
+        var values = chosen();
+        fields.forEach(function (f, i) {
+          var label = f.querySelector("[data-hh-option-value]");
+          if (label) label.textContent = values[i];
+          f.querySelectorAll(".hh-pd__pill").forEach(function (p) {
+            var input = p.querySelector("input");
+            p.classList.toggle("is-on", input.checked);
+            var test = values.slice(); test[i] = input.value;
+            var exists = variants.some(function (v) { return v.available && (v.options || []).every(function (o, x) { return o === test[x]; }); });
+            p.classList.toggle("is-out", !exists);
+          });
+        });
+        var variant = variants.filter(function (v) { return (v.options || []).every(function (o, x) { return o === values[x]; }); })[0];
+        var ok = Boolean(variant && variant.available);
+        add.disabled = !ok;
+        add.textContent = ok ? add.dataset.labelAdd : add.dataset.labelOut;
+        if (stock) { stock.querySelector("[data-hh-stock-text]").textContent = ok ? stock.dataset.in : stock.dataset.out; stock.classList.toggle("is-out", !ok); }
+        if (!variant) return;
+        idInput.value = variant.id;
+        price.textContent = money(variant.price);
+        var discounted = variant.compare_at_price > variant.price;
+        compare.hidden = !discounted;
+        if (discounted) compare.textContent = money(variant.compare_at_price);
+        if (sku) sku.textContent = variant.sku || "";
+        if (skuRow) skuRow.hidden = !variant.sku;
+        if (variant.featured_media) {
+          shots.forEach(function (s, i) { if (s.dataset.mediaId === String(variant.featured_media.id)) showShot(i); });
+        }
+        if (variant.id && window.location.search.indexOf("variant=") > -1 && window.history.replaceState) {
+          var url = new URL(window.location.href); url.searchParams.set("variant", variant.id); window.history.replaceState({}, "", url);
+        }
+      }
+      fields.forEach(function (f) { f.addEventListener("change", paint); });
+      paint();
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Product",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "note_1", "label": "Delivery note", "info": "For example your real processing time." },
+    { "type": "text", "id": "note_2", "label": "Shipping note", "info": "For example your real shipping offer." }
+  ],
+  "presets": [{ "name": "Hearth Product" }]
+}
+{% endschema %}

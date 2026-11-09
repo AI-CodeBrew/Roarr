@@ -1,0 +1,45 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign related = homeData.demo_products | default: product.collections.first.products | default: collections.all.products -%}
+{%- capture cards -%}
+  {%- assign shown = 0 -%}
+  {%- for item in related limit: 9 -%}
+    {%- if item.handle != product.handle and shown < 8 -%}
+      {%- assign shown = shown | plus: 1 -%}
+      {%- render 'roarr-hearth-card', product: item, quick_add_label: ht.label_quick_add -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture hh_html -%}
+{%- if shown > 0 -%}
+<section class="hh-pr" data-hh-rail>
+  <div class="hh-wrap">
+    <h2 class="hh-pr__title">{{ ht.label_related | default: 'Product Related' }}</h2>
+    <div class="hh-rail__track" data-hh-track>{{ cards }}</div>
+    <div class="hh-dots hh-pr__dots" data-hh-rail-dots></div>
+  </div>
+</section>
+{%- endif -%}
+<style>
+  .hh .hh-pr { padding-block: 66px 120px; background: #fff; }
+  .hh .hh-pr__title { margin-bottom: 30px; font-size: 19.2px; line-height: 28.8px; font-weight: 500 !important; text-align: center; text-transform: uppercase; color: #222; }
+  .hh .hh-pr .hh-rail__track { --hh-gap: 30px; --hh-col: calc((100% - 90px) / 4); justify-content: safe center; }
+  .hh .hh-pr__dots { justify-content: center; margin-top: 44px; color: var(--hh-ink); }
+  @media (max-width: 1024px) {
+    .hh .hh-pr .hh-rail__track { --hh-gap: 10px; --hh-col: calc((100% - 10px) / 2); }
+    .hh .hh-pr { padding-block: 50px 70px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Related Products",
+  "tag": "section",
+  "settings": [],
+  "presets": [{ "name": "Hearth Related Products" }]
+}
+{% endschema %}

@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "simmer-header": {
+      "type": "roarr-simmer-header",
+      "settings": {}
+    },
+    "simmer-product": {
+      "type": "roarr-simmer-product",
+      "settings": {}
+    },
+    "simmer-policy": {
+      "type": "roarr-simmer-policy",
+      "settings": {
+        "row": true
+      }
+    },
+    "simmer-footer": {
+      "type": "roarr-simmer-footer",
+      "settings": {}
+    },
+    "simmer-related": {
+      "type": "roarr-simmer-related",
+      "settings": {}
+    }
+  },
+  "order": [
+    "simmer-header",
+    "simmer-product",
+    "simmer-policy",
+    "simmer-related",
+    "simmer-footer"
+  ]
+}

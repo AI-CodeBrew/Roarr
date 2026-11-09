@@ -1,0 +1,323 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign hi = store_gen.home_page.images -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- if hi == blank and homeData.images != blank -%}{%- assign hi = homeData.images -%}{%- endif -%}
+{%- assign banner = collection.image | default: hi.collection_banner -%}
+{%- assign categories = homeData.demo_collection_list | default: collections -%}
+{%- comment -%} One set of filter controls, shown in the sidebar on wide screens and in a drawer on small ones. {%- endcomment -%}
+{%- capture filter_groups -%}
+  {%- for filter in collection.filters -%}
+    <details class="hh-cl__group" open>
+      <summary><span>{%- render 'snippets/roarr-hearth-icon', name: 'chevron', size: 14, stroke: 1.6 -%}{{ filter.label }}</span><a class="hh-cl__reset" href="{{ filter.url_to_remove | default: collection.url }}">{{ ht.label_reset | default: 'Reset' }}</a></summary>
+      {%- if filter.type == 'price_range' -%}
+        {%- assign range_max = filter.range_max | divided_by: 100 -%}
+        <div class="hh-cl__price" data-hh-price data-max="{{ range_max }}">
+          <div class="hh-cl__slider">
+            <i class="hh-cl__fill" data-hh-fill></i>
+            <input type="range" min="0" max="{{ range_max }}" step="1" value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100 }}{% else %}0{% endif %}" aria-label="{{ ht.label_from | default: 'From' }}" data-hh-range="min">
+            <input type="range" min="0" max="{{ range_max }}" step="1" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100 }}{% else %}{{ range_max }}{% endif %}" aria-label="{{ ht.label_to | default: 'To' }}" data-hh-range="max">
+          </div>
+          <div class="hh-cl__ticks" aria-hidden="true">
+            <span>0</span><span>{{ range_max | divided_by: 4 }}</span><span>{{ range_max | divided_by: 2 }}</span><span>{{ range_max | times: 3 | divided_by: 4 }}</span><span>{{ range_max }}</span>
+          </div>
+          <div class="hh-cl__prices">
+            <input type="number" min="0" step="any" name="{{ filter.min_value.param_name }}" value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100 }}{% endif %}" placeholder="0" aria-label="{{ ht.label_from | default: 'From' }}" data-hh-autosubmit data-hh-number="min">
+            <span aria-hidden="true">&mdash;</span>
+            <input type="number" min="0" step="any" name="{{ filter.max_value.param_name }}" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100 }}{% endif %}" placeholder="{{ range_max }}" aria-label="{{ ht.label_to | default: 'To' }}" data-hh-autosubmit data-hh-number="max">
+          </div>
+        </div>
+      {%- elsif filter.presentation == 'swatch' -%}
+        <ul class="hh-cl__swatches">
+          {%- for value in filter.values -%}
+            <li><label class="hh-cl__swatch" title="{{ value.label | escape }}">
+              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %} data-hh-autosubmit aria-label="{{ value.label | escape }}">
+              <span style="background: {{ value.swatch.color | default: '#cccccc' }}"></span>
+            </label></li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <ul class="hh-cl__checks">
+          {%- for value in filter.values -%}
+            <li><label>
+              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %} data-hh-autosubmit>
+              <span>{{ value.label }}</span><small>({{ value.count }})</small>
+            </label></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </details>
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture hh_html -%}
+{%- paginate collection.products by section.settings.per_page -%}
+<div class="hh-banner">
+  {%- render 'snippets/roarr-hearth-img', src: banner, alt: '', width: 2000 -%}
+  <div>
+    <h1>{{ collection.title }}</h1>
+    <p class="hh-crumbs"><a href="{{ routes.root_url | default: '/' }}">{{ ht.label_home | default: 'Home' }}</a><i aria-hidden="true"></i><span>{{ collection.title }}</span></p>
+  </div>
+</div>
+<section class="hh-cl" data-hh-collection>
+  <div class="hh-wrap hh-cl__layout">
+    <aside class="hh-cl__side">
+      {%- if categories.size > 0 -%}
+        <h2 class="hh-cl__heading">{%- render 'snippets/roarr-hearth-icon', name: 'lines', size: 18, stroke: 1.8 -%}{{ ht.label_categories | default: 'Categories' }}</h2>
+        <ul class="hh-cl__cats" data-hh-cats>
+          {%- for category in categories limit: 24 -%}
+            <li{% if forloop.index > 5 %} hidden{% endif %}><a href="{{ category.url }}">{{ category.title }}</a></li>
+          {%- endfor -%}
+          {%- if categories.size > 5 -%}<li><button type="button" data-hh-cats-more>{{ ht.label_see_more | default: 'See More' }} +</button></li>{%- endif -%}
+        </ul>
+      {%- endif -%}
+      <h2 class="hh-cl__heading hh-cl__heading--filter">{%- render 'snippets/roarr-hearth-icon', name: 'filter', size: 18, stroke: 1.8 -%}{{ ht.label_filter_by | default: 'Filter By' }}</h2>
+      <a class="hh-btn hh-btn--dark hh-cl__clear" href="{{ collection.url }}">{%- render 'snippets/roarr-hearth-icon', name: 'trash', size: 16 -%}{{ ht.label_clear_all | default: 'Clear All' }}</a>
+      <form class="hh-cl__form" method="get" action="{{ collection.url }}" data-hh-filter-form="side">
+        <input type="hidden" name="sort_by" value="{{ collection.sort_by }}" data-hh-sort-field>
+        {{ filter_groups }}
+      </form>
+    </aside>
+
+    <div class="hh-cl__main">
+      <button class="hh-cl__filter" type="button" data-hh-open="filters">{%- render 'snippets/roarr-hearth-icon', name: 'filter', size: 22 -%}{{ ht.label_filter | default: 'Filter' }}{%- render 'snippets/roarr-hearth-icon', name: 'chevron', size: 14, stroke: 2 -%}</button>
+      <div class="hh-cl__bar">
+        <label class="hh-cl__sort"><span>{{ ht.label_sort | default: 'Sort by' }}</span>
+          <select aria-label="{{ ht.label_sort | default: 'Sort by' | escape }}" data-hh-sort>
+            {%- for option in collection.sort_options -%}<option value="{{ option.value }}"{% if option.value == collection.sort_by %} selected{% endif %}>{{ option.name }}</option>{%- endfor -%}
+          </select>
+        </label>
+        <div class="hh-cl__views">
+          <button type="button" class="is-on" aria-label="Three columns" aria-pressed="true" data-hh-view="three">{%- render 'snippets/roarr-hearth-icon', name: 'grid3', size: 20, stroke: 1.2 -%}</button>
+          <button type="button" aria-label="Two columns" aria-pressed="false" data-hh-view="two">{%- render 'snippets/roarr-hearth-icon', name: 'grid', size: 20, stroke: 1.2 -%}</button>
+          <button type="button" aria-label="List" aria-pressed="false" data-hh-view="list">{%- render 'snippets/roarr-hearth-icon', name: 'list', size: 20, stroke: 1.2 -%}</button>
+        </div>
+      </div>
+
+      {%- if collection.products.size > 0 -%}
+        <div class="hh-cl__grid" data-hh-grid>
+          {%- for product in collection.products -%}
+            {%- render 'snippets/roarr-hearth-card', product: product, quick_add_label: ht.label_quick_add -%}
+          {%- endfor -%}
+        </div>
+        <div class="hh-cl__more" data-hh-more-box>
+          <p class="hh-cl__count">{{ ht.label_showing | default: 'Showing' }} <b data-hh-count>{{ collection.products.size }}</b> {{ ht.label_of | default: 'of' }} <b>{{ collection.products_count }}</b> {{ ht.label_products | default: 'products' }}</p>
+          <span class="hh-cl__meter"><i data-hh-meter data-total="{{ collection.products_count }}" style="width: {{ collection.products.size | times: 100 | divided_by: collection.products_count }}%"></i></span>
+          {%- if paginate.next -%}<a class="hh-btn hh-btn--dark" href="{{ paginate.next.url }}" data-hh-more>{{ ht.label_load_more | default: 'Load More Items' }}</a>{%- endif -%}
+        </div>
+      {%- else -%}
+        <p class="hh-cl__none">{{ ht.label_no_products | default: 'No products match these filters.' }} <a class="hh-go" href="{{ collection.url }}">{{ ht.label_clear_all | default: 'Clear All' }}</a></p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if collection.all_tags.size > 0 or collection.description != blank -%}
+    <div class="hh-cl__notes">
+      <div class="hh-wrap">
+        {%- if collection.all_tags.size > 0 -%}
+          <p class="hh-cl__tagshead">{%- render 'snippets/roarr-hearth-icon', name: 'tag', size: 14 -%}{{ ht.label_tags | default: 'Tags' }}</p>
+          <ul class="hh-cl__tags">{%- for tag in collection.all_tags limit: 12 -%}<li><a href="{{ collection.url }}/{{ tag | handle }}">{{ tag }}</a></li>{%- endfor -%}</ul>
+        {%- endif -%}
+        {%- if collection.description != blank -%}
+          <h2 class="hh-cl__about">{{ collection.title }}</h2>
+          <div class="hh-cl__desc" data-hh-clamp>{{ collection.description }}</div>
+          <button class="hh-cl__see" type="button" data-hh-clamp-toggle>{{ ht.label_see_more | default: 'See More' }}</button>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <dialog class="hh-canvas hh-canvas--start hh-cl__panel" data-hh-dialog="filters" aria-label="{{ ht.label_filter | default: 'Filter' | escape }}">
+    <div class="hh-panel-head"><h2>{{ ht.label_filter | default: 'Filter' }}</h2><button class="hh-x" type="button" aria-label="Close" data-hh-close>{%- render 'snippets/roarr-hearth-icon', name: 'close', size: 18 -%}</button></div>
+    <form class="hh-cl__form" method="get" action="{{ collection.url }}" data-hh-filter-form="drawer">
+      <input type="hidden" name="sort_by" value="{{ collection.sort_by }}" data-hh-sort-field>
+      <a class="hh-btn hh-btn--dark hh-cl__clear" href="{{ collection.url }}">{%- render 'snippets/roarr-hearth-icon', name: 'trash', size: 16 -%}{{ ht.label_clear_all | default: 'Clear All' }}</a>
+      {{ filter_groups }}
+    </form>
+  </dialog>
+</section>
+{%- endpaginate -%}
+<style>
+  .hh .hh-cl { padding-block-start: 70px; background: #fff; }
+  .hh .hh-cl__layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); column-gap: 60px; align-items: start; }
+  .hh .hh-cl__side { padding-block-start: 10px; }
+  .hh .hh-cl__heading { display: flex; align-items: center; gap: 8px; font-size: 19.2px; line-height: 28.8px; font-weight: 800 !important; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-cl__cats { display: grid; gap: 2px; margin-top: 25px; }
+  .hh .hh-cl__cats :is(a, button) { display: block; width: 100%; height: 44px; padding: 0 30px; border: 0; border-radius: 5px; background: #efefef; font-size: 13.44px; line-height: 44px; font-weight: 500; text-align: start; color: var(--hh-text); cursor: pointer; transition: all .2s ease; }
+  .hh .hh-cl__cats :is(a, button):hover { background: var(--hh-accent); color: #fff; }
+  .hh .hh-cl__heading--filter { margin-top: 35px; padding-block-end: 26px; border-bottom: 1px solid var(--hh-line); }
+  .hh .hh-cl__clear { width: 100%; height: 54px; margin-top: 25px; }
+  .hh .hh-cl__form { margin: 20px 0 0; }
+  .hh .hh-cl__group { padding-block: 26px; border-top: 1px solid var(--hh-line); }
+  .hh .hh-cl__group summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; list-style: none; cursor: pointer; }
+  .hh .hh-cl__group summary::-webkit-details-marker { display: none; }
+  .hh .hh-cl__group summary > span { display: inline-flex; align-items: center; gap: 12px; font-size: 14px; line-height: 21px; font-weight: 800; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-cl__group summary svg { transform: rotate(180deg); transition: transform .25s ease; }
+  .hh .hh-cl__group:not([open]) summary svg { transform: none; }
+  .hh .hh-cl__reset { font-size: 10px; line-height: 15px; font-weight: 600; text-transform: uppercase; color: #bcbcbc; transition: color .2s ease; }
+  .hh .hh-cl__reset:hover { color: var(--hh-accent); }
+  .hh .hh-cl__checks { display: grid; gap: 5px; margin-top: 16px; }
+  .hh .hh-cl__checks label { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: center; gap: 15px; padding-inline-end: 10px; font-size: 13.44px; line-height: 20px; color: var(--hh-text); cursor: pointer; }
+  .hh .hh-cl__checks input { width: 18px; height: 18px; margin: 0; accent-color: var(--hh-ink); }
+  .hh .hh-cl__checks small { font-size: 11px; line-height: 16.5px; color: var(--hh-ink); }
+  .hh .hh-cl__price { margin-top: 18px; }
+  .hh .hh-cl__slider { position: relative; height: 22px; }
+  .hh .hh-cl__slider::before { content: ""; position: absolute; inset-inline: 0; top: 8px; height: 6px; border-radius: 6px; background: #e4e4e4; }
+  .hh .hh-cl__fill { position: absolute; top: 8px; height: 6px; background: var(--hh-ink); }
+  .hh .hh-cl__slider input { position: absolute; inset: 0; width: 100%; height: 22px; margin: 0; background: none; pointer-events: none; appearance: none; -webkit-appearance: none; }
+  .hh .hh-cl__slider input::-webkit-slider-thumb { width: 22px; height: 22px; border: 2px solid var(--hh-ink); border-radius: 50%; background: #fff; pointer-events: auto; cursor: pointer; appearance: none; -webkit-appearance: none; }
+  .hh .hh-cl__slider input::-moz-range-thumb { width: 18px; height: 18px; border: 2px solid var(--hh-ink); border-radius: 50%; background: #fff; pointer-events: auto; cursor: pointer; }
+  .hh .hh-cl__ticks { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; line-height: 15px; font-weight: 600; color: #909090; }
+  .hh .hh-cl__prices { display: grid; grid-template-columns: minmax(0, 1fr) 12px minmax(0, 1fr); align-items: center; gap: 5px; margin-top: 25px; font-size: 13.44px; color: #000; }
+  .hh .hh-cl__prices input { width: 100%; height: 38px; min-width: 0; padding-inline: 8px; border: 1px solid #cfcfcf; border-radius: 5px; background: #fff; font-size: 11px; font-weight: 600; text-align: center; color: #162950; appearance: textfield; -moz-appearance: textfield; }
+  .hh .hh-cl__prices input::-webkit-outer-spin-button, .hh .hh-cl__prices input::-webkit-inner-spin-button { appearance: none; margin: 0; }
+  .hh .hh-cl__swatches { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+  .hh .hh-cl__swatch { position: relative; display: block; width: 26px; height: 26px; cursor: pointer; }
+  .hh .hh-cl__swatch input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+  .hh .hh-cl__swatch span { display: block; width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 1px var(--hh-line); }
+  .hh .hh-cl__swatch input:checked + span { box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--hh-ink); }
+  .hh .hh-cl__swatch input:focus-visible + span { outline: 2px solid var(--hh-ink); outline-offset: 3px; }
+  .hh .hh-cl__filter { display: none; align-items: center; gap: 12px; padding: 0; border: 0; background: none; font-size: 19.2px; line-height: 28px; font-weight: 800; text-transform: uppercase; color: var(--hh-ink); cursor: pointer; }
+  .hh .hh-cl__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 30px; }
+  .hh .hh-cl__sort { display: inline-flex; align-items: center; gap: 8px; font-size: 13.44px; color: var(--hh-ink); }
+  .hh .hh-cl__sort select { field-sizing: content; max-width: 190px; padding: 6px 2px; border: 0; background: transparent; color: var(--hh-ink); font-size: 13.44px; font-weight: 700; cursor: pointer; }
+  .hh .hh-cl__views { display: flex; gap: 10px; }
+  .hh .hh-cl__views button { width: 42px; height: 42px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 5px; background: #efefef; color: var(--hh-text); cursor: pointer; transition: background-color .2s ease, color .2s ease; }
+  .hh .hh-cl__views button.is-on { background: #000; color: #fff; }
+  .hh .hh-cl__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
+  .hh .hh-cl__grid.is-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hh .hh-cl__grid.is-list { grid-template-columns: 1fr; }
+  .hh .hh-cl__grid.is-list .hh-card { display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 30px; align-content: start; }
+  .hh .hh-cl__grid.is-list .hh-card__media { grid-row: 1 / span 5; }
+  .hh .hh-cl__grid.is-list .hh-card__type { margin-top: 0; }
+  .hh .hh-cl__grid.is-list .hh-card__title { font-size: 17px; line-height: 26px; }
+  .hh .hh-cl__more { display: grid; justify-items: center; gap: 12px; margin-top: 50px; }
+  .hh .hh-cl__count { font-size: 12.5px; color: var(--hh-text); }
+  .hh .hh-cl__count b { font-weight: 600; color: var(--hh-ink); }
+  .hh .hh-cl__meter { display: block; width: 250px; height: 4px; border-radius: 4px; background: #e8e8e8; overflow: hidden; }
+  .hh .hh-cl__meter i { display: block; height: 100%; background: var(--hh-accent); transition: width .4s ease; }
+  .hh .hh-cl__more .hh-btn { margin-top: 12px; }
+  .hh .hh-cl__none { padding: 50px 0; font-size: 14px; color: var(--hh-text); }
+  .hh .hh-cl__notes { margin-top: 90px; padding-block: 80px; background: #efefef; }
+  .hh .hh-cl__tagshead { display: flex; align-items: center; gap: 8px; font-size: 13.44px; font-weight: 700; text-transform: uppercase; color: var(--hh-ink); }
+  .hh .hh-cl__tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .hh .hh-cl__tags a { display: inline-grid; place-items: center; min-width: 78px; height: 38px; padding-inline: 16px; border-radius: 3px; background: #fff; font-size: 12px; color: var(--hh-ink); }
+  .hh .hh-cl__tags a:hover { background: var(--hh-accent); color: #fff; }
+  .hh .hh-cl__about { margin-top: 44px; font-size: 19.2px; line-height: 28px; font-weight: 800 !important; text-transform: uppercase; }
+  .hh .hh-cl__desc { position: relative; max-height: 92px; margin-top: 12px; overflow: hidden; font-size: 13.44px; line-height: 20px; color: var(--hh-text); }
+  .hh .hh-cl__desc::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 40px; background: linear-gradient(transparent, #efefef); }
+  .hh .hh-cl__desc.is-open { max-height: none; }
+  .hh .hh-cl__desc.is-open::after { display: none; }
+  .hh .hh-cl__see { display: block; margin: 16px auto 0; padding: 0; border: 0; background: none; font-size: 11.5px; font-weight: 500; text-transform: uppercase; color: var(--hh-ink); cursor: pointer; }
+  .hh .hh-cl__panel .hh-cl__form { flex: 1; margin: 0; padding: 4px 24px 24px; overflow: auto; }
+  .hh .hh-cl__panel .hh-cl__clear { margin: 16px 0; }
+  @media (max-width: 991px) {
+    .hh .hh-cl { padding-block-start: 40px; }
+    .hh .hh-cl__layout { grid-template-columns: minmax(0, 1fr); }
+    .hh .hh-cl__side { display: none; }
+    .hh .hh-cl__filter { display: inline-flex; margin-bottom: 24px; }
+    .hh .hh-cl__views button[data-hh-view="three"] { display: none; }
+    .hh .hh-cl__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 15px; }
+    .hh .hh-cl__notes { margin-top: 60px; padding-block: 50px; }
+  }
+  @media (max-width: 749px) {
+    .hh .hh-cl__grid.is-list .hh-card { grid-template-columns: 130px minmax(0, 1fr); column-gap: 14px; }
+    .hh .hh-cl__grid.is-list .hh-card__title { font-size: 14px; line-height: 20px; }
+  }
+</style>
+<script>
+  (function () {
+    document.querySelectorAll("[data-hh-collection]:not([data-ready])").forEach(function (root) {
+      root.dataset.ready = "1";
+      var grid = root.querySelector("[data-hh-grid]");
+      var wide = window.matchMedia("(min-width: 992px)");
+      function activeForm() { return root.querySelector('[data-hh-filter-form="' + (wide.matches ? "side" : "drawer") + '"]'); }
+      function submit(form) {
+        // Empty price boxes would add blank filters to the URL.
+        var prices = form.querySelectorAll('input[type="number"]');
+        prices.forEach(function (i) { i.disabled = !i.value; });
+        form.requestSubmit();
+        prices.forEach(function (i) { i.disabled = false; });
+      }
+      root.querySelectorAll("[data-hh-autosubmit]").forEach(function (el) {
+        el.addEventListener("change", function () { submit(el.form); });
+      });
+      var sort = root.querySelector("[data-hh-sort]");
+      if (sort) sort.addEventListener("change", function () {
+        var form = activeForm();
+        form.querySelector("[data-hh-sort-field]").value = sort.value;
+        submit(form);
+      });
+      // The price slider follows the number boxes, and the other way round.
+      root.querySelectorAll("[data-hh-price]").forEach(function (box) {
+        var low = box.querySelector('[data-hh-range="min"]'), high = box.querySelector('[data-hh-range="max"]');
+        var lowField = box.querySelector('[data-hh-number="min"]'), highField = box.querySelector('[data-hh-number="max"]');
+        var fill = box.querySelector("[data-hh-fill]"), max = Number(box.dataset.max) || 1;
+        function paint() {
+          var a = Math.min(Number(low.value), Number(high.value)), b = Math.max(Number(low.value), Number(high.value));
+          fill.style.insetInlineStart = (a * 100) / max + "%";
+          fill.style.width = ((b - a) * 100) / max + "%";
+        }
+        [low, high].forEach(function (range) {
+          range.addEventListener("input", paint);
+          range.addEventListener("change", function () {
+            var a = Math.min(Number(low.value), Number(high.value)), b = Math.max(Number(low.value), Number(high.value));
+            lowField.value = a > 0 ? a : "";
+            highField.value = b < max ? b : "";
+            submit(lowField.form);
+          });
+        });
+        paint();
+      });
+      var catsMore = root.querySelector("[data-hh-cats-more]");
+      if (catsMore) catsMore.addEventListener("click", function () {
+        root.querySelectorAll("[data-hh-cats] li[hidden]").forEach(function (li) { li.hidden = false; });
+        catsMore.parentElement.hidden = true;
+      });
+      root.querySelectorAll("[data-hh-view]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          root.querySelectorAll("[data-hh-view]").forEach(function (b) { var on = b === btn; b.classList.toggle("is-on", on); b.setAttribute("aria-pressed", on ? "true" : "false"); });
+          if (!grid) return;
+          grid.classList.toggle("is-two", btn.dataset.hhView === "two");
+          grid.classList.toggle("is-list", btn.dataset.hhView === "list");
+        });
+      });
+      var clamp = root.querySelector("[data-hh-clamp]"), toggle = root.querySelector("[data-hh-clamp-toggle]");
+      if (clamp && toggle) {
+        if (clamp.scrollHeight <= clamp.clientHeight + 2) { toggle.hidden = true; clamp.classList.add("is-open"); }
+        toggle.addEventListener("click", function () { toggle.hidden = true; clamp.classList.add("is-open"); });
+      }
+      var more = root.querySelector("[data-hh-more]");
+      if (more && grid) {
+        more.addEventListener("click", function (event) {
+          event.preventDefault();
+          more.setAttribute("aria-busy", "true");
+          fetch(more.href).then(function (res) { return res.text(); }).then(function (html) {
+            var page = new DOMParser().parseFromString(html, "text/html");
+            var incoming = page.querySelector("[data-hh-grid]");
+            if (incoming) Array.prototype.slice.call(incoming.children).forEach(function (card) { grid.appendChild(document.adoptNode(card)); });
+            var count = grid.children.length, meter = root.querySelector("[data-hh-meter]"), label = root.querySelector("[data-hh-count]");
+            if (label) label.textContent = count;
+            if (meter) meter.style.width = Math.min(count * 100 / Number(meter.dataset.total || count), 100) + "%";
+            var next = page.querySelector("[data-hh-more]");
+            if (next) { more.href = next.href; more.removeAttribute("aria-busy"); } else more.hidden = true;
+            if (window.__hh) window.__hh.init();
+          }).catch(function () { window.location.href = more.href; });
+        });
+      }
+    });
+  })();
+</script>
+{%- endcapture -%}
+{%- render 'snippets/roarr-hearth-wrap', html: hh_html -%}
+
+{% schema %}
+{
+  "name": "Hearth Collection",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 6, "max": 48, "step": 3, "default": 12 }
+  ],
+  "presets": [{ "name": "Hearth Collection" }]
+}
+{% endschema %}

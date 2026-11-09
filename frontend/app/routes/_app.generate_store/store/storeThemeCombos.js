@@ -33,11 +33,39 @@ export const MAISON_THEME_COMBO = {
   cardPageType: "home-page",
 };
 
+/** Single store: Tempo (bright gadget homepage in peach, navy and orange; no premium PDP). */
+export const TEMPO_THEME_COMBO = {
+  id: "tempo",
+  pack: "tempo",
+  template: null,
+  includePremium: false,
+  title: "Tempo",
+  badge: { label: "New", tone: "new" },
+  blurb: "Bright single-product store in peach, navy and coral with a product slider",
+  defaultView: "Home",
+  cardPageType: "home-page",
+};
+
 /** Single store templates, in picker order. */
-export const SINGLE_THEME_COMBOS = [PREPAID_CLASSIC_THEME_COMBO, MAISON_THEME_COMBO];
+export const SINGLE_THEME_COMBOS = [PREPAID_CLASSIC_THEME_COMBO, MAISON_THEME_COMBO, TEMPO_THEME_COMBO];
+
+/** Fixed card screenshots for Tempo, built by scripts/build-tempo-previews.mjs. */
+const TEMPO_PREVIEW_BASE = "/demo-previews/tempo";
 
 /** Fixed card screenshots for Maison, built by scripts/build-maison-previews.mjs. */
 const MAISON_PREVIEW_BASE = "/demo-previews/maison";
+
+/** Fixed card screenshots for Lustre, built by scripts/build-lustre-previews.mjs. */
+const LUSTRE_PREVIEW_BASE = "/demo-previews/lustre";
+
+/** Fixed card screenshots for Velour, built by scripts/build-velour-previews.mjs. */
+const VELOUR_PREVIEW_BASE = "/demo-previews/velour";
+
+/** Fixed card screenshots for Hearth, built by scripts/build-hearth-previews.mjs. */
+const HEARTH_PREVIEW_BASE = "/demo-previews/hearth";
+
+/** Fixed card screenshots for Simmer, built by scripts/build-simmer-previews.mjs. */
+const SIMMER_PREVIEW_BASE = "/demo-previews/simmer";
 
 /** Multi store: Swift only (store home, no premium PDPs). */
 export const MULTI_THEME_COMBOS = [
@@ -61,6 +89,50 @@ export const MULTI_THEME_COMBOS = [
     defaultView: "Home",
     cardPageType: "home-page",
   },
+  {
+    id: "lustre",
+    pack: "lustre",
+    includePremium: false,
+    template: null,
+    title: "Lustre",
+    badge: { label: "New", tone: "new" },
+    blurb: "Polished fashion and jewelry store with filters and collections",
+    defaultView: "Home",
+    cardPageType: "home-page",
+  },
+  {
+    id: "velour",
+    pack: "velour",
+    includePremium: false,
+    template: null,
+    title: "Velour",
+    badge: { label: "New", tone: "new" },
+    blurb: "Editorial clothing store with lookbook, quick view and cart drawer",
+    defaultView: "Home",
+    cardPageType: "home-page",
+  },
+  {
+    id: "hearth",
+    pack: "hearth",
+    includePremium: false,
+    template: null,
+    title: "Hearth",
+    badge: { label: "New", tone: "new" },
+    blurb: "Kitchen accessories store for three products, with lookbook and quick view",
+    defaultView: "Home",
+    cardPageType: "home-page",
+  },
+  {
+    id: "simmer",
+    pack: "simmer",
+    includePremium: false,
+    template: null,
+    title: "Simmer",
+    badge: { label: "New", tone: "new" },
+    blurb: "Kitchen electronics store for three products, with category picks, gallery and video",
+    defaultView: "Home",
+    cardPageType: "home-page",
+  },
 ];
 
 /**
@@ -72,6 +144,52 @@ export function getStoreComboCardMedia(combo, category = "general") {
     // Fixed real-photo screenshot (built by scripts/build-lumenook-previews.mjs) — the real
     // Lumenook look doesn't rotate per merchant category.
     return { ...getLumenookStorePreview(), prebuiltHtmlUrl: null, demoVariant: "lumenook-home" };
+  }
+  if (combo.pack === "lustre") {
+    return {
+      thumbUrl: `${LUSTRE_PREVIEW_BASE}/store.jpg`,
+      hoverImageUrl: `${LUSTRE_PREVIEW_BASE}/store.eye.jpg`,
+      cardUrl: `${LUSTRE_PREVIEW_BASE}/store.eye-sm.jpg`,
+      prebuiltHtmlUrl: null,
+      demoVariant: "lustre-home",
+    };
+  }
+  if (combo.pack === "velour") {
+    return {
+      thumbUrl: `${VELOUR_PREVIEW_BASE}/store.jpg`,
+      hoverImageUrl: `${VELOUR_PREVIEW_BASE}/store.eye.jpg`,
+      cardUrl: `${VELOUR_PREVIEW_BASE}/store.eye-sm.jpg`,
+      prebuiltHtmlUrl: null,
+      demoVariant: "velour-home",
+    };
+  }
+  if (combo.pack === "hearth") {
+    return {
+      thumbUrl: `${HEARTH_PREVIEW_BASE}/store.jpg`,
+      hoverImageUrl: `${HEARTH_PREVIEW_BASE}/store.eye.jpg`,
+      cardUrl: `${HEARTH_PREVIEW_BASE}/store.eye-sm.jpg`,
+      prebuiltHtmlUrl: null,
+      demoVariant: "hearth-home",
+    };
+  }
+  if (combo.pack === "simmer") {
+    return {
+      thumbUrl: `${SIMMER_PREVIEW_BASE}/store.jpg`,
+      hoverImageUrl: `${SIMMER_PREVIEW_BASE}/store.eye.jpg`,
+      cardUrl: `${SIMMER_PREVIEW_BASE}/store.eye-sm.jpg`,
+      prebuiltHtmlUrl: null,
+      demoVariant: "simmer-home",
+    };
+  }
+  if (combo.pack === "tempo") {
+    // One house look for every category, so one fixed screenshot.
+    return {
+      thumbUrl: `${TEMPO_PREVIEW_BASE}/store.jpg`,
+      hoverImageUrl: `${TEMPO_PREVIEW_BASE}/store.eye.jpg`,
+      cardUrl: `${TEMPO_PREVIEW_BASE}/store.eye-sm.jpg`,
+      prebuiltHtmlUrl: null,
+      demoVariant: "tempo-home",
+    };
   }
   if (combo.pack === "maison") {
     // One house look for every category, so one fixed screenshot.

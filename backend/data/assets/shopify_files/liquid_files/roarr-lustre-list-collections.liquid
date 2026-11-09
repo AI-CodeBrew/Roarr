@@ -1,0 +1,71 @@
+{%- assign store_gen = shop.metafields.roarr.store_generation.value -%}
+{%- assign ht = store_gen.home_page.text -%}
+{%- assign homeData = section.settings.homeData -%}
+{%- if ht == blank and homeData.text != blank -%}{%- assign ht = homeData.text -%}{%- endif -%}
+{%- assign items_label = ht.label_items | default: 'Items' -%}
+{%- capture lx_html -%}
+<div class="lx-banner">
+  <div class="lx-wrap">
+    <h1 class="lx-banner__title">{{ page_title | default: ht.label_collections | default: 'Collections' }}</h1>
+    <p class="lx-banner__crumbs"><a href="{{ routes.root_url | default: '/' }}">{{ ht.label_home | default: 'Home' }}</a></p>
+  </div>
+</div>
+<section class="lx-section lx-lc">
+  <div class="lx-wrap">
+    {%- paginate collections by section.settings.per_page -%}
+      <ul class="lx-lc__grid">
+        {%- for c in collections -%}
+          {%- if c.handle != 'all' and c.handle != 'frontpage' -%}
+            <li>
+              <a class="lx-cat" href="{{ c.url }}">
+                <span class="lx-cat__pic">{%- render 'roarr-lustre-img', src: c.featured_image, alt: c.title, width: 400, lazy: true -%}</span>
+                <span class="lx-cat__name lx-serif">{{ c.title }}</span>
+                <span class="lx-cat__count">{{ c.products_count }} {{ items_label }}</span>
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+      {%- if paginate.pages > 1 -%}
+        <nav class="lx-lc__pages" aria-label="Pagination">
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- else -%}<span{% if part.title == paginate.current_page %} class="is-on" aria-current="page"{% endif %}>{{ part.title }}</span>{%- endif -%}
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+<style>
+  .lx .lx-section.lx-lc { padding-block: 60px 80px; }
+  .lx .lx-lc__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 34px 30px; }
+  .lx .lx-cat { display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--lx-ink); }
+  .lx .lx-cat__pic { display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--lx-soft); }
+  .lx .lx-cat__pic img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+  .lx .lx-cat:hover img { transform: scale(1.06); }
+  .lx .lx-cat__name { margin-top: 15px; font-size: 16.5px; line-height: 1.35; color: var(--lx-ink); }
+  .lx .lx-cat__count { margin-top: 5px; font-size: 13.5px; color: var(--lx-muted); }
+  .lx .lx-lc__pages { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 40px; font-size: 14px; }
+  .lx .lx-lc__pages :is(a, span) { min-width: 38px; height: 38px; display: grid; place-items: center; padding-inline: 8px; border: 1px solid var(--lx-line); color: var(--lx-ink); }
+  .lx .lx-lc__pages .is-on { background: var(--lx-accent); border-color: var(--lx-accent); color: #fff; }
+  @media (max-width: 989px) { .lx .lx-lc__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 749px) {
+    .lx .lx-section.lx-lc { padding-block: 32px 44px; }
+    .lx .lx-lc__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 12px; }
+    .lx .lx-cat__name { font-size: 14px; margin-top: 10px; }
+    .lx .lx-cat__count { font-size: 12px; }
+  }
+</style>
+{%- endcapture -%}
+{%- render 'roarr-lustre-wrap', html: lx_html -%}
+
+{% schema %}
+{
+  "name": "Lustre Collection List",
+  "tag": "section",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Collections per page", "min": 12, "max": 48, "step": 6, "default": 36 }
+  ],
+  "presets": [{ "name": "Lustre Collection List" }]
+}
+{% endschema %}

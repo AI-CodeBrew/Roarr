@@ -176,6 +176,11 @@ def _should_force_update_section(liquid_file: str) -> bool:
         or name.startswith("roarr-frost-")
         or name.startswith("roarr-atelier-")
         or name.startswith("roarr-bloom-")
+        or name.startswith("roarr-lustre-")
+        or name.startswith("roarr-velour-")
+        or name.startswith("roarr-hearth-")
+        or name.startswith("roarr-simmer-")
+        or name.startswith("roarr-tempo-")
     )
 
 
@@ -237,10 +242,8 @@ def _force_reupload_roarr_color_snippet(user_id, theme_id):
             / "shopify_files"
             / "snippet_files"
         )
-        for snippet_name in (
-            "roarr-font-and-color.liquid",
-            "roarr-ui-string.liquid",
-        ):
+        roarr_snippets = ["roarr-font-and-color.liquid", "roarr-ui-string.liquid"]
+        for snippet_name in roarr_snippets:
             snippet_path = snippet_dir / snippet_name
             if not snippet_path.exists():
                 if snippet_name == "roarr-font-and-color.liquid":
@@ -1885,6 +1888,43 @@ def _execute_publish_store(user_id, data):
                     "(maison home + shared pages)",
                     len(liquid_files),
                 )
+            elif store_template_pack == "tempo":
+                liquid_files = [
+                    p
+                    for p in liquid_files
+                    if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
+                    and not p.name.startswith("roarr-cinematic-")
+                    and not p.name.startswith("roarr-amour-")
+                    and not p.name.startswith("roarr-maison-")
+                    and not p.name.startswith("roarr-lumen-home-")
+                ]
+                logger.info(
+                    "publish-store: tempo pack — uploading %s section liquids "
+                    "(tempo home + shared pages)",
+                    len(liquid_files),
+                )
+            elif store_template_pack in ("lustre", "velour", "hearth", "simmer"):
+                liquid_files = [
+                    p
+                    for p in liquid_files
+                    if p.name not in _CLASSIC_HOME_ONLY_SECTIONS
+                    and not p.name.startswith("roarr-cinematic-")
+                    and not p.name.startswith("roarr-amour-")
+                    and not p.name.startswith("roarr-maison-")
+                    and not p.name.startswith("roarr-lumen-home-")
+                ]
+                logger.info(
+                    "publish-store: %s pack — uploading %s section liquids "
+                    "(pack pages + shared pages)",
+                    store_template_pack,
+                    len(liquid_files),
+                )
+            # Each of these stores only needs its own pack's sections.
+            for pack_name in ("lustre", "velour", "hearth", "simmer", "tempo"):
+                if store_template_pack != pack_name:
+                    liquid_files = [
+                        p for p in liquid_files if not p.name.startswith(f"roarr-{pack_name}-")
+                    ]
             for liquid_path in liquid_files:
                 liquid_file = liquid_path.name
                 asset_key = f"sections/{liquid_file}"
