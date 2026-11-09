@@ -114,13 +114,35 @@ export async function notifyInstallIfNeeded(admin, session) {
   }
 }
 
+/**
+ * Session storage that ignores legacy NON-EXPIRING offline sessions.
+ *
+ * Public apps must use expiring offline tokens (1 hour + rotating refresh token). A session row
+ * saved before that was enabled has `expires = NULL`; the library would keep using it forever
+ * and Shopify blocks those requests. Treating such a row as missing makes the library exchange
+ * the session token for a new expiring token the next time the merchant opens the app, and the
+ * new token overwrites the same row. Nothing is deleted. Online sessions always have an expiry.
+ */
+class ExpiringOfflineSessionStorage extends PrismaSessionStorage {
+  async loadSession(id) {
+    const session = await super.loadSession(id);
+    if (session && !session.isOnline && !session.expires) {
+      console.warn(
+        `[sessions] Ignoring legacy non-expiring offline session for ${session.shop}; a new expiring token is issued when the merchant opens the app.`,
+      );
+      return undefined;
+    }
+    return session;
+  }
+}
+
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
   apiVersion: ApiVersion.January26,
   scopes: process.env.SCOPES?.split(","),
   appUrl: process.env.SHOPIFY_APP_URL || "",
-  sessionStorage: new PrismaSessionStorage(prisma),
+  sessionStorage: new ExpiringOfflineSessionStorage(prisma),
   future: {
     expiringOfflineAccessTokens: true,
   },

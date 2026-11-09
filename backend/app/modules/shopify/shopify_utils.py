@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import tempfile
 from ..database import document_store
+from .token_client import ShopifyTokenError, get_valid_shopify_token
 
 logger = logging.getLogger(__name__)
 
@@ -151,9 +152,17 @@ class ShopifyUtils:
             if not credentials:
                 raise Exception(f"No Shopify credentials found for user {user_id}")
             return credentials
+        except ShopifyTokenError:
+            # e.g. the store has to reopen the app: keep the typed error for callers
+            raise
         except Exception as e:
             logger.error(f"Error getting Shopify credentials for user {user_id}: {e}")
             raise Exception(f"Failed to get Shopify credentials: {str(e)}")
+
+    def _refresh_token_after_401(self, shop_domain: str) -> str:
+        """After Shopify answered 401, ask for the store's current token once (no cache)."""
+        logger.warning("Shopify answered 401 for %s; fetching the current token and retrying once", shop_domain)
+        return get_valid_shopify_token(shop_domain, force_refresh=True)
 
     def _make_request(
         self, endpoint: str, method: str = "GET", data: Dict = None, user_id: str = None
@@ -184,6 +193,7 @@ class ShopifyUtils:
         max_retries = 10
         base_backoff_s = 0.55
         request_timeout = 90
+        refreshed_after_401 = False
 
         try:
             response = None
@@ -206,6 +216,13 @@ class ShopifyUtils:
                     )
                 else:
                     raise ValueError(f"Unsupported HTTP method: {method}")
+
+                if response.status_code == 401 and not refreshed_after_401:
+                    refreshed_after_401 = True
+                    headers["X-Shopify-Access-Token"] = self._refresh_token_after_401(
+                        shop_domain
+                    )
+                    continue
 
                 if response.status_code == 429 and attempt < max_retries - 1:
                     retry_after = response.headers.get("Retry-After")
@@ -367,6 +384,11 @@ class ShopifyUtils:
 
         try:
             response = requests.post(url, headers=headers, json=payload)
+            if response.status_code == 401:
+                headers["X-Shopify-Access-Token"] = self._refresh_token_after_401(
+                    shop_domain
+                )
+                response = requests.post(url, headers=headers, json=payload)
             response.raise_for_status()
             try:
                 resp_json = response.json()

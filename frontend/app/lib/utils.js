@@ -83,9 +83,10 @@ export function htmlToText(html) {
   }
 
   const safe = typeof html === "string" ? html : "";
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = safe;
-  return tempDiv.textContent || tempDiv.innerText || "";
+  // DOMParser builds an inert document: unlike innerHTML on a detached element, it never loads
+  // images or runs event handlers (e.g. <img onerror>) from untrusted product descriptions.
+  const doc = new DOMParser().parseFromString(safe, "text/html");
+  return doc.body?.textContent || "";
 }
 
 /**

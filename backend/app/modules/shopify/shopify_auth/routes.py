@@ -169,6 +169,8 @@ def app_install():
                 {**shop, "crisp_people_id": people_id}, access_token
             )
             logger.info(f"Successfully stored shop details for shop_id: {shop_id}")
+            # A fresh install/reopen delivers a new expiring token: clear any re-auth flag.
+            document_store.mark_store_reauth(shopify_domain, False)
 
             # Initialize the credit wallet (300-credit signup bonus) for brand-new
             # shops only. We skip this for reinstalls / existing shops to avoid

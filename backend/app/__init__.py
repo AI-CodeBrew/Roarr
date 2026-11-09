@@ -16,6 +16,21 @@ def create_app():
 
     CORS(app,resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers=["Content-Type", "Authorization", "X-Access-Token","ngrok-skip-browser-warning"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
+    # Shopify token problems: tell the client what to do instead of a generic 500.
+    from .modules.shopify.token_client import ShopifyReauthRequired, ShopifyTokenUnavailable
+
+    @app.errorhandler(ShopifyReauthRequired)
+    def _shopify_reauth_required(err):
+        return {"success": False, "error_code": "SHOPIFY_REAUTH_REQUIRED", "error": str(err)}, 401
+
+    @app.errorhandler(ShopifyTokenUnavailable)
+    def _shopify_token_unavailable(err):
+        return {
+            "success": False,
+            "error_code": "SHOPIFY_TOKEN_UNAVAILABLE",
+            "error": "Could not reach Shopify right now. Please try again in a moment.",
+        }, 503
+
     # Register module blueprints
     from .modules.auth import auth_bp
     app.register_blueprint(auth_bp)

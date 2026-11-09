@@ -3,7 +3,7 @@ from calendar import monthrange
 import os
 import json
 from app.modules.database.conditions import Attr, Key
-from app.modules.shopify.token_client import resolve_access_token
+from app.modules.shopify.token_client import ShopifyTokenError, resolve_access_token
 import logging
 import uuid
 from datetime import datetime, timezone, timedelta
@@ -387,9 +387,36 @@ class DocumentStore:
                     "store_id": store.get("PK"),
                 }
             return None
+        except ShopifyTokenError:
+            # The store has to reopen the app (or the token service is down): callers must
+            # see that, not "no credentials".
+            raise
         except Exception as e:
             logger.error(f"Error getting Shopify credentials: {e}")
             return None
+
+    def mark_store_reauth(self, shop_url: str, needed: bool, reason: str = "") -> bool:
+        """
+        Record whether a store has to reopen the app to get a new expiring offline token.
+        Set when no valid token can be had; cleared when the app is installed or reopened.
+        """
+        try:
+            store = self.get_store_by_shop_url(shop_url)
+            if not store:
+                return False
+            self.stores_table_ref.update_item(
+                Key={"PK": store["PK"]},
+                UpdateExpression="SET needs_reauth = :needed, reauth_reason = :reason, updated_at = :updated",
+                ExpressionAttributeValues={
+                    ":needed": bool(needed),
+                    ":reason": (reason or "")[:300],
+                    ":updated": self._get_timestamp(),
+                },
+            )
+            return True
+        except Exception as e:
+            logger.warning(f"Could not update needs_reauth for {shop_url}: {e}")
+            return False
 
     def update_shopify_credentials(
         self, cognito_user_id: str, shop_url: str, access_token: str
