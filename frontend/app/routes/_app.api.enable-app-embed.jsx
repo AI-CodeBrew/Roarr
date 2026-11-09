@@ -11,7 +11,7 @@ function json(body, status = 200) {
   });
 }
 
-const API_VERSION = "2026-01";
+const API_VERSION = "2026-10";
 
 async function fetchSettingsDataJsonValue(shop, accessToken, themeId) {
   const assetKey = encodeURIComponent("config/settings_data.json");

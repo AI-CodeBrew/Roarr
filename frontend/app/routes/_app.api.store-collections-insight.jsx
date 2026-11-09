@@ -12,9 +12,11 @@ const COLLECTIONS_PAGE_QUERY = `#graphql
         description
         updatedAt
         sortOrder
-        ruleSet {
-          appliedDisjunctively
-          rules { column relation condition }
+        sources {
+          __typename
+          ... on CollectionConditionsSource {
+            inclusion { conditions { __typename } }
+          }
         }
         image { url altText }
         productsCount { count }
@@ -55,17 +57,9 @@ const PRODUCTS_PAGE_QUERY = `#graphql
 `;
 
 const COLLECTION_CREATE_MUTATION = `#graphql
-  mutation CreateCollection($input: CollectionInput!) {
-    collectionCreate(input: $input) {
+  mutation CreateCollection($collection: CollectionCreateInput!) {
+    collectionCreate(collection: $collection) {
       collection { id title handle updatedAt productsCount { count } }
-      userErrors { field message }
-    }
-  }
-`;
-
-const COLLECTION_ADD_PRODUCTS_MUTATION = `#graphql
-  mutation AddProductsToCollection($id: ID!, $productIds: [ID!]!) {
-    collectionAddProducts(id: $id, productIds: $productIds) {
       userErrors { field message }
     }
   }
@@ -256,8 +250,12 @@ async function fetchAllCollections(admin) {
         description: c.description ?? "",
         updatedAt: c.updatedAt ?? null,
         sortOrder: c.sortOrder ?? null,
-        collectionType: c.ruleSet ? "smart" : "manual",
-        ruleSet: c.ruleSet || null,
+        // A collection is "smart" when any of its sources has rule conditions.
+        collectionType: (c.sources || []).some(
+          (src) => (src?.inclusion?.conditions?.length ?? 0) > 0,
+        )
+          ? "smart"
+          : "manual",
         image: c.image ? { url: c.image.url, altText: c.image.altText ?? "" } : null,
         productCount: Number(c.productsCount?.count ?? c.products?.nodes?.length ?? 0),
         productsListedInSample: c.products?.nodes?.length || 0,
@@ -271,9 +269,26 @@ async function fetchAllCollections(admin) {
   return all;
 }
 
-async function createCollection(admin, title, description) {
+// Creates a manual collection with its products in one step: a single source that selects
+// the products by hand (collectionAddProducts is deprecated).
+async function createCollection(admin, title, description, productIds = []) {
   const data = await gql(admin, COLLECTION_CREATE_MUTATION, {
-    input: { title, descriptionHtml: `<p>${description}</p>` },
+    collection: {
+      title,
+      descriptionHtml: `<p>${description}</p>`,
+      ...(productIds.length
+        ? {
+            sources: [
+              {
+                source: {
+                  title: "Selected products",
+                  inclusion: { selections: productIds.map((productId) => ({ productId })) },
+                },
+              },
+            ],
+          }
+        : {}),
+    },
   });
   const payload = data?.collectionCreate;
   if (payload?.userErrors?.length) {
@@ -283,18 +298,6 @@ async function createCollection(admin, title, description) {
     throw new Error("collectionCreate did not return collection id");
   }
   return payload.collection;
-}
-
-async function addProductsToCollection(admin, collectionId, productIds) {
-  if (!collectionId || !Array.isArray(productIds) || productIds.length === 0) return;
-  const data = await gql(admin, COLLECTION_ADD_PRODUCTS_MUTATION, {
-    id: collectionId,
-    productIds,
-  });
-  const userErrors = data?.collectionAddProducts?.userErrors || [];
-  if (userErrors.length) {
-    throw new Error(userErrors[0].message || "collectionAddProducts failed");
-  }
 }
 
 function asOverviewPayload(collections) {
@@ -393,8 +396,8 @@ async function runCollectionsAgent(admin) {
       const title = collectionNameFromProducts(seed, createIndex);
       const description = `Handpicked styles in ${title.replace(/ Picks$/, "")}.`;
       try {
-        const created = await createCollection(admin, title, description);
         const productIds = cluster.slice(0, 12).map((p) => p.id);
+        // Checked before creating, so a collection that would be skipped is never created empty.
         if (productIds.length < MIN_COLLECTION_PRODUCTS) {
           actions.push({
             type: "create_collection_skipped_low_quality",
@@ -403,7 +406,7 @@ async function runCollectionsAgent(admin) {
           });
           continue;
         }
-        await addProductsToCollection(admin, created.id, productIds);
+        const created = await createCollection(admin, title, description, productIds);
         const createdCollection = {
           id: created.id,
           title: created.title || title,
@@ -411,7 +414,6 @@ async function runCollectionsAgent(admin) {
           description,
           updatedAt: created.updatedAt || new Date().toISOString(),
           collectionType: "manual",
-          ruleSet: null,
           image: cluster[0]?.featuredImage?.url
             ? { url: cluster[0].featuredImage.url, altText: "" }
             : null,

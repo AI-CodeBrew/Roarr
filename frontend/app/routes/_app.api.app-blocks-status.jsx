@@ -2,7 +2,7 @@ import { authenticate } from "../shopify.server";
 
 const THEME_EXTENSION_UID = "01a1603e-9aab-7970-8b2b-ce92b2515051";
 const APP_HANDLE = "roarr";
-const API_VERSION = "2026-01";
+const API_VERSION = "2026-10";
 
 const APP_BLOCKS = [
   { handle: "buy-now-button", name: "Buy Now Button" },

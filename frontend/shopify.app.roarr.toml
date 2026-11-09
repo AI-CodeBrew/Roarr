@@ -6,7 +6,7 @@ application_url = "https://fynktech-roarr.vercel.app"
 embedded = true
 
 [webhooks]
-api_version = "2026-01"
+api_version = "2026-10"
 
   [[webhooks.subscriptions]]
   uri = "/webhook/subscription-update"

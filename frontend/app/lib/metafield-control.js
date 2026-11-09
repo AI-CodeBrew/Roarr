@@ -76,7 +76,7 @@ export async function setRenderBlocksForShop(admin, value, session = null) {
     try {
       const shopDomain = session.shop;
       const accessToken = session.accessToken;
-      const apiVersion = "2026-01"; // or your actual pinned version, must exist on Shopify
+      const apiVersion = "2026-10"; // or your actual pinned version, must exist on Shopify
 
       // 1. Get shop ID
       const shopResponse = await fetch(

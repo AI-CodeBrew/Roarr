@@ -14,19 +14,15 @@ export const action = async ({ request }) => {
   try {
     const { payload, shop, topic } = await authenticate.webhook(request);
 
+    // Never log the payload: it contains customer personal data (email, ids, order ids).
     console.log(`Received compliance webhook ${topic} for ${shop}`);
-    console.log("Payload:", JSON.stringify(payload, null, 2));
 
     switch (topic) {
       case "customers/data_request": {
         // Handle customer data request
-        const customerId = payload.customer?.id;
-        const customerEmail = payload.customer?.email;
-        const ordersRequested = payload.orders_requested || [];
         const dataRequestId = payload.data_request?.id;
 
-        console.log(`Data request ${dataRequestId} for customer ${customerId} (${customerEmail})`);
-        console.log(`Orders requested: ${ordersRequested.join(", ")}`);
+        console.log(`Data request ${dataRequestId} received for ${shop}`);
 
         // TODO: If your app stores customer data, retrieve and provide it here
         // 1. Query your database for customer data associated with this shop/customer
@@ -39,12 +35,7 @@ export const action = async ({ request }) => {
 
       case "customers/redact": {
         // Handle customer data deletion request
-        const customerId = payload.customer?.id;
-        const customerEmail = payload.customer?.email;
-        const ordersToRedact = payload.orders_to_redact || [];
-
-        console.log(`Redact request for customer ${customerId} (${customerEmail})`);
-        console.log(`Orders to redact: ${ordersToRedact.join(", ")}`);
+        console.log(`Customer redact request received for ${shop}`);
 
         // TODO: Delete customer data from your database
         // 1. Query your database for all data associated with this shop/customer/orders
@@ -64,10 +55,7 @@ export const action = async ({ request }) => {
 
       case "shop/redact": {
         // Handle shop data deletion request (48h after uninstall)
-        const shopId = payload.shop_id;
-        const shopDomain = payload.shop_domain;
-
-        console.log(`Shop redact request for shop ${shopId} (${shopDomain})`);
+        console.log(`Shop redact request received for ${shop}`);
 
         // TODO: Delete all shop data from your database
         // This is sent 48 hours after app uninstall, so the session is already deleted

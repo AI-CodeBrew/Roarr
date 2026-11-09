@@ -1,6 +1,5 @@
 import "@shopify/shopify-app-react-router/adapters/node";
 import {
-  ApiVersion,
   AppDistribution,
   shopifyApp,
 } from "@shopify/shopify-app-react-router/server";
@@ -136,10 +135,14 @@ class ExpiringOfflineSessionStorage extends PrismaSessionStorage {
   }
 }
 
+// The installed @shopify/shopify-api enum (ApiVersion) ends at 2026-07, but the library takes any
+// dated version string and compares versions numerically, so the string is used directly.
+const API_VERSION = "2026-10";
+
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
-  apiVersion: ApiVersion.January26,
+  apiVersion: API_VERSION,
   scopes: process.env.SCOPES?.split(","),
   appUrl: process.env.SHOPIFY_APP_URL || "",
   sessionStorage: new ExpiringOfflineSessionStorage(prisma),
@@ -168,7 +171,7 @@ const shopify = shopifyApp({
 });
 
 export default shopify;
-export const apiVersion = ApiVersion.January26;
+export const apiVersion = API_VERSION;
 export const addDocumentResponseHeaders = shopify.addDocumentResponseHeaders;
 
 // Per-request memoization: React Router can run multiple loaders/actions for a single navigation.

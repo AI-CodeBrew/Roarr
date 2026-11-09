@@ -42,7 +42,7 @@ export async function fetchShopDetails(admin, session) {
       }
     } else {
       const shopDomain = session.shop;
-      const apiVersionFormatted = "2026-01";
+      const apiVersionFormatted = "2026-10";
       const graphqlUrl = `https://${shopDomain}/admin/api/${apiVersionFormatted}/graphql.json`;
 
       const cleanQuery = combinedQuery.replace(/^#graphql\s*/m, "").trim();

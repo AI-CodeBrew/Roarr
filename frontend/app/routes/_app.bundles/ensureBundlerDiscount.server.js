@@ -185,6 +185,8 @@ export async function ensureBundlerDiscount(admin) {
             title: "roarr bundler-discount",
             functionHandle: "bundler-discount",
             discountClasses: ["PRODUCT"],
+            // Shopify changed this default to true in 2026-07; Roarr bundles are not subscriptions.
+            appliesOnSubscription: false,
             startsAt: "2026-01-01T00:00:00Z",
             endsAt: null,
           },
