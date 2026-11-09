@@ -1,39 +1,44 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+# Roarr on the FynkTech partner organisation (the App Store app).
 
-# Create a Shopify Partner app for Roarr and paste its client_id here.
-client_id = "REPLACE_WITH_ROARR_SHOPIFY_CLIENT_ID"
+client_id = "2712a2d213154e76a893b27976de1fff"
 name = "Roarr"
-application_url = "https://YOUR_ROARR_FRONTEND.vercel.app"
+application_url = "https://fynktech-roarr.vercel.app"
 embedded = true
 
 [build]
-automatically_update_urls_on_dev = true
+# Keep the production URLs on the App Store app: `shopify app dev` must not replace them with a
+# tunnel. Use a separate development app (its own shopify.app.<name>.toml) for local work.
+automatically_update_urls_on_dev = false
 
 [webhooks]
 api_version = "2026-10"
 
   [[webhooks.subscriptions]]
-  topics = [ "app_subscriptions/update" ]
   uri = "/webhook/subscription-update"
+  topics = [ "app_subscriptions/update" ]
 
   [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
   uri = "/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
-  uri = "/webhooks/compliance"
-  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
-
-  [[webhooks.subscriptions]]
-  topics = [ "app/uninstalled" ]
   uri = "/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
+  uri = "/webhooks/compliance"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "read_discounts,read_locales,read_products,read_publications,read_themes,write_discounts,write_products,write_publications,write_themes"
 
 [auth]
-redirect_urls = [ ]
+redirect_urls = [
+  "https://fynktech-roarr.vercel.app/auth/callback",
+  "https://fynktech-roarr.vercel.app/auth/shopify/callback"
+]
 
 [shop.metafields.app.block_control]
 name = "Internal Block Render"

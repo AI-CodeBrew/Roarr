@@ -1,5 +1,6 @@
 import { Outlet, useLoaderData, useRouteError, useLocation, useNavigate } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
+import { authenticate } from "../shopify.server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import { useEffect, useLayoutEffect, useState, useRef, useMemo } from "react";
 import { PagesProvider } from "../lib/PagesContext";
@@ -27,14 +28,14 @@ export const links = () => [
 ];
 // -----------------------------------
 
-// Defer auth + shop details so the shell + LCP splash stream immediately (no await before return).
+// Authenticate before the app UI renders, so a new install gets its token (token exchange) and the
+// merchant lands straight in the app. Only auth runs here; data is fetched later by the pages.
+// This loader runs once per document load (shouldRevalidate below returns false).
 export const loader = async ({ request }) => {
+  await authenticate.admin(request);
+
   const url = new URL(request.url);
   const shop = url.searchParams.get("shop");
-
-  // PERFORMANCE: Only authenticate, don't fetch any data
-  // This makes the loader return immediately after OAuth redirect
-  // await authenticate.admin(request);
 
   return {
     apiKey: process.env.SHOPIFY_API_KEY || "",

@@ -111,7 +111,7 @@ def _detect_image_extension_from_url(image_url: str, timeout: int = 20) -> Optio
 class ShopifyUtils:
     def __init__(self):
         # Remove hardcoded credentials - will use user-specific credentials
-        self.api_version = "2026-01"
+        self.api_version = "2026-10"
         self._theme_cli_failed_until: Dict[str, float] = {}
         # user_id -> time until which theme writes are known to be refused by Shopify.
         self._theme_write_blocked_until: Dict[str, float] = {}
@@ -920,12 +920,11 @@ class ShopifyUtils:
     ) -> Dict[str, Any]:
         """collectionUpdate for manual or smart collections (one mutation for both types)."""
         mutation = """
-        mutation CollectionUpdate($input: CollectionInput!) {
-          collectionUpdate(input: $input) {
+        mutation CollectionUpdate($collection: CollectionUpdateInput!) {
+          collectionUpdate(collection: $collection) {
             collection {
               id
               image { url }
-              ruleSet { appliedDisjunctively }
             }
             userErrors { field message }
           }
@@ -933,7 +932,7 @@ class ShopifyUtils:
         """
         gid = self._to_gid("Collection", str(collection_id).strip())
         result = self._make_graphql_request(
-            mutation, {"input": {"id": gid, **fields}}, user_id
+            mutation, {"collection": {"id": gid, **fields}}, user_id
         )
         payload = ((result or {}).get("data") or {}).get("collectionUpdate") or {}
         errors = payload.get("userErrors") or []
@@ -947,7 +946,9 @@ class ShopifyUtils:
             return {"success": False, "error": f"Unexpected response: {result}"}
         return {
             "success": True,
-            "collection_type": "smart" if col.get("ruleSet") else "custom",
+            # The collections model no longer has separate manual/smart types (ruleSet is
+            # deprecated), so the type is not reported any more. No caller reads it.
+            "collection_type": None,
             "collection_id": str(self._from_gid(col.get("id")) or collection_id),
             "image_url": (col.get("image") or {}).get("url"),
         }
@@ -1278,7 +1279,7 @@ class ShopifyUtils:
             raise Exception(f"Failed to get product details: {str(e)}")
 
     def validate_shopify_connection(
-        self, shop_url, access_token, api_version="2026-01"
+        self, shop_url, access_token, api_version="2026-10"
     ):
         try:
             # Normalize shop domain
@@ -3352,7 +3353,7 @@ class ShopifyUtils:
                 credentials = self._get_user_credentials(user_id)
                 shop_url = credentials["shop_url"]
                 access_token = credentials["access_token"]
-                api_version = credentials.get("api_version", "2026-01")
+                api_version = credentials.get("api_version", "2026-10")
 
                 # Ensure shop_url has https:// prefix
                 if not shop_url.startswith("http"):
@@ -4131,7 +4132,7 @@ class ShopifyUtils:
             """
             variables = {"id": product_gid}
 
-            graphql_url = f"https://{shop_domain}/admin/api/2026-01/graphql.json"
+            graphql_url = f"https://{shop_domain}/admin/api/2026-10/graphql.json"
             graphql_headers = {
                 "X-Shopify-Access-Token": access_token,
                 "Content-Type": "application/json",

@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 
 credits_bp = Blueprint("credits", __name__)
 
-SHOPIFY_API_VERSION = "2026-01"
+SHOPIFY_API_VERSION = "2026-10"
 
 
 def _resolve_request_credit_pricing():

@@ -11,7 +11,7 @@ import requests
 
 logger = logging.getLogger(__name__)
 
-SHOPIFY_API_VERSION = "2026-01"
+SHOPIFY_API_VERSION = "2026-10"
 
 
 class ShopifyGraphQLError(Exception):

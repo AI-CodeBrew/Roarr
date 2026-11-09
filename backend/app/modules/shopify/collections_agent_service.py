@@ -652,23 +652,36 @@ def create_collections_from_products(
             }
 
         mutation = """
-        mutation CollectionCreate($input: CollectionInput!) {
-          collectionCreate(input: $input) {
+        mutation CollectionCreate($collection: CollectionCreateInput!) {
+          collectionCreate(collection: $collection) {
             collection { id title handle }
             userErrors { field message }
           }
         }
         """
+        # A manual collection: one source that selects these products by hand.
         collection_input: Dict[str, Any] = {
             "title": title[:255],
-            "products": [f"gid://shopify/Product/{int(pid)}" for pid in product_ids[:50]],
+            "sources": [
+                {
+                    "source": {
+                        "title": "Selected products",
+                        "inclusion": {
+                            "selections": [
+                                {"productId": f"gid://shopify/Product/{int(pid)}"}
+                                for pid in product_ids[:50]
+                            ]
+                        },
+                    }
+                }
+            ],
         }
         if desc:
             collection_input["descriptionHtml"] = f"<p>{desc}</p>"
 
         # Create a manual collection with its products (GraphQL Admin API)
         create_resp = shopify_utils._make_graphql_request(
-            mutation, {"input": collection_input}, user_id
+            mutation, {"collection": collection_input}, user_id
         )
         payload = ((create_resp or {}).get("data") or {}).get("collectionCreate") or {}
         user_errors = payload.get("userErrors") or []

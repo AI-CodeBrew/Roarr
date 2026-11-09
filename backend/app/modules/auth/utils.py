@@ -153,8 +153,10 @@ def verify_shopify_token(token):
         if token.startswith("Bearer "):
             token = token[7:]
 
-        if not SHOPIFY_APP_SECRET:
-            raise JWTError("SHOPIFY_APP_SECRET not configured")
+        # Both come from the Shopify app (Dev Dashboard): the client secret signs the session
+        # token and the client id is its audience. Without them nothing can be verified.
+        if not SHOPIFY_APP_SECRET or not SHOPIFY_APP_CLIENT_ID:
+            raise JWTError("SHOPIFY_APP_SECRET and SHOPIFY_APP_CLIENT_ID must be configured")
 
         decoded = jwt.decode(
             token,
@@ -162,6 +164,15 @@ def verify_shopify_token(token):
             algorithms=["HS256"],
             audience=SHOPIFY_APP_CLIENT_ID,
         )
+
+        # The token is issued for one shop: `dest` is its myshopify.com origin and `iss` must be
+        # that origin's /admin URL.
+        dest = str(decoded.get("dest") or "").rstrip("/")
+        host = urlparse(dest).netloc
+        if not host.endswith(".myshopify.com"):
+            raise JWTError("Session token dest is not a myshopify.com shop")
+        if str(decoded.get("iss") or "").rstrip("/") != f"{dest}/admin":
+            raise JWTError("Session token iss does not match dest")
         return decoded
     except JWTError as e:
         print(f"JWT Error during Shopify token verification: {e}")

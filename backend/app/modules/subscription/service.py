@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class ShopifySubscriptionManager:
     
     def __init__(self):
-        self.api_version = "2026-01"
+        self.api_version = "2026-10"
     
     def create_subscription(self, shop_url: str, access_token: str, plan_name: str, 
                           billing_cycle: str = "monthly") -> Dict[str, Any]:

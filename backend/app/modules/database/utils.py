@@ -395,6 +395,49 @@ class DocumentStore:
             logger.error(f"Error getting Shopify credentials: {e}")
             return None
 
+    def delete_shop_data(self, shop_domain: str) -> Dict[str, int]:
+        """
+        shop/redact (GDPR): delete every item stored for one shop.
+
+        All app data lives in the `dynamo_items` document table, and every per-shop item carries
+        the shop's `.myshopify.com` domain (the app's user id) in one of a few attributes. Items
+        are matched by exact equality on those attributes, so another shop's data can never match.
+        Returns the number of deleted rows per logical table.
+        """
+        import re as _re
+
+        from .pg_pool import pg_conn
+
+        domain = (shop_domain or "").strip().lower()
+        domain = domain.replace("https://", "").replace("http://", "").strip("/")
+        if not _re.fullmatch(r"[a-z0-9][a-z0-9-]*\.myshopify\.com", domain):
+            raise ValueError(f"Refusing to delete data for an invalid shop domain: {shop_domain!r}")
+
+        ids = [domain, f"https://{domain}", f"http://{domain}"]
+        with pg_conn() as conn:
+            rows = conn.execute(
+                """
+                DELETE FROM dynamo_items
+                WHERE pk = ANY(%(ids)s)
+                   OR item->>'user_id' = ANY(%(ids)s)
+                   OR item->>'fk_user_id' = ANY(%(ids)s)
+                   OR item->>'store_url' = ANY(%(ids)s)
+                   OR item->>'shop_url' = ANY(%(ids)s)
+                   OR item->>'myshopify_domain' = ANY(%(ids)s)
+                   OR item->>'myshopifyDomain' = ANY(%(ids)s)
+                RETURNING table_name
+                """,
+                {"ids": ids},
+            ).fetchall()
+            conn.commit()
+
+        counts: Dict[str, int] = {}
+        for row in rows:
+            name = row["table_name"]
+            counts[name] = counts.get(name, 0) + 1
+        logger.info(f"shop/redact: deleted {sum(counts.values())} items for {domain}: {counts}")
+        return counts
+
     def mark_store_reauth(self, shop_url: str, needed: bool, reason: str = "") -> bool:
         """
         Record whether a store has to reopen the app to get a new expiring offline token.

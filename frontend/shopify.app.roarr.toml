@@ -1,9 +1,15 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+# Roarr on the FynkTech partner organisation (the App Store app).
 
-client_id = "15199d9d08e0fa6f318c11ae36042de3"
+client_id = "2712a2d213154e76a893b27976de1fff"
 name = "Roarr"
 application_url = "https://fynktech-roarr.vercel.app"
 embedded = true
+
+[build]
+# Keep the production URLs on the App Store app: `shopify app dev` must not replace them with a
+# tunnel. Use a separate development app (its own shopify.app.<name>.toml) for local work.
+automatically_update_urls_on_dev = false
 
 [webhooks]
 api_version = "2026-10"
@@ -17,12 +23,12 @@ api_version = "2026-10"
   topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
-  uri = "/webhooks/compliance"
-  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
-
-  [[webhooks.subscriptions]]
   uri = "/webhooks/app/uninstalled"
   topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
+  uri = "/webhooks/compliance"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
@@ -31,8 +37,7 @@ scopes = "read_discounts,read_locales,read_products,read_publications,read_theme
 [auth]
 redirect_urls = [
   "https://fynktech-roarr.vercel.app/auth/callback",
-  "https://fynktech-roarr.vercel.app/auth/shopify/callback",
-  "https://fynktech-roarr.vercel.app/api/auth/callback"
+  "https://fynktech-roarr.vercel.app/auth/shopify/callback"
 ]
 
 [shop.metafields.app.block_control]
@@ -41,6 +46,3 @@ type = "boolean"
 
   [shop.metafields.app.block_control.access]
   storefront = "public_read"
-
-[build]
-automatically_update_urls_on_dev = true

@@ -22,6 +22,18 @@ def verify_signature(body: bytes, received_sig: str) -> bool:
     return hmac.compare_digest(expected_sig, received_sig)
 
 
+def verify_shopify_webhook_hmac(body: bytes, received_hmac) -> bool:
+    """
+    Verify the X-Shopify-Hmac-Sha256 header of a webhook Shopify sent straight to this backend:
+    base64(HMAC-SHA256(raw body, app client secret)). Use the raw bytes, never re-encoded JSON.
+    """
+    if not received_hmac or not body:
+        return False
+    digest = hmac.new(SHOPIFY_APP_SECRET, body, hashlib.sha256).digest()
+    expected = base64.b64encode(digest).decode("utf-8")
+    return hmac.compare_digest(expected, str(received_hmac).strip())
+
+
 def decrypt_shopify_oauth_data(encoded_data: str) -> dict:
     """
     Decrypt base64 encoded Shopify OAuth data

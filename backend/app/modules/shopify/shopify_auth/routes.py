@@ -12,7 +12,11 @@ import logging
 from calendar import monthrange
 from datetime import datetime, timedelta, timezone
 from app.modules.database.conditions import Attr
-from .utils import decrypt_shopify_oauth_data, verify_signature
+from .utils import (
+    decrypt_shopify_oauth_data,
+    verify_shopify_webhook_hmac,
+    verify_signature,
+)
 from .webhook_utils import webhook_manager
 from ...auth.utils import require_auth, verify_token, require_shopify_auth
 from ...credits import wallet_service
@@ -447,6 +451,11 @@ def handle_app_charges_webhook():
     Handle Shopify app charges webhook for add-on purchases
     Saves add-on transactions in the same user_subscription_transaction table
     """
+    if not verify_shopify_webhook_hmac(
+        request.get_data(), request.headers.get("X-Shopify-Hmac-Sha256")
+    ):
+        return jsonify({"success": False, "error": "Invalid webhook signature"}), 401
+
     try:
         # Get the raw webhook data
         webhook_data = request.get_json()
@@ -542,6 +551,11 @@ def shopify_app_subscriptions_webhook():
     Handle Shopify APP_SUBSCRIPTIONS_UPDATE webhook
     This webhook is triggered when a user's subscription plan changes
     """
+    if not verify_shopify_webhook_hmac(
+        request.get_data(), request.headers.get("X-Shopify-Hmac-Sha256")
+    ):
+        return jsonify({"success": False, "error": "Invalid webhook signature"}), 401
+
     try:
         # Get the webhook payload
         webhook_data = request.get_json()
@@ -900,6 +914,11 @@ def subscription_update_webhook():
 @shopify_auth_bp.route("/webhook/shopify/unInstall", methods=["POST"])
 def shopify_uninstall_webhook():
     """Handle Shopify app uninstall webhook"""
+    if not verify_shopify_webhook_hmac(
+        request.get_data(), request.headers.get("X-Shopify-Hmac-Sha256")
+    ):
+        return jsonify({"success": False, "error": "Invalid webhook signature"}), 401
+
     try:
         data = request.get_json()
         if not data or not data.get("myshopify_domain"):
@@ -1515,3 +1534,40 @@ def shop_market_preferences_internal():
     except Exception as e:
         logger.error(f"Error in shop_market_preferences_internal: {str(e)}")
         return jsonify({"success": False, "error": "Internal server error"}), 500
+
+
+# Shop data deletion for the mandatory shop/redact compliance webhook. The frontend verifies
+# Shopify's HMAC on the webhook, then calls this endpoint signed with the app secret.
+SHOP_REDACT_MAX_AGE_SECONDS = 300
+
+
+@shopify_auth_bp.route("/api/internal/shop-redact", methods=["POST"])
+def shop_redact_internal():
+    body = request.get_data()
+    signature = request.headers.get("X-Internal-Signature")
+    if not signature or not verify_signature(body, signature):
+        return jsonify({"success": False, "error": "Invalid signature"}), 401
+
+    data = request.get_json(silent=True) or {}
+    try:
+        age = abs(time.time() - float(data.get("timestamp")))
+    except (TypeError, ValueError):
+        age = None
+    if age is None or age > SHOP_REDACT_MAX_AGE_SECONDS:
+        return jsonify({"success": False, "error": "Request expired"}), 401
+
+    shop = str(data.get("shop") or "").strip().lower()
+    try:
+        deleted = document_store.delete_shop_data(shop)
+    except ValueError as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+    except Exception as e:
+        logger.error(f"shop/redact failed for {shop}: {e}")
+        # Non-2xx makes the frontend answer Shopify with an error, so Shopify retries.
+        return jsonify({"success": False, "error": "Deletion failed"}), 500
+
+    from ..token_client import invalidate_token
+
+    invalidate_token(shop)
+    return jsonify({"success": True, "deleted": deleted}), 200
+

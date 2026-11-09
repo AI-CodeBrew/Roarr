@@ -3041,7 +3041,7 @@ def _execute_publish_store(user_id, data):
                     value_str = json.dumps(metafield_payload, ensure_ascii=False)
 
                     # Shopify metafield value size is limited; keep a guardrail.
-                    if len(value_str) > 60000:
+                    if len(value_str) > 60000 or len(value_str.encode("utf-8")) > 120000:
                         logger.warning(
                             f"Store metafield payload too large ({len(value_str)} chars). Storing generation.home_page only."
                         )
@@ -5922,7 +5922,7 @@ def update_publish_store():
                             )
 
                     value_str = json.dumps(generation_data, ensure_ascii=False)
-                    if len(value_str) > 60000:
+                    if len(value_str) > 60000 or len(value_str.encode("utf-8")) > 120000:
                         logger.warning(
                             f"update-publish-store: metafield payload large ({len(value_str)} chars); slimming."
                         )

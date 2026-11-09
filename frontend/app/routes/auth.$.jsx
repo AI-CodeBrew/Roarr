@@ -3,7 +3,6 @@ import { authenticate, registerWebhooks } from "../shopify.server";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
-  console.log('session', session);
   
   // Register webhooks after authentication
   await registerWebhooks({ session });
