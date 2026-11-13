@@ -3,7 +3,8 @@
 # Secrets: fly secrets set DATABASE_URL=... SUPABASE_URL=... SUPABASE_JWT_SECRET=... BUNNY_*=... SHOPIFY_*=...
 
 app = "roarr"
-primary_region = "iad"
+# Singapore, next to the Supabase database (ap-southeast-1). Vercel functions run in sin1 too.
+primary_region = "sin"
 
 [build]
   dockerfile = "Dockerfile"
