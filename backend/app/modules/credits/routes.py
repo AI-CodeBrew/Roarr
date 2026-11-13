@@ -34,6 +34,7 @@ from ..shopify.graphql_client import (
     raise_on_user_errors,
     shopify_graphql,
     to_gid,
+    use_test_charges,
 )
 from ..shopify.token_client import resolve_access_token
 from .service import wallet_service
@@ -332,7 +333,8 @@ def purchase_pack():
                 f"{os.getenv('FRONTEND_URL', 'http://localhost:5173')}"
                 f"/credits/callback?pack={pack_name}"
             )
-        is_test_mode = os.getenv("SHOPIFY_TEST_MODE", "false").lower() == "true"
+        # Test charge when SHOPIFY_TEST_MODE=true or the shop is a development store.
+        is_test_mode = use_test_charges(user_id, access_token)
 
         # If ROARR2X (or similar) is armed, Shopify's approve page should show
         # the credits that will actually be granted after approval.

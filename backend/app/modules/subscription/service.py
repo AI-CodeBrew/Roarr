@@ -12,6 +12,7 @@ from ..shopify.graphql_client import (
     raise_on_user_errors,
     shopify_graphql,
     to_gid,
+    use_test_charges,
 )
 
 load_dotenv()
@@ -76,7 +77,8 @@ class ShopifySubscriptionManager:
                 subscription_name = f"{plan_details['name']} (Monthly)"
                 subscription_terms = f"Monthly subscription to {plan_details['name']} - {plan_details['description']}. Billed monthly at ${price}/month."
             
-            is_test = os.getenv('SHOPIFY_TEST_MODE', 'false').lower() == 'true'
+            # Test charge when SHOPIFY_TEST_MODE=true or the shop is a development store.
+            is_test = use_test_charges(shop_url, access_token)
             line_items = [
                 {
                     "plan": {
@@ -188,7 +190,7 @@ class ShopifySubscriptionManager:
                     "name": f"{addon_details['name']} Add-on",
                     "price": {"amount": str(price), "currencyCode": "USD"},
                     "returnUrl": f"{os.getenv('FRONTEND_URL', 'http://localhost:5173')}/dashboard?addon=success",
-                    "test": os.getenv('SHOPIFY_TEST_MODE', 'false').lower() == 'true',
+                    "test": use_test_charges(shop_url, access_token),
                 },
             )
             result = data.get("appPurchaseOneTimeCreate") or {}

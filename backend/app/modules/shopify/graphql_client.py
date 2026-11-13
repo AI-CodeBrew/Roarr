@@ -5,13 +5,23 @@ Shopify treats the REST Admin API as legacy, so new Admin calls go through here.
 file calls are the only REST exception and stay where they are.
 """
 import logging
-from typing import Any, Dict, Optional
+import os
+import threading
+import time
+from typing import Any, Dict, Optional, Tuple
 
 import requests
 
 logger = logging.getLogger(__name__)
 
 SHOPIFY_API_VERSION = "2026-10"
+
+# Per-shop cache of `shop.plan.partnerDevelopment`, for the billing `test` flag. The answer can
+# change when a development store is transferred to a merchant and moves to a paid plan, so it
+# expires after a short time instead of being kept for the life of the process.
+_DEV_STORE_CACHE_TTL_SECONDS = 600
+_dev_store_cache: Dict[str, Tuple[bool, float]] = {}
+_dev_store_cache_lock = threading.Lock()
 
 
 class ShopifyGraphQLError(Exception):
@@ -70,3 +80,45 @@ def raise_on_user_errors(result: Optional[Dict[str, Any]]) -> None:
     errors = (result or {}).get("userErrors") or []
     if errors:
         raise ShopifyGraphQLError("; ".join(e.get("message", "") for e in errors))
+
+
+def is_partner_development_store(shop_url: str, access_token: str) -> bool:
+    """
+    True only when Shopify reports `shop.plan.partnerDevelopment == true`.
+
+    Cached per shop for `_DEV_STORE_CACHE_TTL_SECONDS`. A failed lookup returns False and is not
+    cached, so an error can never turn a paying store's charge into a free test charge.
+    """
+    shop = normalize_shop_domain(shop_url)
+    now = time.monotonic()
+    with _dev_store_cache_lock:
+        cached = _dev_store_cache.get(shop)
+    if cached and cached[1] > now:
+        return cached[0]
+
+    try:
+        data = shopify_graphql(
+            shop,
+            access_token,
+            "query ShopPlanForBilling { shop { plan { partnerDevelopment } } }",
+            timeout=10,
+        )
+    except (ShopifyGraphQLError, requests.RequestException, ValueError) as exc:
+        logger.warning(f"Could not read plan for {shop}; using real (non-test) charges: {exc}")
+        return False
+
+    is_dev = ((data.get("shop") or {}).get("plan") or {}).get("partnerDevelopment") is True
+    with _dev_store_cache_lock:
+        _dev_store_cache[shop] = (is_dev, now + _DEV_STORE_CACHE_TTL_SECONDS)
+    logger.info(f"Shop {shop} partnerDevelopment={is_dev}")
+    return is_dev
+
+
+def use_test_charges(shop_url: str, access_token: str) -> bool:
+    """
+    Billing `test` flag: SHOPIFY_TEST_MODE=true, or the shop is a partner development store.
+    Paying stores get False.
+    """
+    if os.getenv("SHOPIFY_TEST_MODE", "false").lower() == "true":
+        return True
+    return is_partner_development_store(shop_url, access_token)
