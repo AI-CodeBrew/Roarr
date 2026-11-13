@@ -66,10 +66,16 @@ export default function Index() {
     fetchAppBlocksStatus();
   }, [fetchAppBlocksStatus]);
 
+  // Set when the theme editor is opened in another tab. Coming back to this tab then skips the
+  // 60-second app-blocks cache, so what the merchant just saved in the editor shows right away.
+  const themeEditorOpenedRef = useRef(false);
+
   useEffect(() => {
     function onVisibilityChange() {
       if (document.visibilityState !== "visible") return;
-      fetchAppBlocksStatus();
+      const force = themeEditorOpenedRef.current;
+      themeEditorOpenedRef.current = false;
+      fetchAppBlocksStatus({ force });
     }
     document.addEventListener("visibilitychange", onVisibilityChange);
     return () => document.removeEventListener("visibilitychange", onVisibilityChange);
@@ -95,11 +101,13 @@ export default function Index() {
       params.set("activateAppId", `${shopifyClientId}/${APP_EMBED_LIQUID_HANDLE}`);
     }
     const url = `https://${sessionShop}/admin/themes/current/editor?${params.toString()}`;
+    themeEditorOpenedRef.current = true;
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
   function handleOpenThemeEditor() {
     if (!sessionShop) return;
+    themeEditorOpenedRef.current = true;
     window.open(
       `https://${sessionShop}/admin/themes/current/editor?template=product`,
       "_blank",
