@@ -514,6 +514,7 @@ def _publish_unique_product_template(
         return {
             "success": False,
             "error": upload_result.get("error") or "Template upload failed",
+            "theme_write_blocked": bool(upload_result.get("theme_write_blocked")),
             "template_suffix": suffix,
             "template_file": json_filename,
         }
@@ -4250,27 +4251,39 @@ def _execute_publish_page(user_id, data):
                         theme_id=live_theme_numeric_id,
                         user_id=user_id,
                     )
-                    if template_bind_result.get("success"):
-                        assigned_template_suffix = template_bind_result.get(
-                            "template_suffix"
-                        )
-                        logger.info(
-                            "✅ Assigned template %s to product %s",
-                            template_bind_result.get("template_file"),
-                            product_id,
-                        )
-                    else:
-                        logger.warning(
-                            "⚠️ Failed assigning template %s to product %s: %s",
-                            template_bind_result.get("template_file"),
-                            product_id,
-                            template_bind_result.get("error", "Unknown error"),
-                        )
                 except Exception as template_bind_error:
                     logger.error(
                         "Error assigning template to product %s: %s",
                         product_id,
                         template_bind_error,
+                    )
+                    template_bind_result = {
+                        "success": False,
+                        "error": str(template_bind_error),
+                    }
+                if template_bind_result.get("success"):
+                    assigned_template_suffix = template_bind_result.get(
+                        "template_suffix"
+                    )
+                    logger.info(
+                        "✅ Assigned template %s to product %s",
+                        template_bind_result.get("template_file"),
+                        product_id,
+                    )
+                else:
+                    bind_error = template_bind_result.get("error") or "Unknown error"
+                    logger.warning(
+                        "⚠️ Failed assigning template %s to product %s: %s",
+                        template_bind_result.get("template_file"),
+                        product_id,
+                        bind_error,
+                    )
+                    # Without its template the product shows the theme's default page, so the
+                    # page is not published: fail with the reason instead of reporting success.
+                    if template_bind_result.get("theme_write_blocked"):
+                        raise ThemeWriteBlockedError(bind_error)
+                    raise RuntimeError(
+                        f"Could not add the Roarr template to this product: {bind_error}"
                     )
 
             # Generate preview link (Shopify admin theme editor URL)

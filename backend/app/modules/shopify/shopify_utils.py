@@ -35,6 +35,11 @@ class ThemeWriteBlockedError(Exception):
 # the Admin API, which refuses theme writes for apps without Shopify's Theme API exemption.
 # Needs `shopify` on PATH and a prior login:  shopify theme list --store <shop>.myshopify.com
 THEME_WRITE_VIA_CLI = os.getenv("THEME_WRITE_VIA_CLI", "").strip().lower() in ("1", "true", "yes")
+if THEME_WRITE_VIA_CLI and os.getenv("ENVIRONMENT", "").strip().lower() == "production":
+    # Production has no Shopify CLI, and merchants' themes must never be written with a
+    # developer's personal CLI login. Use the Admin API (which reports a missing exemption clearly).
+    logger.warning("THEME_WRITE_VIA_CLI is ignored because ENVIRONMENT=production")
+    THEME_WRITE_VIA_CLI = False
 THEME_CLI_TIMEOUT_SECONDS = int(os.getenv("THEME_CLI_TIMEOUT_SECONDS", "300"))
 # Remembers which file contents were already pushed per shop+theme, so a publish only re-pushes
 # what changed instead of running the CLI once per section file.
