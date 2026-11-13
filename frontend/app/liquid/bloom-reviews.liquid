@@ -11,7 +11,6 @@
 {%- assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count -%}
 {%- assign rating_scale = rating.scale_max.value | default: rating.scale_max | default: 5 -%}
 {%- assign rating_value = rating.rating.value | default: rating.rating | default: rating.value -%}
-{%- assign rating_value = 4.9 -%}{%- assign rating_scale = 5 -%}{%- assign rating_count = '10k' -%}
 {%- assign rating_pct = 0 -%}
 {%- if rating_value != blank -%}{%- assign rating_pct = rating_value | times: 100.0 | divided_by: rating_scale | round -%}{%- endif -%}
 {%- capture items -%}

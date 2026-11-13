@@ -21,7 +21,7 @@
 {%- assign tab_1 = m.bloom_bundle_tab_1 -%}{%- assign tab_2 = m.bloom_bundle_tab_2 -%}{%- assign tab_3 = m.bloom_bundle_tab_3 -%}{%- assign tab_4 = m.bloom_bundle_tab_4 -%}
 
 
-{%- assign cmp_base = product.compare_at_price | default: 0 -%}{%- if cmp_base < product.price -%}{%- assign cmp_base = product.price | times: 3 | divided_by: 2 -%}{%- endif -%}{%- assign cmp_1 = cmp_base -%}{%- assign cmp_2 = cmp_base -%}{%- assign cmp_3 = cmp_base -%}{%- assign cmp_4 = cmp_base -%}{%- assign cmp_5 = cmp_base -%}{%- assign cmp_6 = cmp_base -%}
+{%- assign cmp_base = product.compare_at_price | default: product.price -%}{%- assign cmp_1 = cmp_base -%}{%- assign cmp_2 = cmp_base -%}{%- assign cmp_3 = cmp_base -%}{%- assign cmp_4 = cmp_base -%}{%- assign cmp_5 = cmp_base -%}{%- assign cmp_6 = cmp_base -%}
 {%- assign i1 = m.product_image_1 -%}
 
 
@@ -48,7 +48,7 @@
             {%- if m.product_image_1 != blank -%}<img src="{{ m.product_image_1 | image_url: width: 480 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
           </div>
           <h3 class="bl-bu__t bl-serif">{{ product.title | escape }}</h3>
-          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_1 > product.price -%} <s>{{ cmp_1 | money }}</s>{%- endif -%}<span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_1 > product.price -%} <s>{{ cmp_1 | money }}</s>{%- endif -%}</p>
           <button type="button" class="bl-bu__add" data-bl-add data-price="{{ product.price }}" data-title="{{ product.title | escape }}" data-img="{% if m.product_image_1 != blank %}{{ m.product_image_1 | image_url: width: 160 }}{% endif %}"><span data-on="Add" data-off="Added">{{ add_l }}</span></button>
         </li>
         <li class="bl-bu__card" data-tab="all">
@@ -58,7 +58,7 @@
             {%- if m.product_image_2 != blank -%}<img src="{{ m.product_image_2 | image_url: width: 480 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
           </div>
           <h3 class="bl-bu__t bl-serif">{{ product.title | escape }}</h3>
-          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_2 > product.price -%} <s>{{ cmp_2 | money }}</s>{%- endif -%}<span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_2 > product.price -%} <s>{{ cmp_2 | money }}</s>{%- endif -%}</p>
           <button type="button" class="bl-bu__add" data-bl-add data-price="{{ product.price }}" data-title="{{ product.title | escape }}" data-img="{% if m.product_image_2 != blank %}{{ m.product_image_2 | image_url: width: 160 }}{% endif %}"><span data-on="Add" data-off="Added">{{ add_l }}</span></button>
         </li>
         <li class="bl-bu__card" data-tab="all">
@@ -68,7 +68,7 @@
             {%- if m.product_image_3 != blank -%}<img src="{{ m.product_image_3 | image_url: width: 480 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
           </div>
           <h3 class="bl-bu__t bl-serif">{{ product.title | escape }}</h3>
-          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_3 > product.price -%} <s>{{ cmp_3 | money }}</s>{%- endif -%}<span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_3 > product.price -%} <s>{{ cmp_3 | money }}</s>{%- endif -%}</p>
           <button type="button" class="bl-bu__add" data-bl-add data-price="{{ product.price }}" data-title="{{ product.title | escape }}" data-img="{% if m.product_image_3 != blank %}{{ m.product_image_3 | image_url: width: 160 }}{% endif %}"><span data-on="Add" data-off="Added">{{ add_l }}</span></button>
         </li>
         <li class="bl-bu__card" data-tab="all">
@@ -78,7 +78,7 @@
             {%- if m.product_image_4 != blank -%}<img src="{{ m.product_image_4 | image_url: width: 480 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
           </div>
           <h3 class="bl-bu__t bl-serif">{{ product.title | escape }}</h3>
-          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_4 > product.price -%} <s>{{ cmp_4 | money }}</s>{%- endif -%}<span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_4 > product.price -%} <s>{{ cmp_4 | money }}</s>{%- endif -%}</p>
           <button type="button" class="bl-bu__add" data-bl-add data-price="{{ product.price }}" data-title="{{ product.title | escape }}" data-img="{% if m.product_image_4 != blank %}{{ m.product_image_4 | image_url: width: 160 }}{% endif %}"><span data-on="Add" data-off="Added">{{ add_l }}</span></button>
         </li>
         <li class="bl-bu__card" data-tab="all">
@@ -88,7 +88,7 @@
             {%- if m.product_image_5 != blank -%}<img src="{{ m.product_image_5 | image_url: width: 480 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
           </div>
           <h3 class="bl-bu__t bl-serif">{{ product.title | escape }}</h3>
-          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_5 > product.price -%} <s>{{ cmp_5 | money }}</s>{%- endif -%}<span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_5 > product.price -%} <s>{{ cmp_5 | money }}</s>{%- endif -%}</p>
           <button type="button" class="bl-bu__add" data-bl-add data-price="{{ product.price }}" data-title="{{ product.title | escape }}" data-img="{% if m.product_image_5 != blank %}{{ m.product_image_5 | image_url: width: 160 }}{% endif %}"><span data-on="Add" data-off="Added">{{ add_l }}</span></button>
         </li>
         <li class="bl-bu__card" data-tab="all">
@@ -98,7 +98,7 @@
             {%- if m.product_image_1 != blank -%}<img src="{{ m.product_image_1 | image_url: width: 480 }}" alt="{{ product.title | escape }}" loading="lazy">{%- endif -%}
           </div>
           <h3 class="bl-bu__t bl-serif">{{ product.title | escape }}</h3>
-          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_6 > product.price -%} <s>{{ cmp_6 | money }}</s>{%- endif -%}<span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+          <p class="bl-bu__price"><strong>{{ product.price | money }}</strong>{%- if cmp_6 > product.price -%} <s>{{ cmp_6 | money }}</s>{%- endif -%}</p>
           <button type="button" class="bl-bu__add" data-bl-add data-price="{{ product.price }}" data-title="{{ product.title | escape }}" data-img="{% if m.product_image_1 != blank %}{{ m.product_image_1 | image_url: width: 160 }}{% endif %}"><span data-on="Add" data-off="Added">{{ add_l }}</span></button>
         </li>
       </ul>

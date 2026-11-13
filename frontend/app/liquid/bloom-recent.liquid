@@ -7,7 +7,7 @@
 {%- assign once_l = m.bloom_recent_type.value | default: m.bloom_recent_type | default: 'One-Time Purchase' -%}
 {%- assign save_lbl = m.bloom_save_label.value | default: m.bloom_save_label | default: 'Save' -%}
 
-{%- assign rec_cmp = product.compare_at_price | default: 0 -%}{%- if rec_cmp < product.price -%}{%- assign rec_cmp = product.price | times: 3 | divided_by: 2 -%}{%- endif -%}
+{%- assign rec_cmp = product.compare_at_price | default: product.price -%}
 {%- assign rec_save = rec_cmp | minus: product.price -%}
 {%- assign rec_desc = m.product_subtitle | default: m.bloom_tab_desc | truncatewords: 9 -%}
 
@@ -25,56 +25,56 @@
 
           <li class="bl-rec__card">
             <div class="bl-rec__pic" style="background: #DAD4FF">
-              <span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>
+              {%- if rec_save > 0 -%}<span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>{%- endif -%}
               {%- if m.product_image_1 != blank -%}<img src="{{ m.product_image_1 | image_url: width: 480 }}" alt="" loading="lazy">{%- endif -%}
             </div>
             <h3 class="bl-rec__t bl-serif">{{ product.title }}</h3>
             <p class="bl-rec__d">{{ rec_desc }}</p>
-            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong> <s>{{ rec_cmp | money }}</s><span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong>{%- if rec_cmp > product.price -%} <s>{{ rec_cmp | money }}</s>{%- endif -%}</p>
             <p class="bl-rec__type">{{ once_l }}</p>
             <button type="button" class="bl-btn bl-rec__add">{{ add_l }} - {{ product.price | money }}</button>
           </li>
           <li class="bl-rec__card">
             <div class="bl-rec__pic" style="background: #FFCFE0">
-              <span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>
+              {%- if rec_save > 0 -%}<span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>{%- endif -%}
               {%- if m.product_image_2 != blank -%}<img src="{{ m.product_image_2 | image_url: width: 480 }}" alt="" loading="lazy">{%- endif -%}
             </div>
             <h3 class="bl-rec__t bl-serif">{{ product.title }}</h3>
             <p class="bl-rec__d">{{ rec_desc }}</p>
-            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong> <s>{{ rec_cmp | money }}</s><span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong>{%- if rec_cmp > product.price -%} <s>{{ rec_cmp | money }}</s>{%- endif -%}</p>
             <p class="bl-rec__type">{{ once_l }}</p>
             <button type="button" class="bl-btn bl-rec__add">{{ add_l }} - {{ product.price | money }}</button>
           </li>
           <li class="bl-rec__card">
             <div class="bl-rec__pic" style="background: #CFEBD0">
-              <span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>
+              {%- if rec_save > 0 -%}<span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>{%- endif -%}
               {%- if m.product_image_3 != blank -%}<img src="{{ m.product_image_3 | image_url: width: 480 }}" alt="" loading="lazy">{%- endif -%}
             </div>
             <h3 class="bl-rec__t bl-serif">{{ product.title }}</h3>
             <p class="bl-rec__d">{{ rec_desc }}</p>
-            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong> <s>{{ rec_cmp | money }}</s><span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong>{%- if rec_cmp > product.price -%} <s>{{ rec_cmp | money }}</s>{%- endif -%}</p>
             <p class="bl-rec__type">{{ once_l }}</p>
             <button type="button" class="bl-btn bl-rec__add">{{ add_l }} - {{ product.price | money }}</button>
           </li>
           <li class="bl-rec__card">
             <div class="bl-rec__pic" style="background: #E7BFD0">
-              <span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>
+              {%- if rec_save > 0 -%}<span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>{%- endif -%}
               {%- if m.product_image_4 != blank -%}<img src="{{ m.product_image_4 | image_url: width: 480 }}" alt="" loading="lazy">{%- endif -%}
             </div>
             <h3 class="bl-rec__t bl-serif">{{ product.title }}</h3>
             <p class="bl-rec__d">{{ rec_desc }}</p>
-            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong> <s>{{ rec_cmp | money }}</s><span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong>{%- if rec_cmp > product.price -%} <s>{{ rec_cmp | money }}</s>{%- endif -%}</p>
             <p class="bl-rec__type">{{ once_l }}</p>
             <button type="button" class="bl-btn bl-rec__add">{{ add_l }} - {{ product.price | money }}</button>
           </li>
           <li class="bl-rec__card">
             <div class="bl-rec__pic" style="background: #DAD4FF">
-              <span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>
+              {%- if rec_save > 0 -%}<span class="bl-bu__tag">{{ save_lbl }} {{ rec_save | money }}</span>{%- endif -%}
               {%- if m.product_image_5 != blank -%}<img src="{{ m.product_image_5 | image_url: width: 480 }}" alt="" loading="lazy">{%- endif -%}
             </div>
             <h3 class="bl-rec__t bl-serif">{{ product.title }}</h3>
             <p class="bl-rec__d">{{ rec_desc }}</p>
-            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong> <s>{{ rec_cmp | money }}</s><span class="bl-bu__rate">&#9733; 4.9 (4.5k)</span></p>
+            <p class="bl-rec__price"><strong>{{ product.price | money }}</strong>{%- if rec_cmp > product.price -%} <s>{{ rec_cmp | money }}</s>{%- endif -%}</p>
             <p class="bl-rec__type">{{ once_l }}</p>
             <button type="button" class="bl-btn bl-rec__add">{{ add_l }} - {{ product.price | money }}</button>
           </li>
