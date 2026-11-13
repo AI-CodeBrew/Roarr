@@ -16,19 +16,16 @@ from ...constants.plans import (
     get_plan_name,
     is_valid_plan,
 )
-from .pg_document_store import PgDynamoResource
+from .pg_document_store import ClientErrorCompat, PgDynamoResource
 
 logger = logging.getLogger(__name__)
 
 load_dotenv()
 
 
-class ClientError(Exception):
-    """Stub replacing botocore ClientError so existing except blocks still work."""
-
-    def __init__(self, message: str = "", response: Optional[Dict] = None):
-        super().__init__(message)
-        self.response = response or {"Error": {"Code": "", "Message": message}}
+# Former botocore ClientError. Aliased to the document store's error so the `except ClientError`
+# blocks below also catch ConditionalCheckFailedException from conditional update_item calls.
+ClientError = ClientErrorCompat
 
 
 class DocumentStore:

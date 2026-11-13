@@ -25,6 +25,91 @@ class ClientErrorCompat(Exception):
         self.response = response or {"Error": {"Code": str(message), "Message": str(message)}}
 
 
+CONDITION_FAILED = "ConditionalCheckFailedException"
+
+
+def condition_failed_error() -> ClientErrorCompat:
+    """The error DynamoDB raises when a ConditionExpression is false; callers match on its name."""
+    return ClientErrorCompat(
+        CONDITION_FAILED,
+        {"Error": {"Code": CONDITION_FAILED, "Message": "The conditional request failed"}},
+    )
+
+
+_COND_FUNC_RE = re.compile(
+    r"^(attribute_exists|attribute_not_exists)\s*\(\s*(#?[A-Za-z0-9_]+)\s*\)$", re.I
+)
+_COND_CMP_RE = re.compile(r"^(#?[A-Za-z0-9_]+)\s*(<>|<=|>=|=|<|>)\s*(:[A-Za-z0-9_]+)$")
+
+
+def _is_number(value: Any) -> bool:
+    return isinstance(value, (int, float, Decimal)) and not isinstance(value, bool)
+
+
+def _compare(left: Any, op: str, right: Any) -> bool:
+    if op in ("=", "<>"):
+        if isinstance(left, bool) or isinstance(right, bool):
+            equal = isinstance(left, bool) and isinstance(right, bool) and left == right
+        elif _is_number(left) and _is_number(right):
+            equal = float(left) == float(right)
+        else:
+            equal = left == right
+        return equal if op == "=" else not equal
+    if _is_number(left) and _is_number(right):
+        a, b = float(left), float(right)
+    elif isinstance(left, str) and isinstance(right, str):
+        a, b = left, right
+    else:
+        return False
+    return {"<": a < b, "<=": a <= b, ">": a > b, ">=": a >= b}[op]
+
+
+def eval_condition_expression(
+    item: Dict[str, Any],
+    expression: Any,
+    names: Optional[Dict[str, str]] = None,
+    values: Optional[Dict[str, Any]] = None,
+) -> bool:
+    """
+    Evaluate a DynamoDB ConditionExpression against an item (an empty dict when it doesn't exist).
+
+    Supports the forms Roarr uses: attribute_exists(x), attribute_not_exists(x), and
+    `x <op> :value` with =, <>, <, <=, >, >=, joined by AND / OR (AND binds tighter).
+    Anything else raises ValueError, so an unsupported condition blocks the write instead of
+    being skipped. As in DynamoDB, a comparison on a missing attribute is false, except `<>`.
+    """
+    if not isinstance(expression, str):
+        raise ValueError(f"Unsupported ConditionExpression type: {type(expression).__name__}")
+    names = names or {}
+    values = values or {}
+
+    def resolve(token: str) -> str:
+        return names.get(token, token.lstrip("#"))
+
+    def atom(text: str) -> bool:
+        text = text.strip()
+        while text.startswith("(") and text.endswith(")"):
+            text = text[1:-1].strip()
+        m = _COND_FUNC_RE.match(text)
+        if m:
+            present = resolve(m.group(2)) in item
+            return present if m.group(1).lower() == "attribute_exists" else not present
+        m = _COND_CMP_RE.match(text)
+        if m:
+            attr, op, placeholder = resolve(m.group(1)), m.group(2), m.group(3)
+            if placeholder not in values:
+                raise ValueError(f"ConditionExpression value {placeholder} is missing")
+            if attr not in item:
+                return op == "<>"
+            return _compare(_json_safe(item[attr]), op, _json_safe(values[placeholder]))
+        raise ValueError(f"Unsupported ConditionExpression clause: {text!r}")
+
+    terms = re.split(r"\s+OR\s+", expression.strip(), flags=re.I)
+    return any(
+        all(atom(part) for part in re.split(r"\s+AND\s+", term, flags=re.I)) for term in terms
+    )
+
+
 _SET_RE = re.compile(
     r"#?(?P<path>[A-Za-z0-9_]+)(?:\.#?(?P<sub>[A-Za-z0-9_]+))?\s*=\s*(?P<val>:[A-Za-z0-9_]+)"
 )
@@ -274,6 +359,40 @@ class PgTable:
             conn.commit()
         return {}
 
+    def locked_write(self, Key: Dict[str, Any], build) -> Dict[str, Any]:
+        """
+        Read one item, let `build(current_or_None)` return the new item, and write it, all in a
+        single transaction that holds a per-item advisory lock. Concurrent conditional or
+        read-modify-write updates of the same item therefore run one after another instead of
+        overwriting each other. If `build` raises (e.g. a failed condition), nothing is written.
+        """
+        pk, sk = _pk_from_key(Key)
+        with pg_conn() as conn:
+            with conn.transaction():
+                conn.execute(
+                    "SELECT pg_advisory_xact_lock(hashtextextended(%s, 0))",
+                    (f"{self.table_name}\x1f{pk}\x1f{sk}",),
+                )
+                row = conn.execute(
+                    """
+                    SELECT item FROM dynamo_items
+                    WHERE table_name = %s AND pk = %s AND sk = %s
+                    """,
+                    (self.table_name, pk, sk),
+                ).fetchone()
+                updated = _json_safe(build(row["item"] if row else None))
+                write_pk, write_sk = _pk_from_item(updated)
+                conn.execute(
+                    """
+                    INSERT INTO dynamo_items (table_name, pk, sk, item, updated_at)
+                    VALUES (%s, %s, %s, %s::jsonb, NOW())
+                    ON CONFLICT (table_name, pk, sk)
+                    DO UPDATE SET item = EXCLUDED.item, updated_at = NOW()
+                    """,
+                    (self.table_name, write_pk, write_sk, Json(updated)),
+                )
+        return updated
+
     def update_item(
         self,
         Key: Dict[str, Any],
@@ -281,19 +400,25 @@ class PgTable:
         ExpressionAttributeNames: Optional[Dict[str, str]] = None,
         ExpressionAttributeValues: Optional[Dict[str, Any]] = None,
         ReturnValues: str = "NONE",
+        ConditionExpression: Optional[str] = None,
         **_kwargs,
     ) -> Dict[str, Any]:
-        current = self.get_item(Key=Key).get("Item") or dict(Key)
+        names = ExpressionAttributeNames or {}
         values = ExpressionAttributeValues or {}
-        updated = _apply_update_expr_local(
-            current,
-            UpdateExpression or "",
-            ExpressionAttributeNames or {},
-            values,
-        )
-        for k, v in Key.items():
-            updated.setdefault(k, v)
-        self.put_item(Item=updated)
+
+        def build(current: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+            if ConditionExpression and not eval_condition_expression(
+                current or {}, ConditionExpression, names, values
+            ):
+                raise condition_failed_error()
+            updated = _apply_update_expr_local(
+                current or dict(Key), UpdateExpression or "", names, values
+            )
+            for k, v in Key.items():
+                updated.setdefault(k, v)
+            return updated
+
+        updated = self.locked_write(Key, build)
         if ReturnValues and ReturnValues.upper() != "NONE":
             return {"Attributes": updated}
         return {}

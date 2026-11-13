@@ -4,35 +4,14 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, List
 
-from .pg_document_store import PgDynamoResource, ClientErrorCompat, _json_safe
+from .pg_document_store import (
+    PgDynamoResource,
+    _json_safe,
+    condition_failed_error,
+    eval_condition_expression,
+)
 
 logger = logging.getLogger(__name__)
-
-
-def _eval_condition_expr(
-    item: Dict[str, Any], expr: str, values: Dict[str, Any]
-) -> bool:
-    """Support common conditions: attribute_not_exists(PK), balance >= :cost."""
-    e = (expr or "").strip()
-    if not e:
-        return True
-    if "attribute_not_exists" in e:
-        # attribute_not_exists(PK)
-        import re
-
-        m = re.search(r"attribute_not_exists\((\w+)\)", e)
-        if m and m.group(1) in item:
-            return False
-        return True
-    if ">=" in e:
-        left, right = [x.strip() for x in e.split(">=", 1)]
-        lv = item.get(left)
-        rv = values.get(right, right)
-        try:
-            return float(lv or 0) >= float(rv)
-        except Exception:
-            return False
-    return True
 
 
 def _apply_update_expr(
@@ -128,25 +107,33 @@ class PgTransactClient:
         self.resource = resource or PgDynamoResource()
 
     def transact_write_items(self, TransactItems: List[Dict[str, Any]], **_kwargs):
-        # Execute sequentially; raise ClientErrorCompat on condition failure
+        # Entries run one after another (not as one transaction). Each conditional entry is
+        # checked and written atomically under a per-item lock (PgTable.locked_write); a failed
+        # condition raises ConditionalCheckFailedException and stops before later entries.
         for entry in TransactItems or []:
             if "Put" in entry:
                 put = entry["Put"]
                 table = self.resource.Table(put["TableName"])
                 item = _deserialize_item(put["Item"])
                 cond = put.get("ConditionExpression") or ""
-                if "attribute_not_exists" in cond:
-                    # Check PK
+                if cond:
                     key = {"PK": item.get("PK")}
                     if "SK" in item:
                         key["SK"] = item["SK"]
-                    existing = table.get_item(Key=key).get("Item")
-                    if existing:
-                        raise ClientErrorCompat(
-                            "ConditionalCheckFailedException",
-                            {"Error": {"Code": "ConditionalCheckFailedException"}},
-                        )
-                table.put_item(Item=item)
+                    names = put.get("ExpressionAttributeNames") or {}
+                    put_values = {
+                        k: _from_av(v) if isinstance(v, dict) else v
+                        for k, v in (put.get("ExpressionAttributeValues") or {}).items()
+                    }
+
+                    def build_put(current, item=item, cond=cond, names=names, put_values=put_values):
+                        if not eval_condition_expression(current or {}, cond, names, put_values):
+                            raise condition_failed_error()
+                        return item
+
+                    table.locked_write(key, build_put)
+                else:
+                    table.put_item(Item=item)
             elif "Update" in entry:
                 upd = entry["Update"]
                 table = self.resource.Table(upd["TableName"])
@@ -156,22 +143,23 @@ class PgTransactClient:
                 values: Dict[str, Any] = {}
                 for vk, vv in values_raw.items():
                     values[vk] = _from_av(vv) if isinstance(vv, dict) else vv
-                current = table.get_item(Key=key).get("Item") or dict(key)
+                names = upd.get("ExpressionAttributeNames") or {}
                 cond = upd.get("ConditionExpression") or ""
-                if cond and not _eval_condition_expr(current, cond, values):
-                    raise ClientErrorCompat(
-                        "ConditionalCheckFailedException",
-                        {"Error": {"Code": "ConditionalCheckFailedException"}},
+
+                def build_update(current, key=key, upd=upd, names=names, values=values, cond=cond):
+                    if cond and not eval_condition_expression(current or {}, cond, names, values):
+                        raise condition_failed_error()
+                    updated = _apply_update_expr(
+                        current or dict(key),
+                        upd.get("UpdateExpression", ""),
+                        names,
+                        values,
                     )
-                updated = _apply_update_expr(
-                    current,
-                    upd.get("UpdateExpression", ""),
-                    upd.get("ExpressionAttributeNames") or {},
-                    values,
-                )
-                for k, v in key.items():
-                    updated.setdefault(k, v)
-                table.put_item(Item=updated)
+                    for k, v in key.items():
+                        updated.setdefault(k, v)
+                    return updated
+
+                table.locked_write(key, build_update)
             elif "Delete" in entry:
                 dele = entry["Delete"]
                 table = self.resource.Table(dele["TableName"])
